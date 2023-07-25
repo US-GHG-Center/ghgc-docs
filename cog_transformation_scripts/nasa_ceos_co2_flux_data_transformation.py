@@ -6,12 +6,13 @@ import json
 import tempfile
 import boto3
 import rasterio
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 session = boto3.session.Session()
 s3_client = session.client("s3")
 bucket_name = "ghgc-data-store-dev"
-date_fmt = "%Y%m"
-year_ = 2015
+year_ = datetime(2015, 1, 1)
 
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 
@@ -34,8 +35,23 @@ for name in os.listdir("new_data"):
             filename_elements = re.split("[_ .]", filename)
             try:
                 data = ds[var].sel(year=time_increment)
+                date = year_ + relativedelta(years=+time_increment)
+                filename_elements[-1] = date.strftime("%Y")
+                # # insert date of generated COG into filename
+                filename_elements.insert(2, var)
+                cog_filename = "_".join(filename_elements)
+                # # add extension
+                cog_filename = f"{cog_filename}.tif"
             except KeyError:
                 data = ds[var]
+                date = year_ + relativedelta(years=+(len(ds.year) - 1))
+                filename_elements.pop()
+                filename_elements.append(year_.strftime("%Y"))
+                filename_elements.append(date.strftime("%Y"))
+                filename_elements.insert(2, var)
+                cog_filename = "_".join(filename_elements)
+                # # add extension
+                cog_filename = f"{cog_filename}.tif"
 
             data = data.reindex(lat=list(reversed(data.lat)))
 
@@ -44,17 +60,6 @@ for name in os.listdir("new_data"):
 
             # generate COG
             COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
-
-            date = str(year_ + time_increment)
-            filename_elements.insert(-1, date)
-            # # insert date of generated COG into filename
-            filename_elements.pop()
-            filename_elements[-1] = date
-            filename_elements.insert(2, var)
-            cog_filename = "_".join(filename_elements)
-            # # add extension
-            cog_filename = f"{cog_filename}.tif"
-
             with tempfile.NamedTemporaryFile() as temp_file:
                 data.rio.to_raster(temp_file.name, **COG_PROFILE)
                 s3_client.upload_file(
