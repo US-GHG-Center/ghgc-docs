@@ -1,3 +1,5 @@
+# This script was used to transform the CEOS National Top-Down CO₂ Budgets dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re
@@ -8,7 +10,6 @@ import boto3
 import rasterio
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
 session = boto3.session.Session()
 s3_client = session.client("s3")
 bucket_name = "ghgc-data-store-dev"

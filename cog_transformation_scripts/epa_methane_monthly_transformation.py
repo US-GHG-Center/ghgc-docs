@@ -1,3 +1,5 @@
+# This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas annual dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re
