@@ -1,3 +1,5 @@
+# This script was used to transform the Wetland Methane Emissions, LPJ-wsl Model dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re

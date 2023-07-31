@@ -1,4 +1,4 @@
-# This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas annual dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+# This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas monthly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
 
 import os
 import xarray
@@ -8,13 +8,11 @@ import json
 import tempfile
 import boto3
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 session = boto3.session.Session()
 s3_client = session.client("s3")
 bucket_name = "ghgc-data-store-dev"
-FOLDER_NAME = "epa_emissions/monthly_scale"
-s3_folder_name = "epa-emissions-monthly-scale-factors"
+FOLDER_NAME = "epa_emissions"
 
 files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
 for name in os.listdir(FOLDER_NAME):
@@ -33,11 +31,10 @@ for name in os.listdir(FOLDER_NAME):
             data = data.isel(lat=slice(None, None, -1))
             data.rio.set_spatial_dims("lon", "lat", inplace=True)
             data.rio.write_crs("epsg:4326", inplace=True)
-            date = start_time + relativedelta(months=+time_increment)
 
             # # insert date of generated COG into filename
             filename_elements.pop()
-            filename_elements[-1] = date.strftime("%Y%m")
+            filename_elements[-1] = start_time.strftime("%Y")
             filename_elements.insert(2, var)
             cog_filename = "_".join(filename_elements)
             # # add extension
@@ -51,7 +48,7 @@ for name in os.listdir(FOLDER_NAME):
                 s3_client.upload_file(
                     Filename=temp_file.name,
                     Bucket=bucket_name,
-                    Key=f"{s3_folder_name}/{cog_filename}",
+                    Key=f"{FOLDER_NAME}/{cog_filename}",
                 )
 
             files_processed = files_processed._append(
@@ -70,9 +67,9 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
     s3_client.upload_file(
         Filename=fp.name,
         Bucket=bucket_name,
-        Key=f"{s3_folder_name}/metadata.json",
+        Key=f"{FOLDER_NAME}/metadata.json",
     )
 files_processed.to_csv(
-    f"s3://{bucket_name}/{s3_folder_name}/files_converted.csv",
+    f"s3://{bucket_name}/{FOLDER_NAME}/files_converted.csv",
 )
 print("Done generating COGs")

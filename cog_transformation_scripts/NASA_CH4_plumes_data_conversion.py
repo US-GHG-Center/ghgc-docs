@@ -1,3 +1,5 @@
+# This script was used to read the methane plume dataset provided in Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import re
 import pandas as pd
 import json
