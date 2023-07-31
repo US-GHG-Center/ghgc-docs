@@ -1,3 +1,5 @@
+# This script was used to transform the ODIAC Fossil Fuel CO2 Emissions Version 2022 dataset from GeoTIFF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re
