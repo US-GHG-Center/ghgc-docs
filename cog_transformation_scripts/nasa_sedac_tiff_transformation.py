@@ -34,11 +34,11 @@ for fol_ in fold_names:
             cog_filename = f"{cog_filename}.tif"
 
             with tempfile.NamedTemporaryFile() as temp_file:
-                xds.rio.to_raster(temp_file.name, driver="COG", nodata=-9999)
+                xds.rio.to_raster(temp_file.name, driver="COG")
                 s3_client.upload_file(
                     Filename=temp_file.name,
                     Bucket=bucket_name,
-                    Key=f"test_gridded_population_cog/{cog_filename}",
+                    Key=f"gridded_population_cog/{cog_filename}",
                 )
 
             files_processed = files_processed._append(
@@ -49,6 +49,6 @@ for fol_ in fold_names:
             print(f"Generated and saved COG: {cog_filename}")
 
 files_processed.to_csv(
-    f"s3://{bucket_name}/test_gridded_population_cog/files_converted.csv",
+    f"s3://{bucket_name}/gridded_population_cog/files_converted.csv",
 )
 print("Done generating COGs")
