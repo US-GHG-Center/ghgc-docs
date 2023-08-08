@@ -138,16 +138,16 @@ with open("overall_stats.json", "w") as fp:
 
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 plt.Figure(figsize=(10, 10))
-sns.histplot(data=full_data_df_netcdf, kde=False, bins=15, legend=False, ax=ax[0][0])
+sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
-sns.histplot(data=full_data_df_cog, kde=False, bins=15, legend=False, ax=ax[0][1])
+sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
 
 sns.histplot(
     data=summary_dict_netcdf["2009_January"],
-    kde=True,
-    bins=15,
+    kde=False,
+    bins=10,
     legend=False,
     ax=ax[1][0],
 )
@@ -155,8 +155,8 @@ ax[1][0].set_title("distribution plot for 2009 January raw data")
 
 sns.histplot(
     data=summary_dict_cog["2009_January"],
-    kde=True,
-    bins=15,
+    kde=False,
+    bins=10,
     legend=False,
     ax=ax[1][1],
 )
