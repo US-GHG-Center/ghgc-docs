@@ -1,1 +1,0 @@
-# GHGC_docs
