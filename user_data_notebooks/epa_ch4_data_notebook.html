@@ -6,11 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Siddharth Chaudhary, Vishal Gaur">
-<meta name="dcterms.date" content="2023-06-29">
-<meta name="description" content="The Open-Data Inventory for Anthropogenic Carbon dioxide (ODIAC) is a high-spatial resolution global emission data product of CO₂ emissions from fossil fuel combustion (Oda and Maksyutov, 2011). ODIAC pioneered the combined use of space-based nighttime light data and individual power plant emission/location profiles to estimate the global spatial extent of fossil fuel CO₂ emissions. With the innovative emission modeling approach, ODIAC achieved the fine picture of global fossil fuel CO₂ emissions at a 1x1km..">
+<meta name="description" content="Annual, monthly, and daily 0.1 degree resolution estimates of anthropogenic methane emissions for the U.S. region for 2015-2018">
 
-<title>U.S. Greenhouse Gas Center Documentation - ODIAC Fossil Fuel CO₂ Emissions Version 2022</title>
+<title>U.S. Greenhouse Gas Center Documentation - Gridded Methane Emissions v2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -115,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../user_data_notebooks/index.html">Data Usage Notebooks</a></li><li class="breadcrumb-item"><a href="../user_data_notebooks/epa_ch4_data_notebook.html">ODIAC Fossil Fuel CO₂ Emissions Version 2022</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../user_data_notebooks/index.html">Data Usage Notebooks</a></li><li class="breadcrumb-item"><a href="../user_data_notebooks/epa_ch4_data_notebook.html">Gridded Methane Emissions v2</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -162,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/epa_ch4_data_notebook.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">ODIAC Fossil Fuel CO₂ Emissions Version 2022</span></a>
+ <span class="menu-text">Gridded Methane Emissions v2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -196,11 +194,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../user_data_notebooks/wetland_methane_emissions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Wetland Methane Emissions, LPJ-wsl Model</span></a>
-  </div>
-</li>
+ <span class="menu-text">user_data_notebooks/wetland_methane_emissions.ipynb</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -224,18 +219,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#run-this-notebook" id="toc-run-this-notebook" class="nav-link active" data-scroll-target="#run-this-notebook">Run this notebook</a></li>
+  <li><a href="#running-this-notebook" id="toc-running-this-notebook" class="nav-link active" data-scroll-target="#running-this-notebook">Running this notebook</a></li>
   <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
-  <li><a href="#installing-the-required-libraries." id="toc-installing-the-required-libraries." class="nav-link" data-scroll-target="#installing-the-required-libraries.">Installing the required libraries.</a>
+  <li><a href="#installing-the-required-libraries" id="toc-installing-the-required-libraries" class="nav-link" data-scroll-target="#installing-the-required-libraries">Installing the Required Libraries</a>
   <ul class="collapse">
   <li><a href="#querying-the-stac-api" id="toc-querying-the-stac-api" class="nav-link" data-scroll-target="#querying-the-stac-api">Querying the STAC API</a></li>
-  <li><a href="#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api" id="toc-exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api">Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API</a></li>
-  <li><a href="#visualizing-co2-emissions" id="toc-visualizing-co2-emissions" class="nav-link" data-scroll-target="#visualizing-co2-emissions">Visualizing CO2 emissions</a></li>
+  <li><a href="#exploring-changes-in-methane-ch4-levels-using-the-raster-api" id="toc-exploring-changes-in-methane-ch4-levels-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-methane-ch4-levels-using-the-raster-api">Exploring Changes in Methane (CH4) Levels Using the Raster API</a></li>
+  <li><a href="#visualizing-ch4-emissions" id="toc-visualizing-ch4-emissions" class="nav-link" data-scroll-target="#visualizing-ch4-emissions">Visualizing CH4 emissions</a></li>
   </ul></li>
-  <li><a href="#calculating-the-zonal-statistics" id="toc-calculating-the-zonal-statistics" class="nav-link" data-scroll-target="#calculating-the-zonal-statistics">Calculating the zonal statistics</a>
+  <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#visualizing-the-data-as-a-time-series" id="toc-visualizing-the-data-as-a-time-series" class="nav-link" data-scroll-target="#visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
@@ -247,12 +241,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ODIAC Fossil Fuel CO₂ Emissions Version 2022</h1>
+<h1 class="title">Gridded Methane Emissions v2</h1>
 </div>
 
 <div>
   <div class="description">
-    The Open-Data Inventory for Anthropogenic Carbon dioxide (ODIAC) is a high-spatial resolution global emission data product of CO₂ emissions from fossil fuel combustion (Oda and Maksyutov, 2011). ODIAC pioneered the combined use of space-based nighttime light data and individual power plant emission/location profiles to estimate the global spatial extent of fossil fuel CO₂ emissions. With the innovative emission modeling approach, ODIAC achieved the fine picture of global fossil fuel CO₂ emissions at a 1x1km..
+    Annual, monthly, and daily 0.1 degree resolution estimates of anthropogenic methane emissions for the U.S. region for 2015-2018
   </div>
 </div>
 
@@ -266,12 +260,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">June 29, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -279,26 +267,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="run-this-notebook" class="level2">
-<h2 class="anchored" data-anchor-id="run-this-notebook">Run this notebook</h2>
-<p>You can launch this notebook using mybinder, by clicking the button below.</p>
-<p><a href="https://mybinder.org/v2/gh/NASA-IMPACT/GHGC_docs/HEAD?labpath=user_data_notebooks/fossil_fuel_co2_emissions.ipynb"> <img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="A cute binder" width="150"> </a></p>
+<section id="running-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="running-this-notebook">Running this notebook</h2>
+<p>You can launch this notebook using mybinder by clicking the button below.</p>
+<p><a href="https://mybinder.org/v2/gh/US-GHG-Center/ghgc-docs/HEAD?labpath=user_data_notebooks/epa_ch4_data_notebook.ipynb"> <img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="A cute binder" width="150"> </a></p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. Collection processed in this notebook is ODIAC CO2 emissions version 2022.</li>
-<li>Pass the STAC item into raster API <code>/stac/tilejson.json</code> endpoint</li>
-<li>We’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using <code>folium.plugins.DualMap</code></li>
-<li>After the visualization, we’ll perform zonal statistics for a given polygon.</li>
+<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. The collection processed in this notebook is the gridded methane emissions data product.</li>
+<li>Pass the STAC item into the raster API <code>/stac/tilejson.json</code>endpoint.</li>
+<li>Using <code>folium.plugins.DualMap</code>, we will visualize two tiles (side-by-side), allowing us to compare time points.</li>
+<li>After the visualization, we will perform zonal statistics for a given polygon.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
-<p>The Open-Data Inventory for Anthropogenic Carbon dioxide (ODIAC) is a high-spatial resolution global emission data product of CO₂ emissions from fossil fuel combustion (Oda and Maksyutov, 2011). ODIAC pioneered the combined use of space-based nighttime light data and individual power plant emission/location profiles to estimate the global spatial extent of fossil fuel CO₂ emissions. With the innovative emission modeling approach, ODIAC achieved the fine picture of global fossil fuel CO₂ emissions at a 1x1km.</p>
+<p>A team at Harvard University along with EPA and other coauthors developed a gridded inventory of U.S. anthropogenic methane emissions with 0.1° x 0.1° spatial resolution, monthly temporal resolution, and detailed scale-dependent error characterization. The inventory is designed to be consistent with the 2016 U.S. EPA Inventory of U.S. Greenhouse Gas Emissions and Sinks estimates for the year 2012, which presents national totals for different source types. The gridded inventory was developed using a wide range of databases at the state, county, local, and point source level to allocate the spatial and temporal distribution of emissions for individual source types. This data can be used by researchers to better compare the national-level inventory with measurement results that may be at other scales. Users of this gridded inventory are asked to cite the original reference (Maasakkers et al., 2016) in their publications. Error estimates are given in that reference.</p>
 </section>
-<section id="installing-the-required-libraries." class="level1">
-<h1>Installing the required libraries.</h1>
+<section id="installing-the-required-libraries" class="level1">
+<h1>Installing the Required Libraries</h1>
 <p>Please run the next cell to install all the required libraries to run the notebook.</p>
 <p>%pip3 install requests %pip3 install rasterstats %pip3 install folium</p>
 <section id="querying-the-stac-api" class="level2">
@@ -313,9 +301,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://dev.ghg.center/api/stac"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/raster"</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Please use the collection name similar to the one used in STAC collection.</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for ODIAC dataset. </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"epa-ch4-v2-annual"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Please use the collection name similar to the one used in STAC collection.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for gridded methane dataset. </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"epa-ch4-v2-annual"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="80">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the collection from STAC collections using appropriate endpoint.</span></span>
@@ -460,7 +449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'dashboard:time_density': 'year'}</code></pre>
 </div>
 </div>
-<p>Examining the contents of our <code>collection</code> under <code>summaries</code> we see that the data is available from January 2000 to December 2021. By looking at the <code>dashboard:time density</code> we observe that the periodic frequency of these observations is monthly.</p>
+<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2000 to December 2021. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is monthly.</p>
 <div class="cell" data-execution_count="81">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span>).json()[<span class="st">"features"</span>]</span>
@@ -470,7 +459,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell" data-execution_count="82">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="82">
 <pre><code>{'id': 'epa-ch4-v2-annual-2018',
  'bbox': [-129.99999694387628,
@@ -2041,11 +2031,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This makes sense as there are 22 years between 2000 - 2021, with 12 months per year, meaning 264 records in total.</p>
 <p>Below, we are entering the minimum and maximum values to provide our upper and lower bounds in <code>rescale_values</code>.</p>
 </section>
-<section id="exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api" class="level2">
-<h2 class="anchored" data-anchor-id="exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api">Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API</h2>
-<p>We will explore changes in fossil fuel emissions in urban egions. In this notebook, we’ll explore the impacts of these emissions and explore these changes over time. We’ll then visualize the outputs on a map using <code>folium</code>.</p>
+<section id="exploring-changes-in-methane-ch4-levels-using-the-raster-api" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-changes-in-methane-ch4-levels-using-the-raster-api">Exploring Changes in Methane (CH4) Levels Using the Raster API</h2>
+<p>In this notebook, we will explore the impacts of methane emissions and by examining changes over time in urban regions. We will visualize the outputs on a map using <code>folium.</code></p>
 <div class="cell" data-execution_count="83">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"surface-coal"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -13078,7 +13068,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   'stac_extensions': []}}</code></pre>
 </div>
 </div>
-<p>Now we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for December 2001 and again for December 2021, so that we can visualize each event independently.</p>
+<p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for December 2001 and again for December 2021, so that we can visualize each event independently.</p>
 <div class="cell" data-execution_count="86">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"rainbow"</span> <span class="co"># please select the color ramp from matplotlib library.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>december_2001_tile <span class="op">=</span> requests.get(</span>
@@ -13125,35 +13115,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="visualizing-co2-emissions" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-co2-emissions">Visualizing CO2 emissions</h2>
+<section id="visualizing-ch4-emissions" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-ch4-emissions">Visualizing CH4 emissions</h2>
 <div class="cell" data-execution_count="88">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll import folium to map and folium.plugins to allow mapping side-by-side</span></span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will import folium to map and folium.plugins to allow side-by-side mapping</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium.plugins</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CO2 Layer</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># December 2001</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>map_layer_2001 <span class="op">=</span> TileLayer(</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>december_2001_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>map_layer_2001.add_to(map_.m1)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># December 2021</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>map_layer_2021 <span class="op">=</span> TileLayer(</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>december_2021_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>map_layer_2021.add_to(map_.m2)</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co"># visualising the map</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>map_</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CH4 Layer</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre of map [latitude,longitude]</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># December 2001</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>map_layer_2001 <span class="op">=</span> TileLayer(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>december_2001_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>map_layer_2001.add_to(map_.m1)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># December 2021</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>map_layer_2021 <span class="op">=</span> TileLayer(</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>december_2021_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>map_layer_2021.add_to(map_.m2)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co"># visualising the map</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>map_</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="88">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
@@ -13283,10 +13274,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="calculating-the-zonal-statistics" class="level1">
-<h1>Calculating the zonal statistics</h1>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
+<section id="calculating-zonal-statistics" class="level1">
+<h1>Calculating Zonal Statistics</h1>
+<p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas (USA).</p>
 <div class="cell" data-execution_count="89">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Texas, USA</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>texas_aoi <span class="op">=</span> {</span>
@@ -13429,7 +13419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell" data-execution_count="92">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore one item to see what it contains</span></span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the first item</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="92">
 <pre><code>{'id': 'epa-ch4-v2-annual-2018',
@@ -14999,7 +14989,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell" data-execution_count="93">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/cog/statistics"</span>,</span>
@@ -15206,10 +15196,9 @@ Wall time: 1.7 s</code></pre>
 </div>
 </div>
 </div>
-</section>
 <section id="visualizing-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</h2>
-<p>We can now explore the ODIAC fossil fuel emission time series available (January 2000 -December 2021) for the Texas, Dallas area of USA. We can plot the data set using the code below:</p>
+<p>We can now explore the gridded methane emission (Domestic Wastewater Treatment &amp; Discharge (5D)) time series (January 2000 -December 2021) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:</p>
 <div class="cell" data-execution_count="97">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -15227,8 +15216,8 @@ Wall time: 1.7 s</code></pre>
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"CO2 emissions gC/m2/d"</span>)</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"CO2 emission Values for Texas, Dallas (2000-2021)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"CH4 emissions Mg/a/km2"</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"CH4 gridded methane emission from Domestic Wastewater Treatment &amp; Discharge (5D) for Texas, Dallas (2000-2021)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="97">
 <pre><code>Text(0.5, 1.0, 'CO2 emission Values for Texas, Dallas (2000-2021)')</code></pre>
 </div>
@@ -15366,7 +15355,7 @@ Wall time: 1.7 s</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully explored, analysed and visualized STAC collecetion for ODIAC C02 fossisl fuel emission (2022).</p>
+<p>In this notebook we have successfully explored, analyzed, and visualized the STAC collection for gridded methane emissions.</p>
 
 
 </section>

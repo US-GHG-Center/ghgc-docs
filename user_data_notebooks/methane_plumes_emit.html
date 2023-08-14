@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/epa_ch4_data_notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ODIAC Fossil Fuel CO₂ Emissions Version 2022</span></a>
+ <span class="menu-text">Gridded Methane Emissions v2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -194,11 +194,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../user_data_notebooks/wetland_methane_emissions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Wetland Methane Emissions, LPJ-wsl Model</span></a>
-  </div>
-</li>
+ <span class="menu-text">user_data_notebooks/wetland_methane_emissions.ipynb</span>
+  </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -233,7 +230,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
   </ul>
@@ -273,15 +269,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="running-this-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="running-this-notebook">Running this notebook</h2>
 <p>You can launch this notebook using mybinder by clicking the button below.</p>
-<p><a href="https://mybinder.org/v2/gh/NASA-IMPACT/GHGC_docs/HEAD?labpath=user_data_notebooks/wetland_methane_emissions.ipynb"> <img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="A cute binder" width="150"> </a></p>
+<p><a href="https://mybinder.org/v2/gh/US-GHG-Center/ghgc-docs/HEAD?labpath=user_data_notebooks/methane_plumes_emit.ipynb"> <img src="https://mybinder.org/badge_logo.svg" alt="Binder" title="A cute binder" width="150"> </a></p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. The collection processed in this notebook is the EMIT methane emission plumes data product.</li>
-<li>Pass the STAC item into the raster API <code>/stac/tilejson.json</code>endpoint.</li>
-<li>Using <code>folium.Map</code>, we will visualize the plumes.</li>
-<li>After the visualization, we will perform zonal statistics for a given polygon.</li>
+<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. The collection processed in this notebook is the Earth Surface Mineral Dust Source Investigation (EMIT) methane emission plumes data product.</li>
+<li>Pass the STAC item into the raster API <code>/stac/tilejson.json</code> endpoint.</li>
+<li>Using <code>folium.Map</code>, visualize the plumes.</li>
+<li>After the visualization, perform zonal statistics for a given polygon.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
@@ -435,7 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'dashboard:time_density': 'day'}</code></pre>
 </div>
 </div>
-<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from August 2022 to May 2023. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is daily and non-peridic, i.e.&nbsp;we have plumes emissions for multiple places for the same dates.</p>
+<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we note that data is available from August 2022 to May 2023. By looking at the <code>dashboard: time density</code>, we can see that observations are conducted daily and non-periodically (i.e., there are plumes emissions for multiple places on the same dates).</p>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=500"</span>).json()[<span class="st">"features"</span>]</span>
@@ -548,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values for a specific item</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do for only one item so that we can visualize the event.</p>
+<p>Now we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this for only one item so that we can visualize the event.</p>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"magma"</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>methane_plume_tile <span class="op">=</span> requests.get(</span>
@@ -676,9 +672,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calculating-zonal-statistics" class="level1">
 <h1>Calculating Zonal Statistics</h1>
-<p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon around the plume.</p>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
+<p>To perform zonal statistics, first we need to create a polygon. In this use case we will create a polygon around the plume.</p>
 <div class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plume AOI </span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>methane_plume_aoi <span class="op">=</span> {</span>
@@ -1583,7 +1577,6 @@ Wall time: 2min 10s</code></pre>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-</section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>In this notebook we have successfully explored, analyzed, and visualized the STAC collection for EMIT methane emission plumes.</p>
