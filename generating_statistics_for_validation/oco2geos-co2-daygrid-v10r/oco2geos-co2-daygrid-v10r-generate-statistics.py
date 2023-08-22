@@ -11,6 +11,8 @@ import pandas as pd
 import calendar
 import seaborn as sns
 import json
+import re
+from rasterio.vrt import WarpedVRT
 
 from dotenv import load_dotenv
 
@@ -31,89 +33,88 @@ raster_io_session = rasterio.env.Env(
 bucket_name = "ghgc-data-store-dev"
 
 keys = []
-resp = s3_client_veda_smce.list_objects_v2(
-    Bucket=bucket_name, Prefix="NASA_GSFC_ch4_wetlands_monthly/"
-)
+resp = s3_client_veda_smce.list_objects_v2(Bucket=bucket_name, Prefix="geos-oco2/")
 for obj in resp["Contents"]:
     if obj["Key"].endswith(".tif"):
         keys.append(obj["Key"])
 
 # List all TIFF files in the folder
-tif_files = glob("../../data/wetlands-monthly/*.nc", recursive=True)
+tif_files = glob("data/oco2geos-co2-daygrid-v10r/*.nc4", recursive=True)
 # tif_files = glob("data/wetlands-monthly/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
-for key in keys:
-    with raster_io_session:
-        s3_file = s3_client_veda_smce.generate_presigned_url(
-            "get_object", Params={"Bucket": bucket_name, "Key": key}
-        )
-        with rasterio.open(s3_file) as src:
-            for band in src.indexes:
-                idx = pd.MultiIndex.from_product(
-                    [
-                        [s3_file.split("_")[-1]],
-                        [s3_file.split("_")[-1][5]],
-                        [x for x in np.arange(1, src.height + 1)],
-                    ]
-                )
-                # Read the raster data
-                raster_data = src.read(band)
-                raster_data[raster_data == -9999] = np.nan
-                temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+# for key in keys:
+#     with raster_io_session:
+#         s3_file = s3_client_veda_smce.generate_presigned_url(
+#             "get_object", Params={"Bucket": bucket_name, "Key": key}
+#         )
+#         filename_elements = re.split('[_ ? . ]', s3_file)
+#         with rasterio.open(s3_file) as src:
+#             for band in src.indexes:
+#                 idx = pd.MultiIndex.from_product(
+#                     [
+#                         ["_".join(filename_elements[4:9])],
+#                         [filename_elements[9]],
+#                         [x for x in np.arange(1, src.height + 1)],
+#                     ]
+#                 )
+#                 # Read the raster data
+#                 raster_data = src.read(band)
+#                 raster_data[raster_data == -9999] = np.nan
+#                 temp = pd.DataFrame(index=idx, data=raster_data)
+#                 full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
-                # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
+#                 # Calculate summary statistics
+#                 min_value = np.float64(temp.values.min())
+#                 max_value = np.float64(temp.values.max())
+#                 mean_value = np.float64(temp.values.mean())
+#                 std_value = np.float64(temp.values.std())
 
-                summary_dict_cog[
-                    f'{s3_file.split("_")[-1][:4]}_{calendar.month_name[int(s3_file.split("_")[-1][4:6])]}'
-                ] = {
-                    "min_value": min_value,
-                    "max_value": max_value,
-                    "mean_value": mean_value,
-                    "std_value": std_value,
-                }
+#                 summary_dict_cog[
+#                     f'{filename_elements[9][:4]}_{calendar.month_name[int(filename_elements[9][4:6])]}_{filename_elements[9][6:]}'
+#                 ] = {
+#                     "min_value": min_value,
+#                     "max_value": max_value,
+#                     "mean_value": mean_value,
+#                     "std_value": std_value,
+#                 }
 
+COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 # Iterate over each TIFF file
 for tif_file in tif_files:
-    file_name = pathlib.Path(tif_file).name[:-3]
+    file_name = pathlib.Path(tif_file).name[:-4].split("_")
 
     # Open the TIFF file
     with rasterio.open(tif_file) as src:
-        for band in src.indexes:
-            idx = pd.MultiIndex.from_product(
-                [
-                    [tif_file],
-                    [band],
-                    [x for x in np.arange(1, src.height + 1)],
-                ]
-            )
-            # Read the raster data
-            raster_data = src.read(band)
-            raster_data[raster_data == -9999] = np.nan
-            temp = pd.DataFrame(index=idx, data=raster_data)
-            full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
+        idx = pd.MultiIndex.from_product(
+            [
+                [tif_file],
+                [file_name[-2]],
+                [x for x in np.arange(1, src.height + 1)],
+            ]
+        )
+        # Read the raster data
+        raster_data = src.read(band)
+        raster_data[raster_data == -9999] = np.nan
+        temp = pd.DataFrame(index=idx, data=raster_data)
+        full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
 
-            # Calculate summary statistics
-            min_value = np.float64(temp.values.min())
-            max_value = np.float64(temp.values.max())
-            mean_value = np.float64(temp.values.mean())
-            std_value = np.float64(temp.values.std())
+        # Calculate summary statistics
+        min_value = np.float64(temp.values.min())
+        max_value = np.float64(temp.values.max())
+        mean_value = np.float64(temp.values.mean())
+        std_value = np.float64(temp.values.std())
 
-            summary_dict_netcdf[
-                f'{tif_file.split(".")[-2]}_{calendar.month_name[band]}'
-            ] = {
-                "min_value": min_value,
-                "max_value": max_value,
-                "mean_value": mean_value,
-                "std_value": std_value,
+        summary_dict_netcdf[
+            f'{file_name[-2][:4]}_{calendar.month_name[file_name[4:6]]}_{file_name[6:]}'
+        ] = {
+            "min_value": min_value,
+            "max_value": max_value,
+            "mean_value": mean_value,
+            "std_value": std_value,
             }
 
 
