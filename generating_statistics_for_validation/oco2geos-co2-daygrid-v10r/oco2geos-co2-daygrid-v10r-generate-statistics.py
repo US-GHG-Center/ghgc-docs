@@ -87,6 +87,10 @@ COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 for tif_file in tif_files:
     file_name = pathlib.Path(tif_file).name[:-4].split("_")
 
+    xds = xarray.open_dataset(f"{FOLDER_NAME}/{name}", engine="netcdf4")
+    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(
+    "lon"
+)
     # Open the TIFF file
     with rasterio.open(tif_file) as src:
         idx = pd.MultiIndex.from_product(

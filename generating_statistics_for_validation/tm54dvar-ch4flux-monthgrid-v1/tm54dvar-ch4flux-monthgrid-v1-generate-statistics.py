@@ -11,6 +11,7 @@ import pandas as pd
 import calendar
 import seaborn as sns
 import json
+import xarray
 
 from dotenv import load_dotenv
 
@@ -32,73 +33,93 @@ bucket_name = "ghgc-data-store-dev"
 
 keys = []
 resp = s3_client_veda_smce.list_objects_v2(
-    Bucket=bucket_name, Prefix="NASA_GSFC_ch4_wetlands_monthly/"
+    Bucket=bucket_name, Prefix="tm5-ch4-inverse-flux/"
 )
 for obj in resp["Contents"]:
     if obj["Key"].endswith(".tif"):
         keys.append(obj["Key"])
 
 # List all TIFF files in the folder
-tif_files = glob("../../data/wetlands-monthly/*.nc", recursive=True)
+tif_files = glob("data/tm54dvar-ch4flux-monthgrid-v1/*.nc", recursive=True)
 # tif_files = glob("data/wetlands-monthly/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
-for key in keys:
-    with raster_io_session:
-        s3_file = s3_client_veda_smce.generate_presigned_url(
-            "get_object", Params={"Bucket": bucket_name, "Key": key}
-        )
-        with rasterio.open(s3_file) as src:
-            for band in src.indexes:
-                idx = pd.MultiIndex.from_product(
-                    [
-                        [s3_file.split("_")[-1]],
-                        [s3_file.split("_")[-1][5]],
-                        [x for x in np.arange(1, src.height + 1)],
-                    ]
-                )
-                # Read the raster data
-                raster_data = src.read(band)
-                raster_data[raster_data == -9999] = np.nan
-                temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+# for key in keys:
+#     with raster_io_session:
+#         s3_file = s3_client_veda_smce.generate_presigned_url(
+#             "get_object", Params={"Bucket": bucket_name, "Key": key}
+#         )
+#         with rasterio.open(s3_file) as src:
+#             for band in src.indexes:
+#                 idx = pd.MultiIndex.from_product(
+#                     [
+#                         [s3_file.split("_")[-1]],
+#                         [s3_file.split("_")[-1][5]],
+#                         [x for x in np.arange(1, src.height + 1)],
+#                     ]
+#                 )
+#                 # Read the raster data
+#                 raster_data = src.read(band)
+#                 raster_data[raster_data == -9999] = np.nan
+#                 temp = pd.DataFrame(index=idx, data=raster_data)
+#                 full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
-                # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
+#                 # Calculate summary statistics
+#                 min_value = np.float64(temp.values.min())
+#                 max_value = np.float64(temp.values.max())
+#                 mean_value = np.float64(temp.values.mean())
+#                 std_value = np.float64(temp.values.std())
 
-                summary_dict_cog[
-                    f'{s3_file.split("_")[-1][:4]}_{calendar.month_name[int(s3_file.split("_")[-1][4:6])]}'
-                ] = {
-                    "min_value": min_value,
-                    "max_value": max_value,
-                    "mean_value": mean_value,
-                    "std_value": std_value,
-                }
+#                 summary_dict_cog[
+#                     f'{s3_file.split("_")[-1][:4]}_{calendar.month_name[int(s3_file.split("_")[-1][4:6])]}'
+#                 ] = {
+#                     "min_value": min_value,
+#                     "max_value": max_value,
+#                     "mean_value": mean_value,
+#                     "std_value": std_value,
+#                 }
 
 # Iterate over each TIFF file
 for tif_file in tif_files:
     file_name = pathlib.Path(tif_file).name[:-3]
+    xds = xarray.open_dataset(tif_file, engine="netcdf4")
+    xds = xds.rename({"latitude": "lat", "longitude": "lon"})
+    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby("lon")
+    variable = [var for var in xds.data_vars if "global" not in var]
 
-    # Open the TIFF file
-    with rasterio.open(tif_file) as src:
-        for band in src.indexes:
+    for time_increment in range(0, len(xds.months)):
+        for var in variable:
+            data = getattr(xds.isel(months=time_increment), var)
+            data = data.isel(lat=slice(None, None, -1))
             idx = pd.MultiIndex.from_product(
                 [
                     [tif_file],
-                    [band],
-                    [x for x in np.arange(1, src.height + 1)],
+                    [time_increment],
+                    [x for x in data.lat],
                 ]
             )
-            # Read the raster data
-            raster_data = src.read(band)
-            raster_data[raster_data == -9999] = np.nan
-            temp = pd.DataFrame(index=idx, data=raster_data)
+            data = data.values
+            
+            # data.rio.set_spatial_dims("lon", "lat", inplace=True)
+            # data.rio.write_crs("epsg:4326", inplace=True)
+
+    # Open the TIFF file
+    # with rasterio.open(tif_file) as src:
+    #     for band in src.indexes:
+            # idx = pd.MultiIndex.from_product(
+            #     [
+            #         [tif_file],
+            #         [band],
+            #         [x for x in np.arange(1, src.height + 1)],
+            #     ]
+            # )
+    #         # Read the raster data
+    #         raster_data = src.read(band)
+            data[data == -9999] = np.nan
+            temp = pd.DataFrame(index=idx, data=data)
             full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
 
             # Calculate summary statistics
