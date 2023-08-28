@@ -32,58 +32,74 @@ raster_io_session = rasterio.env.Env(
 )
 bucket_name = "ghgc-data-store-dev"
 
-keys = []
-resp = s3_client_veda_smce.list_objects_v2(
-    Bucket=bucket_name, Prefix="tm5-ch4-inverse-flux/"
-)
-for obj in resp["Contents"]:
-    if obj["Key"].endswith(".tif"):
-        keys.append(obj["Key"])
+
+def get_all_s3_keys(bucket):
+    """Get a list of all keys in an S3 bucket."""
+    keys = []
+
+    kwargs = {"Bucket": bucket, "Prefix": "tm5-ch4-inverse-flux/"}
+    while True:
+        resp = s3_client_veda_smce.list_objects_v2(**kwargs)
+        for obj in resp["Contents"]:
+            if obj["Key"].endswith(".tif"):
+                keys.append(obj["Key"])
+
+        try:
+            kwargs["ContinuationToken"] = resp["NextContinuationToken"]
+        except KeyError:
+            break
+
+    return keys
+
+
+keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
 tif_files = glob("../../data/tm54dvar-ch4flux-monthgrid-v1/*.nc", recursive=True)
-# tif_files = glob("data/wetlands-monthly/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
 for key in keys:
-    with raster_io_session:
-        s3_file = s3_client_veda_smce.generate_presigned_url(
-            "get_object", Params={"Bucket": bucket_name, "Key": key}
-        )
-        filename_elements = re.split("[_ ? . ]", s3_file)
-        with rasterio.open(s3_file) as src:
-            for band in src.indexes:
-                idx = pd.MultiIndex.from_product(
-                    [
-                        ["_".join(filename_elements[4:6])],
-                        [filename_elements[6]],
-                        [x for x in np.arange(1, src.height + 1)],
-                    ]
-                )
-                # Read the raster data
-                raster_data = src.read(band)
-                raster_data[raster_data == -9999] = np.nan
-                temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+    try:
+        with raster_io_session:
+            s3_file = s3_client_veda_smce.generate_presigned_url(
+                "get_object", Params={"Bucket": bucket_name, "Key": key}
+            )
+            filename_elements = re.split("[_ ? . ]", s3_file)
+            with rasterio.open(s3_file) as src:
+                for band in src.indexes:
+                    idx = pd.MultiIndex.from_product(
+                        [
+                            ["_".join(filename_elements[4:6])],
+                            [filename_elements[6]],
+                            [x for x in np.arange(1, src.height + 1)],
+                        ]
+                    )
+                    # Read the raster data
+                    raster_data = src.read(band)
+                    raster_data[raster_data == -9999] = np.nan
+                    temp = pd.DataFrame(index=idx, data=raster_data)
+                    full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
-                # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
-                
-                if "surface" not in filename_elements:
-                    summary_dict_cog[
-                        f"{filename_elements[5]}_{filename_elements[6][:4]}_{calendar.month_name[int(filename_elements[6][4:6])]}"
-                    ] = {
-                        "min_value": min_value,
-                        "max_value": max_value,
-                        "mean_value": mean_value,
-                        "std_value": std_value,
-                    }
+                    # Calculate summary statistics
+                    min_value = np.float64(temp.values.min())
+                    max_value = np.float64(temp.values.max())
+                    mean_value = np.float64(temp.values.mean())
+                    std_value = np.float64(temp.values.std())
+
+                    if "surface" not in filename_elements:
+                        summary_dict_cog[
+                            f"{filename_elements[5]}_{filename_elements[6][:4]}_{calendar.month_name[int(filename_elements[6][4:6])]}"
+                        ] = {
+                            "min_value": min_value,
+                            "max_value": max_value,
+                            "mean_value": mean_value,
+                            "std_value": std_value,
+                        }
+    except:
+        print(s3_file)
 
 # Iterate over each TIFF file
 
@@ -110,7 +126,7 @@ for tif_file in tif_files:
                             ]
                         )
                     ],
-                    [file_name[2]],
+                    [f"{file_name[2]}{time_increment+1}"],
                     [x for x in np.arange(1, len(data.lat) + 1)],
                 ]
             )
@@ -148,46 +164,60 @@ with open(
     "monthly_stats.json",
     "w",
 ) as fp:
-    json.dump("\n Stats for raw netCDF files. \n", fp)
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n", fp)
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_cog, fp)
 
 with open("overall_stats.json", "w") as fp:
-    json.dump("\n Stats for raw netCDF files. \n", fp)
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n", fp)
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_cog, fp)
 
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-plt.Figure(figsize=(10, 10))
-sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
+fig, ax = plt.subplots(2, 2, figsize=(15, 15))
+# plt.Figure(figsize=(15, 15))
+temp_df = pd.DataFrame()
+for key_value in full_data_df_netcdf.index.values:
+    if key_value[0].startswith("emis_fossil"):
+        temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
-sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("distribution plot for overall cog data")
+temp_df = pd.DataFrame()
+for key_value in full_data_df_cog.index.values:
+    if key_value[0].startswith("emis_fossil"):
+        temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
+ax[0][1].set_title("overall cog data distribution")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
-    if key_value.startswith("fossile_2009"):
+    if key_value.startswith("fossil_1999"):
         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
 
 sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("distribution plot for fossil variable for 2009 raw data")
+ax[1][0].set_title("plot for fossil variable for 1999 raw data")
 ax[1][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
-    if key_value.startswith("fossil_2009"):
+    if key_value.startswith("fossil_1999"):
         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("distribution plot for fossil variable for 2009 cog data")
+ax[1][1].set_title("plot for fossil variable for 1999 cog data")
 ax[1][1].set_xlabel("Months")
 
 

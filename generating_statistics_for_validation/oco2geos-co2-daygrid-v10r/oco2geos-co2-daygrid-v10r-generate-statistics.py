@@ -33,11 +33,27 @@ raster_io_session = rasterio.env.Env(
 )
 bucket_name = "ghgc-data-store-dev"
 
-keys = []
-resp = s3_client_veda_smce.list_objects_v2(Bucket=bucket_name, Prefix="geos-oco2/")
-for obj in resp["Contents"]:
-    if obj["Key"].endswith(".tif"):
-        keys.append(obj["Key"])
+
+def get_all_s3_keys(bucket):
+    """Get a list of all keys in an S3 bucket."""
+    keys = []
+
+    kwargs = {"Bucket": bucket, "Prefix": "geos-oco2/"}
+    while True:
+        resp = s3_client_veda_smce.list_objects_v2(**kwargs)
+        for obj in resp["Contents"]:
+            if obj["Key"].endswith(".tif"):
+                keys.append(obj["Key"])
+
+        try:
+            kwargs["ContinuationToken"] = resp["NextContinuationToken"]
+        except KeyError:
+            break
+
+    return keys
+
+
+keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
 tif_files = glob("../../data/oco2geos-co2-daygrid-v10r/*.nc4", recursive=True)
@@ -52,35 +68,38 @@ for key in keys:
             "get_object", Params={"Bucket": bucket_name, "Key": key}
         )
         filename_elements = re.split("[_ ? . ]", s3_file)
-        with rasterio.open(s3_file) as src:
-            for band in src.indexes:
-                idx = pd.MultiIndex.from_product(
-                    [
-                        ["_".join(filename_elements[4:9])],
-                        [filename_elements[9]],
-                        [x for x in np.arange(1, src.height + 1)],
-                    ]
-                )
-                # Read the raster data
-                raster_data = src.read(band)
-                raster_data[raster_data == -9999] = np.nan
-                temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+        try:
+            with rasterio.open(s3_file) as src:
+                for band in src.indexes:
+                    idx = pd.MultiIndex.from_product(
+                        [
+                            ["_".join(filename_elements[4:9])],
+                            [filename_elements[9]],
+                            [x for x in np.arange(1, src.height + 1)],
+                        ]
+                    )
+                    # Read the raster data
+                    raster_data = src.read(band)
+                    raster_data[raster_data == -9999] = np.nan
+                    temp = pd.DataFrame(index=idx, data=raster_data)
+                    full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
-                # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
+                    # Calculate summary statistics
+                    min_value = np.float64(temp.values.min())
+                    max_value = np.float64(temp.values.max())
+                    mean_value = np.float64(temp.values.mean())
+                    std_value = np.float64(temp.values.std())
 
-                summary_dict_cog[
-                    f"{filename_elements[5]}_{filename_elements[9][:4]}_{calendar.month_name[int(filename_elements[9][4:6])]}_{filename_elements[9][6:]}"
-                ] = {
-                    "min_value": min_value,
-                    "max_value": max_value,
-                    "mean_value": mean_value,
-                    "std_value": std_value,
-                }
+                    summary_dict_cog[
+                        f"{filename_elements[5]}_{filename_elements[9][:4]}_{calendar.month_name[int(filename_elements[9][4:6])]}_{filename_elements[9][6:]}"
+                    ] = {
+                        "min_value": min_value,
+                        "max_value": max_value,
+                        "mean_value": mean_value,
+                        "std_value": std_value,
+                    }
+        except:
+            print(s3_file)
 
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 # Iterate over each TIFF file
@@ -146,46 +165,61 @@ with open(
     "monthly_stats.json",
     "w",
 ) as fp:
-    json.dump("\n Stats for raw netCDF files. \n", fp)
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n", fp)
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_cog, fp)
 
 with open("overall_stats.json", "w") as fp:
-    json.dump("\n Stats for raw netCDF files. \n", fp)
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n", fp)
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_cog, fp)
 
+
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-plt.Figure(figsize=(10, 10))
-sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
+# plt.Figure(figsize=(10, 10))
+temp_df = pd.DataFrame()
+for key_value in full_data_df_netcdf.index.values:
+    if key_value[0].startswith("GEOS_XCO2PREC_"):
+        temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
-sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
+temp_df = pd.DataFrame()
+for key_value in full_data_df_cog.index.values:
+    if key_value[0].startswith("GEOS_XCO2PREC_"):
+        temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
-    if key_value.startswith("XCO2_2015"):
+    if key_value.startswith("XCO2PREC_2016"):
         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
 
 sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("distribution plot for XCO2 variable for 2015 raw data")
+ax[1][0].set_title("plot for XCO2PREC variable for 2016 raw data")
 ax[1][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
-    if key_value.startswith("XCO2_2015"):
+    if key_value.startswith("XCO2PREC_2016"):
         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("distribution plot for XCO2 variable for 2015 cog data")
+ax[1][1].set_title("plot for XCO2PREC variable for 2016 cog data")
 ax[1][1].set_xlabel("Months")
 
 
