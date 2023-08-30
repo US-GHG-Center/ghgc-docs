@@ -1,3 +1,4 @@
+# This script was used to transform the GEOS OCO2 dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
 import xarray
 import re
 import pandas as pd
@@ -8,13 +9,19 @@ import os
 
 session = boto3.Session()
 s3_client = session.client("s3")
-bucket_name = "ghgc-data-store-dev"
+bucket_name = (
+    "ghgc-data-store-dev"  # S3 bucket where the COGs are stored after transformation
+)
 FOLDER_NAME = "earth_data/geos_oco2"
 s3_folder_name = "geos-oco2"
 
 error_files = []
 count = 0
-files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
+files_processed = pd.DataFrame(
+    columns=["file_name", "COGs_created"]
+)  # A dataframe to keep track of the files that we have transformed into COGs
+
+# Reading the raw netCDF files from local machine
 for name in os.listdir(FOLDER_NAME):
     try:
         xds = xarray.open_dataset(f"{FOLDER_NAME}/{name}", engine="netcdf4")
@@ -61,7 +68,7 @@ for name in os.listdir(FOLDER_NAME):
         error_files.append(name)
         pass
 
-
+# Generate the json file with the metadata that is present in the netCDF files.
 with tempfile.NamedTemporaryFile(mode="w+") as fp:
     json.dump(xds.attrs, fp)
     json.dump({"data_dimensions": dict(xds.dims)}, fp)
@@ -73,6 +80,8 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
         Bucket=bucket_name,
         Key=f"{s3_folder_name}/metadata.json",
     )
+
+# creating the csv file with the names of files transformed.
 files_processed.to_csv(
     f"s3://{bucket_name}/{s3_folder_name}/files_converted.csv",
 )

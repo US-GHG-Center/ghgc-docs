@@ -1,3 +1,5 @@
+# This script was used to transform the Ecco Darwin dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re
@@ -12,12 +14,16 @@ from dateutil.relativedelta import relativedelta
 session = boto3.session.Session()
 s3_client = session.client("s3")
 
-bucket_name = "ghgc-data-store-dev"
+bucket_name = (
+    "ghgc-data-store-dev"  # S3 bucket where the COGs are stored after transformation
+)
 FOLDER_NAME = "ecco-darwin"
 s3_fol_name = "ecco_darwin"
 
-error_files = []
-files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
+# Reading the raw netCDF files from local machine
+files_processed = pd.DataFrame(
+    columns=["file_name", "COGs_created"]
+)  # A dataframe to keep track of the files that we have transformed into COGs
 for name in os.listdir(FOLDER_NAME):
     xds = xarray.open_dataset(
         f"{FOLDER_NAME}/{name}",
@@ -37,9 +43,6 @@ for name in os.listdir(FOLDER_NAME):
         for var in variable[2:]:
             filename = name.split("/ ")[-1]
             filename_elements = re.split("[_ .]", filename)
-
-            # data = getattr(xds.isel(time=time_increment), var)
-            # data = xds[var].sel(time=time_increment)
             data = xds[var]
 
             data = data.reindex(latitude=list(reversed(data.latitude)))
@@ -73,6 +76,7 @@ for name in os.listdir(FOLDER_NAME):
 
             print(f"Generated and saved COG: {cog_filename}")
 
+# Generate the json file with the metadata that is present in the netCDF files.
 with tempfile.NamedTemporaryFile(mode="w+") as fp:
     json.dump(xds.attrs, fp)
     json.dump({"data_dimensions": dict(xds.dims)}, fp)
@@ -84,6 +88,8 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
         Bucket=bucket_name,
         Key="s3_fol_name/metadata.json",
     )
+
+# A csv file to store the names of all the files converted.
 files_processed.to_csv(
     f"s3://{bucket_name}/{s3_fol_name}/files_converted.csv",
 )

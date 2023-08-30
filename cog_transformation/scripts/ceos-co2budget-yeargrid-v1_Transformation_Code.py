@@ -12,12 +12,13 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 session = boto3.session.Session()
 s3_client = session.client("s3")
-bucket_name = "ghgc-data-store-dev"
-year_ = datetime(2015, 1, 1)
+bucket_name = "ghgc-data-store-dev" # S3 bucket where the COGs are to be stored
+year_ = datetime(2015, 1, 1)    # Initialize the starting date time of the dataset.
 
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 
-files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
+# Reading the raw netCDF files from local machine
+files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])   # A dataframe to keep track of the files that are converted into COGs
 for name in os.listdir("new_data"):
     ds = xarray.open_dataset(
         f"new_data/{name}",
@@ -76,6 +77,7 @@ for name in os.listdir("new_data"):
 
             print(f"Generated and saved COG: {cog_filename}")
 
+# creating the csv file with the names of files transformed.
 files_processed.to_csv(
     f"s3://{bucket_name}/ceos_co2_flux/files_converted.csv",
 )
