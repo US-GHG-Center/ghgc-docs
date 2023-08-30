@@ -56,7 +56,7 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("data/oco2geos-co2-daygrid-v10r/*.nc4", recursive=True)
+tif_files = glob("../../data/oco2geos-co2-daygrid-v10r/*.nc4", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
