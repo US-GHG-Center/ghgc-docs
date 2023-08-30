@@ -1,4 +1,4 @@
-# This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas annual dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+# This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas monthly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
 
 import os
 import xarray
@@ -12,11 +12,17 @@ from dateutil.relativedelta import relativedelta
 
 session = boto3.session.Session()
 s3_client = session.client("s3")
-bucket_name = "ghgc-data-store-dev"
+bucket_name = (
+    "ghgc-data-store-dev"  # S3 bucket where the COGs are stored after transformation
+)
 FOLDER_NAME = "epa_emissions/monthly_scale"
 s3_folder_name = "epa-emissions-monthly-scale-factors"
 
-files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
+files_processed = pd.DataFrame(
+    columns=["file_name", "COGs_created"]
+)  # A dataframe to keep track of the files that we have transformed into COGs
+
+# Reading the raw netCDF files from local machine
 for name in os.listdir(FOLDER_NAME):
     xds = xarray.open_dataset(f"{FOLDER_NAME}/{name}", engine="netcdf4")
     xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby("lon")
@@ -61,6 +67,7 @@ for name in os.listdir(FOLDER_NAME):
 
             print(f"Generated and saved COG: {cog_filename}")
 
+# Generate the json file with the metadata that is present in the netCDF files.
 with tempfile.NamedTemporaryFile(mode="w+") as fp:
     json.dump(xds.attrs, fp)
     json.dump({"data_dimensions": dict(xds.dims)}, fp)
@@ -72,6 +79,8 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
         Bucket=bucket_name,
         Key=f"{s3_folder_name}/metadata.json",
     )
+
+# creating the csv file with the names of files transformed.
 files_processed.to_csv(
     f"s3://{bucket_name}/{s3_folder_name}/files_converted.csv",
 )

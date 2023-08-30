@@ -1,4 +1,4 @@
-# This script was used to transform the CEOS CH4 budget yearly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+# This script was used to transform the GOSAT-based Top-down Methane dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
 
 import os
 import xarray
@@ -14,16 +14,19 @@ from dateutil.relativedelta import relativedelta
 
 session = boto3.session.Session()
 s3_client = session.client("s3")
-bucket_name = "ghgc-data-store-dev"  # S3 bucket where the COGs are to be stored
-year_ = datetime(2019, 1, 1)  # Initialize the starting date time of the dataset.
+bucket_name = (
+    "ghgc-data-store-dev"  # S3 bucket where the COGs are stored after transformation
+)
+year_ = datetime(2019, 1, 1)
 folder_name = "new_data/CH4-inverse-flux"
 
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 
-# Reading the raw netCDF files from local machine
 files_processed = pd.DataFrame(
     columns=["file_name", "COGs_created"]
-)  # A dataframe to keep track of the files that are converted into COGs
+)  # A dataframe to keep track of the files that we have transformed into COGs
+
+# Reading the raw netCDF files from local machine
 for name in os.listdir(folder_name):
     ds = xarray.open_dataset(
         f"{folder_name}/{name}",
@@ -70,8 +73,7 @@ for name in os.listdir(folder_name):
 
         print(f"Generated and saved COG: {cog_filename}")
 
-# creating the json file with metadata given in the netCDF file
-
+# Generate the json file with the metadata that is present in the netCDF files.
 with tempfile.NamedTemporaryFile(mode="w+") as fp:
     json.dump(ds.attrs, fp)
     json.dump({"data_dimensions": dict(ds.dims)}, fp)
@@ -83,6 +85,7 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
         Bucket=bucket_name,
         Key="ch4_inverse_flux/metadata.json",
     )
+
 # creating the csv file with the names of files transformed.
 files_processed.to_csv(
     f"s3://{bucket_name}/ch4_inverse_flux/files_converted.csv",

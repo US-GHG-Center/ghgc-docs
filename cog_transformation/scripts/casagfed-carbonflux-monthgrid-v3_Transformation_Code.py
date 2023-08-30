@@ -1,3 +1,5 @@
+# This script was used to transform the CASA GFED monthly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.
+
 import os
 import xarray
 import re
@@ -8,18 +10,22 @@ import boto3
 
 session = boto3.session.Session()
 s3_client = session.client("s3")
-bucket_name = "ghgc-data-store-dev"
+bucket_name = "ghgc-data-store-dev"  # S3 bucket where the COGs are stored
 date_fmt = "%Y%m"
 
-files_processed = pd.DataFrame(columns=["file_name", "COGs_created"])
+files_processed = pd.DataFrame(
+    columns=["file_name", "COGs_created"]
+)  # a dataframe to keep track of the files converted
+
+# Reading the raw netCDF files from local machine
 for name in os.listdir("geoscarb"):
     xds = xarray.open_dataset(
         f"geoscarb/{name}",
         engine="netcdf4",
     )
-    xds = xds.assign_coords(
-        longitude=(((xds.longitude + 180) % 360) - 180)
-    ).sortby("longitude")
+    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby(
+        "longitude"
+    )
     variable = [var for var in xds.data_vars]
 
     for time_increment in range(0, len(xds.time)):
@@ -58,6 +64,7 @@ for name in os.listdir("geoscarb"):
 
             print(f"Generated and saved COG: {cog_filename}")
 
+# creating the json file with metadata gievn in the netCDF file
 with tempfile.NamedTemporaryFile(mode="w+") as fp:
     json.dump(xds.attrs, fp)
     json.dump({"data_dimensions": dict(xds.dims)}, fp)
@@ -69,6 +76,7 @@ with tempfile.NamedTemporaryFile(mode="w+") as fp:
         Bucket=bucket_name,
         Key="GEOS-Carbs/metadata.json",
     )
+# CSV file with the names of netCDF files that have been transformed into the COG
 files_processed.to_csv(
     f"s3://{bucket_name}/GEOS-Carbs/files_converted.csv",
 )

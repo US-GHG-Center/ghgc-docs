@@ -11,7 +11,7 @@ s3_client_ghgc = session_ghgc.client("s3")
 session_veda_smce = boto3.session.Session()
 s3_client_veda_smce = session_veda_smce.client("s3")
 
-
+# Since the plume emissions were already COGs, we just had to transform their naming convention to be stored in the STAC collection.
 SOURCE_BUCKET_NAME = "ghgc-data-staging-uah"
 TARGET_BUCKET_NAME = "ghgc-data-store-dev"
 
