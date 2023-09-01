@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Vishal Gaur">
+<meta name="dcterms.date" content="2023-08-31">
+<meta name="description" content="Documentation of data transformation">
 
-<title>U.S. Greenhouse Gas Center Documentation – casagfed-carbonflux-monthgrid-v3_data_flow</title>
+<title>U.S. Greenhouse Gas Center Documentation - EMIT Methane Plume</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +23,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,7 +66,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../processing_and_verification_reports/casagfed-carbonflux-monthgrid-v3_Processing and Verification Report.html" rel="prev">
+<link href="../cog_transformation/epa-ch4emission-grid-v2.html" rel="next">
+<link href="../cog_transformation/eccodarwin-co2flux-monthgrid-v5.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html">Data Workflow</a></li><li class="breadcrumb-item"><a href="../data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html">CASA-GFED3 Land Carbon Flux - Data Workflow</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../cog_transformation/casagfed-carbonflux-monthgrid-v3.html">Data Transformation Documentation</a></li><li class="breadcrumb-item"><a href="../cog_transformation/emit-ch4plume-v1.html">EMIT Methane Plume</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -188,13 +226,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Data Transformation Documentation</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../cog_transformation/casagfed-carbonflux-monthgrid-v3.html" class="sidebar-item-text sidebar-link">
@@ -221,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../cog_transformation/emit-ch4plume-v1.html" class="sidebar-item-text sidebar-link">
+  <a href="../cog_transformation/emit-ch4plume-v1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">EMIT Methane Plume</span></a>
   </div>
 </li>
@@ -324,16 +362,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
  <span class="menu-text">Data Workflow</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html" class="sidebar-item-text sidebar-link active">
+  <a href="../data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CASA-GFED3 Land Carbon Flux - Data Workflow</span></a>
   </div>
 </li>
@@ -345,31 +383,92 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#casa-gfed3-land-carbon-flux---data-workflow" id="toc-casa-gfed3-land-carbon-flux---data-workflow" class="nav-link active" data-scroll-target="#casa-gfed3-land-carbon-flux---data-workflow">CASA-GFED3 Land Carbon Flux - Data Workflow</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/us-ghg-center/ghgc-docs/edit/main/data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">EMIT Methane Plume</h1>
+</div>
 
-
-<section id="casa-gfed3-land-carbon-flux---data-workflow" class="level1">
-<h1>CASA-GFED3 Land Carbon Flux - Data Workflow</h1>
-<p>This figure describes….</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./media/casagfed-carbonflux-monthgrid-v3_Data_Flow.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Caption</figcaption>
-</figure>
+<div>
+  <div class="description">
+    Documentation of data transformation
+  </div>
 </div>
 
 
-</section>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vishal Gaur </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 31, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This script was used to read the methane plume dataset provided in Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>session_ghgc <span class="op">=</span> boto3.session.Session(profile_name<span class="op">=</span><span class="st">"ghg_user"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s3_client_ghgc <span class="op">=</span> session_ghgc.client(<span class="st">"s3"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>session_veda_smce <span class="op">=</span> boto3.session.Session()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>s3_client_veda_smce <span class="op">=</span> session_veda_smce.client(<span class="st">"s3"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Since the plume emissions were already COGs, we just had to transform their naming convention to be stored in the STAC collection.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>SOURCE_BUCKET_NAME <span class="op">=</span> <span class="st">"ghgc-data-staging-uah"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>TARGET_BUCKET_NAME <span class="op">=</span> <span class="st">"ghgc-data-store-dev"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> []</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>resp <span class="op">=</span> s3_client_ghgc.list_objects_v2(Bucket<span class="op">=</span>SOURCE_BUCKET_NAME)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"l3"</span> <span class="kw">in</span> obj[<span class="st">"Key"</span>]:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        keys.append(obj[<span class="st">"Key"</span>])</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key <span class="kw">in</span> keys:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    s3_obj <span class="op">=</span> s3_client_ghgc.get_object(Bucket<span class="op">=</span>SOURCE_BUCKET_NAME, Key<span class="op">=</span>key)[</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Body"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    filename <span class="op">=</span> key.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    filename_elements <span class="op">=</span> re.split(<span class="st">"[_ .]"</span>, filename)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    date <span class="op">=</span> re.search(<span class="st">"t\d\d\d\d\d\d\d\dt"</span>, key).group(<span class="dv">0</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    filename_elements.insert(<span class="op">-</span><span class="dv">1</span>, date[<span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    filename_elements.pop()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> <span class="st">"_"</span>.join(filename_elements)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # add extension</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">.tif"</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    s3_client_veda_smce.upload_fileobj(</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        Fileobj<span class="op">=</span>s3_obj,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        Bucket<span class="op">=</span>TARGET_BUCKET_NAME,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        Key<span class="op">=</span><span class="ss">f"plum_data/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -722,11 +821,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../processing_and_verification_reports/casagfed-carbonflux-monthgrid-v3_Processing and Verification Report.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">CASA-GFED3 Land Carbon Flux - Processing and Verification Report</span>
+      <a href="../cog_transformation/eccodarwin-co2flux-monthgrid-v5.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">ECCO Darwin</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../cog_transformation/epa-ch4emission-grid-v2.html" class="pagination-link">
+        <span class="nav-page-text">EPA Gridded U.S. Anthropogenic Methane Emissions</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -735,7 +837,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">© CC-By U.S. GHGC, 2022-2023</div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/cog_transformation/emit-ch4plume-v1.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
     <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
