@@ -1,0 +1,1003 @@
+[
+  {
+    "objectID": "cog_transformation/oco2geos-co2-daygrid-v10r.html",
+    "href": "cog_transformation/oco2geos-co2-daygrid-v10r.html",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "",
+    "text": "This script was used to transform the GEOS OCO2 dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nimport os\n\n\nsession = boto3.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"earth_data/geos_oco2\"\ns3_folder_name = \"geos-oco2\"\n\nerror_files = []\ncount = 0\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(FOLDER_NAME):\n    try:\n        xds = xarray.open_dataset(f\"{FOLDER_NAME}/{name}\", engine=\"netcdf4\")\n        xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(\"lon\")\n        variable = [var for var in xds.data_vars]\n        filename = name.split(\"/ \")[-1]\n        filename_elements = re.split(\"[_ .]\", filename)\n\n        for time_increment in range(0, len(xds.time)):\n            for var in variable:\n                filename = name.split(\"/ \")[-1]\n                filename_elements = re.split(\"[_ .]\", filename)\n                data = getattr(xds.isel(time=time_increment), var)\n                data = data.isel(lat=slice(None, None, -1))\n                data.rio.set_spatial_dims(\"lon\", \"lat\", inplace=True)\n                data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n                # # insert date of generated COG into filename\n                filename_elements[-1] = filename_elements[-3]\n                filename_elements.insert(2, var)\n                filename_elements.pop(-3)\n                cog_filename = \"_\".join(filename_elements)\n                # # add extension\n                cog_filename = f\"{cog_filename}.tif\"\n\n                with tempfile.NamedTemporaryFile() as temp_file:\n                    data.rio.to_raster(\n                        temp_file.name,\n                        driver=\"COG\",\n                    )\n                    s3_client.upload_file(\n                        Filename=temp_file.name,\n                        Bucket=bucket_name,\n                        Key=f\"{s3_folder_name}/{cog_filename}\",\n                    )\n\n                files_processed = files_processed._append(\n                    {\"file_name\": name, \"COGs_created\": cog_filename},\n                    ignore_index=True,\n                )\n        count += 1\n        print(f\"Generated and saved COG: {cog_filename}\")\n    except OSError:\n        error_files.append(name)\n        pass\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{s3_folder_name}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{s3_folder_name}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/odiac-ffco2-monthgrid-v2022.html",
+    "href": "cog_transformation/odiac-ffco2-monthgrid-v2022.html",
+    "title": "ODIAC Fossil Fuel CO2 Emissions Version 2022",
+    "section": "",
+    "text": "This script was used to transform the ODIAC Fossil Fuel CO2 Emissions Version 2022 dataset from GeoTIFF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\n\nimport tempfile\nimport boto3\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = \"ghgc-data-store-dev\" # S3 bucket where the COGs are stored after transformation\n\nfold_names = os.listdir(\"ODIAC\")\n\nfiles_processed = pd.DataFrame(columns=[\"file_name\", \"COGs_created\"])   # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor fol_ in fold_names:\n    for name in os.listdir(f\"ODIAC/{fol_}\"):\n        xds = xarray.open_dataarray(f\"ODIAC/{fol_}/{name}\")\n\n        filename = name.split(\"/ \")[-1]\n        filename_elements = re.split(\"[_ .]\", filename)\n        # # insert date of generated COG into filename\n        filename_elements.pop()\n        filename_elements[-1] = fol_ + filename_elements[-1][-2:]\n\n        xds.rio.set_spatial_dims(\"x\", \"y\", inplace=True)\n        xds.rio.write_nodata(-9999, inplace=True)\n        xds.rio.write_crs(\"epsg:4326\", inplace=True)\n\n        cog_filename = \"_\".join(filename_elements)\n        # # add extension\n        cog_filename = f\"{cog_filename}.tif\"\n\n        with tempfile.NamedTemporaryFile() as temp_file:\n            xds.rio.to_raster(\n                temp_file.name,\n                driver=\"COG\",\n            )\n            s3_client.upload_file(\n                Filename=temp_file.name,\n                Bucket=bucket_name,\n                Key=f\"ODIAC_geotiffs_COGs/{cog_filename}\",\n            )\n\n        files_processed = files_processed._append(\n            {\"file_name\": name, \"COGs_created\": cog_filename},\n            ignore_index=True,\n        )\n\n        print(f\"Generated and saved COG: {cog_filename}\")\n\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/ODIAC_COGs/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/epa-ch4emission-grid-v2express_layers_update.html",
+    "href": "cog_transformation/epa-ch4emission-grid-v2express_layers_update.html",
+    "title": "EPA Gridded U.S. Anthropogenic Methane Emissions - Update 1",
+    "section": "",
+    "text": "This script was used to add concatenated layers and transform EPA the Gridded U.S. Anthropogenic Methane Emissions dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nfrom datetime import datetime\nimport numpy as np\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"epa_emissions_express_extension\"\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(FOLDER_NAME):\n    xds = xarray.open_dataset(f\"{FOLDER_NAME}/{name}\", engine=\"netcdf4\")\n    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    variable = [var for var in xds.data_vars]\n    new_variables = {\n        \"all-variables\": variable[:-1],\n        \"agriculture\": variable[17:21],\n        \"natural-gas-systems\": variable[10:15] + [variable[26]],\n        \"petroleum-systems\": variable[5:9],\n        \"waste\": variable[21:26],\n        \"coal-mines\": variable[2:5],\n        \"other\": variable[:2] + [variable[9]] + variable[15:17],\n    }\n    filename = name.split(\"/ \")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n    start_time = datetime(int(filename_elements[-2]), 1, 1)\n\n    for time_increment in range(0, len(xds.time)):\n        for key, value in new_variables.items():\n            data = np.zerosmpty(dtype=np.float32, shape=(len(xds.lat), len(xds.lon)))\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            for var in value:\n                data = data + getattr(xds.isel(time=time_increment), var)\n            data = data / pow(10, 6)\n            data = data.isel(lat=slice(None, None, -1))\n            data.rio.set_spatial_dims(\"lon\", \"lat\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = start_time.strftime(\"%Y\")\n            filename_elements.insert(2, key)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{FOLDER_NAME}/{cog_filename}\",\n                )\n\n                files_processed = files_processed._append(\n                    {\"file_name\": name, \"COGs_created\": cog_filename},\n                    ignore_index=True,\n                )\n\n                print(f\"Generated and saved COG: {cog_filename}\")\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/tm54dvar-ch4flux-monthgrid-v1.html",
+    "href": "cog_transformation/tm54dvar-ch4flux-monthgrid-v1.html",
+    "title": "TM5 inverse flux dataset",
+    "section": "",
+    "text": "This script was used to transform the TM5 inverse flux dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nfrom datetime import datetime\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"tm5-ch4-inverse-flux\"\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(FOLDER_NAME):\n    xds = xarray.open_dataset(f\"{FOLDER_NAME}/{name}\", engine=\"netcdf4\")\n    xds = xds.rename({\"latitude\": \"lat\", \"longitude\": \"lon\"})\n    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    variable = [var for var in xds.data_vars if \"global\" not in var]\n\n    for time_increment in range(0, len(xds.months)):\n        filename = name.split(\"/ \")[-1]\n        filename_elements = re.split(\"[_ .]\", filename)\n        start_time = datetime(int(filename_elements[-2]), time_increment + 1, 1)\n        for var in variable:\n            data = getattr(xds.isel(months=time_increment), var)\n            data = data.isel(lat=slice(None, None, -1))\n            data.rio.set_spatial_dims(\"lon\", \"lat\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = start_time.strftime(\"%Y%m\")\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{FOLDER_NAME}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{FOLDER_NAME}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{FOLDER_NAME}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/sedac-popdensity-yeargrid5yr-v4.11.html",
+    "href": "cog_transformation/sedac-popdensity-yeargrid5yr-v4.11.html",
+    "title": "SEDAC population density",
+    "section": "",
+    "text": "This script was used to transform SEDAC population density dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\n\nimport tempfile\nimport boto3\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\n\nfold_names = os.listdir(\"gpw\")\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor fol_ in fold_names:\n    for name in os.listdir(f\"gpw/{fol_}\"):\n        if name.endswith(\".tif\"):\n            xds = xarray.open_dataarray(f\"gpw/{fol_}/{name}\")\n\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements.append(filename_elements[-3])\n\n            xds.rio.set_spatial_dims(\"x\", \"y\", inplace=True)\n            xds.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                xds.rio.to_raster(temp_file.name, driver=\"COG\")\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"gridded_population_cog/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/gridded_population_cog/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/oco2-based-co2budget-yeargrid-v1.html",
+    "href": "cog_transformation/oco2-based-co2budget-yeargrid-v1.html",
+    "title": "CEOS National Top-Down CO₂ Budgets",
+    "section": "",
+    "text": "This script was used to transform the CEOS National Top-Down CO₂ Budgets dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nimport rasterio\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = \"ghgc-data-store-dev\" # S3 bucket where the COGs are to be stored\nyear_ = datetime(2015, 1, 1)    # Initialize the starting date time of the dataset.\n\nCOG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\n# Reading the raw netCDF files from local machine\nfiles_processed = pd.DataFrame(columns=[\"file_name\", \"COGs_created\"])   # A dataframe to keep track of the files that are converted into COGs\nfor name in os.listdir(\"new_data\"):\n    ds = xarray.open_dataset(\n        f\"new_data/{name}\",\n        engine=\"netcdf4\",\n    )\n    ds = ds.rename({\"latitude\": \"lat\", \"longitude\": \"lon\"})\n    # assign coords from dimensions\n    ds = ds.assign_coords(lon=(((ds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    ds = ds.assign_coords(lat=list(ds.lat))\n\n    variable = [var for var in ds.data_vars]\n\n    for time_increment in range(0, len(ds.year)):\n        for var in variable[2:]:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            try:\n                data = ds[var].sel(year=time_increment)\n                date = year_ + relativedelta(years=+time_increment)\n                filename_elements[-1] = date.strftime(\"%Y\")\n                # # insert date of generated COG into filename\n                filename_elements.insert(2, var)\n                cog_filename = \"_\".join(filename_elements)\n                # # add extension\n                cog_filename = f\"{cog_filename}.tif\"\n            except KeyError:\n                data = ds[var]\n                date = year_ + relativedelta(years=+(len(ds.year) - 1))\n                filename_elements.pop()\n                filename_elements.append(year_.strftime(\"%Y\"))\n                filename_elements.append(date.strftime(\"%Y\"))\n                filename_elements.insert(2, var)\n                cog_filename = \"_\".join(filename_elements)\n                # # add extension\n                cog_filename = f\"{cog_filename}.tif\"\n\n            data = data.reindex(lat=list(reversed(data.lat)))\n\n            data.rio.set_spatial_dims(\"lon\", \"lat\")\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            # generate COG\n            COG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(temp_file.name, **COG_PROFILE)\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"ceos_co2_flux/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/ceos_co2_flux/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/lpjwsl-wetlandch4-daygrid-v1.html",
+    "href": "cog_transformation/lpjwsl-wetlandch4-daygrid-v1.html",
+    "title": "LPJ-wsl Model Wetland Methane Daily Emissions",
+    "section": "",
+    "text": "This script was used to transform the Wetland Methane daily Emissions, LPJ-wsl Model dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nfrom datetime import datetime, timedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"NASA_GSFC_ch4_wetlands_daily\"\ndirectory = \"ch4_wetlands_daily\"\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(directory):\n    xds = xarray.open_dataset(\n        f\"{directory}/{name}\", engine=\"netcdf4\", decode_times=False\n    )\n    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby(\n        \"longitude\"\n    )\n    variable = [var for var in xds.data_vars]\n    filename = name.split(\"/ \")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n    start_time = datetime(int(filename_elements[-2]), 1, 1)\n\n    for time_increment in range(0, len(xds.time)):\n        for var in variable:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = getattr(xds.isel(time=time_increment), var)\n            data = data.isel(latitude=slice(None, None, -1))\n            data = data * 1000\n            data.rio.set_spatial_dims(\"longitude\", \"latitude\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n            date = start_time + timedelta(hours=data.time.item(0))\n\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = date.strftime(\"%Y%m%d\")\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{FOLDER_NAME}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{FOLDER_NAME}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{FOLDER_NAME}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/gosat-based-ch4budget-yeargrid-v1.html",
+    "href": "cog_transformation/gosat-based-ch4budget-yeargrid-v1.html",
+    "title": "GOSAT-based Top-down Methane",
+    "section": "",
+    "text": "This script was used to transform the GOSAT-based Top-down Methane dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nimport rasterio\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nyear_ = datetime(2019, 1, 1)\nfolder_name = \"new_data/CH4-inverse-flux\"\n\nCOG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(folder_name):\n    ds = xarray.open_dataset(\n        f\"{folder_name}/{name}\",\n        engine=\"netcdf4\",\n    )\n\n    ds = ds.rename({\"dimy\": \"lat\", \"dimx\": \"lon\"})\n    # assign coords from dimensions\n    ds = ds.assign_coords(lon=(((ds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    ds = ds.assign_coords(lat=((ds.lat / 180) * 180) - 90).sortby(\"lat\")\n\n    variable = [var for var in ds.data_vars]\n\n    for var in variable[2:]:\n        filename = name.split(\"/ \")[-1]\n        filename_elements = re.split(\"[_ .]\", filename)\n        data = ds[var]\n        filename_elements.pop()\n        filename_elements.insert(2, var)\n        cog_filename = \"_\".join(filename_elements)\n        # # add extension\n        cog_filename = f\"{cog_filename}.tif\"\n\n        data = data.reindex(lat=list(reversed(data.lat)))\n\n        data.rio.set_spatial_dims(\"lon\", \"lat\")\n        data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n        # generate COG\n        COG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\n        with tempfile.NamedTemporaryFile() as temp_file:\n            data.rio.to_raster(temp_file.name, **COG_PROFILE)\n            s3_client.upload_file(\n                Filename=temp_file.name,\n                Bucket=bucket_name,\n                Key=f\"ch4_inverse_flux/{cog_filename}\",\n            )\n\n        files_processed = files_processed._append(\n            {\"file_name\": name, \"COGs_created\": cog_filename},\n            ignore_index=True,\n        )\n\n        print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(ds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(ds.dims)}, fp)\n    json.dump({\"data_variables\": list(ds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=\"ch4_inverse_flux/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/ch4_inverse_flux/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#running-this-notebook",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#approach",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#approach",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Land-Atmoshpere Carbon Flux data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, visualize two tiles (side-by-side), allowing time point comparison.\nAfter the visualization, perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#about-the-data",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "About the Data",
+    "text": "About the Data\nThe NASA Carbon Monitoring System (CMS) is designed to make significant contributions in characterizing, quantifying, understanding, and predicting the evolution of global carbon sources and sinks through improved monitoring of carbon stocks and fluxes. The System will use the full range of NASA satellite observations and modeling/analysis capabilities to establish the accuracy, quantitative uncertainties, and utility of products for supporting national and international policy, regulatory, and management activities. CMS will maintain a global emphasis while providing finer scale regional information, utilizing space-based and surface-based data and will rapidly initiate generation and distribution of products both for user evaluation and to inform near-term policy development and planning."
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#querying-the-stac-api",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for CASA GFED Land-Atmosphere Carbon Flux monthly emissions. \ncollection_name = \"casagfed-carbonflux-monthgrid-v3\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 2000 to December 2021. By looking at the dashboard:time density, we observe that the periodic frequency of these observations is monthly.\n\n# Check the total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=600\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#exploring-changes-in-carbon-flux-levels-using-the-raster-api",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#exploring-changes-in-carbon-flux-levels-using-the-raster-api",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Exploring Changes in Carbon Flux Levels Using the Raster API",
+    "text": "Exploring Changes in Carbon Flux Levels Using the Raster API\nWe will explore changes in land atmosphere Carbon flux Heterotrophic Respiration. In this notebook, we’ll explore the impacts of these emissions and explore these changes over time. We’ll then visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"][:7]: item for item in items} \n# rh = Heterotrophic Respiration\nasset_name = \"rh\"\n\n\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for December 2003 and again for December 2017, so that we can visualize each event independently.\n\ncolor_map = \"magma\" # please select the color ramp from matplotlib library.\ndecember_2003_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2003-12']['collection']}&item={items['2003-12']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\ndecember_2003_tile\n\n\ndecember_2017_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2017-12']['collection']}&item={items['2017-12']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\ndecember_2017_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#visualizing-land-atmosphere-carbon-flux-heterotrophic-respiration",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#visualizing-land-atmosphere-carbon-flux-heterotrophic-respiration",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Visualizing Land-Atmosphere Carbon Flux (Heterotrophic Respiration)",
+    "text": "Visualizing Land-Atmosphere Carbon Flux (Heterotrophic Respiration)\n\n# We will import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO2 Layer\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# December 2003\nmap_layer_2003 = TileLayer(\n    tiles=december_2003_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2003.add_to(map_.m1)\n\n# December 2017\nmap_layer_2017 = TileLayer(\n    tiles=december_2017_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2017.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the Heterotrophic Respiration time series (January 2017 -December 2017) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Max monthly Carbon emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"kg/m2/month\")\nplt.title(\"Heterotrophic Respiration Values for Texas, Dallas (2003-2017)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        -22.421460,\n        14.268801,\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.8\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#summary",
+    "href": "user_data_notebooks/casagfed-carbonflux-monthgrid-v3_User_Notebook.html#summary",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for CASA GFED Land-Atmosphere Carbon Flux."
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#running-this-notebook",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#approach",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#approach",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Wetland Methane Emissions, LPJ-wsl Model data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, visualize two tiles (side-by-side), allowing time point comparison.\nAfter the visualization, perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#about-the-data",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "About the Data",
+    "text": "About the Data\nMethane (CH₄) emissions from wetlands are estimated to be the largest natural source of methane in the global CH₄ budget, contributing to roughly one third of the total of natural and anthropogenic emissions. Wetland CH₄ is produced by microbes breaking down organic matter in the oxygen deprived environment of inundated soils. Due to limited data availability, the details of the role of wetland CH₄ emissions has thus far been underrepresented. Using the Wald Schnee und Landschaft version (LPJ-wsl) of the Lund-Potsdam-Jena Dynamic Global Vegetation Model (LPJ-DGVM) global CH₄ emissions from wetlands are estimated at 0.5 x 0.5 degree resolution by simulating wetland extent and using characteristics of these inundated areas, such as soil moisture, temperature, and carbon content, to estimate CH₄ quantities emitted into the atmosphere. Highlighted areas displayed in this dataset show concentrated methane sources from tropical and high latitude ecosystems. The LPJ-wsl Wetland Methane Emissions data product presented here consists of global daily and monthly model estimates of terrestrial wetland CH₄ emissions from 1980 - 2021. These data are regularly used in conjunction with NASA’s Goddard Earth Observing System (GEOS) model to simulate the impact of wetlands and other methane sources on atmospheric methane concentrations, to compare against satellite and airborne data, and to improve understanding and prediction of wetland emissions."
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#querying-the-stac-api",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n\n# Name of the collection for wetland methane monthly emissions. \ncollection_name = \"lpjwsl-wetlandch4-monthgrid-v1\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under summaries, we see that the data is available from January 1980 to December 2021. By looking at dashboard: time density, we can see that these observations are collected monthly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we enter minimum and maximum values to provide our upper and lower bounds in rescale_values.\n\nrescale_values = {'max': 0.2, 'min': 0.0}"
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#exploring-changes-in-methane-ch4-emission-levels-using-the-raster-api",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#exploring-changes-in-methane-ch4-emission-levels-using-the-raster-api",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Exploring Changes in Methane (CH4) Emission Levels Using the Raster API",
+    "text": "Exploring Changes in Methane (CH4) Emission Levels Using the Raster API\nIn this notebook, we will explore the temporal impacts of methane emissions. We will visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"datetime\"][:7]: item for item in items} \n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for December 2001 and again for December 2021, so we can visualize each event independently.\n\ncolor_map = \"magma\" # select the color ramp from matplotlib library.\ndecember_2001_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2001-12']['collection']}&item={items['2001-12']['id']}\"\n    \"&assets=ch4-wetlands-emissions\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\ndecember_2001_tile\n\n\ndecember_2021_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2021-12']['collection']}&item={items['2021-12']['id']}\"\n    \"&assets=ch4-wetlands-emissions\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\ndecember_2021_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#visualizing-ch₄-emissions",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#visualizing-ch₄-emissions",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Visualizing CH₄ Emissions",
+    "text": "Visualizing CH₄ Emissions\n\n# We will import folium to map and folium.plugins to allow side-by-side mapping\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CH₄ Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# December 2001\nmap_layer_2001 = TileLayer(\n    tiles=december_2001_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2001.add_to(map_.m1)\n\n# December 2021\nmap_layer_2021 = TileLayer(\n    tiles=december_2021_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2021.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the wetland methane emissions time series (January 1980 – December 2021) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Max monthly CH4 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CH4 emissions g/m2\")\nplt.title(\"CH4 emission Values for Texas, Dallas (1980-2021)\")\n\n\nprint(items[2][\"properties\"][\"datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    \"&assets=ch4-wetlands-emissions\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#summary",
+    "href": "user_data_notebooks/lpjwsl-wetlandch4-grid-v1_User_Notebook.html#summary",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook, we have successfully explored, analyzed, and visualized the STAC collection for wetland methane emissions."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#running-this-notebook",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#approach",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#approach",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the gridded methane emissions data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, we will visualize two tiles (side-by-side), allowing us to compare time points.\nAfter the visualization, we will perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#about-the-data",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "About the Data",
+    "text": "About the Data\nThe gridded EPA U.S. anthropogenic methane greenhouse gas inventory (gridded GHGI) includes spatially disaggregated (0.1 deg x 0.1 deg or approximately 10 x 10 km resolution) maps of annual anthropogenic methane emissions (for the contiguous United States (CONUS), consistent with national annual U.S. anthropogenic methane emissions reported in the U.S. EPA Inventory of U.S. Greenhouse Gas Emissions and Sinks (U.S. GHGI). This dataset contains methane emissions provided as fluxes, in units of molecules of methane per cm per second, for over 25 individual emission source categories, including those from agriculture, petroleum and natural gas systems, coal mining, and waste. The data have been converted from their original NetCDF format to Cloud-Optimized GeoTIFF (COG) for use in the US GHG Center, thereby enabling user exploration of spatial anthropogenic methane emissions and their trends."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#querying-the-stac-api",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n\n# Name of the collection for gridded methane dataset. \ncollection_name = \"epa-ch4emission-yeargrid-v2\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 2012 to December 2018. By looking at the dashboard:time density, we observe that the periodic frequency of these observations is yearly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nThis makes sense as there are 7 years between 2012 - 2018, meaning 7 records in total.\nBelow, we enter minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#exploring-changes-in-methane-ch4-levels-using-the-raster-api",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#exploring-changes-in-methane-ch4-levels-using-the-raster-api",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Exploring Changes in Methane (CH4) Levels Using the Raster API",
+    "text": "Exploring Changes in Methane (CH4) Levels Using the Raster API\nIn this notebook, we will explore the impacts of methane emissions and by examining changes over time in urban regions. We will visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"datetime\"][:7]: item for item in items} \nasset_name = \"surface-coal\"\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\n\nitems\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for January 2018 and again for January 2012, so that we can visualize each event independently.\n\ncolor_map = \"rainbow\" # please select the color ramp from matplotlib library.\njanuary_2018_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2018-01']['collection']}&item={items['2018-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2018_tile\n\n\njanuary_2012_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2012-01']['collection']}&item={items['2012-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2012_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#visualizing-ch4-emissions",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#visualizing-ch4-emissions",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Visualizing CH4 emissions",
+    "text": "Visualizing CH4 emissions\n\n# We will import folium to map and folium.plugins to allow side-by-side mapping\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CH4 Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# January 2018\nmap_layer_2018 = TileLayer(\n    tiles=january_2018_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.7,\n)\nmap_layer_2018.add_to(map_.m1)\n\n# January 2012\nmap_layer_2012 = TileLayer(\n    tiles=january_2012_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.7,\n)\nmap_layer_2012.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the gridded methane emission (Domestic Wastewater Treatment & Discharge (5D)) time series (January 2000 -December 2021) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Max monthly CO2 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CH4 emissions Molecules CH₄ cm²/s\")\nplt.title(\"CH4 gridded methane emission from Domestic Wastewater Treatment & Discharge (5D) for Texas, Dallas (2012-202)\")\n\n\nprint(items[2][\"properties\"][\"datetime\"])\n\n\ntile_2016 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\ntile_2016\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=tile_2016[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#summary",
+    "href": "user_data_notebooks/epa-ch4emission-grid-v2express_User_Notebook.html#summary",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for gridded methane emissions."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#running-this-notebook",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#approach",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#approach",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the TM5-4DVar Isotopic CH4 Inverse Fluxes Data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, we will visualize two tiles (side-by-side), allowing us to compare time points.\nAfter the visualization, we will perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#about-the-data",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "About the Data",
+    "text": "About the Data\nIn July 2014, NASA successfully launched the first dedicated Earth remote sensing satellite to study atmospheric carbon dioxide (CO₂) from space. The Orbiting Carbon Observatory-2 (OCO-2) is an exploratory science mission designed to collect space-based global measurements of atmospheric CO₂ with the precision, resolution, and coverage needed to characterize sources and sinks (fluxes) on regional scales (≥1000 km)."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#installing-the-required-libraries",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#installing-the-required-libraries",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Installing the required libraries",
+    "text": "Installing the required libraries\nPlease run the cell below to install the libraries required to run this notebook.\n%pip install requests %pip install folium %pip install rasterstats %pip install pystac_client"
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#querying-the-stac-api",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for TM5 CH4 inverse flux dataset. \ncollection_name = \"tm54dvar-ch4flux-monthgrid-v1\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 1999 to December 2016. By looking at the dashboard:time density, we observe that the data is periodic with monthly time density.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#exploring-changes-in-ch4-flux-levels-using-the-raster-api",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#exploring-changes-in-ch4-flux-levels-using-the-raster-api",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Exploring Changes in CH4 flux Levels Using the Raster API",
+    "text": "Exploring Changes in CH4 flux Levels Using the Raster API\nIn this notebook, we will explore the global changes of CH4 flux over time in urban regions. We will visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"]: item for item in items} \nasset_name = \"fossil\" #fossil fuel\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for 2020 and again for 2019, so that we can visualize each event independently.\n\ncolor_map = \"magma\"\noco2_flux_1 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\noco2_flux_1\n\n\noco2_flux_2 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[1]]['collection']}&item={items[list(items.keys())[1]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\noco2_flux_2"
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#visualizing-ch4-flux-emissions-from-fossil-fuel",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#visualizing-ch4-flux-emissions-from-fossil-fuel",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Visualizing CH4 flux Emissions from Fossil Fuel",
+    "text": "Visualizing CH4 flux Emissions from Fossil Fuel\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO₂ Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n\nmap_layer_2020 = TileLayer(\n    tiles=oco2_flux_1[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2020.add_to(map_.m1)\n\nmap_layer_2019 = TileLayer(\n    tiles=oco2_flux_2[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2019.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the fossil fuel emission time series (January 2015 -December 2020) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"datetime\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"CH4 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CH4 emissions\")\nplt.title(\"CH4 emission Values for Texas, Dallas (2015-2020)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\nco2_flux_3 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\nco2_flux_3\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6.8,\n)\n\nmap_layer = TileLayer(\n    tiles=co2_flux_3[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.7\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#summary",
+    "href": "user_data_notebooks/tm54dvar-ch4flux-monthgrid-v1_User_Notebook.html#summary",
+    "title": "TM5-4DVar Isotopic CH4 Inverse Fluxes",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for TM5 inverse flux dataset."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#running-this-notebook",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#approach",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#approach",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Air-Sea CO2 Flux, ECCO-Darwin Model v5 Data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, we will visualize two tiles (side-by-side), allowing us to compare time points.\nAfter the visualization, we will perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#about-the-data",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "About the Data",
+    "text": "About the Data\nThe ocean is a major sink for atmospheric carbon dioxide (CO2), largely due to the presence of phytoplankton that use the CO2 to grow. Studies have shown that global ocean CO2 uptake has increased over recent decades however there is uncertainty in the various mechanisms that affect ocean CO2 flux and storage and how the ocean carbon sink will respond to future climate change. Because CO2 fluxes can vary significantly across space and time, combined with deficiencies in ocean and atmosphere CO2 observations, there is a need for models that can thoroughly represent these processes. Ocean biogeochemical models (OBMs) have the ability to resolve the physical and biogeochemical mechanisms contributing to spatial and temporal variations in air-sea CO2 fluxes but previous OBMs do not integrate observations to improve model accuracy and have not be able to operate on the seasonal and multi-decadal timescales needed to adequately characterize these processes. The ECCO-Darwin model is an OBM that assimilates Estimating the Circulation and Climate of the Ocean (ECCO) consortium ocean circulation estimates and biogeochemical processes from the Massachusetts Institute of Technology (MIT) Darwin Project. A pilot study using ECCO-Darwin was completed by Brix et al. (2015) however an improved version of the model was developed by Carroll et al. (2020) in which issues present in the first model were addressed using data assimilation and adjustments were made to initial conditions and biogeochemical parameters. The updated ECCO-Darwin model was compared with interpolation-based products to estimate surface ocean partial pressure (pCO2) and air-sea CO2 flux. This dataset contains the gridded global, monthly mean air-sea CO2 fluxes from version 5 of the ECCO-Darwin model. The data are available at ~1/3° horizontal resolution at the equator (~18 km at high latitudes) from January 2020 through December 2022."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#installing-the-required-libraries",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#installing-the-required-libraries",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Installing the required libraries",
+    "text": "Installing the required libraries\nPlease run the cell below to install the libraries required to run this notebook.\n\n%pip install requests\n%pip install folium\n%pip install pystac_client"
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#querying-the-stac-api",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for Ecco Darwin CO2 flux dataset. \ncollection_name = \"eccodarwin-co2flux-monthgrid-v5\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 1999 to December 2016. By looking at the dashboard:time density, we observe that the data is periodic with monthly time density.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#exploring-changes-in-co₂-levels-using-the-raster-api",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#exploring-changes-in-co₂-levels-using-the-raster-api",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Exploring Changes in CO₂ Levels Using the Raster API",
+    "text": "Exploring Changes in CO₂ Levels Using the Raster API\nIn this notebook, we will explore the global changes of CO2 flux over time in urban regions. We will visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"]: item for item in items} \nasset_name = \"co2\"\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":0.05544506255821962, \"min\":-0.0560546997598733}\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice so that we can visualize each event independently.\n\ncolor_map = \"magma\"\nco2_flux_1 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nco2_flux_1\n\n\nco2_flux_2 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[20]]['collection']}&item={items[list(items.keys())[20]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nco2_flux_2"
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#visualizing-co₂-flux-emissions",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#visualizing-co₂-flux-emissions",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Visualizing CO₂ flux Emissions",
+    "text": "Visualizing CO₂ flux Emissions\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO₂ Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n\nmap_layer_1 = TileLayer(\n    tiles=co2_flux_1[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_1.add_to(map_.m1)\n\nmap_layer_2 = TileLayer(\n    tiles=co2_flux_2[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the fossil fuel emission time series (January 2020 -December 2022) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"datetime\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"CO2 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CO2 emissions mmol m²/s\")\nplt.title(\"CO2 emission Values for Texas, Dallas (2020-2022)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\nco2_flux_3 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\nco2_flux_3\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6.8,\n)\n\nmap_layer = TileLayer(\n    tiles=co2_flux_3[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.7\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#summary",
+    "href": "user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html#summary",
+    "title": "Air-Sea CO2 Flux, ECCO-Darwin Model v5",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for ECCO Darwin CO2 flux dataset"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation of the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. NetCDF, HDF, etc.) into cloud-optimized formats that enable efficient data access and visualization."
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation of the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. NetCDF, HDF, etc.) into cloud-optimized formats that enable efficient data access and visualization."
+  },
+  {
+    "objectID": "index.html#contents",
+    "href": "index.html#contents",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "Contents",
+    "text": "Contents\n\nServices provided for accessing and analyzing the GHG Center datasets, such as a JupyterHub environment for interactive computing.\nDataset usage examples, e.g. for the LPJ-wsl modelled Wetland Methane Emissions dataset, showing how to load the dataset in Python, for example in JupyterHub.\nDataset transformation scripts, e.g. for the CASA-GFED3 Land Carbon Flux dataset.\nData processing and verification reports, e.g. for the CEOS CH4 budget yearly dataset."
+  },
+  {
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "Contact",
+    "text": "Contact\nFor technical and usage questions, please contact us at veda@uah.edu or via the Feedback forms at ghg.center."
+  },
+  {
+    "objectID": "services/apis.html",
+    "href": "services/apis.html",
+    "title": "APIs",
+    "section": "",
+    "text": "Please find a list of publicly available APIs below.\nPlease note: while some of our services are already very mature, the GHG Center platform is currently in the build-up phase."
+  },
+  {
+    "objectID": "services/apis.html#open-source",
+    "href": "services/apis.html#open-source",
+    "title": "APIs",
+    "section": "Open Source",
+    "text": "Open Source\nMost of the GHG Center APIs are hosted out of a single project (ghgc-backend) that combines multiple standalone services."
+  },
+  {
+    "objectID": "processing_and_verification_reports/emit-ch4plume-v1_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/emit-ch4plume-v1_Processing and Verification Report.html",
+    "title": "EMIT Methane Point Source Plume Complexes - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/eccodarwin-co2flux-monthgrid-v5_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/eccodarwin-co2flux-monthgrid-v5_Processing and Verification Report.html",
+    "title": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5 - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/odiac-ffco2-monthgrid-v2022_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/odiac-ffco2-monthgrid-v2022_Processing and Verification Report.html",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/oco2-mip-co2budget-yeargrid-v1_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/oco2-mip-co2budget-yeargrid-v1_Processing and Verification Report.html",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/tm54dvar-ch4flux-monthgrid-v1_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/tm54dvar-ch4flux-monthgrid-v1_Processing and Verification Report.html",
+    "title": "TM5-4DVar Isotopic CH₄ Inverse Fluxes - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
+    "href": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
+    "title": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5",
+    "section": "",
+    "text": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/odiac-ffco2-monthgrid-v2022_Data_Flow.html",
+    "href": "data_workflow/odiac-ffco2-monthgrid-v2022_Data_Flow.html",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
+    "section": "",
+    "text": "ODIAC Fossil Fuel CO₂ Emissions\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html",
+    "href": "data_workflow/casagfed-carbonflux-monthgrid-v3_Data_Flow.html",
+    "title": "CASA-GFED3 Land Carbon Flux - Data Workflow",
+    "section": "",
+    "text": "CASA-GFED3 Land Carbon Flux - Data Workflow\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
+    "href": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
+    "title": "OCO-2 GEOS Assimilated CO₂ Concentrations",
+    "section": "",
+    "text": "OCO-2 GEOS Assimilated CO₂ Concentrations\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/lpjwsl-wetlandch4-grid-v1_Data_Flow.html",
+    "href": "data_workflow/lpjwsl-wetlandch4-grid-v1_Data_Flow.html",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model",
+    "section": "",
+    "text": "Wetland Methane Emissions, LPJ-wsl Model\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
+    "href": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
+    "title": "SEDAC Gridded World Population Data",
+    "section": "",
+    "text": "SEDAC Gridded World Population Data\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/ceos-ch4budget-yeargrid-v1_Data_Flow.html",
+    "href": "data_workflow/ceos-ch4budget-yeargrid-v1_Data_Flow.html",
+    "title": "GOSAT-based Top-down Methane Budgets",
+    "section": "",
+    "text": "GOSAT-based Top-down Methane Budgets\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/ceos-co2budget-yeargrid-v1_Data_Flow.html",
+    "href": "data_workflow/ceos-co2budget-yeargrid-v1_Data_Flow.html",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "",
+    "text": "OCO-2 MIP-based Top-Down CO₂ Budgets\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
+    "href": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
+    "title": "TM5-4DVar Isotopic CH₄ Inverse Fluxes",
+    "section": "",
+    "text": "TM5-4DVar Isotopic CH₄ Inverse Fluxes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
+    "href": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
+    "title": "EMIT methane point source plume complexes",
+    "section": "",
+    "text": "EMIT methane point source plume complexes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery"
+  },
+  {
+    "objectID": "processing_and_verification_reports/casagfed-carbonflux-monthgrid-v3_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/casagfed-carbonflux-monthgrid-v3_Processing and Verification Report.html",
+    "title": "CASA-GFED3 Land Carbon Flux - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/lpjwsl-wetlandch4-grid-v1_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/lpjwsl-wetlandch4-grid-v1_Processing and Verification Report.html",
+    "title": "Wetland Methane Emissions, LPJ-wsl Model - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/oco2geos-co2-daygrid-v10r_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/oco2geos-co2-daygrid-v10r_Processing and Verification Report.html",
+    "title": "OCO-2 GEOS Assimilated CO₂ Concentrations - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/gosat-based-ch4budget-yeargrid-v1_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/gosat-based-ch4budget-yeargrid-v1_Processing and Verification Report.html",
+    "title": "GOSAT-based Top-down Methane Budgets - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/sedac-popdensity-yeargrid5yr-v4.11_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/sedac-popdensity-yeargrid5yr-v4.11_Processing and Verification Report.html",
+    "title": "SEDAC Gridded World Population Data - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "processing_and_verification_reports/epa-ch4emission-grid-v2express_Processing and Verification Report.html",
+    "href": "processing_and_verification_reports/epa-ch4emission-grid-v2express_Processing and Verification Report.html",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory - Processing and Verification Report",
+    "section": "",
+    "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF."
+  },
+  {
+    "objectID": "services/jupyterhub.html",
+    "href": "services/jupyterhub.html",
+    "title": "JupyterHub",
+    "section": "",
+    "text": "The GHG Center promotes the use of JupyterHub environments for interactive data science. JupyterHub enables you to analyze massive archives of Earth science data in the cloud in an interactive environment that alleviates the complexities of managing compute resources (virtual machines, roles and permissions, etc).\nUsers affiliated with the GHG Center can get access to a dedicated JupyterHub service, provided in collaboration with 2i2c: hub.ghg.center. Please find instructions for requesting access below.\nIf you are a scientist affiliated with NASA projects such as VEDA, EIS, and MAAP, you can also keep using the resources provided by these projects. Through the use of open-source technology, we make sure our services are interoperable and exchangeable."
+  },
+  {
+    "objectID": "services/jupyterhub.html#getting-access-to-the-ghg-center-jupyterhub-environment",
+    "href": "services/jupyterhub.html#getting-access-to-the-ghg-center-jupyterhub-environment",
+    "title": "JupyterHub",
+    "section": "Getting access to the GHG Center JupyterHub environment",
+    "text": "Getting access to the GHG Center JupyterHub environment\nAccess to the GHG Center notebook environment is currently on an as-need basis. If you are a user afficiliated with the GHG Center, you can gain access by following these steps:\n\nMake sure you have a Github Account. Take note of your Github username\nSend an email to the GHG Center team (veda@uah.edu) asking for access to the GHG Center notebook environment. Please include your Github username. They will invite you through Github to join the GHG Center Hub Access Github Team. Please watch your email for the invite.\nOnce you accepted the invitation, you should be able to go to hub.ghg.center and login via your Github credentials."
+  },
+  {
+    "objectID": "services/jupyterhub.html#instructory-notebooks",
+    "href": "services/jupyterhub.html#instructory-notebooks",
+    "title": "JupyterHub",
+    "section": "Instructory notebooks",
+    "text": "Instructory notebooks\nThis documentation site provides Jupyter notebooks on how to load and analyze Earth data an interactive cloud computing environment."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "",
+    "text": "You can launch this notebook using mybinder, by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#run-this-notebook",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#run-this-notebook",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "",
+    "text": "You can launch this notebook using mybinder, by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#approach",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#approach",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is SEDAC gridded population density.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#about-the-data",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "About the Data",
+    "text": "About the Data\nThe SEDAC Gridded Population of the World: Population Density, v4.11 dataset provides annual estimates of population density for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km) grid. These data can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. This population density dataset is provided by NASA’s Socioeconomic Data and Applications Center (SEDAC) hosted by the Center for International Earth Science Information Network (CIESIN) at Columbia University. The population estimates are provided as a continuous raster for the entire globe."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#querying-the-stac-api",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for SEDAC population density dataset. \ncollection_name = \"sedac-popdensity-yeargrid5yr-v4.11\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under summaries we see that the data is available from January 2000 to December 2021. By looking at the dashboard:time density we observe that the periodic frequency of these observations is monthly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#exploring-changes-in-the-world-population-density-using-the-raster-api",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#exploring-changes-in-the-world-population-density-using-the-raster-api",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Exploring Changes in the World Population density using the Raster API",
+    "text": "Exploring Changes in the World Population density using the Raster API\nWe will explore changes in population density in urban regions. In this notebook, we’ll explore the changes in population density over time. We’ll then visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"][:7]: item for item in items} \nasset_name = \"population-density\"\n\n\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for January 2000 and again for January 2020, so that we can visualize each event independently.\n\ncolor_map = \"rainbow\" # please select the color ramp from matplotlib library.\njanuary_2020_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2020-01']['collection']}&item={items['2020-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2020_tile\n\n\njanuary_2000_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2000-01']['collection']}&item={items['2000-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2000_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-population-density.",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-population-density.",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Visualizing the population density.",
+    "text": "Visualizing the population density.\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO2 Layer\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# January 2020\nmap_layer_2020 = TileLayer(\n    tiles=january_2020_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer_2020.add_to(map_.m1)\n\n# January 2000\nmap_layer_2000 = TileLayer(\n    tiles=january_2000_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer_2000.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#section",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#section",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "",
+    "text": "# Texas, USA\ntexas_aoi = {\n    \"type\": \"Feature\",\n    \"properties\": {},\n    \"geometry\": {\n        \"coordinates\": [\n            [\n                # [13.686159004559698, -21.700046934333145],\n                # [13.686159004559698, -23.241974326585833],\n                # [14.753560168039911, -23.241974326585833],\n                # [14.753560168039911, -21.700046934333145],\n                # [13.686159004559698, -21.700046934333145],\n                [-95, 29],\n                [-95, 33],\n                [-104, 33],\n                [-104,29],\n                [-95, 29]\n            ]\n        ],\n        \"type\": \"Polygon\",\n    },\n}\n\n\n# We'll plug in the coordinates for a location\n# central to the study area and a reasonable zoom level\n\nimport folium\n\naoi_map = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6,\n)\n\nfolium.GeoJson(texas_aoi, name=\"Texas, USA\").add_to(aoi_map)\naoi_map\n\n\n# Check total number of items available\nitems = requests.get(\n    f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\"\n).json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Explore one item to see what it contains\nitems[0]\n\n\n# the bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection\ndef generate_stats(item, geojson):\n    result = requests.post(\n        f\"{RASTER_API_URL}/cog/statistics\",\n        params={\"url\": item[\"assets\"][asset_name][\"href\"]},\n        json=geojson,\n    ).json()\n    return {\n        **result[\"properties\"],\n        \"start_datetime\": item[\"properties\"][\"start_datetime\"],\n    }\n\nWith the function above we can generate the statistics for the AOI.\n\n%%time\nstats = [generate_stats(item, texas_aoi) for item in items]\n\n\nstats[0]\n\n\nimport pandas as pd\n\n\ndef clean_stats(stats_json) -&gt; pd.DataFrame:\n    df = pd.json_normalize(stats_json)\n    df.columns = [col.replace(\"statistics.b1.\", \"\") for col in df.columns]\n    df[\"date\"] = pd.to_datetime(df[\"start_datetime\"])\n    return df\n\n\ndf = clean_stats(stats)\ndf.head(5)"
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the SEDAC population density dataset time series available for the Texas, Dallas area of USA. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Population density over the years\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"Population density\")\nplt.title(\"Population density over Texas, Dallas (2000-2020)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#summary",
+    "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#summary",
+    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analysed and visualized STAC collection for SEDAC population density dataset."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "",
+    "text": "You can launch this notebook using mybinder, by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#run-this-notebook",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#run-this-notebook",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "",
+    "text": "You can launch this notebook using mybinder, by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#approach",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#approach",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is ODIAC CO2 emissions version 2022.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#about-the-data",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "About the Data",
+    "text": "About the Data\nThe Open-Data Inventory for Anthropogenic Carbon dioxide (ODIAC) is a high-spatial resolution global emission data product of CO₂ emissions from fossil fuel combustion (Oda and Maksyutov, 2011). ODIAC pioneered the combined use of space-based nighttime light data and individual power plant emission/location profiles to estimate the global spatial extent of fossil fuel CO₂ emissions. With the innovative emission modeling approach, ODIAC achieved the fine picture of global fossil fuel CO₂ emissions at a 1x1km."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#querying-the-stac-api",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for ODIAC dataset. \ncollection_name = \"odiac-ffco2-monthgrid-v2022\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under summaries we see that the data is available from January 2000 to December 2021. By looking at the dashboard:time density we observe that the periodic frequency of these observations is monthly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\nitems[0]\n\nThis makes sense as there are 22 years between 2000 - 2021, with 12 months per year, meaning 264 records in total.\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API",
+    "text": "Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API\nWe will explore changes in fossil fuel emissions in urban egions. In this notebook, we’ll explore the impacts of these emissions and explore these changes over time. We’ll then visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"][:7]: item for item in items} \nasset_name = \"co2-emissions\"\n\n\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for January 2020 and again for January 2000, so that we can visualize each event independently.\n\ncolor_map = \"rainbow\" # please select the color ramp from matplotlib library.\njanuary_2020_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2020-01']['collection']}&item={items['2020-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2020_tile\n\n\njanuary_2000_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2000-01']['collection']}&item={items['2000-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2000_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-co2-emissions",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-co2-emissions",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Visualizing CO2 emissions",
+    "text": "Visualizing CO2 emissions\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO2 Layer\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# December 2001\nmap_layer_2020 = TileLayer(\n    tiles=january_2020_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2020.add_to(map_.m1)\n\n# December 2021\nmap_layer_2000 = TileLayer(\n    tiles=january_2000_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2000.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#section",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#section",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "",
+    "text": "# Texas, USA\ntexas_aoi = {\n    \"type\": \"Feature\",\n    \"properties\": {},\n    \"geometry\": {\n        \"coordinates\": [\n            [\n                # [13.686159004559698, -21.700046934333145],\n                # [13.686159004559698, -23.241974326585833],\n                # [14.753560168039911, -23.241974326585833],\n                # [14.753560168039911, -21.700046934333145],\n                # [13.686159004559698, -21.700046934333145],\n                [-95, 29],\n                [-95, 33],\n                [-104, 33],\n                [-104,29],\n                [-95, 29]\n            ]\n        ],\n        \"type\": \"Polygon\",\n    },\n}\n\n\n# We'll plug in the coordinates for a location\n# central to the study area and a reasonable zoom level\n\nimport folium\n\naoi_map = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6,\n)\n\nfolium.GeoJson(texas_aoi, name=\"Texas, USA\").add_to(aoi_map)\naoi_map\n\n\n# Check total number of items available\nitems = requests.get(\n    f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\"\n).json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Explore one item to see what it contains\nitems[0]\n\n\n# the bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection\ndef generate_stats(item, geojson):\n    result = requests.post(\n        f\"{RASTER_API_URL}/cog/statistics\",\n        params={\"url\": item[\"assets\"][asset_name][\"href\"]},\n        json=geojson,\n    ).json()\n    return {\n        **result[\"properties\"],\n        \"start_datetime\": item[\"properties\"][\"start_datetime\"],\n    }\n\nWith the function above we can generate the statistics for the AOI.\n\n%%time\nstats = [generate_stats(item, texas_aoi) for item in items]\n\n\nstats[0]\n\n\nimport pandas as pd\n\n\ndef clean_stats(stats_json) -&gt; pd.DataFrame:\n    df = pd.json_normalize(stats_json)\n    df.columns = [col.replace(\"statistics.b1.\", \"\") for col in df.columns]\n    df[\"date\"] = pd.to_datetime(df[\"start_datetime\"])\n    return df\n\n\ndf = clean_stats(stats)\ndf.head(5)"
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the ODIAC fossil fuel emission time series available (January 2000 -December 2021) for the Texas, Dallas area of USA. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Max monthly CO2 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CO2 emissions gC/m2/d\")\nplt.title(\"CO2 emission Values for Texas, Dallas (2000-2021)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#summary",
+    "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#summary",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analysed and visualized STAC collecetion for ODIAC C02 fossisl fuel emission (2022)."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#running-this-notebook",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#approach",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#approach",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Earth Surface Mineral Dust Source Investigation (EMIT) methane emission plumes data product.\nPass the STAC item into the raster API /stac/tilejson.json endpoint.\nUsing folium.Map, visualize the plumes.\nAfter the visualization, perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#about-the-data",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "About the Data",
+    "text": "About the Data\nThe EMIT instrument builds upon NASA’s long history of developing advanced imaging spectrometers for new science and applications. EMIT launched to the International Space Station (ISS) on July 14, 2022. The data shows high-confidence research grade methane plumes from point source emitters - updated as they are identified - in keeping with JPL Open Science and Open Data policy."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#querying-the-stac-api",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n\n# Name of the collection for methane emission plumes. \ncollection_name = \"emit-ch4plume-v1\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we note that data is available from August 2022 to May 2023. By looking at the dashboard: time density, we can see that observations are conducted daily and non-periodically (i.e., there are plumes emissions for multiple places on the same dates).\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#exploring-methane-emission-plumes-ch₄-using-the-raster-api",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#exploring-methane-emission-plumes-ch₄-using-the-raster-api",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "Exploring Methane Emission Plumes (CH₄) using the Raster API",
+    "text": "Exploring Methane Emission Plumes (CH₄) using the Raster API\nIn this notebook, we will explore global methane emission plumes from point sources. We will visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"id\"]: item for item in items} \nasset_name = \"ch4-plume-emissions\"\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this for only one item so that we can visualize the event.\n\ncolor_map = \"magma\"\nmethane_plume_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nmethane_plume_tile"
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#visualizing-ch₄-emission-plume",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#visualizing-ch₄-emission-plume",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "Visualizing CH₄ Emission Plume",
+    "text": "Visualizing CH₄ Emission Plume\n\n# We will import folium to map and folium.plugins to allow side-by-side mapping\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for plume Layer\nmap_ = folium.Map(location=(methane_plume_tile[\"center\"][1], methane_plume_tile[\"center\"][0]), zoom_start=13)\n\n# December 2001\nmap_layer = TileLayer(\n    tiles=methane_plume_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer.add_to(map_)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#summary",
+    "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#summary",
+    "title": "EMIT Methane Emission Plumes",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for EMIT methane emission plumes."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#running-this-notebook",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#approach",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#approach",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the OCO-2 MIP-based Top-Down CO₂ Budgets data product.\nPass the STAC item into the raster API /stac/tilejson.jsonendpoint.\nUsing folium.plugins.DualMap, we will visualize two tiles (side-by-side), allowing us to compare time points.\nAfter the visualization, we will perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#about-the-data",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "About the Data",
+    "text": "About the Data\nThe Committee on Earth Observation Satellites (CEOS) Atmospheric Composition - Virtual Constellation (AC-VC) Greenhouse Gas (GHG) team has generated the CEOS CO2 Budgets dataset, which provides annual top-down carbon dioxide (CO2) emissions and removals from 2015 - 2020 gridded globally at 1° resolution, and as national totals. Data is provided in units of grams of carbon dioxide per square meter per year (g CO2/m2/yr). Only a subset of the full dataset is displayed in the GHG Center explore view."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#installing-the-required-libraries",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#installing-the-required-libraries",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Installing the required libraries",
+    "text": "Installing the required libraries\nPlease run the cell below to install the libraries required to run this notebook.\n\n%pip install requests\n%pip install folium\n%pip install rasterstats\n%pip install pystac_client"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#querying-the-stac-api",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for CEOS National Top-Down CO₂ Budgets dataset. \ncollection_name = \"ceos-co2budget-yeargrid-v1\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 2015 to December 2020. By looking at the dashboard:time density, we observe that the periodic frequency of these observations is yearly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#exploring-changes-in-co₂-levels-using-the-raster-api",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#exploring-changes-in-co₂-levels-using-the-raster-api",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Exploring Changes in CO₂ Levels Using the Raster API",
+    "text": "Exploring Changes in CO₂ Levels Using the Raster API\nIn this notebook, we will explore the global changes of CO2 budgets over time in urban regions. We will visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"datetime\"]: item for item in items} \nasset_name = \"ff\" #fossil fuel\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for 2020 and again for 2019, so that we can visualize each event independently.\n\ncolor_map = \"magma\"\nco2_flux_1 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nco2_flux_1\n\n\nco2_flux_2 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[1]]['collection']}&item={items[list(items.keys())[1]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nco2_flux_2"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#visualizing-co₂-emissions",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#visualizing-co₂-emissions",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Visualizing CO₂ Emissions",
+    "text": "Visualizing CO₂ Emissions\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO₂ Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n\nmap_layer_2020 = TileLayer(\n    tiles=co2_flux_1[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2020.add_to(map_.m1)\n\nmap_layer_2019 = TileLayer(\n    tiles=co2_flux_2[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2019.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the fossil fuel emission time series (January 2015 -December 2020) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"datetime\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"CO2 emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CO2 emissions gC/m2/year1\")\nplt.title(\"CO2 emission Values for Texas, Dallas (2015-2020)\")\n\n\nprint(items[2][\"properties\"][\"datetime\"])\n\n\nco2_flux_3 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\nco2_flux_3\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6.8,\n)\n\nmap_layer = TileLayer(\n    tiles=co2_flux_3[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.7\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#summary",
+    "href": "user_data_notebooks/oco2-based-co2budget-yeargrid-v1_User_Notebook.html#summary",
+    "title": "OCO-2 MIP-based Top-Down CO₂ Budgets",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for OCO-2 MIP-based Top-Down CO₂ Budgets."
+  },
+  {
+    "objectID": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html",
+    "href": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html",
+    "title": "GOSAT-based Top-down Methane Budgets",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#running-this-notebook",
+    "href": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#running-this-notebook",
+    "title": "GOSAT-based Top-down Methane Budgets",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#approach",
+    "href": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#approach",
+    "title": "GOSAT-based Top-down Methane Budgets",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the GOSAT-based Top-down Methane Budgets data product.\nPass the STAC item into the raster API /stac/tilejson.json endpoint.\nUsing folium.plugins.DualMap, visualize two tiles (side-by-side), allowing time point comparison.\nAfter the visualization, perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#still-in-progress",
+    "href": "user_data_notebooks/gosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb.html#still-in-progress",
+    "title": "GOSAT-based Top-down Methane Budgets",
+    "section": "Still in progress",
+    "text": "Still in progress"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#running-this-notebook",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#running-this-notebook",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "",
+    "text": "You can launch this notebook using mybinder by clicking the button below."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#approach",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#approach",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Approach",
+    "text": "Approach\n\nIdentify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the OCO-2 GEOS Assimilated CO2 Concentrations data product.\nPass the STAC item into the raster API /stac/tilejson.json endpoint.\nUsing folium.plugins.DualMap, visualize two tiles (side-by-side), allowing time point comparison.\nAfter the visualization, perform zonal statistics for a given polygon."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#about-the-data",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#about-the-data",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "About the Data",
+    "text": "About the Data\nIn July 2014, NASA successfully launched the first dedicated Earth remote sensing satellite to study atmospheric carbon dioxide (CO₂) from space. The Orbiting Carbon Observatory-2 (OCO-2) is an exploratory science mission designed to collect space-based global measurements of atmospheric CO₂ with the precision, resolution, and coverage needed to characterize sources and sinks (fluxes) on regional scales (≥1000 km). This dataset provides global gridded, daily column-averaged carbon dioxide (XCO₂) concentrations from January 1, 2015 - February 28, 2022. The data are derived from OCO-2 observations that were input to the Goddard Earth Observing System (GEOS) Constituent Data Assimilation System (CoDAS), a modeling and data assimilation system maintained by NASA’s Global Modeling and Assimilation Office (GMAO). Concentrations are measured in moles of carbon dioxide per mole of dry air (mol CO₂/mol dry) at a spatial resolution of 0.5° x 0.625°. Data assimilation synthesizes simulations and observations, adjusting modeled atmospheric constituents like CO₂ to reflect observed values. With the support of NASA’s Carbon Monitoring System (CMS) Program and the OCO Science Team, this dataset was produced as part of the OCO-2 mission which provides the highest quality space-based XCO₂ retrievals to date."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#querying-the-stac-api",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#querying-the-stac-api",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Querying the STAC API",
+    "text": "Querying the STAC API\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n# Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for OCO-2 GEOS Assimilated CO2 Concentrations. \ncollection_name = \"oco2geos-co2-daygrid-v10r\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we see that the data is available from January 2015 to February 2022. By looking at the dashboard:time density, we can see that these observations are collected daily.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we enter minimum and maximum values to provide our upper and lower bounds in rescale_values."
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#exploring-changes-in-column-averaged-xco₂-concentrations-levels-using-the-raster-api",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#exploring-changes-in-column-averaged-xco₂-concentrations-levels-using-the-raster-api",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Exploring Changes in Column-Averaged XCO₂ Concentrations Levels Using the Raster API",
+    "text": "Exploring Changes in Column-Averaged XCO₂ Concentrations Levels Using the Raster API\nIn this notebook, we will explore the temporal impacts of CO₂ emissions. We will visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"datetime\"]: item for item in items} \nasset_name = \"xco2\" #fossil fuel\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow, we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for 2022-02-08 and again for 2022-01-27, so that we can visualize each event independently.\n\ncolor_map = \"magma\"\noco2_1 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\noco2_1\n\n\noco2_2 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[1]]['collection']}&item={items[list(items.keys())[1]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\noco2_2"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#visualizing-daily-column-averaged-xco₂-concentrations",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#visualizing-daily-column-averaged-xco₂-concentrations",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Visualizing Daily Column-Averaged XCO₂ Concentrations",
+    "text": "Visualizing Daily Column-Averaged XCO₂ Concentrations\n\n# We will import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for XCO₂ Layer\n# Centre of map [latitude,longitude]\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n\nmap_layer_2020 = TileLayer(\n    tiles=oco2_1[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2020.add_to(map_.m1)\n\nmap_layer_2019 = TileLayer(\n    tiles=oco2_2[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.5,\n)\nmap_layer_2019.add_to(map_.m2)\n\n# visualising the map\nmap_"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#visualizing-the-data-as-a-time-series",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Visualizing the Data as a Time Series",
+    "text": "Visualizing the Data as a Time Series\nWe can now explore the XCO₂ concentrations time series (January 1, 2015 - February 28, 2022) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"datetime\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"XCO₂ concentrations\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CO2 emissions mol CO₂/mol dry air\")\nplt.title(\"XCO₂ concentrations Values for Texas, Dallas (Jan 2015- Feb 2022)\")\n\n\nprint(items[2][\"properties\"][\"datetime\"])\n\n\noco2_3 = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noco2_3\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6.8,\n)\n\nmap_layer = TileLayer(\n    tiles=oco2_3[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.7\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
+  },
+  {
+    "objectID": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#summary",
+    "href": "user_data_notebooks/oco2geos-co2-daygrid-v10r_User_Notebook.html#summary",
+    "title": "OCO-2 GEOS Assimilated CO2 Concentrations",
+    "section": "Summary",
+    "text": "Summary\nIn this notebook, we have successfully explored, analyzed, and visualized the STAC collection for OCO-2 GEOS Assimilated CO₂ Concentrations."
+  },
+  {
+    "objectID": "cog_transformation/epa-ch4emission-grid-v2express.html",
+    "href": "cog_transformation/epa-ch4emission-grid-v2express.html",
+    "title": "EPA Gridded U.S. Anthropogenic Methane Emissions - Update 2",
+    "section": "",
+    "text": "This script was used to transform the EPA Gridded U.S. Anthropogenic Methane Emissions monthly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nfrom datetime import datetime\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = \"ghgc-data-store-dev\" # S3 bucket where the COGs are stored after transformation\nFOLDER_NAME = \"epa_emissions_express_extension\"\n\nfiles_processed = pd.DataFrame(columns=[\"file_name\", \"COGs_created\"])   # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(FOLDER_NAME):\n    xds = xarray.open_dataset(f\"{FOLDER_NAME}/{name}\", engine=\"netcdf4\")\n    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    variable = [var for var in xds.data_vars]\n    filename = name.split(\"/ \")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n    start_time = datetime(int(filename_elements[-2]), 1, 1)\n\n    for time_increment in range(0, len(xds.time)):\n        for var in variable:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = getattr(xds.isel(time=time_increment), var)\n            data = data.isel(lat=slice(None, None, -1))\n            data.rio.set_spatial_dims(\"lon\", \"lat\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = start_time.strftime(\"%Y\")\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{FOLDER_NAME}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{FOLDER_NAME}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{FOLDER_NAME}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/epa-ch4emission-monthgrid-v2.html",
+    "href": "cog_transformation/epa-ch4emission-monthgrid-v2.html",
+    "title": "EPA Gridded Monthly U.S. Anthropogenic Methane Emissions",
+    "section": "",
+    "text": "This script was used to transform the Gridded EPA U.S. Anthropogenic Methane Greenhouse Gas monthly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"epa_emissions/monthly_scale\"\ns3_folder_name = \"epa-emissions-monthly-scale-factors\"\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(FOLDER_NAME):\n    xds = xarray.open_dataset(f\"{FOLDER_NAME}/{name}\", engine=\"netcdf4\")\n    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    variable = [var for var in xds.data_vars]\n    filename = name.split(\"/ \")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n    start_time = datetime(int(filename_elements[-2]), 1, 1)\n\n    for time_increment in range(0, len(xds.time)):\n        for var in variable:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = getattr(xds.isel(time=time_increment), var)\n            data = data.isel(lat=slice(None, None, -1))\n            data.rio.set_spatial_dims(\"lon\", \"lat\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n            date = start_time + relativedelta(months=+time_increment)\n\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = date.strftime(\"%Y%m\")\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{s3_folder_name}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{s3_folder_name}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{s3_folder_name}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/lpjwsl-wetlandch4-monthgrid-v1.html",
+    "href": "cog_transformation/lpjwsl-wetlandch4-monthgrid-v1.html",
+    "title": "LPJ-wsl Model Wetland Methane Monthly Emissions",
+    "section": "",
+    "text": "This script was used to transform the Wetland Methane monthly Emissions, LPJ-wsl Model dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"NASA_GSFC_ch4_wetlands_monthly\"\ndirectory = \"ch4_wetlands_monthly\"\n\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\n\n# Reading the raw netCDF files from local machine\nfor name in os.listdir(directory):\n    xds = xarray.open_dataset(\n        f\"{directory}/{name}\", engine=\"netcdf4\", decode_times=False\n    )\n    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby(\n        \"longitude\"\n    )\n    variable = [var for var in xds.data_vars]\n    filename = name.split(\"/ \")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n\n    for time_increment in range(0, len(xds.time)):\n        for var in variable:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = getattr(xds.isel(time=time_increment), var)\n            data = data.isel(latitude=slice(None, None, -1))\n            data = data * 1000\n            data.rio.set_spatial_dims(\"longitude\", \"latitude\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            date = (\n                f\"0{int((data.time.item(0)/732)+1)}\"\n                if len(str(int((data.time.item(0) / 732) + 1))) == 1\n                else f\"{int((data.time.item(0)/732)+1)}\"\n            )\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = filename_elements[-1] + date\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{FOLDER_NAME}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=f\"{FOLDER_NAME}/metadata.json\",\n    )\n\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{FOLDER_NAME}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/ceos-ch4budget-yeargrid-v1.html",
+    "href": "cog_transformation/ceos-ch4budget-yeargrid-v1.html",
+    "title": "CEOS CH4 budget yearly dataset",
+    "section": "",
+    "text": "This script was used to transform the CEOS CH4 budget yearly dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nimport rasterio\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = \"ghgc-data-store-dev\"  # S3 bucket where the COGs are to be stored\nyear_ = datetime(2019, 1, 1)  # Initialize the starting date time of the dataset.\nfolder_name = \"new_data/CH4-inverse-flux\"\n\nCOG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\n# Reading the raw netCDF files from local machine\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that are converted into COGs\nfor name in os.listdir(folder_name):\n    ds = xarray.open_dataset(\n        f\"{folder_name}/{name}\",\n        engine=\"netcdf4\",\n    )\n\n    ds = ds.rename({\"dimy\": \"lat\", \"dimx\": \"lon\"})\n    # assign coords from dimensions\n    ds = ds.assign_coords(lon=(((ds.lon + 180) % 360) - 180)).sortby(\"lon\")\n    ds = ds.assign_coords(lat=((ds.lat / 180) * 180) - 90).sortby(\"lat\")\n\n    variable = [var for var in ds.data_vars]\n\n    for var in variable[2:]:\n        filename = name.split(\"/ \")[-1]\n        filename_elements = re.split(\"[_ .]\", filename)\n        data = ds[var]\n        filename_elements.pop()\n        filename_elements.insert(2, var)\n        cog_filename = \"_\".join(filename_elements)\n        # # add extension\n        cog_filename = f\"{cog_filename}.tif\"\n\n        data = data.reindex(lat=list(reversed(data.lat)))\n\n        data.rio.set_spatial_dims(\"lon\", \"lat\")\n        data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n        # generate COG\n        COG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\n        with tempfile.NamedTemporaryFile() as temp_file:\n            data.rio.to_raster(temp_file.name, **COG_PROFILE)\n            s3_client.upload_file(\n                Filename=temp_file.name,\n                Bucket=bucket_name,\n                Key=f\"ch4_inverse_flux/{cog_filename}\",\n            )\n\n        files_processed = files_processed._append(\n            {\"file_name\": name, \"COGs_created\": cog_filename},\n            ignore_index=True,\n        )\n\n        print(f\"Generated and saved COG: {cog_filename}\")\n\n# creating the json file with metadata given in the netCDF file\n\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(ds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(ds.dims)}, fp)\n    json.dump({\"data_variables\": list(ds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=\"ch4_inverse_flux/metadata.json\",\n    )\n# creating the csv file with the names of files transformed.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/ch4_inverse_flux/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/casagfed-carbonflux-monthgrid-v3.html",
+    "href": "cog_transformation/casagfed-carbonflux-monthgrid-v3.html",
+    "title": "CASA-GFED3 Land Carbon Flux",
+    "section": "",
+    "text": "Code used to transform CASA-GFED3 Land Carbon Flux data from netcdf to Cloud Optimized Geotiff.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\nbucket_name = \"ghgc-data-store-dev\"\ndate_fmt = \"%Y%m\"\n\nfiles_processed = pd.DataFrame(columns=[\"file_name\", \"COGs_created\"])\nfor name in os.listdir(\"geoscarb\"):\n    xds = xarray.open_dataset(\n        f\"geoscarb/{name}\",\n        engine=\"netcdf4\",\n    )\n    xds = xds.assign_coords(\n        longitude=(((xds.longitude + 180) % 360) - 180)\n    ).sortby(\"longitude\")\n    variable = [var for var in xds.data_vars]\n\n    for time_increment in range(0, len(xds.time)):\n        for var in variable[:-1]:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = getattr(xds.isel(time=time_increment), var)\n            data = data.isel(latitude=slice(None, None, -1))\n            data.rio.set_spatial_dims(\"longitude\", \"latitude\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            date = data.time.dt.strftime(date_fmt).item(0)\n            # # insert date of generated COG into filename\n            filename_elements.pop()\n            filename_elements[-1] = date\n            filename_elements.insert(2, var)\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(\n                    temp_file.name,\n                    driver=\"COG\",\n                )\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"GEOS-Carbs/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=\"GEOS-Carbs/metadata.json\",\n    )\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/GEOS-Carbs/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  },
+  {
+    "objectID": "cog_transformation/emit-ch4plume-v1.html",
+    "href": "cog_transformation/emit-ch4plume-v1.html",
+    "title": "EMIT Methane Plume",
+    "section": "",
+    "text": "This script was used to read the methane plume dataset provided in Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\n\n\nsession_ghgc = boto3.session.Session(profile_name=\"ghg_user\")\ns3_client_ghgc = session_ghgc.client(\"s3\")\nsession_veda_smce = boto3.session.Session()\ns3_client_veda_smce = session_veda_smce.client(\"s3\")\n\n# Since the plume emissions were already COGs, we just had to transform their naming convention to be stored in the STAC collection.\nSOURCE_BUCKET_NAME = \"ghgc-data-staging-uah\"\nTARGET_BUCKET_NAME = \"ghgc-data-store-dev\"\n\n\nkeys = []\nresp = s3_client_ghgc.list_objects_v2(Bucket=SOURCE_BUCKET_NAME)\nfor obj in resp[\"Contents\"]:\n    if \"l3\" in obj[\"Key\"]:\n        keys.append(obj[\"Key\"])\n\nfor key in keys:\n    s3_obj = s3_client_ghgc.get_object(Bucket=SOURCE_BUCKET_NAME, Key=key)[\n        \"Body\"\n    ]\n    filename = key.split(\"/\")[-1]\n    filename_elements = re.split(\"[_ .]\", filename)\n\n    date = re.search(\"t\\d\\d\\d\\d\\d\\d\\d\\dt\", key).group(0)\n    filename_elements.insert(-1, date[1:-1])\n    filename_elements.pop()\n\n    cog_filename = \"_\".join(filename_elements)\n    # # add extension\n    cog_filename = f\"{cog_filename}.tif\"\n    s3_client_veda_smce.upload_fileobj(\n        Fileobj=s3_obj,\n        Bucket=TARGET_BUCKET_NAME,\n        Key=f\"plum_data/{cog_filename}\",\n    )"
+  },
+  {
+    "objectID": "cog_transformation/eccodarwin-co2flux-monthgrid-v5.html",
+    "href": "cog_transformation/eccodarwin-co2flux-monthgrid-v5.html",
+    "title": "ECCO Darwin",
+    "section": "",
+    "text": "This script was used to transform the ECCO Darwin dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.\n\nimport os\nimport xarray\nimport re\nimport pandas as pd\nimport json\nimport tempfile\nimport boto3\nimport rasterio\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\n\nbucket_name = (\n    \"ghgc-data-store-dev\"  # S3 bucket where the COGs are stored after transformation\n)\nFOLDER_NAME = \"ecco-darwin\"\ns3_fol_name = \"ecco_darwin\"\n\n# Reading the raw netCDF files from local machine\nfiles_processed = pd.DataFrame(\n    columns=[\"file_name\", \"COGs_created\"]\n)  # A dataframe to keep track of the files that we have transformed into COGs\nfor name in os.listdir(FOLDER_NAME):\n    xds = xarray.open_dataset(\n        f\"{FOLDER_NAME}/{name}\",\n        engine=\"netcdf4\",\n    )\n    xds = xds.rename({\"y\": \"latitude\", \"x\": \"longitude\"})\n    xds = xds.assign_coords(longitude=((xds.longitude / 1440) * 360) - 180).sortby(\n        \"longitude\"\n    )\n    xds = xds.assign_coords(latitude=((xds.latitude / 721) * 180) - 90).sortby(\n        \"latitude\"\n    )\n\n    variable = [var for var in xds.data_vars]\n\n    for time_increment in xds.time.values:\n        for var in variable[2:]:\n            filename = name.split(\"/ \")[-1]\n            filename_elements = re.split(\"[_ .]\", filename)\n            data = xds[var]\n\n            data = data.reindex(latitude=list(reversed(data.latitude)))\n            data.rio.set_spatial_dims(\"longitude\", \"latitude\", inplace=True)\n            data.rio.write_crs(\"epsg:4326\", inplace=True)\n\n            # generate COG\n            COG_PROFILE = {\"driver\": \"COG\", \"compress\": \"DEFLATE\"}\n\n            filename_elements.pop()\n            filename_elements[-1] = filename_elements[-2] + filename_elements[-1]\n            filename_elements.pop(-2)\n            # # insert date of generated COG into filename\n            cog_filename = \"_\".join(filename_elements)\n            # # add extension\n            cog_filename = f\"{cog_filename}.tif\"\n\n            with tempfile.NamedTemporaryFile() as temp_file:\n                data.rio.to_raster(temp_file.name, **COG_PROFILE)\n                s3_client.upload_file(\n                    Filename=temp_file.name,\n                    Bucket=bucket_name,\n                    Key=f\"{s3_fol_name}/{cog_filename}\",\n                )\n\n            files_processed = files_processed._append(\n                {\"file_name\": name, \"COGs_created\": cog_filename},\n                ignore_index=True,\n            )\n            del data\n\n            print(f\"Generated and saved COG: {cog_filename}\")\n\n# Generate the json file with the metadata that is present in the netCDF files.\nwith tempfile.NamedTemporaryFile(mode=\"w+\") as fp:\n    json.dump(xds.attrs, fp)\n    json.dump({\"data_dimensions\": dict(xds.dims)}, fp)\n    json.dump({\"data_variables\": list(xds.data_vars)}, fp)\n    fp.flush()\n\n    s3_client.upload_file(\n        Filename=fp.name,\n        Bucket=bucket_name,\n        Key=\"s3_fol_name/metadata.json\",\n    )\n\n# A csv file to store the names of all the files converted.\nfiles_processed.to_csv(\n    f\"s3://{bucket_name}/{s3_fol_name}/files_converted.csv\",\n)\nprint(\"Done generating COGs\")"
+  }
+]
