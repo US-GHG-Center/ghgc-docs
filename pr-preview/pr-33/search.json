@@ -576,7 +576,7 @@
   {
     "objectID": "processing_and_verification_reports/oco2geos-co2-daygrid-v10r_Processing and Verification Report.html",
     "href": "processing_and_verification_reports/oco2geos-co2-daygrid-v10r_Processing and Verification Report.html",
-    "title": "OCO-2 GEOS Assimilated CO₂ Concentrations",
+    "title": "OCO-2 GEOS Column CO₂ Concentrations",
     "section": "",
     "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF.\n\n\n\n\n\n\n Back to top"
   },
@@ -590,7 +590,7 @@
   {
     "objectID": "processing_and_verification_reports/sedac-popdensity-yeargrid5yr-v4.11_Processing and Verification Report.html",
     "href": "processing_and_verification_reports/sedac-popdensity-yeargrid5yr-v4.11_Processing and Verification Report.html",
-    "title": "SEDAC Gridded World Population Data",
+    "title": "SEDAC Gridded World Population Density",
     "section": "",
     "text": "This browser does not support PDFs. Please download the PDF to view it: Download PDF.\n\n\n\n\n\n\n Back to top"
   },
@@ -625,63 +625,63 @@
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is SEDAC gridded population density.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#approach",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#approach",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is SEDAC gridded population density.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#about-the-data",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#about-the-data",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "About the Data",
     "text": "About the Data\nThe SEDAC Gridded Population of the World: Population Density, v4.11 dataset provides annual estimates of population density for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km) grid. These data can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. This population density dataset is provided by NASA’s Socioeconomic Data and Applications Center (SEDAC) hosted by the Center for International Earth Science Information Network (CIESIN) at Columbia University. The population estimates are provided as a continuous raster for the entire globe."
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#querying-the-stac-api",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#querying-the-stac-api",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "Querying the STAC API",
     "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for SEDAC population density dataset. \ncollection_name = \"sedac-popdensity-yeargrid5yr-v4.11\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under summaries we see that the data is available from January 2000 to December 2021. By looking at the dashboard:time density we observe that the periodic frequency of these observations is monthly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#exploring-changes-in-the-world-population-density-using-the-raster-api",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#exploring-changes-in-the-world-population-density-using-the-raster-api",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "Exploring Changes in the World Population density using the Raster API",
     "text": "Exploring Changes in the World Population density using the Raster API\nWe will explore changes in population density in urban regions. In this notebook, we’ll explore the changes in population density over time. We’ll then visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"][:7]: item for item in items} \nasset_name = \"population-density\"\n\n\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for January 2000 and again for January 2020, so that we can visualize each event independently.\n\ncolor_map = \"rainbow\" # please select the color ramp from matplotlib library.\njanuary_2020_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2020-01']['collection']}&item={items['2020-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2020_tile\n\n\njanuary_2000_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2000-01']['collection']}&item={items['2000-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2000_tile"
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-population-density.",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-population-density.",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "Visualizing the population density.",
     "text": "Visualizing the population density.\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO₂ Layer\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# January 2020\nmap_layer_2020 = TileLayer(\n    tiles=january_2020_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer_2020.add_to(map_.m1)\n\n# January 2000\nmap_layer_2000 = TileLayer(\n    tiles=january_2000_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer_2000.add_to(map_.m2)\n\n# visualising the map\nmap_"
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#section",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#section",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "",
     "text": "# Texas, USA\ntexas_aoi = {\n    \"type\": \"Feature\",\n    \"properties\": {},\n    \"geometry\": {\n        \"coordinates\": [\n            [\n                # [13.686159004559698, -21.700046934333145],\n                # [13.686159004559698, -23.241974326585833],\n                # [14.753560168039911, -23.241974326585833],\n                # [14.753560168039911, -21.700046934333145],\n                # [13.686159004559698, -21.700046934333145],\n                [-95, 29],\n                [-95, 33],\n                [-104, 33],\n                [-104,29],\n                [-95, 29]\n            ]\n        ],\n        \"type\": \"Polygon\",\n    },\n}\n\n\n# We'll plug in the coordinates for a location\n# central to the study area and a reasonable zoom level\n\nimport folium\n\naoi_map = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6,\n)\n\nfolium.GeoJson(texas_aoi, name=\"Texas, USA\").add_to(aoi_map)\naoi_map\n\n\n# Check total number of items available\nitems = requests.get(\n    f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\"\n).json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Explore one item to see what it contains\nitems[0]\n\n\n# the bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection\ndef generate_stats(item, geojson):\n    result = requests.post(\n        f\"{RASTER_API_URL}/cog/statistics\",\n        params={\"url\": item[\"assets\"][asset_name][\"href\"]},\n        json=geojson,\n    ).json()\n    return {\n        **result[\"properties\"],\n        \"start_datetime\": item[\"properties\"][\"start_datetime\"],\n    }\n\nWith the function above we can generate the statistics for the AOI.\n\n%%time\nstats = [generate_stats(item, texas_aoi) for item in items]\n\n\nstats[0]\n\n\nimport pandas as pd\n\n\ndef clean_stats(stats_json) -&gt; pd.DataFrame:\n    df = pd.json_normalize(stats_json)\n    df.columns = [col.replace(\"statistics.b1.\", \"\") for col in df.columns]\n    df[\"date\"] = pd.to_datetime(df[\"start_datetime\"])\n    return df\n\n\ndf = clean_stats(stats)\ndf.head(5)"
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-data-as-a-time-series",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#visualizing-the-data-as-a-time-series",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "Visualizing the Data as a Time Series",
     "text": "Visualizing the Data as a Time Series\nWe can now explore the SEDAC population density dataset time series available for the Texas, Dallas area of USA. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Population density over the years\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"Population density\")\nplt.title(\"Population density over Texas, Dallas (2000-2020)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
   },
   {
     "objectID": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#summary",
     "href": "user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.html#summary",
-    "title": "SEDAC Gridded Population of the World: Population Density, v4.11",
+    "title": "SEDAC Gridded World Population Density",
     "section": "Summary",
     "text": "Summary\nIn this notebook we have successfully explored, analysed and visualized STAC collection for SEDAC population density dataset."
   },
@@ -751,112 +751,112 @@
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is ODIAC CO₂ emissions version 2022.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#approach",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#approach",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. Collection processed in this notebook is ODIAC CO₂ emissions version 2022.\nPass the STAC item into raster API /stac/tilejson.json endpoint\nWe’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using folium.plugins.DualMap\nAfter the visualization, we’ll perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#about-the-data",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#about-the-data",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "About the Data",
     "text": "About the Data\nThe Open-Data Inventory for Anthropogenic Carbon dioxide (ODIAC) is a high-spatial resolution global emission data product of CO₂ emissions from fossil fuel combustion (Oda and Maksyutov, 2011). ODIAC pioneered the combined use of space-based nighttime light data and individual power plant emission/location profiles to estimate the global spatial extent of fossil fuel CO₂ emissions. With the innovative emission modeling approach, ODIAC achieved the fine picture of global fossil fuel CO₂ emissions at a 1x1km."
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#querying-the-stac-api",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#querying-the-stac-api",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "Querying the STAC API",
     "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n# Name of the collection for ODIAC dataset. \ncollection_name = \"odiac-ffco2-monthgrid-v2022\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under summaries we see that the data is available from January 2000 to December 2021. By looking at the dashboard:time density we observe that the periodic frequency of these observations is monthly.\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\nitems[0]\n\nThis makes sense as there are 22 years between 2000 - 2021, with 12 months per year, meaning 264 records in total.\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#exploring-changes-in-carbon-dioxide-co₂-levels-using-the-raster-api",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API",
     "text": "Exploring Changes in Carbon Dioxide (CO₂) levels using the Raster API\nWe will explore changes in fossil fuel emissions in urban egions. In this notebook, we’ll explore the impacts of these emissions and explore these changes over time. We’ll then visualize the outputs on a map using folium.\n\n# to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"properties\"][\"start_datetime\"][:7]: item for item in items} \nasset_name = \"co2-emissions\"\n\n\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this twice, once for January 2020 and again for January 2000, so that we can visualize each event independently.\n\ncolor_map = \"rainbow\" # please select the color ramp from matplotlib library.\njanuary_2020_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2020-01']['collection']}&item={items['2020-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2020_tile\n\n\njanuary_2000_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items['2000-01']['collection']}&item={items['2000-01']['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\njanuary_2000_tile"
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-co₂-emissions",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-co₂-emissions",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "Visualizing CO₂ emissions",
     "text": "Visualizing CO₂ emissions\n\n# We'll import folium to map and folium.plugins to allow mapping side-by-side\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for CO₂ Layer\nmap_ = folium.plugins.DualMap(location=(34, -118), zoom_start=6)\n\n# December 2001\nmap_layer_2020 = TileLayer(\n    tiles=january_2020_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2020.add_to(map_.m1)\n\n# December 2021\nmap_layer_2000 = TileLayer(\n    tiles=january_2000_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=0.8,\n)\nmap_layer_2000.add_to(map_.m2)\n\n# visualising the map\nmap_"
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#section",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#section",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "",
     "text": "# Texas, USA\ntexas_aoi = {\n    \"type\": \"Feature\",\n    \"properties\": {},\n    \"geometry\": {\n        \"coordinates\": [\n            [\n                # [13.686159004559698, -21.700046934333145],\n                # [13.686159004559698, -23.241974326585833],\n                # [14.753560168039911, -23.241974326585833],\n                # [14.753560168039911, -21.700046934333145],\n                # [13.686159004559698, -21.700046934333145],\n                [-95, 29],\n                [-95, 33],\n                [-104, 33],\n                [-104,29],\n                [-95, 29]\n            ]\n        ],\n        \"type\": \"Polygon\",\n    },\n}\n\n\n# We'll plug in the coordinates for a location\n# central to the study area and a reasonable zoom level\n\nimport folium\n\naoi_map = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=6,\n)\n\nfolium.GeoJson(texas_aoi, name=\"Texas, USA\").add_to(aoi_map)\naoi_map\n\n\n# Check total number of items available\nitems = requests.get(\n    f\"{STAC_API_URL}/collections/{collection_name}/items?limit=300\"\n).json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Explore one item to see what it contains\nitems[0]\n\n\n# the bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection\ndef generate_stats(item, geojson):\n    result = requests.post(\n        f\"{RASTER_API_URL}/cog/statistics\",\n        params={\"url\": item[\"assets\"][asset_name][\"href\"]},\n        json=geojson,\n    ).json()\n    return {\n        **result[\"properties\"],\n        \"start_datetime\": item[\"properties\"][\"start_datetime\"],\n    }\n\nWith the function above we can generate the statistics for the AOI.\n\n%%time\nstats = [generate_stats(item, texas_aoi) for item in items]\n\n\nstats[0]\n\n\nimport pandas as pd\n\n\ndef clean_stats(stats_json) -&gt; pd.DataFrame:\n    df = pd.json_normalize(stats_json)\n    df.columns = [col.replace(\"statistics.b1.\", \"\") for col in df.columns]\n    df[\"date\"] = pd.to_datetime(df[\"start_datetime\"])\n    return df\n\n\ndf = clean_stats(stats)\ndf.head(5)"
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-the-data-as-a-time-series",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#visualizing-the-data-as-a-time-series",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "Visualizing the Data as a Time Series",
     "text": "Visualizing the Data as a Time Series\nWe can now explore the ODIAC fossil fuel emission time series available (January 2000 -December 2021) for the Texas, Dallas area of USA. We can plot the data set using the code below:\n\nimport matplotlib.pyplot as plt\n\nfig = plt.figure(figsize=(20, 10))\n\n\nplt.plot(\n    df[\"date\"],\n    df[\"max\"],\n    color=\"red\",\n    linestyle=\"-\",\n    linewidth=0.5,\n    label=\"Max monthly CO₂ emissions\",\n)\n\nplt.legend()\nplt.xlabel(\"Years\")\nplt.ylabel(\"CO2 emissions gC/m2/d\")\nplt.title(\"CO2 emission Values for Texas, Dallas (2000-2021)\")\n\n\nprint(items[2][\"properties\"][\"start_datetime\"])\n\n\noctober_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[2]['collection']}&item={items[2]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\",\n).json()\noctober_tile\n\n\n# Use bbox initial zoom and map\n# Set up a map located w/in event bounds\nimport folium\n\naoi_map_bbox = Map(\n    tiles=\"OpenStreetMap\",\n    location=[\n        30,-100\n    ],\n    zoom_start=8,\n)\n\nmap_layer = TileLayer(\n    tiles=october_tile[\"tiles\"][0],\n    attr=\"GHG\", opacity = 0.5\n)\n\nmap_layer.add_to(aoi_map_bbox)\n\naoi_map_bbox"
   },
   {
     "objectID": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#summary",
     "href": "user_data_notebooks/odiac-ffco2-monthgrid-v2022_User_Notebook.html#summary",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions Version 2022",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
     "section": "Summary",
     "text": "Summary\nIn this notebook we have successfully explored, analysed and visualized STAC collecetion for ODIAC C02 fossisl fuel emission (2022)."
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Earth Surface Mineral Dust Source Investigation (EMIT) methane emission plumes data product.\nPass the STAC item into the raster API /stac/tilejson.json endpoint.\nUsing folium.Map, visualize the plumes.\nAfter the visualization, perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#approach",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#approach",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "",
     "text": "Identify available dates and temporal frequency of observations for the given collection using the GHGC API /stac endpoint. The collection processed in this notebook is the Earth Surface Mineral Dust Source Investigation (EMIT) methane emission plumes data product.\nPass the STAC item into the raster API /stac/tilejson.json endpoint.\nUsing folium.Map, visualize the plumes.\nAfter the visualization, perform zonal statistics for a given polygon."
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#about-the-data",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#about-the-data",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "About the Data",
     "text": "About the Data\nThe EMIT instrument builds upon NASA’s long history of developing advanced imaging spectrometers for new science and applications. EMIT launched to the International Space Station (ISS) on July 14, 2022. The data shows high-confidence research grade methane plumes from point source emitters - updated as they are identified - in keeping with JPL Open Science and Open Data policy."
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#querying-the-stac-api",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#querying-the-stac-api",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "Querying the STAC API",
     "text": "Querying the STAC API\n\nimport requests\nfrom folium import Map, TileLayer\nfrom pystac_client import Client\n\n\n# Provide STAC and RASTER API endpoints\nSTAC_API_URL = \"http://ghg.center/api/stac\"\nRASTER_API_URL = \"https://ghg.center/api/raster\"\n\n#Please use the collection name similar to the one used in STAC collection.\n\n# Name of the collection for methane emission plumes. \ncollection_name = \"emit-ch4plume-v1\"\n\n\n# Fetching the collection from STAC collections using appropriate endpoint.\ncollection = requests.get(f\"{STAC_API_URL}/collections/{collection_name}\").json()\ncollection\n\nExamining the contents of our collection under the temporal variable, we note that data is available from August 2022 to May 2023. By looking at the dashboard: time density, we can see that observations are conducted daily and non-periodically (i.e., there are plumes emissions for multiple places on the same dates).\n\n# Check total number of items available\nitems = requests.get(f\"{STAC_API_URL}/collections/{collection_name}/items?limit=500\").json()[\"features\"]\nprint(f\"Found {len(items)} items\")\n\n\n# Examining the first item in the collection\nitems[0]\n\nBelow, we are entering the minimum and maximum values to provide our upper and lower bounds in rescale_values."
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#exploring-methane-emission-plumes-ch₄-using-the-raster-api",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#exploring-methane-emission-plumes-ch₄-using-the-raster-api",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "Exploring Methane Emission Plumes (CH₄) using the Raster API",
     "text": "Exploring Methane Emission Plumes (CH₄) using the Raster API\nIn this notebook, we will explore global methane emission plumes from point sources. We will visualize the outputs on a map using folium.\n\n# To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)\nitems = {item[\"id\"]: item for item in items} \nasset_name = \"ch4-plume-emissions\"\n\n\n# Fetching the min and max values for a specific item\nrescale_values = {\"max\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"max\"], \"min\":items[list(items.keys())[0]][\"assets\"][asset_name][\"raster:bands\"][0][\"histogram\"][\"min\"]}\n\nNow we will pass the item id, collection name, and rescaling_factor to the Raster API endpoint. We will do this for only one item so that we can visualize the event.\n\ncolor_map = \"magma\"\nmethane_plume_tile = requests.get(\n    f\"{RASTER_API_URL}/stac/tilejson.json?collection={items[list(items.keys())[0]]['collection']}&item={items[list(items.keys())[0]]['id']}\"\n    f\"&assets={asset_name}\"\n    f\"&color_formula=gamma+r+1.05&colormap_name={color_map}\"\n    f\"&rescale={rescale_values['min']},{rescale_values['max']}\", \n).json()\nmethane_plume_tile"
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#visualizing-ch₄-emission-plume",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#visualizing-ch₄-emission-plume",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "Visualizing CH₄ Emission Plume",
     "text": "Visualizing CH₄ Emission Plume\n\n# We will import folium to map and folium.plugins to allow side-by-side mapping\nimport folium\nimport folium.plugins\n\n# Set initial zoom and center of map for plume Layer\nmap_ = folium.Map(location=(methane_plume_tile[\"center\"][1], methane_plume_tile[\"center\"][0]), zoom_start=13)\n\n# December 2001\nmap_layer = TileLayer(\n    tiles=methane_plume_tile[\"tiles\"][0],\n    attr=\"GHG\",\n    opacity=1,\n)\nmap_layer.add_to(map_)\n\n# visualising the map\nmap_"
   },
   {
     "objectID": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#summary",
     "href": "user_data_notebooks/emit-ch4plume-v1_User_Notebook.html#summary",
-    "title": "EMIT Methane Emission Plumes",
+    "title": "EMIT Methane Point Source Plume Complexes",
     "section": "Summary",
     "text": "Summary\nIn this notebook we have successfully explored, analyzed, and visualized the STAC collection for EMIT methane emission plumes."
   },
