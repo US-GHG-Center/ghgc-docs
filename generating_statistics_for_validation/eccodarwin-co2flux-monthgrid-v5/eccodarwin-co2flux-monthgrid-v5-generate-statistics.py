@@ -56,7 +56,7 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("data/eccodarwin-co2flux-monthgrid-v5/*.nc", recursive=True)
+tif_files = glob("../../data/eccodarwin-co2flux-monthgrid-v5/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
@@ -194,44 +194,41 @@ with open("overall_stats.json", "w") as fp:
 
 
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-# plt.Figure(figsize=(10, 10))
-# temp_df = pd.DataFrame()
-# for key_value in full_data_df_netcdf.index.values:
-#     if key_value[0].startswith("GEOS_XCO2PREC_"):
-#         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+
 sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
-# temp_df = pd.DataFrame()
-# for key_value in full_data_df_cog.index.values:
-#     if key_value[0].startswith("GEOS_XCO2PREC_"):
-#         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
 
-temp_df = pd.DataFrame()
+temp_df_1 = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
     if key_value.startswith("CO2_flux_2020"):
-        temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
+        temp_df_1[key_value] = summary_dict_netcdf[key_value]
+temp_df_1 = temp_df_1.T
+temp_df_1.sort_index(ascending = True, inplace=True)
 
 sns.lineplot(
-    data=temp_df,
+    data=temp_df_1,
     ax=ax[1][0],
 )
 ax[1][0].set_title("plot for CO2 Flux variable for 2020 raw data")
 ax[1][0].set_xlabel("Months")
+ax[1][0].tick_params(labelrotation=90)
 
-temp_df = pd.DataFrame()
+temp_df_2 = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
     if key_value.startswith("CO2_2020"):
-        temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
+        temp_df_2[key_value] = summary_dict_cog[key_value]
+temp_df_2 = temp_df_2.T
+temp_df_2.sort_index(ascending = True, inplace=True)
 sns.lineplot(
-    data=temp_df,
+    data = temp_df_2,
     ax=ax[1][1],
 )
 ax[1][1].set_title("plot for CO2 flux variable for 2020 cog data")
 ax[1][1].set_xlabel("Months")
-
+ax[1][1].tick_params(labelrotation=90)
 
 plt.savefig("stats_summary.png")
 plt.show()
