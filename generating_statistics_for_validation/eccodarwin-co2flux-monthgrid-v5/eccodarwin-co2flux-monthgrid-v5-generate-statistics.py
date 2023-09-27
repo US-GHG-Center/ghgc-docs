@@ -104,7 +104,7 @@ for key in keys:
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 # Iterate over each TIFF file
 for tif_file in tif_files:
-    file_name = pathlib.Path(tif_file).name[:-4].split("_")
+    file_name = pathlib.Path(tif_file).name[:-3].split("_")
 
     xds = xarray.open_dataset(tif_file, engine="netcdf4")
     xds = xds.rename({"y": "latitude", "x": "longitude"})
@@ -193,45 +193,56 @@ with open("overall_stats.json", "w") as fp:
     json.dump(overall_stats_cog, fp)
 
 
-# fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-# # plt.Figure(figsize=(10, 10))
-# temp_df = pd.DataFrame()
-# for key_value in full_data_df_netcdf.index.values:
-#     if key_value[0].startswith("GEOS_XCO2PREC_"):
-#         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
-# sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-# ax[0][0].set_title("distribution plot for overall raw data")
+fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 
-# temp_df = pd.DataFrame()
-# for key_value in full_data_df_cog.index.values:
-#     if key_value[0].startswith("GEOS_XCO2PREC_"):
-#         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
-# sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-# ax[0][1].set_title("distribution plot for overall cog data")
+sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
+ax[0][0].set_title("distribution plot for overall raw data")
 
-# temp_df = pd.DataFrame()
-# for key_value in summary_dict_netcdf.keys():
-#     if key_value.startswith("XCO2PREC_2016"):
-#         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
+sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
+ax[0][1].set_title("distribution plot for overall cog data")
 
-# sns.lineplot(
-#     data=temp_df,
-#     ax=ax[1][0],
-# )
-# ax[1][0].set_title("plot for XCO2PREC variable for 2016 raw data")
-# ax[1][0].set_xlabel("Months")
+new_order = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+]
+temp_df = pd.DataFrame()
+for key_value in summary_dict_netcdf.keys():
+    if key_value.startswith("CO2_flux_2020"):
+        temp_df[key_value.split("_")[-1]] = summary_dict_netcdf[key_value]
+temp_df = temp_df.T
+temp_df = temp_df.reindex(new_order, axis=0)
 
-# temp_df = pd.DataFrame()
-# for key_value in summary_dict_cog.keys():
-#     if key_value.startswith("XCO2PREC_2016"):
-#         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
-# sns.lineplot(
-#     data=temp_df,
-#     ax=ax[1][1],
-# )
-# ax[1][1].set_title("plot for XCO2PREC variable for 2016 cog data")
-# ax[1][1].set_xlabel("Months")
+sns.lineplot(
+    data=temp_df,
+    ax=ax[1][0],
+)
+ax[1][0].set_title("plot for CO2 Flux variable for 2020 raw data")
+ax[1][0].set_xlabel("Months")
+ax[1][0].tick_params(labelrotation=60)
 
+temp_df = pd.DataFrame()
+for key_value in summary_dict_cog.keys():
+    if key_value.startswith("CO2_2020"):
+        temp_df[key_value.split("_")[-1]] = summary_dict_cog[key_value]
+temp_df = temp_df.T
+temp_df = temp_df.reindex(new_order, axis=0)
+sns.lineplot(
+    data=temp_df,
+    ax=ax[1][1],
+)
+ax[1][1].set_title("plot for CO2 flux variable for 2020 cog data")
+ax[1][1].set_xlabel("Months")
+ax[1][1].tick_params(labelrotation=60)
 
-# plt.savefig("stats_summary.png")
-# plt.show()
+plt.savefig("stats_summary.png")
+plt.show()
