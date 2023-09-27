@@ -228,7 +228,7 @@ sns.lineplot(
 )
 ax[1][0].set_title("plot for CO2 Flux variable for 2020 raw data")
 ax[1][0].set_xlabel("Months")
-ax[1][0].tick_params(labelrotation=90)
+ax[1][0].tick_params(labelrotation=60)
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
