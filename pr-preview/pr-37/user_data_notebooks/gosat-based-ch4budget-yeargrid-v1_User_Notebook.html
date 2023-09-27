@@ -8,7 +8,7 @@
 
 <meta name="author" content="Siddharth Chaudhary, Vishal Gaur">
 <meta name="dcterms.date" content="2023-09-21">
-<meta name="description" content="Annual methane emissions gridded globally at 1° resolution for 2019, version">
+<meta name="description" content="Total and natural methane emissions for 2019 summed to a 1° resolution grid. Methane values for both prior to and after inclusion of GOSAT data to the GEOS-Chem global chemistry transport model, version 1.0">
 
 <title>U.S. Greenhouse Gas Center Documentation - GOSAT-based Top-down Total and Natural Methane Emissions</title>
 <style>
@@ -523,11 +523,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#querying-the-stac-api" id="toc-querying-the-stac-api" class="nav-link" data-scroll-target="#querying-the-stac-api">Querying the STAC API</a></li>
   <li><a href="#exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api" id="toc-exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api">Exploring Changes in GOSAT Methane budgets (CH4) Levels Using the Raster API</a></li>
-  <li><a href="#visualizing-ch₄-emissions" id="toc-visualizing-ch₄-emissions" class="nav-link" data-scroll-target="#visualizing-ch₄-emissions">Visualizing CH₄ emissions</a></li>
+  <li><a href="#visualizing-ch₄-emissions" id="toc-visualizing-ch₄-emissions" class="nav-link" data-scroll-target="#visualizing-ch₄-emissions">Visualizing CH₄ Emissions</a></li>
   </ul></li>
   <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a>
   <ul class="collapse">
-  <li><a href="#visualizing-the-data-as-a-time-series" id="toc-visualizing-the-data-as-a-time-series" class="nav-link" data-scroll-target="#visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
   </ul>
@@ -543,7 +542,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Annual methane emissions gridded globally at 1° resolution for 2019, version
+    Total and natural methane emissions for 2019 summed to a 1° resolution grid. Methane values for both prior to and after inclusion of GOSAT data to the GEOS-Chem global chemistry transport model, version 1.0
   </div>
 </div>
 
@@ -581,47 +580,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
-<p>he NASA Carbon Monitoring System Flux (CMS-Flux) team analyzed remote sensing observations from Japan’s Greenhouse gases Observing SATellite (GOSAT) to produce the global Committee on Earth Observation Satellites (CEOS) CH₄ Emissions data product. They used an analytic Bayesian inversion approach and the GEOS-Chem global chemistry transport model to quantify annual methane (CH₄) emissions and their uncertainties at a spatial resolution of 1° by 1° and then projected these to each country for 2019.</p>
+<p>The NASA Carbon Monitoring System Flux (CMS-Flux) team analyzed remote sensing observations from Japan’s Greenhouse gases Observing SATellite (GOSAT) to produce the global Committee on Earth Observation Satellites (CEOS) CH₄ Emissions data product. They used an analytic Bayesian inversion approach and the GEOS-Chem global chemistry transport model to quantify annual methane (CH₄) emissions and their uncertainties at a spatial resolution of 1° by 1° and then projected these to each country for 2019.</p>
 </section>
 <section id="installing-the-required-libraries" class="level1">
 <h1>Installing the Required Libraries</h1>
 <p>Please run the next cell to install all the required libraries to run the notebook.</p>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install folium</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install rasterstats</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pystac_client</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Requirement already satisfied: requests in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (2.31.0)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (2023.7.22)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (3.1.0)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (1.26.16)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (2023.7.22)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests) (3.4)
 Note: you may need to restart the kernel to use updated packages.
 Requirement already satisfied: folium in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (0.14.0)
-Requirement already satisfied: branca&gt;=0.6.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from folium) (0.6.0)
 Requirement already satisfied: numpy in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from folium) (1.24.3)
 Requirement already satisfied: requests in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from folium) (2.31.0)
 Requirement already satisfied: jinja2&gt;=2.9 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from folium) (3.1.2)
+Requirement already satisfied: branca&gt;=0.6.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from folium) (0.6.0)
 Requirement already satisfied: MarkupSafe&gt;=2.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from jinja2&gt;=2.9-&gt;folium) (2.1.3)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests-&gt;folium) (3.1.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests-&gt;folium) (2023.7.22)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests-&gt;folium) (3.4)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests-&gt;folium) (3.1.0)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests-&gt;folium) (1.26.16)
 Note: you may need to restart the kernel to use updated packages.
 Requirement already satisfied: rasterstats in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (0.19.0)
 Requirement already satisfied: simplejson in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (3.19.1)
 Requirement already satisfied: click&gt;7.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (8.1.3)
+Requirement already satisfied: fiona in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (1.9.4.post1)
+Requirement already satisfied: affine in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (2.4.0)
+Requirement already satisfied: cligj&gt;=0.4 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (0.7.2)
+Requirement already satisfied: shapely in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (2.0.1)
 Requirement already satisfied: rasterio&gt;=1.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (1.3.6)
 Requirement already satisfied: numpy&gt;=1.9 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (1.24.3)
-Requirement already satisfied: affine in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (2.4.0)
-Requirement already satisfied: fiona in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (1.9.4.post1)
-Requirement already satisfied: shapely in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (2.0.1)
-Requirement already satisfied: cligj&gt;=0.4 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterstats) (0.7.2)
-Requirement already satisfied: attrs in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (22.2.0)
-Requirement already satisfied: certifi in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (2023.7.22)
 Requirement already satisfied: setuptools in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (66.0.0)
+Requirement already satisfied: certifi in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (2023.7.22)
 Requirement already satisfied: snuggs&gt;=1.4.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (1.4.7)
+Requirement already satisfied: attrs in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (22.2.0)
 Requirement already satisfied: click-plugins in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from rasterio&gt;=1.0-&gt;rasterstats) (1.1.1)
 Requirement already satisfied: six in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from fiona-&gt;rasterstats) (1.16.0)
 Requirement already satisfied: importlib-metadata in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from fiona-&gt;rasterstats) (6.0.0)
@@ -629,28 +628,28 @@ Requirement already satisfied: pyparsing&gt;=2.1.6 in /Users/vgaur/miniconda3/en
 Requirement already satisfied: zipp&gt;=0.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from importlib-metadata-&gt;fiona-&gt;rasterstats) (3.15.0)
 Note: you may need to restart the kernel to use updated packages.
 Requirement already satisfied: pystac_client in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (0.7.2)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac_client) (2.8.2)
-Requirement already satisfied: requests&gt;=2.28.2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac_client) (2.31.0)
 Requirement already satisfied: pystac[validation]&gt;=1.7.2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac_client) (1.7.3)
+Requirement already satisfied: requests&gt;=2.28.2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac_client) (2.31.0)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac_client) (2.8.2)
 Requirement already satisfied: jsonschema&gt;=4.0.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from pystac[validation]&gt;=1.7.2-&gt;pystac_client) (4.17.3)
 Requirement already satisfied: six&gt;=1.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.2-&gt;pystac_client) (1.16.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (2023.7.22)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (1.26.16)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (3.1.0)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (3.4)
-Requirement already satisfied: attrs&gt;=17.4.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from jsonschema&gt;=4.0.1-&gt;pystac[validation]&gt;=1.7.2-&gt;pystac_client) (22.2.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (3.1.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from requests&gt;=2.28.2-&gt;pystac_client) (2023.7.22)
 Requirement already satisfied: pyrsistent!=0.17.0,!=0.17.1,!=0.17.2,&gt;=0.14.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from jsonschema&gt;=4.0.1-&gt;pystac[validation]&gt;=1.7.2-&gt;pystac_client) (0.19.3)
+Requirement already satisfied: attrs&gt;=17.4.0 in /Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages (from jsonschema&gt;=4.0.1-&gt;pystac[validation]&gt;=1.7.2-&gt;pystac_client) (22.2.0)
 Note: you may need to restart the kernel to use updated packages.</code></pre>
 </div>
 </div>
 <section id="querying-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-stac-api">Querying the STAC API</h2>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> folium <span class="im">import</span> Map, TileLayer</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pystac_client <span class="im">import</span> Client</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="14">
+<div class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://ghg.center/api/stac"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://ghg.center/api/raster"</span></span>
@@ -660,11 +659,11 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for gosat budget methane. </span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"gosat-based-ch4budget-yeargrid-v1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="15">
+<div class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the collection from STAC collections using appropriate endpoint.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <pre><code>{'id': 'gosat-based-ch4budget-yeargrid-v1',
  'type': 'Collection',
  'links': [{'rel': 'items',
@@ -843,8 +842,8 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
  'dashboard:time_density': 'year'}</code></pre>
 </div>
 </div>
-<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2012 to December 2018. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is yearly.</p>
-<div class="cell">
+<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2012 to December 2018. By looking at the <code>dashboard:time density</code>, we observe that the data is available for only one year, i.e.&nbsp;2019.</p>
+<div class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    items_url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items"</span></span>
@@ -866,7 +865,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="16">
+<div class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
@@ -875,10 +874,10 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <pre><code>Found 1 items</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>{'id': 'gosat-based-ch4budget-yeargrid-v1-2019',
  'bbox': [-180.5, -90.5, 179.5, 89.5],
  'type': 'Feature',
@@ -2650,23 +2649,23 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <section id="exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api">Exploring Changes in GOSAT Methane budgets (CH4) Levels Using the Raster API</h2>
 <p>In this notebook, we will explore the impacts of methane emissions and by examining changes over time in urban regions. We will visualize the outputs on a map using <code>folium.</code></p>
-<div class="cell" data-execution_count="18">
+<div class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"prior-total"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="19">
+<div class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values for a specific item</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="27">
+<div class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>items.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <pre><code>dict_keys(['2019-01-01'])</code></pre>
 </div>
 </div>
 <p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this for first January 2019.</p>
-<div class="cell" data-execution_count="28">
+<div class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"rainbow"</span> <span class="co"># please select the color ramp from matplotlib library.</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>january_2019_tile <span class="op">=</span> requests.get(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="st">'2019-01-01'</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="st">'2019-01-01'</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -2675,7 +2674,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>january_2019_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -2688,8 +2687,8 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 </div>
 </section>
 <section id="visualizing-ch₄-emissions" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-ch₄-emissions">Visualizing CH₄ emissions</h2>
-<div class="cell" data-execution_count="32">
+<h2 class="anchored" data-anchor-id="visualizing-ch₄-emissions">Visualizing CH₄ Emissions</h2>
+<div class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will import folium to map and folium.plugins to allow side-by-side mapping</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium.plugins</span>
@@ -2699,12 +2698,12 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># January 2019</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>map_layer_2018 <span class="op">=</span> TileLayer(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>map_layer_2019 <span class="op">=</span> TileLayer(</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>january_2019_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>map_layer_2018.add_to(map_)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>map_layer_2019.add_to(map_)</span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># # January 2012</span></span>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># map_layer_2012 = TileLayer(</span></span>
@@ -2717,7 +2716,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co"># visualising the map</span></span>
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>map_</span>
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2745,7 +2744,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_b5b6ac903477a0182bc74cec7ca9168e {
+                #map_3a8c7082ff6b5a4954f94bfa79f28278 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2759,14 +2758,14 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_b5b6ac903477a0182bc74cec7ca9168e&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_3a8c7082ff6b5a4954f94bfa79f28278&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_b5b6ac903477a0182bc74cec7ca9168e = L.map(
-                &quot;map_b5b6ac903477a0182bc74cec7ca9168e&quot;,
+            var map_3a8c7082ff6b5a4954f94bfa79f28278 = L.map(
+                &quot;map_3a8c7082ff6b5a4954f94bfa79f28278&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -2780,16 +2779,16 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 
         
     
-            var tile_layer_2fed9354f76d5c662670dac9f88d29cb = L.tileLayer(
+            var tile_layer_65c2343340b843169bb9fa21a11789de = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_b5b6ac903477a0182bc74cec7ca9168e);
+            ).addTo(map_3a8c7082ff6b5a4954f94bfa79f28278);
         
     
-            var tile_layer_27470ce8edb8f9cbd9fbbba1bac3ea30 = L.tileLayer(
+            var tile_layer_2b7164bef684eacbd6bce5f5b03dc2b5 = L.tileLayer(
                 &quot;https://1w7hfngnp7.execute-api.us-west-2.amazonaws.com/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=gosat-based-ch4budget-yeargrid-v1\u0026item=gosat-based-ch4budget-yeargrid-v1-2019\u0026assets=prior-total\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=0.0%2C2.121816635131836&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_b5b6ac903477a0182bc74cec7ca9168e);
+            ).addTo(map_3a8c7082ff6b5a4954f94bfa79f28278);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -2800,7 +2799,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <section id="calculating-zonal-statistics" class="level1">
 <h1>Calculating Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas (USA).</p>
-<div class="cell" data-execution_count="33">
+<div class="cell" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Texas, USA</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>texas_aoi <span class="op">=</span> {</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
@@ -2824,7 +2823,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="34">
+<div class="cell" data-execution_count="39">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will plug in the coordinates for a location inside the the polygon and a zoom level</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -2839,7 +2838,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(texas_aoi, name<span class="op">=</span><span class="st">"Texas, USA"</span>).add_to(aoi_map)</span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2867,7 +2866,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_d04631bceb8589188b823706c85d4c0b {
+                #map_dd0cfff9251afdbe3afa594472bdc7b9 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2881,14 +2880,14 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_d04631bceb8589188b823706c85d4c0b&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_dd0cfff9251afdbe3afa594472bdc7b9&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_d04631bceb8589188b823706c85d4c0b = L.map(
-                &quot;map_d04631bceb8589188b823706c85d4c0b&quot;,
+            var map_dd0cfff9251afdbe3afa594472bdc7b9 = L.map(
+                &quot;map_dd0cfff9251afdbe3afa594472bdc7b9&quot;,
                 {
                     center: [30.0, -100.0],
                     crs: L.CRS.EPSG3857,
@@ -2902,35 +2901,35 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 
         
     
-            var tile_layer_cf48f1374b2c66bbfa516d9e631a6add = L.tileLayer(
+            var tile_layer_2fbd90c6df6c0af7a3c4e18b4f510f96 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_d04631bceb8589188b823706c85d4c0b);
+            ).addTo(map_dd0cfff9251afdbe3afa594472bdc7b9);
         
     
 
-        function geo_json_64b51b14047a777a5f7976d4dc205ef6_onEachFeature(feature, layer) {
+        function geo_json_cb2aa0d33b7d1327119b8dcd2d683a54_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_64b51b14047a777a5f7976d4dc205ef6 = L.geoJson(null, {
-                onEachFeature: geo_json_64b51b14047a777a5f7976d4dc205ef6_onEachFeature,
+        var geo_json_cb2aa0d33b7d1327119b8dcd2d683a54 = L.geoJson(null, {
+                onEachFeature: geo_json_cb2aa0d33b7d1327119b8dcd2d683a54_onEachFeature,
             
         });
 
-        function geo_json_64b51b14047a777a5f7976d4dc205ef6_add (data) {
-            geo_json_64b51b14047a777a5f7976d4dc205ef6
+        function geo_json_cb2aa0d33b7d1327119b8dcd2d683a54_add (data) {
+            geo_json_cb2aa0d33b7d1327119b8dcd2d683a54
                 .addData(data)
-                .addTo(map_d04631bceb8589188b823706c85d4c0b);
+                .addTo(map_dd0cfff9251afdbe3afa594472bdc7b9);
         }
-            geo_json_64b51b14047a777a5f7976d4dc205ef6_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+            geo_json_cb2aa0d33b7d1327119b8dcd2d683a54_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
 
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-<div class="cell" data-execution_count="35">
+<div class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span></span>
@@ -2940,10 +2939,10 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <pre><code>Found 1 items</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="36">
+<div class="cell" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the first item</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div class="cell-output cell-output-display" data-execution_count="41">
 <pre><code>{'id': 'gosat-based-ch4budget-yeargrid-v1-2019',
  'bbox': [-180.5, -90.5, 179.5, 89.5],
  'type': 'Feature',
@@ -4710,7 +4709,7 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
  'stac_extensions': []}</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="38">
+<div class="cell" data-execution_count="42">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
@@ -4720,21 +4719,21 @@ Note: you may need to restart the kernel to use updated packages.</code></pre>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    ).json()</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>],</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>],</span>
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the function above we can generate the statistics for the AOI.</p>
-<div class="cell" data-execution_count="39">
+<div class="cell" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, texas_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 18.4 ms, sys: 3.31 ms, total: 21.8 ms
-Wall time: 424 ms</code></pre>
+<pre><code>CPU times: user 12 ms, sys: 1.59 ms, total: 13.6 ms
+Wall time: 234 ms</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="40">
+<div class="cell" data-execution_count="44">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="44">
 <pre><code>{'statistics': {'b1': {'min': 0.0056354631669819355,
    'max': 0.2015725076198578,
    'mean': 0.06195338567097982,
@@ -4760,12 +4759,12 @@ Wall time: 424 ms</code></pre>
    'valid_percent': 66.67,
    'masked_pixels': 12.0,
    'valid_pixels': 24.0,
-   'percentile_2': 0.006904181102290749,
-   'percentile_98': 0.17223968714475626}},
- 'datetime': '2019-01-01T00:00:00+00:00'}</code></pre>
+   'percentile_98': 0.17223968714475626,
+   'percentile_2': 0.006904181102290749}},
+ 'datetime': '2019-01-01'}</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="41">
+<div class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4778,7 +4777,7 @@ Wall time: 424 ms</code></pre>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
 <span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div class="cell-output cell-output-display" data-execution_count="45">
 <div>
 
 
@@ -4801,15 +4800,15 @@ Wall time: 424 ms</code></pre>
 <th data-quarto-table-cell-role="th">valid_percent</th>
 <th data-quarto-table-cell-role="th">masked_pixels</th>
 <th data-quarto-table-cell-role="th">valid_pixels</th>
-<th data-quarto-table-cell-role="th">percentile_2</th>
 <th data-quarto-table-cell-role="th">percentile_98</th>
+<th data-quarto-table-cell-role="th">percentile_2</th>
 <th data-quarto-table-cell-role="th">date</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>2019-01-01T00:00:00+00:00</td>
+<td>2019-01-01</td>
 <td>0.005635</td>
 <td>0.201573</td>
 <td>0.061953</td>
@@ -4824,9 +4823,9 @@ Wall time: 424 ms</code></pre>
 <td>66.67</td>
 <td>12.0</td>
 <td>24.0</td>
-<td>0.006904</td>
 <td>0.17224</td>
-<td>2019-01-01 00:00:00+00:00</td>
+<td>0.006904</td>
+<td>2019-01-01</td>
 </tr>
 </tbody>
 </table>
@@ -4834,49 +4833,20 @@ Wall time: 424 ms</code></pre>
 </div>
 </div>
 </div>
-<section id="visualizing-the-data-as-a-time-series" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</h2>
-<p>We can now explore the gridded methane emission (Domestic Wastewater Treatment &amp; Discharge (5D)) time series (January 2000 -December 2021) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:</p>
-<div class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>],</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>],</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>,</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>,</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Max monthly CO₂ emissions"</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"CH4 emissions Molecules CH₄ cm²/s"</span>)</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"CH4 gridded methane emission from Domestic Wastewater Treatment &amp; Discharge (5D) for Texas, Dallas (2012-202)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
-<pre><code>Text(0.5, 1.0, 'CH4 gridded methane emission from Domestic Wastewater Treatment &amp; Discharge (5D) for Texas, Dallas (2012-202)')</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="gosat-based-ch4budget-yeargrid-v1_User_Notebook_files/figure-html/cell-22-output-2.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">0</span>][<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">0</span>][<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>2019-01-01T00:00:00+00:00</code></pre>
+<pre><code>2019-01-01</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>tile_2016 <span class="op">=</span> requests.get(</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>tile_2016</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tile_2016 <span class="op">=</span> requests.get(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>tile_2016</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
@@ -4889,26 +4859,26 @@ Wall time: 424 ms</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use bbox initial zoom and map</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a map located w/in event bounds</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox <span class="op">=</span> Map(</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">30</span>,<span class="op">-</span><span class="dv">100</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile_2016[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(aoi_map_bbox)</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use bbox initial zoom and map</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a map located w/in event bounds</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox <span class="op">=</span> Map(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">30</span>,<span class="op">-</span><span class="dv">100</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile_2016[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(aoi_map_bbox)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="48">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
@@ -4937,7 +4907,7 @@ Wall time: 424 ms</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_f809d264b2ff7aa1450b9b1db3ee322b {
+                #map_8ef934351c8b1f17f3efd6fc6313a61f {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -4951,14 +4921,14 @@ Wall time: 424 ms</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_f809d264b2ff7aa1450b9b1db3ee322b&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_8ef934351c8b1f17f3efd6fc6313a61f&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_f809d264b2ff7aa1450b9b1db3ee322b = L.map(
-                &quot;map_f809d264b2ff7aa1450b9b1db3ee322b&quot;,
+            var map_8ef934351c8b1f17f3efd6fc6313a61f = L.map(
+                &quot;map_8ef934351c8b1f17f3efd6fc6313a61f&quot;,
                 {
                     center: [30.0, -100.0],
                     crs: L.CRS.EPSG3857,
@@ -4972,25 +4942,24 @@ Wall time: 424 ms</code></pre>
 
         
     
-            var tile_layer_18bafecea6c8b4947dad405efdbeebd9 = L.tileLayer(
+            var tile_layer_80485e646bb9b11c9be9e00c25dd9739 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_f809d264b2ff7aa1450b9b1db3ee322b);
+            ).addTo(map_8ef934351c8b1f17f3efd6fc6313a61f);
         
     
-            var tile_layer_445c039c3fceb6f47798cfa8d4436ea2 = L.tileLayer(
+            var tile_layer_44f2597037f9e7f9ca85beb5093238a4 = L.tileLayer(
                 &quot;https://1w7hfngnp7.execute-api.us-west-2.amazonaws.com/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=gosat-based-ch4budget-yeargrid-v1\u0026item=gosat-based-ch4budget-yeargrid-v1-2019\u0026assets=prior-total\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=0.0%2C2.121816635131836&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_f809d264b2ff7aa1450b9b1db3ee322b);
+            ).addTo(map_8ef934351c8b1f17f3efd6fc6313a61f);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-</section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully explored, analyzed, and visualized the STAC collection for gridded methane emissions.</p>
+<p>In this notebook we have successfully explored, analyzed, and visualized the STAC collection for GOSAT-based Top-down Total and Natural Methane Emissions.</p>
 
 
 </section>
