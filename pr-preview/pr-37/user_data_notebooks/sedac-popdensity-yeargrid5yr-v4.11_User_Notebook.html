@@ -516,13 +516,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#approach" id="toc-approach" class="nav-link active" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
-  <li><a href="#installing-the-required-libraries." id="toc-installing-the-required-libraries." class="nav-link" data-scroll-target="#installing-the-required-libraries.">Installing the required libraries.</a>
+  <li><a href="#installing-the-required-libraries." id="toc-installing-the-required-libraries." class="nav-link" data-scroll-target="#installing-the-required-libraries.">Installing the Required Libraries.</a>
   <ul class="collapse">
   <li><a href="#querying-the-stac-api" id="toc-querying-the-stac-api" class="nav-link" data-scroll-target="#querying-the-stac-api">Querying the STAC API</a></li>
-  <li><a href="#exploring-changes-in-the-world-population-density-using-the-raster-api" id="toc-exploring-changes-in-the-world-population-density-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-the-world-population-density-using-the-raster-api">Exploring Changes in the World Population density using the Raster API</a></li>
-  <li><a href="#visualizing-the-population-density." id="toc-visualizing-the-population-density." class="nav-link" data-scroll-target="#visualizing-the-population-density.">Visualizing the population density.</a></li>
+  <li><a href="#exploring-changes-in-the-world-population-density-using-the-raster-api" id="toc-exploring-changes-in-the-world-population-density-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-the-world-population-density-using-the-raster-api">Exploring Changes in the World Population Density using the Raster API</a></li>
+  <li><a href="#visualizing-population-density." id="toc-visualizing-population-density." class="nav-link" data-scroll-target="#visualizing-population-density.">Visualizing Population Density.</a></li>
   </ul></li>
-  <li><a href="#calculating-the-zonal-statistics" id="toc-calculating-the-zonal-statistics" class="nav-link" data-scroll-target="#calculating-the-zonal-statistics">Calculating the zonal statistics</a>
+  <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a>
   <ul class="collapse">
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#visualizing-the-data-as-a-time-series" id="toc-visualizing-the-data-as-a-time-series" class="nav-link" data-scroll-target="#visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</a></li>
@@ -582,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The SEDAC Gridded Population of the World: Population Density, v4.11 dataset provides annual estimates of population density for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km) grid. These data can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. This population density dataset is provided by NASA’s Socioeconomic Data and Applications Center (SEDAC) hosted by the Center for International Earth Science Information Network (CIESIN) at Columbia University. The population estimates are provided as a continuous raster for the entire globe.</p>
 </section>
 <section id="installing-the-required-libraries." class="level1">
-<h1>Installing the required libraries.</h1>
+<h1>Installing the Required Libraries.</h1>
 <p>Please run the next cell to install all the required libraries to run the notebook.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install requests</span>
@@ -611,7 +611,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Examining the contents of our <code>collection</code> under <code>summaries</code> we see that the data is available from January 2000 to December 2021. By looking at the <code>dashboard:time density</code> we observe that the periodic frequency of these observations is monthly.</p>
+<p>Examining the contents of our <code>collection</code> under <code>summaries</code> we see that the data is available from January 2000 to December 2020. By looking at the <code>dashboard:time density</code> we observe that the data is available for the years 2000, 2005, 2010, 2015, 2020.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
@@ -646,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Below, we are entering the minimum and maximum values to provide our upper and lower bounds in <code>rescale_values</code>.</p>
 </section>
 <section id="exploring-changes-in-the-world-population-density-using-the-raster-api" class="level2">
-<h2 class="anchored" data-anchor-id="exploring-changes-in-the-world-population-density-using-the-raster-api">Exploring Changes in the World Population density using the Raster API</h2>
+<h2 class="anchored" data-anchor-id="exploring-changes-in-the-world-population-density-using-the-raster-api">Exploring Changes in the World Population Density using the Raster API</h2>
 <p>We will explore changes in population density in urban regions. In this notebook, we’ll explore the changes in population density over time. We’ll then visualize the outputs on a map using <code>folium</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># to access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
@@ -677,14 +677,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>january_2000_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="visualizing-the-population-density." class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-the-population-density.">Visualizing the population density.</h2>
+<section id="visualizing-population-density." class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-population-density.">Visualizing Population Density.</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll import folium to map and folium.plugins to allow mapping side-by-side</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium.plugins</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CO₂ Layer</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for population density Layer</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># January 2020</span></span>
@@ -709,8 +709,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="calculating-the-zonal-statistics" class="level1">
-<h1>Calculating the zonal statistics</h1>
+<section id="calculating-zonal-statistics" class="level1">
+<h1>Calculating Zonal Statistics</h1>
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
 <div class="cell">
@@ -803,7 +803,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</h2>
-<p>We can now explore the SEDAC population density dataset time series available for the Texas, Dallas area of USA. We can plot the data set using the code below:</p>
+<p>We can now explore the SEDAC population density dataset time series available for the Texas, Dallas area of USA. We can plot the dataset using the code below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -861,7 +861,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully explored, analysed and visualized STAC collection for SEDAC population density dataset.</p>
+<p>In this notebook we have successfully explored, analyzed and visualized the STAC collection for the SEDAC Gridded World Population Density dataset.</p>
 
 
 </section>
