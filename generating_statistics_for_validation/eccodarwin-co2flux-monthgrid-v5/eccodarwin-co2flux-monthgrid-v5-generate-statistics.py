@@ -201,34 +201,48 @@ ax[0][0].set_title("distribution plot for overall raw data")
 sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
 
-temp_df_1 = pd.DataFrame()
+new_order = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+]
+temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
     if key_value.startswith("CO2_flux_2020"):
-        temp_df_1[key_value] = summary_dict_netcdf[key_value]
-temp_df_1 = temp_df_1.T
-temp_df_1.sort_index(ascending = True, inplace=True)
+        temp_df[key_value.split("_")[-1]] = summary_dict_netcdf[key_value]
+temp_df = temp_df.T
+temp_df = temp_df.reindex(new_order, axis=0)
 
 sns.lineplot(
-    data=temp_df_1,
+    data=temp_df,
     ax=ax[1][0],
 )
 ax[1][0].set_title("plot for CO2 Flux variable for 2020 raw data")
 ax[1][0].set_xlabel("Months")
 ax[1][0].tick_params(labelrotation=90)
 
-temp_df_2 = pd.DataFrame()
+temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
     if key_value.startswith("CO2_2020"):
-        temp_df_2[key_value] = summary_dict_cog[key_value]
-temp_df_2 = temp_df_2.T
-temp_df_2.sort_index(ascending = True, inplace=True)
+        temp_df[key_value.split("_")[-1]] = summary_dict_cog[key_value]
+temp_df = temp_df.T
+temp_df = temp_df.reindex(new_order, axis=0)
 sns.lineplot(
-    data = temp_df_2,
+    data=temp_df,
     ax=ax[1][1],
 )
 ax[1][1].set_title("plot for CO2 flux variable for 2020 cog data")
 ax[1][1].set_xlabel("Months")
-ax[1][1].tick_params(labelrotation=90)
+ax[1][1].tick_params(labelrotation=60)
 
 plt.savefig("stats_summary.png")
 plt.show()
