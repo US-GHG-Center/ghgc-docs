@@ -37,7 +37,7 @@ def get_all_s3_keys(bucket):
     """Get a list of all keys in an S3 bucket."""
     keys = []
 
-    kwargs = {"Bucket": bucket, "Prefix": "tm5-ch4-inverse-flux/"}
+    kwargs = {"Bucket": bucket, "Prefix": "tm5-ch4-inverse-flux-mask"}
     while True:
         resp = s3_client_veda_smce.list_objects_v2(**kwargs)
         for obj in resp["Contents"]:
@@ -55,7 +55,7 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("../../data/tm54dvar-ch4flux-monthgrid-v1/*.nc", recursive=True)
+tif_files = glob("../../data/tm54dvar-ch4flux-mask-monthgrid-v5/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
@@ -80,14 +80,17 @@ for key in keys:
                     # Read the raster data
                     raster_data = src.read(band)
                     raster_data[raster_data == -9999] = np.nan
+                    raster_data[raster_data == 9.969209968386869e36] = np.nan
                     temp = pd.DataFrame(index=idx, data=raster_data)
-                    full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+                    full_data_df_cog = full_data_df_cog._append(
+                        temp, ignore_index=False
+                    )
 
                     # Calculate summary statistics
-                    min_value = np.float64(temp.values.min())
-                    max_value = np.float64(temp.values.max())
-                    mean_value = np.float64(temp.values.mean())
-                    std_value = np.float64(temp.values.std())
+                    min_value = np.float64(np.nanmin(temp.values))
+                    max_value = np.float64(np.nanmax(temp.values))
+                    mean_value = np.float64(np.nanmean(temp.values))
+                    std_value = np.float64(np.nanstd(temp.values))
 
                     if "surface" not in filename_elements:
                         summary_dict_cog[
@@ -130,15 +133,15 @@ for tif_file in tif_files:
                     [x for x in np.arange(1, len(data.lat) + 1)],
                 ]
             )
-
             temp = pd.DataFrame(index=idx, data=data)
+            temp[temp == 9.969209968386869e36] = np.nan
             full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
 
             # Calculate summary statistics
-            min_value = np.float64(temp.values.min())
-            max_value = np.float64(temp.values.max())
-            mean_value = np.float64(temp.values.mean())
-            std_value = np.float64(temp.values.std())
+            min_value = np.float64(np.nanmin(temp.values))
+            max_value = np.float64(np.nanmax(temp.values))
+            mean_value = np.float64(np.nanmean(temp.values))
+            std_value = np.float64(np.nanstd(temp.values))
 
             summary_dict_netcdf[
                 f"{var}_{file_name[2]}_{calendar.month_name[time_increment+1]}"
@@ -149,15 +152,15 @@ for tif_file in tif_files:
                 "std_value": std_value,
             }
 
-overall_stats_netcdf["min_value"] = np.float64(full_data_df_netcdf.values.min())
-overall_stats_netcdf["max_value"] = np.float64(full_data_df_netcdf.values.max())
-overall_stats_netcdf["mean_value"] = np.float64(full_data_df_netcdf.values.mean())
-overall_stats_netcdf["std_value"] = np.float64(full_data_df_netcdf.values.std())
+overall_stats_netcdf["min_value"] = np.float64(np.nanmin(full_data_df_netcdf.values))
+overall_stats_netcdf["max_value"] = np.float64(np.nanmax(full_data_df_netcdf.values))
+overall_stats_netcdf["mean_value"] = np.float64(np.nanmean(full_data_df_netcdf.values))
+overall_stats_netcdf["std_value"] = np.float64(np.nanstd(full_data_df_netcdf.values))
 
-overall_stats_cog["min_value"] = np.float64(full_data_df_cog.values.min())
-overall_stats_cog["max_value"] = np.float64(full_data_df_cog.values.max())
-overall_stats_cog["mean_value"] = np.float64(full_data_df_cog.values.mean())
-overall_stats_cog["std_value"] = np.float64(full_data_df_cog.values.std())
+overall_stats_cog["min_value"] = np.float64(np.nanmin(full_data_df_cog.values))
+overall_stats_cog["max_value"] = np.float64(np.nanmax(full_data_df_cog.values))
+overall_stats_cog["mean_value"] = np.float64(np.nanmean(full_data_df_cog.values))
+overall_stats_cog["std_value"] = np.float64(np.nanstd(full_data_df_cog.values))
 
 
 with open(
@@ -181,45 +184,86 @@ with open("overall_stats.json", "w") as fp:
     fp.write("\n")
     json.dump(overall_stats_cog, fp)
 
-fig, ax = plt.subplots(2, 2, figsize=(15, 15))
-# plt.Figure(figsize=(15, 15))
+
+fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
-    if key_value[0].startswith("emis_fossil"):
+    if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-ax[0][0].set_title("distribution plot for overall raw data")
+ax[0][0].set_title("overall raw data for total ch4")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
-    if key_value[0].startswith("emis_fossil"):
+    if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("overall cog data distribution")
+ax[0][1].set_title("overall cog data for total ch4")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_netcdf.index.values:
+    if key_value[0].startswith("emis_microbial"):
+        temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
+ax[1][0].set_title("overall raw data for microbial")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_cog.index.values:
+    if key_value[0].startswith("emis_microbial"):
+        temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
+ax[1][1].set_title("overall cog data for microbial")
+
+plt.savefig("overall_stats_summary.png")
+plt.show()
+
+
+fig, ax = plt.subplots(2, 2, figsize=(10, 10))
+temp_df = pd.DataFrame()
+for key_value in summary_dict_netcdf.keys():
+    if key_value.startswith("total_2015"):
+        temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
+
+sns.lineplot(
+    data=temp_df,
+    ax=ax[0][0],
+)
+ax[0][0].set_title("total ch4 netCDF data for 2015")
+ax[0][0].set_xlabel("Months")
+
+temp_df = pd.DataFrame()
+for key_value in summary_dict_cog.keys():
+    if key_value.startswith("total_2015"):
+        temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
+sns.lineplot(
+    data=temp_df,
+    ax=ax[0][1],
+)
+ax[0][1].set_title("Total ch4 cog data for 2015")
+ax[0][1].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
-    if key_value.startswith("fossil_1999"):
+    if key_value.startswith("microbial_2015"):
         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
 
 sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("plot for fossil variable for 1999 raw data")
+ax[1][0].set_title("Microbial netCDF data for 2015")
 ax[1][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
-    if key_value.startswith("fossil_1999"):
+    if key_value.startswith("microbial_2015"):
         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("plot for fossil variable for 1999 cog data")
+ax[1][1].set_title("Microbial cog data for 2015")
 ax[1][1].set_xlabel("Months")
 
-
-plt.savefig("stats_summary.png")
+plt.savefig("monthly_stats_summary.png")
 plt.show()
