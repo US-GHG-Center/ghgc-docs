@@ -62,12 +62,12 @@ overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
 for key in keys:
-    try:
-        with raster_io_session:
-            s3_file = s3_client_veda_smce.generate_presigned_url(
-                "get_object", Params={"Bucket": bucket_name, "Key": key}
-            )
-            filename_elements = re.split("[_ ? . ]", s3_file)
+    with raster_io_session:
+        s3_file = s3_client_veda_smce.generate_presigned_url(
+            "get_object", Params={"Bucket": bucket_name, "Key": key}
+        )
+        filename_elements = re.split("[_ ? . ]", s3_file)
+        if "surface" not in filename_elements:
             with rasterio.open(s3_file) as src:
                 for band in src.indexes:
                     idx = pd.MultiIndex.from_product(
@@ -92,17 +92,14 @@ for key in keys:
                     mean_value = np.float64(np.nanmean(temp.values))
                     std_value = np.float64(np.nanstd(temp.values))
 
-                    if "surface" not in filename_elements:
-                        summary_dict_cog[
-                            f"{filename_elements[5]}_{filename_elements[6][:4]}_{calendar.month_name[int(filename_elements[6][4:6])]}"
-                        ] = {
-                            "min_value": min_value,
-                            "max_value": max_value,
-                            "mean_value": mean_value,
-                            "std_value": std_value,
-                        }
-    except:
-        print(s3_file)
+                    summary_dict_cog[
+                        f"{filename_elements[5]}_{filename_elements[6][:4]}_{calendar.month_name[int(filename_elements[6][4:6])]}"
+                    ] = {
+                        "min_value": min_value,
+                        "max_value": max_value,
+                        "mean_value": mean_value,
+                        "std_value": std_value,
+                    }
 
 # Iterate over each TIFF file
 
@@ -114,7 +111,7 @@ for tif_file in tif_files:
     xds = xarray.open_dataset(tif_file, engine="netcdf4")
     xds = xds.rename({"latitude": "lat", "longitude": "lon"})
     xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby("lon")
-    variable = [var for var in xds.data_vars if "global" not in var]
+    variable = ["fossil", "microbial", "total", "pyrogenic"]
     for time_increment in range(0, len(xds.months)):
         for var in variable:
             data = getattr(xds.isel(months=time_increment), var)
@@ -185,40 +182,46 @@ with open("overall_stats.json", "w") as fp:
     json.dump(overall_stats_cog, fp)
 
 
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
+fig, ax = plt.subplots(2, 2, figsize=(13, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-ax[0][0].set_title("overall raw data for total ch4")
+ax[0][0].set_title("Total CH4 Emission \n (Original Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("overall cog data for total ch4")
+ax[0][1].set_title("Total CH4 Emission \n (Transformed COG Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emis_microbial"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
-ax[1][0].set_title("overall raw data for microbial")
+ax[1][0].set_title("Microbial CH4 Emission \n (Original Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emis_microbial"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
-ax[1][1].set_title("overall cog data for microbial")
+ax[1][1].set_title("Microbial CH4 Emission \n (Transformed COG Data)")
 
+fig.tight_layout(pad=0.5)
+fig.suptitle("Overall distribution of data", fontsize=10)
 plt.savefig("overall_stats_summary.png")
 plt.show()
 
 
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
+fig, ax = plt.subplots(2, 2, figsize=(12, 12))
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
     if key_value.startswith("total_2015"):
@@ -228,7 +231,7 @@ sns.lineplot(
     data=temp_df,
     ax=ax[0][0],
 )
-ax[0][0].set_title("total ch4 netCDF data for 2015")
+ax[0][0].set_title("Total CH4 Emission for 2015 \n (Original Data)")
 ax[0][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
@@ -239,7 +242,7 @@ sns.lineplot(
     data=temp_df,
     ax=ax[0][1],
 )
-ax[0][1].set_title("Total ch4 cog data for 2015")
+ax[0][1].set_title("Total CH4 Emission for 2015 \n (Transformed COG Data)")
 ax[0][1].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
@@ -251,7 +254,7 @@ sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("Microbial netCDF data for 2015")
+ax[1][0].set_title("Microbial CH4 Emission for 2015 \n (Original Data)")
 ax[1][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
@@ -262,8 +265,10 @@ sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("Microbial cog data for 2015")
+ax[1][1].set_title("Microbial CH4 Emission for 2015 \n (Transformed COG Data)")
 ax[1][1].set_xlabel("Months")
 
+fig.tight_layout(pad=0.5)
+fig.suptitle("Plot for the Statistical values of data", fontsize=10)
 plt.savefig("monthly_stats_summary.png")
 plt.show()
