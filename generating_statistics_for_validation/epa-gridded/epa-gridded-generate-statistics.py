@@ -14,6 +14,7 @@ import json
 import re
 from rasterio.vrt import WarpedVRT
 import xarray
+import collections
 
 from dotenv import load_dotenv
 
@@ -38,7 +39,10 @@ def get_all_s3_keys(bucket):
     """Get a list of all keys in an S3 bucket."""
     keys = []
 
-    kwargs = {"Bucket": bucket, "Prefix": "GEOS-Carbs/"}
+    kwargs = {
+        "Bucket": bucket,
+        "Prefix": "epa_emissions_express_extension/Express_Extension_emi_",
+    }
     while True:
         resp = s3_client_veda_smce.list_objects_v2(**kwargs)
         for obj in resp["Contents"]:
@@ -56,7 +60,7 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("data/casa-gfed/*.nc", recursive=True)
+tif_files = glob("../../data/epa_emissions_express_extension/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
@@ -72,8 +76,8 @@ for key in keys:
             for band in src.indexes:
                 idx = pd.MultiIndex.from_product(
                     [
-                        ["_".join(filename_elements[4:10])],
-                        [filename_elements[10]],
+                        ["_".join(filename_elements[8:17])],
+                        [filename_elements[-3]],
                         [x for x in np.arange(1, src.height + 1)],
                     ]
                 )
@@ -81,18 +85,16 @@ for key in keys:
                 raster_data = src.read(band)
                 raster_data[raster_data == -9999] = np.nan
                 temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(
-                    temp, ignore_index=False
-                )
+                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
                 # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
+                min_value = np.float64(np.nanmin(temp.values))
+                max_value = np.float64(np.nanmax(temp.values))
+                mean_value = np.float64(np.nanmean(temp.values))
+                std_value = np.float64(np.nanstd(temp.values))
 
                 summary_dict_cog[
-                    f"{'_'.join(filename_elements[4:10])}_{filename_elements[10][:4]}_{calendar.month_name[int(filename_elements[10][4:6])]}"
+                    f"{'_'.join(filename_elements[8:17])}_{filename_elements[-3]}"
                 ] = {
                     "min_value": min_value,
                     "max_value": max_value,
@@ -105,10 +107,10 @@ COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 for tif_file in tif_files:
     file_name = re.split("[_ ? . ]", pathlib.Path(tif_file).name[:-3])
 
-    xds = xarray.open_dataset(f"{FOLDER_NAME}/{name}", engine="netcdf4")
+    xds = xarray.open_dataset(f"{tif_file}", engine="netcdf4")
     xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby("lon")
     variable = [var for var in xds.data_vars]
-    start_time = datetime(int(filename_elements[-2]), 1, 1)
+    # start_time = datetime(int(filename_elements[-3]), 1, 1)
 
     for time_increment in range(0, len(xds.time)):
         for var in variable:
@@ -120,16 +122,16 @@ for tif_file in tif_files:
                     [
                         "_".join(
                             [
-                                file_name[0],
-                                file_name[1],
                                 var,
                                 file_name[2],
-                                file_name[3]
+                                file_name[3],
+                                file_name[4],
+                                file_name[5],
                             ]
                         )
                     ],
                     [file_name[-1]],
-                    [x for x in np.arange(1, len(data.latitude) + 1)],
+                    [x for x in np.arange(1, len(data.lat) + 1)],
                 ]
             )
 
@@ -137,14 +139,12 @@ for tif_file in tif_files:
             full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
 
             # Calculate summary statistics
-            min_value = np.float64(temp.values.min())
-            max_value = np.float64(temp.values.max())
-            mean_value = np.float64(temp.values.mean())
-            std_value = np.float64(temp.values.std())
+            min_value = np.float64(np.nanmin(temp.values))
+            max_value = np.float64(np.nanmax(temp.values))
+            mean_value = np.float64(np.nanmean(temp.values))
+            std_value = np.float64(np.nanstd(temp.values))
 
-            summary_dict_netcdf[
-                f"{var}_{'_'.join(file_name[1:])}_{calendar.month_name[time_increment+1]}"
-            ] = {
+            summary_dict_netcdf[f"{var}_{'_'.join(file_name[2:6])}_{file_name[-1]}"] = {
                 "min_value": min_value,
                 "max_value": max_value,
                 "mean_value": mean_value,
@@ -162,6 +162,8 @@ overall_stats_cog["max_value"] = np.float64(full_data_df_cog.values.max())
 overall_stats_cog["mean_value"] = np.float64(full_data_df_cog.values.mean())
 overall_stats_cog["std_value"] = np.float64(full_data_df_cog.values.std())
 
+summary_dict_cog = collections.OrderedDict(sorted(summary_dict_cog.items()))
+summary_dict_netcdf = collections.OrderedDict(sorted(summary_dict_netcdf.items()))
 
 with open(
     "monthly_stats.json",
@@ -189,41 +191,86 @@ fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 # plt.Figure(figsize=(10, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
-    if "2003" in key_value[1]:
+    if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-ax[0][0].set_title("distribution plot for overall raw data")
+ax[0][0].set_title("overall raw data for agriculture enteric fermentation")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
-    if "2003" in key_value[0]:
+    if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("distribution plot for overall cog data")
+ax[0][1].set_title("overall cog data for agriculture enteric fermentation")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_netcdf.index.values:
+    if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
+        temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
+ax[1][0].set_title("overall raw data for natural gas production")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_cog.index.values:
+    if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
+        temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
+ax[1][1].set_title("overall cog data for natural gas production")
+
+plt.savefig("overall_stats_summary.png")
+plt.show()
+
+x_label = ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]
+fig, ax = plt.subplots(2, 2, figsize=(10, 10))
+temp_df1, temp_df2 = pd.DataFrame(), pd.DataFrame()
+for key_value in summary_dict_netcdf.keys():
+    if key_value.startswith("emi_ch4_3A_Enteric_Fermentation"):
+        temp_df1 = temp_df1._append(summary_dict_netcdf[key_value], ignore_index=True)
+        temp_df2 = temp_df2._append(summary_dict_cog[key_value], ignore_index=True)
+temp_df1["years"] = x_label
+temp_df2["years"] = x_label
+temp_df1.set_index("years", inplace=True)
+temp_df2.set_index("years", inplace=True)
+sns.lineplot(
+    data=temp_df1,
+    ax=ax[0][0],
+)
+ax[0][0].set_title("Enteric_Fermentation for raw data")
+ax[0][0].set_xlabel("Years")
+
+sns.lineplot(
+    data=temp_df2,
+    ax=ax[0][1],
+)
+ax[0][1].set_title("Enteric_Fermentation for cog data")
+ax[0][1].set_xlabel("Years")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
-    if key_value.startswith("XCO2_2016"):
+    if key_value.startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
 
+temp_df["years"] = x_label
+temp_df.set_index("years", inplace=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("plot for XCO2 variable for 2016 raw data")
-ax[1][0].set_xlabel("Months")
+ax[1][0].set_title("Natural_Gas_Production for raw data")
+ax[1][0].set_xlabel("Years")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
-    if key_value.startswith("XCO2_2016"):
+    if key_value.startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
+temp_df["years"] = x_label
+temp_df.set_index("years", inplace=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("plot for XCO2 variable for 2016 cog data")
-ax[1][1].set_xlabel("Months")
+ax[1][1].set_title("Natural_Gas_Production for cog data")
+ax[1][1].set_xlabel("Years")
 
-
-plt.savefig("stats_summary.png")
+plt.savefig("Yearly_stats_summary.png")
 plt.show()
