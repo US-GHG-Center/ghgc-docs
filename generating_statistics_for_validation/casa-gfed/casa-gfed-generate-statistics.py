@@ -62,7 +62,7 @@ summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
-for key in keys:
+for key in keys[:1]:
     with raster_io_session:
         s3_file = s3_client_veda_smce.generate_presigned_url(
             "get_object", Params={"Bucket": bucket_name, "Key": key}
@@ -140,7 +140,7 @@ for tif_file in tif_files:
             std_value = np.float64(temp.values.std())
 
             summary_dict_netcdf[
-                f"{var}_{'_'.join(file_name[1:])}_{calendar.month_name[time_increment+1]}"
+                f"{'_'.join(file_name[1:])}_{var}_{calendar.month_name[time_increment+1]}"
             ] = {
                 "min_value": min_value,
                 "max_value": max_value,
@@ -186,7 +186,7 @@ fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 # plt.Figure(figsize=(10, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
-    if "2003" in key_value[1]:
+    if "NPP" in key_value[0] and "2003" in key_value[1]:
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")

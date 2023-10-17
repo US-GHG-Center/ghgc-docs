@@ -187,41 +187,46 @@ with open("overall_stats.json", "w") as fp:
     json.dump(overall_stats_cog, fp)
 
 
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-# plt.Figure(figsize=(10, 10))
+fig, ax = plt.subplots(2, 2, figsize=(13, 11))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-ax[0][0].set_title("overall raw data for agriculture enteric fermentation")
+ax[0][0].set_title("Agriculture - Enteric Fermentation \n (Original Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("overall cog data for agriculture enteric fermentation")
+ax[0][1].set_title("Agriculture - Enteric Fermentation \n (Transformed COG Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
-ax[1][0].set_title("overall raw data for natural gas production")
+ax[1][0].set_title("Natural Gas-Production \n (Original Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
-ax[1][1].set_title("overall cog data for natural gas production")
+ax[1][1].set_title("Natural Gas-Production \n (Transformed COG data)")
 
+fig.tight_layout(pad=1)
+fig.suptitle("Overall distribution of data", fontsize=12)
 plt.savefig("overall_stats_summary.png")
 plt.show()
 
 x_label = ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
+fig, ax = plt.subplots(2, 2, figsize=(12, 12))
 temp_df1, temp_df2 = pd.DataFrame(), pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
     if key_value.startswith("emi_ch4_3A_Enteric_Fermentation"):
@@ -235,14 +240,14 @@ sns.lineplot(
     data=temp_df1,
     ax=ax[0][0],
 )
-ax[0][0].set_title("Enteric_Fermentation for raw data")
+ax[0][0].set_title("Agriculture - Enteric Fermentation \n (Original Data)")
 ax[0][0].set_xlabel("Years")
 
 sns.lineplot(
     data=temp_df2,
     ax=ax[0][1],
 )
-ax[0][1].set_title("Enteric_Fermentation for cog data")
+ax[0][1].set_title("Agriculture - Enteric Fermentation \n (Transformed COG Data)")
 ax[0][1].set_xlabel("Years")
 
 temp_df = pd.DataFrame()
@@ -256,7 +261,7 @@ sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("Natural_Gas_Production for raw data")
+ax[1][0].set_title("Natural Gas - Production\n (Original Data)")
 ax[1][0].set_xlabel("Years")
 
 temp_df = pd.DataFrame()
@@ -269,8 +274,9 @@ sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("Natural_Gas_Production for cog data")
+ax[1][1].set_title("Natural Gas - Production \n (Transformed COG Data)")
 ax[1][1].set_xlabel("Years")
 
+fig.suptitle("Plot for the Statistical values of data", fontsize=12)
 plt.savefig("Yearly_stats_summary.png")
 plt.show()
