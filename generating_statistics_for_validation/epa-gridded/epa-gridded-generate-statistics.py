@@ -193,7 +193,7 @@ for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][0])
 ax[0][0].set_title("Agriculture - Enteric Fermentation \n (Original Data)")
 
 temp_df = pd.DataFrame()
@@ -201,7 +201,7 @@ for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emi_ch4_3A_Enteric_Fermentation"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][1])
 ax[0][1].set_title("Agriculture - Enteric Fermentation \n (Transformed COG Data)")
 
 temp_df = pd.DataFrame()
@@ -209,7 +209,7 @@ for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][0])
 ax[1][0].set_title("Natural Gas-Production \n (Original Data)")
 
 temp_df = pd.DataFrame()
@@ -217,7 +217,7 @@ for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emi_ch4_1B2b_Natural_Gas_Production"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][1])
 ax[1][1].set_title("Natural Gas-Production \n (Transformed COG data)")
 
 fig.tight_layout(pad=1)

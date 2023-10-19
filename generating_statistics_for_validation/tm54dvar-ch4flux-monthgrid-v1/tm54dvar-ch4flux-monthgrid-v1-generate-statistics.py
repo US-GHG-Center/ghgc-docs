@@ -188,7 +188,7 @@ for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][0])
 ax[0][0].set_title("Total CH4 Emission \n (Original Data)")
 
 temp_df = pd.DataFrame()
@@ -196,7 +196,7 @@ for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emis_total"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][1])
 ax[0][1].set_title("Total CH4 Emission \n (Transformed COG Data)")
 
 temp_df = pd.DataFrame()
@@ -204,7 +204,7 @@ for key_value in full_data_df_netcdf.index.values:
     if key_value[0].startswith("emis_microbial"):
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][0])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][0])
 ax[1][0].set_title("Microbial CH4 Emission \n (Original Data)")
 
 temp_df = pd.DataFrame()
@@ -212,7 +212,7 @@ for key_value in full_data_df_cog.index.values:
     if key_value[0].startswith("emis_microbial"):
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 temp_df = temp_df.to_numpy().flatten()
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[1][1])
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][1])
 ax[1][1].set_title("Microbial CH4 Emission \n (Transformed COG Data)")
 
 fig.tight_layout(pad=0.5)
