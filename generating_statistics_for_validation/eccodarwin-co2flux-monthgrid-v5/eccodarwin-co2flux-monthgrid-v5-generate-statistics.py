@@ -195,10 +195,10 @@ with open("overall_stats.json", "w") as fp:
 
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 
-sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
+sns.histplot(data=full_data_df_netcdf.to_numpy().flatten(), kde=False, bins=100, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
-sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
+sns.histplot(data=full_data_df_cog.to_numpy().flatten(), kde=False, bins=100, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
 
 new_order = [

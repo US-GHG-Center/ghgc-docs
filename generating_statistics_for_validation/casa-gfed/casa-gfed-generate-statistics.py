@@ -38,7 +38,7 @@ def get_all_s3_keys(bucket):
     """Get a list of all keys in an S3 bucket."""
     keys = []
 
-    kwargs = {"Bucket": bucket, "Prefix": "geos-oco2/"}
+    kwargs = {"Bucket": bucket, "Prefix": "GEOS-Carbs/"}
     while True:
         resp = s3_client_veda_smce.list_objects_v2(**kwargs)
         for obj in resp["Contents"]:
@@ -56,78 +56,77 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("data/oco2geos-co2-daygrid-v10r/*.nc4", recursive=True)
+tif_files = glob("data/casa-gfed/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
-for key in keys:
+for key in keys[:1]:
     with raster_io_session:
         s3_file = s3_client_veda_smce.generate_presigned_url(
             "get_object", Params={"Bucket": bucket_name, "Key": key}
         )
         filename_elements = re.split("[_ ? . ]", s3_file)
-        try:
-            with rasterio.open(s3_file) as src:
-                for band in src.indexes:
-                    idx = pd.MultiIndex.from_product(
-                        [
-                            ["_".join(filename_elements[4:9])],
-                            [filename_elements[9]],
-                            [x for x in np.arange(1, src.height + 1)],
-                        ]
-                    )
-                    # Read the raster data
-                    raster_data = src.read(band)
-                    raster_data[raster_data == -9999] = np.nan
-                    temp = pd.DataFrame(index=idx, data=raster_data)
-                    full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
+        with rasterio.open(s3_file) as src:
+            for band in src.indexes:
+                idx = pd.MultiIndex.from_product(
+                    [
+                        ["_".join(filename_elements[4:10])],
+                        [filename_elements[10]],
+                        [x for x in np.arange(1, src.height + 1)],
+                    ]
+                )
+                # Read the raster data
+                raster_data = src.read(band)
+                raster_data[raster_data == -9999] = np.nan
+                temp = pd.DataFrame(index=idx, data=raster_data)
+                full_data_df_cog = full_data_df_cog._append(
+                    temp, ignore_index=False
+                )
 
-                    # Calculate summary statistics
-                    min_value = np.float64(temp.values.min())
-                    max_value = np.float64(temp.values.max())
-                    mean_value = np.float64(temp.values.mean())
-                    std_value = np.float64(temp.values.std())
+                # Calculate summary statistics
+                min_value = np.float64(temp.values.min())
+                max_value = np.float64(temp.values.max())
+                mean_value = np.float64(temp.values.mean())
+                std_value = np.float64(temp.values.std())
 
-                    summary_dict_cog[
-                        f"{filename_elements[5]}_{filename_elements[9][:4]}_{calendar.month_name[int(filename_elements[9][4:6])]}_{filename_elements[9][6:]}"
-                    ] = {
-                        "min_value": min_value,
-                        "max_value": max_value,
-                        "mean_value": mean_value,
-                        "std_value": std_value,
-                    }
-        except:
-            print(s3_file)
+                summary_dict_cog[
+                    f"{'_'.join(filename_elements[4:10])}_{filename_elements[10][:4]}_{calendar.month_name[int(filename_elements[10][4:6])]}"
+                ] = {
+                    "min_value": min_value,
+                    "max_value": max_value,
+                    "mean_value": mean_value,
+                    "std_value": std_value,
+                }
 
 COG_PROFILE = {"driver": "COG", "compress": "DEFLATE"}
 # Iterate over each TIFF file
 for tif_file in tif_files:
-    file_name = pathlib.Path(tif_file).name[:-4].split("_")
+    file_name = re.split("[_ ? . ]", pathlib.Path(tif_file).name[:-3])
 
     xds = xarray.open_dataset(tif_file, engine="netcdf4")
-    xds = xds.assign_coords(lon=(((xds.lon + 180) % 360) - 180)).sortby("lon")
+    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby("longitude")
     variable = [var for var in xds.data_vars]
     for time_increment in range(0, len(xds.time)):
-        for var in variable:
+        for var in variable[:-1]:
             data = getattr(xds.isel(time=time_increment), var)
-            data = data.isel(lat=slice(None, None, -1))
+            data = data.isel(latitude=slice(None, None, -1))
             idx = pd.MultiIndex.from_product(
                 [
                     [
                         "_".join(
                             [
+                                file_name[0],
                                 file_name[1],
                                 var,
                                 file_name[2],
-                                file_name[3],
-                                file_name[-1],
+                                file_name[3]
                             ]
                         )
                     ],
-                    [file_name[-2]],
-                    [x for x in np.arange(1, len(data.lat) + 1)],
+                    [file_name[-1]],
+                    [x for x in np.arange(1, len(data.latitude) + 1)],
                 ]
             )
 
@@ -141,7 +140,7 @@ for tif_file in tif_files:
             std_value = np.float64(temp.values.std())
 
             summary_dict_netcdf[
-                f"{var}_{file_name[-2][:4]}_{calendar.month_name[int(file_name[-2][4:6])]}_{file_name[-2][6:]}"
+                f"{'_'.join(file_name[1:])}_{var}_{calendar.month_name[time_increment+1]}"
             ] = {
                 "min_value": min_value,
                 "max_value": max_value,
@@ -187,14 +186,14 @@ fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 # plt.Figure(figsize=(10, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
-    if key_value[0].startswith("GEOS_XCO2_"):
+    if "NPP" in key_value[0] and "2003" in key_value[1]:
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
 ax[0][0].set_title("distribution plot for overall raw data")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
-    if key_value[0].startswith("GEOS_XCO2_"):
+    if "2003" in key_value[0]:
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
 sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
 ax[0][1].set_title("distribution plot for overall cog data")
