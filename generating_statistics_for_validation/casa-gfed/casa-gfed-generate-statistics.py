@@ -56,13 +56,13 @@ def get_all_s3_keys(bucket):
 keys = get_all_s3_keys(bucket_name)
 
 # List all TIFF files in the folder
-tif_files = glob("data/casa-gfed/*.nc", recursive=True)
+tif_files = glob("../../data/casa-gfed/*.nc", recursive=True)
 session = rasterio.env.Env()
 summary_dict_netcdf, summary_dict_cog = {}, {}
 overall_stats_netcdf, overall_stats_cog = {}, {}
 full_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()
 
-for key in keys[:1]:
+for key in keys:
     with raster_io_session:
         s3_file = s3_client_veda_smce.generate_presigned_url(
             "get_object", Params={"Bucket": bucket_name, "Key": key}
@@ -81,15 +81,13 @@ for key in keys[:1]:
                 raster_data = src.read(band)
                 raster_data[raster_data == -9999] = np.nan
                 temp = pd.DataFrame(index=idx, data=raster_data)
-                full_data_df_cog = full_data_df_cog._append(
-                    temp, ignore_index=False
-                )
+                full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)
 
                 # Calculate summary statistics
-                min_value = np.float64(temp.values.min())
-                max_value = np.float64(temp.values.max())
-                mean_value = np.float64(temp.values.mean())
-                std_value = np.float64(temp.values.std())
+                min_value = np.float64(np.nanmin(temp.values))
+                max_value = np.float64(np.nanmax(temp.values))
+                mean_value = np.float64(np.nanmean(temp.values))
+                std_value = np.float64(np.nanstd(temp.values))
 
                 summary_dict_cog[
                     f"{'_'.join(filename_elements[4:10])}_{filename_elements[10][:4]}_{calendar.month_name[int(filename_elements[10][4:6])]}"
@@ -106,7 +104,9 @@ for tif_file in tif_files:
     file_name = re.split("[_ ? . ]", pathlib.Path(tif_file).name[:-3])
 
     xds = xarray.open_dataset(tif_file, engine="netcdf4")
-    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby("longitude")
+    xds = xds.assign_coords(longitude=(((xds.longitude + 180) % 360) - 180)).sortby(
+        "longitude"
+    )
     variable = [var for var in xds.data_vars]
     for time_increment in range(0, len(xds.time)):
         for var in variable[:-1]:
@@ -117,11 +117,12 @@ for tif_file in tif_files:
                     [
                         "_".join(
                             [
-                                file_name[0],
                                 file_name[1],
                                 var,
                                 file_name[2],
-                                file_name[3]
+                                file_name[3],
+                                file_name[4],
+                                file_name[5],
                             ]
                         )
                     ],
@@ -134,13 +135,13 @@ for tif_file in tif_files:
             full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)
 
             # Calculate summary statistics
-            min_value = np.float64(temp.values.min())
-            max_value = np.float64(temp.values.max())
-            mean_value = np.float64(temp.values.mean())
-            std_value = np.float64(temp.values.std())
+            min_value = np.float64(np.nanmin(temp.values))
+            max_value = np.float64(np.nanmax(temp.values))
+            mean_value = np.float64(np.nanmean(temp.values))
+            std_value = np.float64(np.nanstd(temp.values))
 
             summary_dict_netcdf[
-                f"{'_'.join(file_name[1:])}_{var}_{calendar.month_name[time_increment+1]}"
+                f"{'_'.join([file_name[1],var,file_name[2],file_name[3],file_name[4],file_name[5]])}_{file_name[6]}_{calendar.month_name[time_increment+1]}"
             ] = {
                 "min_value": min_value,
                 "max_value": max_value,
@@ -181,46 +182,93 @@ with open("overall_stats.json", "w") as fp:
     fp.write("\n")
     json.dump(overall_stats_cog, fp)
 
-
-fig, ax = plt.subplots(2, 2, figsize=(10, 10))
-# plt.Figure(figsize=(10, 10))
+fig, ax = plt.subplots(2, 2, figsize=(13, 10))
 temp_df = pd.DataFrame()
 for key_value in full_data_df_netcdf.index.values:
     if "NPP" in key_value[0] and "2003" in key_value[1]:
         temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][0])
-ax[0][0].set_title("distribution plot for overall raw data")
+temp_df = temp_df.to_numpy().flatten()
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][0])
+ax[0][0].set_title("NPP Emission \n (Original Data)")
 
 temp_df = pd.DataFrame()
 for key_value in full_data_df_cog.index.values:
-    if "2003" in key_value[0]:
+    if "NPP" in key_value[0] and "2003" in key_value[1]:
         temp_df = temp_df._append(full_data_df_cog.loc[key_value])
-sns.histplot(data=temp_df, kde=False, bins=10, legend=False, ax=ax[0][1])
-ax[0][1].set_title("distribution plot for overall cog data")
+temp_df = temp_df.to_numpy().flatten()
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[0][1])
+ax[0][1].set_title("NPP Emission \n (Transformed COG Data)")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_netcdf.index.values:
+    if "FIRE" in key_value[0] and "2003" in key_value[1]:
+        temp_df = temp_df._append(full_data_df_netcdf.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][0])
+ax[1][0].set_title("FIRE Emission \n (Original Data)")
+
+temp_df = pd.DataFrame()
+for key_value in full_data_df_cog.index.values:
+    if "FIRE" in key_value[0] and "2003" in key_value[1]:
+        temp_df = temp_df._append(full_data_df_cog.loc[key_value])
+temp_df = temp_df.to_numpy().flatten()
+sns.histplot(data=temp_df, kde=False, bins=100, legend=False, ax=ax[1][1])
+ax[1][1].set_title("FIRE Emission \n (Transformed COG Data)")
+
+fig.tight_layout(pad=0.5)
+fig.suptitle("Overall distribution of data", fontsize=10)
+plt.savefig("overall_stats_summary.png")
+plt.show()
+
+
+fig, ax = plt.subplots(2, 2, figsize=(12, 12))
+temp_df = pd.DataFrame()
+for key_value in summary_dict_netcdf.keys():
+    if key_value.startswith("CASAGFED3v3_NPP_Flux_Monthly_x720_y360_2003"):
+        temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
+
+sns.lineplot(
+    data=temp_df,
+    ax=ax[0][0],
+)
+ax[0][0].set_title("NPP Emission for 2003 \n (Original Data)")
+ax[0][0].set_xlabel("Months")
+
+temp_df = pd.DataFrame()
+for key_value in summary_dict_cog.keys():
+    if key_value.startswith("CASAGFED3v3_NPP_Flux_Monthly_x720_y360_2003"):
+        temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
+sns.lineplot(
+    data=temp_df,
+    ax=ax[0][1],
+)
+ax[0][1].set_title("NPP Emission for 2003 \n (Transformed COG Data)")
+ax[0][1].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_netcdf.keys():
-    if key_value.startswith("XCO2_2016"):
+    if key_value.startswith("CASAGFED3v3_FIRE_Flux_Monthly_x720_y360_2003"):
         temp_df = temp_df._append(summary_dict_netcdf[key_value], ignore_index=True)
 
 sns.lineplot(
     data=temp_df,
     ax=ax[1][0],
 )
-ax[1][0].set_title("plot for XCO2 variable for 2016 raw data")
+ax[1][0].set_title("FIRE Emission for 2003 \n (Original Data)")
 ax[1][0].set_xlabel("Months")
 
 temp_df = pd.DataFrame()
 for key_value in summary_dict_cog.keys():
-    if key_value.startswith("XCO2_2016"):
+    if key_value.startswith("CASAGFED3v3_FIRE_Flux_Monthly_x720_y360_2003"):
         temp_df = temp_df._append(summary_dict_cog[key_value], ignore_index=True)
 sns.lineplot(
     data=temp_df,
     ax=ax[1][1],
 )
-ax[1][1].set_title("plot for XCO2 variable for 2016 cog data")
+ax[1][1].set_title("FIRE Emission for 2003 \n (Transformed COG Data)")
 ax[1][1].set_xlabel("Months")
 
-
-plt.savefig("stats_summary.png")
+fig.tight_layout(pad=0.5)
+fig.suptitle("Plot for the Statistical values of data", fontsize=10)
+plt.savefig("monthly_stats_summary.png")
 plt.show()
