@@ -116,7 +116,7 @@ for tif_file in tif_files:
                 "std_value": std_value,
             }
 
-
+full_data_df_cog = full_data_df_cog/1000
 overall_stats_netcdf["min_value"] = np.float64(full_data_df_netcdf.values.min())
 overall_stats_netcdf["max_value"] = np.float64(full_data_df_netcdf.values.max())
 overall_stats_netcdf["mean_value"] = np.float64(full_data_df_netcdf.values.mean())
@@ -128,27 +128,42 @@ overall_stats_cog["mean_value"] = np.float64(full_data_df_cog.values.mean())
 overall_stats_cog["std_value"] = np.float64(full_data_df_cog.values.std())
 
 
-with open(
-    "monthly_stats.json",
-    "w",
-) as fp:
-    json.dump("\n Stats for raw netCDF files. \n")
+with open("monthly_stats.json", "w") as fp:
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n")
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(summary_dict_cog, fp)
 
 with open("overall_stats.json", "w") as fp:
-    json.dump("\n Stats for raw netCDF files. \n")
+    json.dump("Stats for raw netCDF files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_netcdf, fp)
-    json.dump("\n Stats for transformed COG files. \n")
+    fp.write("\n")
+    json.dump("Stats for transformed COG files.", fp)
+    fp.write("\n")
     json.dump(overall_stats_cog, fp)
 
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 plt.Figure(figsize=(10, 10))
-sns.histplot(data=full_data_df_netcdf, kde=False, bins=10, legend=False, ax=ax[0][0])
+sns.histplot(
+    data=full_data_df_netcdf.to_numpy().flatten(),
+    kde=False,
+    bins=100,
+    legend=False,
+    ax=ax[0][0],
+)
 ax[0][0].set_title("distribution plot for overall raw data")
 
-sns.histplot(data=full_data_df_cog, kde=False, bins=10, legend=False, ax=ax[0][1])
+sns.histplot(
+    data=full_data_df_cog.to_numpy().flatten(),
+    kde=False,
+    bins=100,
+    legend=False,
+    ax=ax[0][1],
+)
 ax[0][1].set_title("distribution plot for overall cog data")
 
 temp_df = pd.DataFrame()
