@@ -548,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>This script was used to add concatenated layers and transform Gridded Anthropogenic Methane Emissions Inventory dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.</p>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xarray</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
@@ -562,11 +562,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># session = boto3.session.Session()</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>session <span class="op">=</span> boto3.Session(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    aws_access_key_id<span class="op">=</span>os.environ.get(<span class="st">"AWS_ACCESS_KEY_ID"</span>),</span>
@@ -578,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ghgc-data-store-dev"</span>  <span class="co"># S3 bucket where the COGs are stored after transformation</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>FOLDER_NAME <span class="op">=</span> <span class="st">"../data/epa_emissions_express_extension"</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>s3_folder_name <span class="op">=</span> <span class="st">"epa_express_extension_Tg_km2_yr"</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>s3_folder_name <span class="op">=</span> <span class="st">"epa_express_extension_Mg_km2_yr"</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>files_processed <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"file_name"</span>, <span class="st">"COGs_created"</span>]</span>
@@ -611,105 +611,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>                data <span class="op">=</span> data <span class="op">+</span> <span class="bu">getattr</span>(xds.isel(time<span class="op">=</span>time_increment), var)</span>
 <span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>            <span class="co"># data = np.round(data / pow(10, 9), 2)</span></span>
 <span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>            data.values[data.values<span class="op">==</span><span class="dv">0</span>] <span class="op">=</span> np.nan</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>            <span class="co"># data = data*((1/(6.022*pow(10,23)))*(16.04*pow(10,-6))*366*pow(10,10))</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data<span class="op">*</span>(<span class="fl">9.74</span><span class="op">*</span><span class="bu">pow</span>(<span class="dv">10</span>,<span class="op">-</span><span class="dv">11</span>))</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>            data.values[data.values<span class="op">&lt;=</span>np.nanpercentile(data.values, <span class="dv">50</span>)] <span class="op">=</span> np.nan</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data.fillna(<span class="op">-</span><span class="dv">9999</span>)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data.isel(lat<span class="op">=</span><span class="bu">slice</span>(<span class="va">None</span>, <span class="va">None</span>, <span class="op">-</span><span class="dv">1</span>))</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            data.rio.set_spatial_dims(<span class="st">"lon"</span>, <span class="st">"lat"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>            data.rio.write_crs(<span class="st">"epsg:4326"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>            <span class="co"># # insert date of generated COG into filename</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            filename_elements.pop()</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>            filename_elements[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> start_time.strftime(<span class="st">"%Y"</span>)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>            filename_elements.insert(<span class="dv">2</span>, key)</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>            cog_filename <span class="op">=</span> <span class="st">"_"</span>.join(filename_elements)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>            <span class="co"># # add extension</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">.tif"</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tempfile.NamedTemporaryFile() <span class="im">as</span> temp_file:</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                data.rio.to_raster(</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>                    temp_file.name,</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                    driver<span class="op">=</span><span class="st">"COG"</span>,</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>                s3_client.upload_file(</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>                    Filename<span class="op">=</span>temp_file.name,</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>                    Bucket<span class="op">=</span>bucket_name,</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>                    Key<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>s3_folder_name<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>                files_processed <span class="op">=</span> files_processed._append(</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>                    {<span class="st">"file_name"</span>: name, <span class="st">"COGs_created"</span>: cog_filename},</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>                    ignore_index<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"Generated and saved COG: </span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Done generating COGs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2015.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2020.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2014.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2013.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2017.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2016.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2012.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2019.tif
-Generated and saved COG: Express_Extension_all-variables_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_agriculture_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_natural-gas-systems_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_petroleum-systems_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_waste_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_coal-mines_Gridded_GHGI_Methane_v2_2018.tif
-Generated and saved COG: Express_Extension_other_Gridded_GHGI_Methane_v2_2018.tif
-Done generating COGs</code></pre>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data<span class="op">*</span>((<span class="dv">1</span><span class="op">/</span>(<span class="fl">6.022</span><span class="op">*</span><span class="bu">pow</span>(<span class="dv">10</span>,<span class="dv">23</span>)))<span class="op">*</span>(<span class="fl">16.04</span><span class="op">*</span><span class="bu">pow</span>(<span class="dv">10</span>,<span class="op">-</span><span class="dv">6</span>))<span class="op">*</span><span class="dv">366</span><span class="op">*</span><span class="bu">pow</span>(<span class="dv">10</span>,<span class="dv">10</span>)<span class="op">*</span><span class="dv">86400</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data.fillna(<span class="op">-</span><span class="dv">9999</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> data.isel(lat<span class="op">=</span><span class="bu">slice</span>(<span class="va">None</span>, <span class="va">None</span>, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            data.rio.set_spatial_dims(<span class="st">"lon"</span>, <span class="st">"lat"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>            data.rio.write_crs(<span class="st">"epsg:4326"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>            <span class="co"># # insert date of generated COG into filename</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>            filename_elements.pop()</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>            filename_elements[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> start_time.strftime(<span class="st">"%Y"</span>)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            filename_elements.insert(<span class="dv">2</span>, key)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>            cog_filename <span class="op">=</span> <span class="st">"_"</span>.join(filename_elements)</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>            <span class="co"># # add extension</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>            cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">.tif"</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tempfile.NamedTemporaryFile() <span class="im">as</span> temp_file:</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>                data.rio.to_raster(</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>                    temp_file.name,</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                    driver<span class="op">=</span><span class="st">"COG"</span>,</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                s3_client.upload_file(</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                    Filename<span class="op">=</span>temp_file.name,</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>                    Bucket<span class="op">=</span>bucket_name,</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>                    Key<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>s3_folder_name<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>                files_processed <span class="op">=</span> files_processed._append(</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>                    {<span class="st">"file_name"</span>: name, <span class="st">"COGs_created"</span>: cog_filename},</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>                    ignore_index<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"Generated and saved COG: </span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Done generating COGs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Traceback (most recent call last):
+  File "_pydevd_bundle/pydevd_cython.pyx", line 1078, in _pydevd_bundle.pydevd_cython.PyDBFrame.trace_dispatch
+  File "_pydevd_bundle/pydevd_cython.pyx", line 297, in _pydevd_bundle.pydevd_cython.PyDBFrame.do_wait_suspend
+  File "/Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages/debugpy/_vendored/pydevd/pydevd.py", line 1976, in do_wait_suspend
+    keep_suspended = self._do_wait_suspend(thread, frame, event, arg, suspend_type, from_this_thread, frames_tracker)
+  File "/Users/vgaur/miniconda3/envs/cmip6/lib/python3.9/site-packages/debugpy/_vendored/pydevd/pydevd.py", line 2011, in _do_wait_suspend
+    time.sleep(0.01)
+KeyboardInterrupt</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>KeyboardInterrupt: </code></pre>
 </div>
 </div>
 
