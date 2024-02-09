@@ -19,40 +19,185 @@ from date import extract_dates
 
 
 dataset_definition ={
-        "collection": "nasa-casa-gfed-co2-flux",
-        "bucket": "ghgc-data-store-dev",
-        "prefix": "casa-gfed-carbon-flux/",
-        "filename_regex": ".*GEOSCarb_CASAGFED3v3.*.tif$",
-        "datetime_group": ".*_(.*).tif$",
-        "datetime_range": "month",
-        "assets": {
-            "npp": {
-                "title": "npp",
-                "description": "Net Primary Production",
-                "regex": ".*GEOSCarb_CASAGFED3v3_NPP_Flux_.*.tif$",
-            },
-            "rh": {
-                "title": "rh",
-                "description": "Heterotrophic respiration",
-                "regex": ".*GEOSCarb_CASAGFED3v3_Rh_Flux_.*.tif$",
-            },
-            "nee": {
-                "title": "nee",
-                "description": "Net ecosystem exchange",
-                "regex": ".*GEOSCarb_CASAGFED3v3_NEE_Flux_.*.tif$",
-            },
-            "fire": {
-                "title": "fire",
-                "description": "Fire emissions",
-                "regex": ".*GEOSCarb_CASAGFED3v3_FIRE_Flux_.*.tif$",
-            },
-            "fuel": {
-                "title": "fuel",
-                "description": "Fuel emissions",
-                "regex": ".*GEOSCarb_CASAGFED3v3_FUEL_Flux_.*.tif$",
-            },
+    "collection": "epa-ch4emission-yeargrid-v2express",
+    "bucket": "ghgc-data-store-dev",
+    "prefix": "epa-ch4emission-yeargrid-v2express/",
+    "filename_regex": ".*Express_Extension_.*.tif$",
+    "datetime_group": ".*_(.*).tif$",
+    "assets": {
+        "post-meter": {
+            "title": "Post Meter (annual)",
+            "description": "Annual methane emissions from downstream of natural gas distribution meters derived from residential, commercial, and industrial post-meter emissions data gridded based on population.",
+            "regex": ".*emi_ch4_Supp_1B2b_PostMeter.*.tif$"
         },
+        "enteric-fermentation": {
+            "title": "Enteric Fermentation (3A)",
+            "description": "Emissions from agriculture include enteric fermentation, manure management, rice cultivation, and field burning of agricultural residues. ",
+            "regex": ".*emi_ch4_3A_Enteric_Fermentation.*.tif$"
+        },
+        "manure-management": {
+            "title": "Manure Management (3B)",
+            "description": "Emissions from agriculture include enteric fermentation, manure management, rice cultivation, and field burning of agricultural residues. ",
+            "regex": ".*emi_ch4_3B_Manure_Management.*.tif$"
+        },
+        "rice-cultivation": {
+            "title": "Rice Cultivation (3C)",
+            "description": "Emissions from agriculture include enteric fermentation, manure management, rice cultivation, and field burning of agricultural residues. ",
+            "regex": ".*emi_ch4_3C_Rice_Cultivation.*.tif$"
+        },
+        "field-burning": {
+            "title": "Field Burning of Agricultural Residues* (3F)",
+            "description": "Emissions from agriculture include enteric fermentation, manure management, rice cultivation, and field burning of agricultural residues. ",
+            "regex": ".*emi_ch4_3F_Field_Burning.*.tif$"
+        },
+        "exploration-ngs": {
+            "title": "Exploration (1B2b)",
+            "description": "This source type includes emissionsfrom natural gas production, processing, transmission, and distribution. It does not include emissions from abandone dwells. ",
+            "regex": ".*emi_ch4_1B2b_Natural_Gas_Exploration.*.tif$"
+        },
+        "production-ngs": {
+            "title": "Production (1B2b)",
+            "description": "This source type includes emissionsfrom natural gas production, processing, transmission, and distribution. It does not include emissions from abandoned wells. ",
+            "regex": ".*emi_ch4_1B2b_Natural_Gas_Production.*.tif$"
+        },
+        "transmission-storage-ngs": {
+            "title": "Transmission & Storage (1B2b)",
+            "description": "This source type includes emissionsfrom natural gas production, processing, transmission, and distribution. It does not include emissions from abandoned wells. ",
+            "regex": ".*emi_ch4_1B2b_Natural_Gas_TransmissionStorage.*.tif$"
+        },
+        "processing-ngs": {
+            "title": "Processing (1B2b)",
+            "description": "This source type includes emissionsfrom natural gas production, processing, transmission, and distribution. It does not include emissions from abandoned wells. ",
+            "regex": ".*emi_ch4_1B2b_Natural_Gas_Processing.*.tif$"
+        },
+        "distribution-ngs": {
+            "title": "Distribution (1B2b)",
+            "description": "This source type includes emissionsfrom natural gas production, processing, transmission, and distribution. It does not include emissions from abandoned wells. ",
+            "regex": ".*emi_ch4_1B2b_Natural_Gas_Distribution.*.tif$"
+        },
+        "exploration-ps": {
+            "title": "Exploration* (1B2a)",
+            "description": "The GHGI includes national emissions from different activities and equipment related to petroleum production, refining, and transport. ",
+            "regex": ".*emi_ch4_1B2a_Petroleum_Systems_Exploration.*.tif$"
+        },
+        "production-ps": {
+            "title": "Production (1B2a)",
+            "description": "The GHGI includes national emissions from different activities and equipment related to petroleum production, refining, and transport. ",
+            "regex": ".*emi_ch4_1B2a_Petroleum_Systems_Production.*.tif$"
+        },
+        "transport-ps": {
+            "title": "Transport (1B2a)",
+            "description": "The GHGI includes national emissions from different activities and equipment related to petroleum production, refining, and transport. ",
+            "regex": ".*emi_ch4_1B2a_Petroleum_Systems_Transport.*.tif$"
+        },
+        "refining-ps": {
+            "title": "Refining (1B2a)",
+            "description": "The GHGI includes national emissions from different activities and equipment related to petroleum production, refining, and transport. ",
+            "regex": ".*emi_ch4_1B2a_Petroleum_Systems_Refining.*.tif$"
+        },
+        "msw-landfill-waste": {
+            "title": "Municipal Solid Waste (MSW) Landfills (5A1)",
+            "description": "Waste emissions include landfills, wastewatertreatment, and composting, for which EPA provides national totals. ",
+            "regex": ".*emi_ch4_5A1_Landfills_MSW.*.tif$"
+        },
+        "industrial-landfill-waste": {
+            "title": "Industrial Landfills (5A1)",
+            "description": "Waste emissions include landfills, wastewatertreatment, and composting, for which EPA provides national totals. ",
+            "regex": ".*emi_ch4_5A1_Landfills_Industrial.*.tif$"
+        },
+        "dwtd-waste": {
+            "title": "Domestic Wastewater Treatment & Discharge (5D)",
+            "description": "Waste emissions include landfills, wastewatertreatment, and composting, for which EPA provides national totals. ",
+            "regex": ".*emi_ch4_5D_Wastewater_Treatment_Domestic.*.tif$"
+        },
+        "iwtd-waste": {
+            "title": "Industrial Wastewater Treatment & Discharge (5D)",
+            "description": "Waste emissions include landfills, wastewatertreatment, and composting, for which EPA provides national totals. ",
+            "regex": ".*emi_ch4_5D_Wastewater_Treatment_Industrial.*.tif$"
+        },
+        "composting-waste": {
+            "title": "Composting (5B1)",
+            "description": "Waste emissions include landfills, wastewatertreatment, and composting, for which EPA provides national totals. ",
+            "regex": ".*emi_ch4_5B1_Composting.*.tif$"
+        },
+        "underground-coal": {
+            "title": "Underground Coal Mining (1B1a)",
+            "description": "Coal mining emissions using state-level emission estimates produced for the GHGI. ",
+            "regex": ".*emi_ch4_1B1a_Underground_Coal.*.tif$"
+        },
+        "surface-coal": {
+            "title": "Surface Coal Mining (1B1a)",
+            "description": "Coal mining emissions using state-level emission estimates produced for the GHGI. ",
+            "regex": ".*emi_ch4_1B1a_Surface_Coal.*.tif$"
+        },
+        "abn-underground-coal": {
+            "title": "Abandoned Underground Coal Mines (1B1a)",
+            "description": "Coal mining emissions using state-level emission estimates produced for the GHGI. ",
+            "regex": ".*emi_ch4_1B1a_Abandoned_Coal.*.tif$"
+        },
+        "stationary-combustion-other": {
+            "title": "Stationary combustion (1A)",
+            "description": "Other refers to a number of smaller sources. ",
+            "regex": ".*emi_ch4_1A_Combustion_Stationary.*.tif$"
+        },
+        "mobile-combustion-other": {
+            "title": "Mobile Combustion (1A)",
+            "description": "Other refers to a number of smaller sources.",
+            "regex": ".*emi_ch4_1A_Combustion_Mobile.*.tif$"
+        },
+        "abn-ong-other": {
+            "title": "Abandoned Oil and Gas Wells (1B2a & 1B2b)",
+            "description": "Other refers to a number of smaller sources.",
+            "regex": ".*emi_ch4_1B2ab_Abandoned_Oil_Gas.*.tif$"
+        },
+        "petro-production-other": {
+            "title": "Petrochemical Production (2B8)",
+            "description": "Other refers to a number of smaller sources.",
+            "regex": ".*emi_ch4_2B8_Industry_Petrochemical.*.tif$"
+        },
+        "ferroalloy-production-other": {
+            "title": "Ferroalloy Production (2C2)",
+            "description": "Other refers to a number of smaller sources.",
+            "regex": ".*emi_ch4_2C2_Industry_Ferroalloy.*.tif$"
+        },
+        "total-methane": {
+            "title": "Total Methane (annual)",
+            "description": "Total annual methane emission fluxes from all Agriculture, Energy, Waste, and ‘Other’ sources included in this dataset.",
+            "regex": ".*Express_Extension_all-variables.*.tif$"
+        },
+        "total-agriculture": {
+            "title": "Total Agriculture (annual)",
+            "description": "Total annual methane emission fluxes from Agriculture sources (sum of inventory categories: 3A, 3B, 3C, 3F).",
+            "regex": ".*Express_Extension_agriculture.*.tif$"
+        },
+        "total-natural-gas-systems": {
+            "title": "Total Natural Gas Systems (annual)",
+            "description": "Total annual methane emission fluxes from Natural Gas Systems (sum of inventory Energy 1B2b sub-categories).",
+            "regex": ".*Express_Extension_natural-gas-systems.*.tif$"
+        },
+        "total-petroleum-systems": {
+            "title": "Total Petroleum Systems (annual)",
+            "description": "Total annual methane emission fluxes from Petroleum Systems (sum of inventory Energy 1B2a sub-categories)",
+            "regex": ".*Express_Extension_petroleum-systems.*.tif$"
+        },
+        "total-waste": {
+            "title": "Total Waste (annual)",
+            "description": "Total annual methane emission fluxes from Waste (sum of inventory Waste categories: 5A1, 5B1, 5D)",
+            "regex": ".*Express_Extension_waste.*.tif$"
+        },
+        "total-other": {
+            "title": "Total Other (annual)",
+            "description": "Total annual methane emission fluxes from ‘other’ remaining sources (sum of inventory categories 1A (energy combustion), 2B8 & 2C2 (petrochemical & ferroalloy production) and 1B2a & 1B2b (abandoned O&G well emissions)).",
+            "regex": ".*Express_Extension_other.*.tif$"
+        },
+        "total-coal-mines": {
+            "title": "Total Coal Mines (annual)",
+            "description": "Total annual methane emission fluxes from Coal Mines (sum of inventory 1B1a sub-categories).",
+            "regex": ".*Express_Extension_coal-mines.*.tif$"
+        }
     }
+}
+
 
 
 def list_bucket(bucket, prefix, filename_regex):
