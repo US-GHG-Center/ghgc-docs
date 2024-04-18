@@ -22,23 +22,23 @@ dataset_definition = {
     "collection": "lpjeosim-wetlandch4-monthgrid-v2",
     "bucket": "ghgc-data-store-dev",
     "prefix": "lpjwsl-wetlandch4-monthgrid-v2/",
-    "filename_regex": ".*L2_CH4e_dch4e_.*.tif$",
+    "filename_regex": ".*L2_CH4e_mch4e_.*.tif$",
     "datetime_group": ".*_(.*).tif$",
     "assets": {
         "ensemble-mean-ch4-wetlands-emissions": {
             "title": "Wetland Methane Emissions, Ensemble Mean LPJ-EOSIM Model v2",
             "description": "Methane emissions from wetlands in units of grams of methane per meter squared per month. Ensemble of multiple climate forcing data sources input to LPJ-EOSIM model.",
-            "regex": ".*_L2_CH4e_dch4e_ensemble_mean.*.tif$",
+            "regex": ".*_L2_CH4e_mch4e_ensemble_mean.*.tif$",
         },
         "era5-ch4-wetlands-emissions": {
             "title": "Wetland Methane Emissions, ERA5 LPJ-EOSIM Model v2",
             "description": "Methane emissions from wetlands in units of grams of methane per meter squared per month. ECMWF Re-Analysis (ERA5) as input to LPJ-EOSIM model.",
-            "regex": ".*L2_CH4e_dch4e_ERA5.*.tif$",
+            "regex": ".*L2_CH4e_mch4e_ERA5.*.tif$",
         },
         "merra2-ch4-wetlands-emissions": {
             "title": "Wetland Methane Emissions, MERRA-2 LPJ-EOSIM Model v2",
             "description": "Methane emissions from wetlands in units of grams of methane per meter squared per month. Modern-Era Retrospective analysis for Research and Applications Version 2 (MERRA-2) data as input to LPJ-EOSIM model.",
-            "regex": ".*L2_CH4e_dch4e_MERRA2.*.tif$",
+            "regex": ".*L2_CH4e_mch4e_MERRA2.*.tif$",
         },
     },
 }
