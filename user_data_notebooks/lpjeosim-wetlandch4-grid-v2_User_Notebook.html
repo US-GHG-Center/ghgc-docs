@@ -882,10 +882,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://dev.ghg.center/ghgcenter/api/stac"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://ghg.center/api/stac"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The RASTER API is used to fetch collections for visualization</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/ghgcenter/api/raster"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://ghg.center/api/raster"</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for the wetland methane emissions LPJ-EOSIM Model</span></span>
@@ -946,11 +946,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ensure the information gathered by other STAC API links associated with the collection are added to the original path</span></span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># "href" is the identifier for each of the tiles stored in the STAC API</span></span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        items_url <span class="op">=</span> <span class="bu">next</span>[<span class="dv">0</span>][<span class="st">"href"</span>]</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        temp <span class="op">=</span> items_url.split(<span class="st">'/'</span>)</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">3</span>, <span class="st">'ghgcenter'</span>)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">4</span>, <span class="st">'api'</span>)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">5</span>, <span class="st">'stac'</span>)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        items_url <span class="op">=</span> <span class="st">'/'</span>.join(temp)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp = items_url.split('/')</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(3, 'ghgcenter')</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(4, 'api')</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(5, 'stac')</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># items_url = '/'.join(temp)</span></span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the information about the total number of granules found associated with the collection</span></span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -966,7 +966,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 82 items</code></pre>
+<pre><code>Found 600 items</code></pre>
 </div>
 </div>
 <div id="cell-11" class="cell">
@@ -987,7 +987,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we create a dictionary where the start datetime values for each granule is queried more explicitly by year and month (e.g., 2020-02)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for December 2001 and again for December 2021, so we can visualize each event independently.</p>
+<p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for date 1 mentioned in the next cell and again for date 2, so we can visualize each event independently.</p>
 <div id="cell-17" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color for displaying the tiles</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
@@ -995,7 +995,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"magma"</span> </span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>date1 <span class="op">=</span> <span class="st">'1990-01-01'</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>date1 <span class="op">=</span> <span class="st">'2024-01-01'</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>date1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, collection date, and its ID</span></span>
@@ -1020,7 +1020,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-19900101day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-20240101day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
@@ -1029,7 +1029,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="cell-18" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for date mentioned below</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>date2 <span class="op">=</span> <span class="st">'1990-01-30'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>date2 <span class="op">=</span> <span class="st">'2024-01-30'</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>date2_tile <span class="op">=</span> requests.get(</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, collection date, and its ID</span></span>
@@ -1054,7 +1054,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-19900130day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-20240130day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
@@ -1065,7 +1065,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="visualize-ch₄-emissions" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-ch₄-emissions">Visualize CH₄ Emissions</h2>
 <div id="cell-20" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For this study we are going to compare the CH₄ Emissions in 2001 and 2021 along the coast of California</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For this study we are going to compare the CH₄ Emissions in date1 and date2 along the coast of California</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To change the location, you can simply insert the latitude and longitude of the area of your interest in the "location=(LAT, LONG)" statement</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map</span></span>
@@ -1124,7 +1124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_3cecf3916ee2debc6576689ec3a73b2b {
+                #map_4ccb265f5ecb48f6430d877d58dbcfee {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1138,7 +1138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_0f26b809df1e19a70fc26eb24c127ac0 {
+                #map_ccfa7432dad3b2224bff27148ffec2bf {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1153,17 +1153,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_3cecf3916ee2debc6576689ec3a73b2b&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_4ccb265f5ecb48f6430d877d58dbcfee&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_0f26b809df1e19a70fc26eb24c127ac0&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_ccfa7432dad3b2224bff27148ffec2bf&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_3cecf3916ee2debc6576689ec3a73b2b = L.map(
-                &quot;map_3cecf3916ee2debc6576689ec3a73b2b&quot;,
+            var map_4ccb265f5ecb48f6430d877d58dbcfee = L.map(
+                &quot;map_4ccb265f5ecb48f6430d877d58dbcfee&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1177,20 +1177,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_783307800d3ce196274345fedc5a1029 = L.tileLayer(
+            var tile_layer_1efc29d682b16030ff9826fee33eeba8 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_3cecf3916ee2debc6576689ec3a73b2b);
+            ).addTo(map_4ccb265f5ecb48f6430d877d58dbcfee);
         
     
-            var tile_layer_83a9ceb927c8a2c2c9ae0f93a27f693a = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-19900101day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_9764b26959ed3f5ada6aba516228def4 = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-20240101day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_3cecf3916ee2debc6576689ec3a73b2b);
+            ).addTo(map_4ccb265f5ecb48f6430d877d58dbcfee);
         
     
-            var map_0f26b809df1e19a70fc26eb24c127ac0 = L.map(
-                &quot;map_0f26b809df1e19a70fc26eb24c127ac0&quot;,
+            var map_ccfa7432dad3b2224bff27148ffec2bf = L.map(
+                &quot;map_ccfa7432dad3b2224bff27148ffec2bf&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1204,20 +1204,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_392f9e4439cea57f5264a2f8399b3307 = L.tileLayer(
+            var tile_layer_fa59d56a73451e74c73aae306230a656 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_0f26b809df1e19a70fc26eb24c127ac0);
+            ).addTo(map_ccfa7432dad3b2224bff27148ffec2bf);
         
     
-            var tile_layer_2e0069b30c15e39cdc4f60a6c5d4429f = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-19900130day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_9d853be7921e169c0a6eb50c68f9e18b = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-20240130day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_0f26b809df1e19a70fc26eb24c127ac0);
+            ).addTo(map_ccfa7432dad3b2224bff27148ffec2bf);
         
     
-            map_3cecf3916ee2debc6576689ec3a73b2b.sync(map_0f26b809df1e19a70fc26eb24c127ac0);
-            map_0f26b809df1e19a70fc26eb24c127ac0.sync(map_3cecf3916ee2debc6576689ec3a73b2b);
+            map_4ccb265f5ecb48f6430d877d58dbcfee.sync(map_ccfa7432dad3b2224bff27148ffec2bf);
+            map_ccfa7432dad3b2224bff27148ffec2bf.sync(map_4ccb265f5ecb48f6430d877d58dbcfee);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -1297,7 +1297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_d59f5046cb2c6e398321f6483fd48849 {
+                #map_cc8e1ae24bc7077a0d3e20cd82168318 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1311,14 +1311,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_d59f5046cb2c6e398321f6483fd48849&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_cc8e1ae24bc7077a0d3e20cd82168318&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_d59f5046cb2c6e398321f6483fd48849 = L.map(
-                &quot;map_d59f5046cb2c6e398321f6483fd48849&quot;,
+            var map_cc8e1ae24bc7077a0d3e20cd82168318 = L.map(
+                &quot;map_cc8e1ae24bc7077a0d3e20cd82168318&quot;,
                 {
                     center: [30.0, -101.0],
                     crs: L.CRS.EPSG3857,
@@ -1332,28 +1332,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_64f57428dcca4451c40927947022714e = L.tileLayer(
+            var tile_layer_d3022d497e6d850da5161f7d0b3beaba = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_d59f5046cb2c6e398321f6483fd48849);
+            ).addTo(map_cc8e1ae24bc7077a0d3e20cd82168318);
         
     
 
-        function geo_json_2ae12f214d73e3cb5c17a5016e6ece36_onEachFeature(feature, layer) {
+        function geo_json_eaf5aae3ddd59ce1477794b1bd52c563_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_2ae12f214d73e3cb5c17a5016e6ece36 = L.geoJson(null, {
-                onEachFeature: geo_json_2ae12f214d73e3cb5c17a5016e6ece36_onEachFeature,
+        var geo_json_eaf5aae3ddd59ce1477794b1bd52c563 = L.geoJson(null, {
+                onEachFeature: geo_json_eaf5aae3ddd59ce1477794b1bd52c563_onEachFeature,
             
         });
 
-        function geo_json_2ae12f214d73e3cb5c17a5016e6ece36_add (data) {
-            geo_json_2ae12f214d73e3cb5c17a5016e6ece36
+        function geo_json_eaf5aae3ddd59ce1477794b1bd52c563_add (data) {
+            geo_json_eaf5aae3ddd59ce1477794b1bd52c563
                 .addData(data)
-                .addTo(map_d59f5046cb2c6e398321f6483fd48849);
+                .addTo(map_cc8e1ae24bc7077a0d3e20cd82168318);
         }
-            geo_json_2ae12f214d73e3cb5c17a5016e6ece36_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+            geo_json_eaf5aae3ddd59ce1477794b1bd52c563_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
 
         
 </script>
@@ -1370,7 +1370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 82 items</code></pre>
+<pre><code>Found 600 items</code></pre>
 </div>
 </div>
 <div id="cell-26" class="cell">
@@ -1414,8 +1414,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the AOI polygon</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, texas_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 1.3 s, sys: 173 ms, total: 1.47 s
-Wall time: 29.8 s</code></pre>
+<pre><code>CPU times: user 14.9 s, sys: 1.97 s, total: 16.9 s
+Wall time: 4min 5s</code></pre>
 </div>
 </div>
 <div id="cell-31" class="cell" data-execution_count="18">
@@ -1423,33 +1423,33 @@ Wall time: 29.8 s</code></pre>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>{'statistics': {'b1': {'min': 0.0,
-   'max': 0.0023781394120305777,
-   'mean': 0.0002270761615363881,
+   'max': 0.0031482954509556293,
+   'mean': 0.00022546476167109277,
    'count': 144.0,
-   'sum': 0.032698966562747955,
-   'std': 0.00040577602423569304,
-   'median': 6.763407145626843e-05,
+   'sum': 0.03246692568063736,
+   'std': 0.0005144286193682974,
+   'median': 5.088370380690321e-05,
    'majority': 0.0,
    'minority': 0.0,
    'unique': 144.0,
-   'histogram': [[111.0, 12.0, 7.0, 7.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0],
+   'histogram': [[119.0, 15.0, 2.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 2.0],
     [0.0,
-     0.00023781394702382386,
-     0.0004756278940476477,
-     0.0007134418119676411,
-     0.0009512557880952954,
-     0.0011890697060152888,
-     0.0014268836239352822,
-     0.0016646975418552756,
-     0.0019025115761905909,
-     0.0021403254941105843,
-     0.0023781394120305777]],
+     0.000314829550916329,
+     0.000629659101832658,
+     0.0009444886236451566,
+     0.001259318203665316,
+     0.0015741477254778147,
+     0.0018889772472903132,
+     0.002203806769102812,
+     0.002518636407330632,
+     0.002833465812727809,
+     0.0031482954509556293]],
    'valid_percent': 100.0,
    'masked_pixels': 0.0,
    'valid_pixels': 144.0,
-   'percentile_2': 1.1478700656653018e-07,
-   'percentile_98': 0.0017248857766389847}},
- 'datetime': '1990-03-23T00:00:00+00:00'}</code></pre>
+   'percentile_2': 1.4471482018052484e-07,
+   'percentile_98': 0.002311925734393298}},
+ 'datetime': '2024-02-27T00:00:00+00:00'}</code></pre>
 </div>
 </div>
 <div id="cell-32" class="cell" data-execution_count="19">
@@ -1506,108 +1506,108 @@ Wall time: 29.8 s</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>1990-03-23T00:00:00+00:00</td>
+<td>2024-02-27T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.002378</td>
-<td>0.000227</td>
+<td>0.003148</td>
+<td>0.000225</td>
 <td>144.0</td>
-<td>0.032699</td>
-<td>0.000406</td>
-<td>0.000068</td>
+<td>0.032467</td>
+<td>0.000514</td>
+<td>0.000051</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[111.0, 12.0, 7.0, 7.0, 1.0, 1.0, 1.0, 2.0, 1...</td>
+<td>[[119.0, 15.0, 2.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>1.147870e-07</td>
-<td>0.001725</td>
-<td>1990-03-23 00:00:00+00:00</td>
+<td>1.447148e-07</td>
+<td>0.002312</td>
+<td>2024-02-27 00:00:00+00:00</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>1990-03-22T00:00:00+00:00</td>
+<td>2024-02-26T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.002351</td>
-<td>0.000228</td>
+<td>0.003109</td>
+<td>0.000225</td>
 <td>144.0</td>
-<td>0.032834</td>
-<td>0.000406</td>
-<td>0.000068</td>
+<td>0.032403</td>
+<td>0.000516</td>
+<td>0.000050</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[111.0, 12.0, 7.0, 7.0, 1.0, 1.0, 0.0, 3.0, 1...</td>
+<td>[[119.0, 15.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>1.029325e-07</td>
-<td>0.001729</td>
-<td>1990-03-22 00:00:00+00:00</td>
+<td>1.357729e-07</td>
+<td>0.002320</td>
+<td>2024-02-26 00:00:00+00:00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>1990-03-21T00:00:00+00:00</td>
+<td>2024-02-25T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.002532</td>
-<td>0.000238</td>
+<td>0.003186</td>
+<td>0.000230</td>
 <td>144.0</td>
-<td>0.034315</td>
-<td>0.000433</td>
-<td>0.000069</td>
+<td>0.033082</td>
+<td>0.000534</td>
+<td>0.000050</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[112.0, 11.0, 8.0, 6.0, 1.0, 1.0, 0.0, 3.0, 1...</td>
+<td>[[119.0, 14.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>9.795202e-08</td>
-<td>0.001909</td>
-<td>1990-03-21 00:00:00+00:00</td>
+<td>1.308106e-07</td>
+<td>0.002406</td>
+<td>2024-02-25 00:00:00+00:00</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>1990-03-20T00:00:00+00:00</td>
+<td>2024-02-24T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.002885</td>
-<td>0.000260</td>
+<td>0.003323</td>
+<td>0.000238</td>
 <td>144.0</td>
-<td>0.037397</td>
-<td>0.000484</td>
-<td>0.000071</td>
+<td>0.034300</td>
+<td>0.000559</td>
+<td>0.000050</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[113.0, 12.0, 8.0, 4.0, 2.0, 0.0, 1.0, 2.0, 1...</td>
+<td>[[120.0, 13.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>1.016336e-07</td>
-<td>0.002190</td>
-<td>1990-03-20 00:00:00+00:00</td>
+<td>1.325920e-07</td>
+<td>0.002523</td>
+<td>2024-02-24 00:00:00+00:00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>1990-03-19T00:00:00+00:00</td>
+<td>2024-02-23T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.003208</td>
-<td>0.000285</td>
+<td>0.003320</td>
+<td>0.000242</td>
 <td>144.0</td>
-<td>0.040982</td>
-<td>0.000535</td>
-<td>0.000075</td>
+<td>0.034790</td>
+<td>0.000566</td>
+<td>0.000050</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[113.0, 12.0, 9.0, 3.0, 2.0, 0.0, 1.0, 2.0, 1...</td>
+<td>[[120.0, 13.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>1.046484e-07</td>
-<td>0.002420</td>
-<td>1990-03-19 00:00:00+00:00</td>
+<td>1.359002e-07</td>
+<td>0.002547</td>
+<td>2024-02-23 00:00:00+00:00</td>
 </tr>
 </tbody>
 </table>
@@ -1618,7 +1618,7 @@ Wall time: 29.8 s</code></pre>
 </div>
 <section id="visualize-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-the-data-as-a-time-series">Visualize the Data as a Time Series</h2>
-<p>We can now explore the wetland methane emissions time series (January 1980 – December 2021) available for the Texas area of the U.S. We can plot the data set using the code below:</p>
+<p>We can now explore the wetland methane emissions time series (January 1990 – December 2024) available for the Texas area of the U.S. We can plot the data set using the code below:</p>
 <div id="cell-34" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
@@ -1644,9 +1644,9 @@ Wall time: 29.8 s</code></pre>
 <span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Daily CH4 emissions g/m2"</span>)</span>
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Daily CH4 emission Values for Texas, 1990-2024)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Daily CH4 emission Values for Texas, 1990-2024"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
-<pre><code>Text(0.5, 1.0, 'Daily CH4 emission Values for Texas, 1990-2024)')</code></pre>
+<pre><code>Text(0.5, 1.0, 'Daily CH4 emission Values for Texas, 1990-2024')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1658,17 +1658,17 @@ Wall time: 29.8 s</code></pre>
 </div>
 <p>To take a closer look at the CH4 variability across this region, we are going to retrieve and display data collected during the October, 1990 observation.</p>
 <div id="cell-36" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 1990-10 observation is the 3rd item in the list</span></span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 2024-02-25 observation is the 3rd item in the list</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Considering that a list starts with "0", we need to insert "2" in the "items[2]" statement</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the start Date Time of the third granule in the collection</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>][<span class="st">"properties"</span>][<span class="st">"datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>1990-03-21T00:00:00+00:00</code></pre>
+<pre><code>2024-02-25T00:00:00+00:00</code></pre>
 </div>
 </div>
 <div id="cell-37" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A GET request is made for the 3rd item in the collection</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>october_tile <span class="op">=</span> requests.get(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>observed_tile <span class="op">=</span> requests.get(</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, the item number in the list, and its ID</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
@@ -1683,12 +1683,12 @@ Wall time: 29.8 s</code></pre>
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>october_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>observed_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-19900321day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2&amp;item=lpjeosim-wetlandch4-daygrid-v2-20240225day&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
@@ -1713,7 +1713,7 @@ Wall time: 29.8 s</code></pre>
 <span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the map layer</span></span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>october_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observed_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Set the attribution and transparency</span></span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
@@ -1750,7 +1750,7 @@ Wall time: 29.8 s</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_8103285f8e405eddc77cadb3b67a83e3 {
+                #map_4e13251fd866d4b2d7a921f39c133408 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1764,14 +1764,14 @@ Wall time: 29.8 s</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_8103285f8e405eddc77cadb3b67a83e3&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_4e13251fd866d4b2d7a921f39c133408&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_8103285f8e405eddc77cadb3b67a83e3 = L.map(
-                &quot;map_8103285f8e405eddc77cadb3b67a83e3&quot;,
+            var map_4e13251fd866d4b2d7a921f39c133408 = L.map(
+                &quot;map_4e13251fd866d4b2d7a921f39c133408&quot;,
                 {
                     center: [30.0, -100.0],
                     crs: L.CRS.EPSG3857,
@@ -1785,16 +1785,16 @@ Wall time: 29.8 s</code></pre>
 
         
     
-            var tile_layer_240bf5dfae15c5e127204aab3324bf67 = L.tileLayer(
+            var tile_layer_6d81e25743942d3114484271e9cb43fd = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_8103285f8e405eddc77cadb3b67a83e3);
+            ).addTo(map_4e13251fd866d4b2d7a921f39c133408);
         
     
-            var tile_layer_efc181ef8dcd40f21f5f10e33728953d = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-19900321day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_5f5d96cf2eae7e9170acf0af9d6a13f6 = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-daygrid-v2\u0026item=lpjeosim-wetlandch4-daygrid-v2-20240225day\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_8103285f8e405eddc77cadb3b67a83e3);
+            ).addTo(map_4e13251fd866d4b2d7a921f39c133408);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>

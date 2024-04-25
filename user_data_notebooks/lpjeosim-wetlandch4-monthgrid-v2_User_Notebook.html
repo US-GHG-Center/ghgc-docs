@@ -864,7 +864,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Spatio Temporal Asset Catalog (STAC) Application Programming Interface (API) where the granules for this collection are stored.</p>
-<div id="cell-5" class="cell" data-execution_count="28">
+<div id="cell-5" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -875,15 +875,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="29">
+<div id="cell-6" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://dev.ghg.center/ghgcenter/api/stac"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"http://ghg.center/api/stac"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The RASTER API is used to fetch collections for visualization</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/ghgcenter/api/raster"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://ghg.center/api/raster"</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for the wetland methane emissions LPJ-EOSIM Model</span></span>
@@ -902,7 +902,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Examining the contents of our <code>collection</code> under <code>summaries</code>, we see that the data is available from January 1980 to December 2021. By looking at <code>dashboard: time density</code>, we can see that these observations are collected monthly.</p>
-<div id="cell-9" class="cell" data-execution_count="31">
+<div id="cell-9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that would search for a data collection in the US GHG Center STAC API</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we need to define the function</span></span>
@@ -944,16 +944,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ensure the information gathered by other STAC API links associated with the collection are added to the original path</span></span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># "href" is the identifier for each of the tiles stored in the STAC API</span></span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        items_url <span class="op">=</span> <span class="bu">next</span>[<span class="dv">0</span>][<span class="st">"href"</span>]</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        temp <span class="op">=</span> items_url.split(<span class="st">'/'</span>)</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">3</span>, <span class="st">'ghgcenter'</span>)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">4</span>, <span class="st">'api'</span>)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        temp.insert(<span class="dv">5</span>, <span class="st">'stac'</span>)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        items_url <span class="op">=</span> <span class="st">'/'</span>.join(temp)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp = items_url.split('/')</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(3, 'ghgcenter')</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(4, 'api')</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># temp.insert(5, 'stac')</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># items_url = '/'.join(temp)</span></span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the information about the total number of granules found associated with the collection</span></span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="32">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the function created above "get_item_count" to the data collection</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -964,7 +964,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 81 items</code></pre>
+<pre><code>Found 409 items</code></pre>
 </div>
 </div>
 <div id="cell-11" class="cell">
@@ -973,7 +973,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Below, we are entering the minimum and maximum values to provide our upper and lower bounds in the <code>rescale_values</code>.</p>
-<div id="cell-13" class="cell" data-execution_count="34">
+<div id="cell-13" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the minimum and maximum values for rescaling</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">'max'</span>: <span class="fl">0.0003</span>, <span class="st">'min'</span>: <span class="fl">0.0</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -981,12 +981,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="explore-changes-in-methane-ch4-emission-levels-using-the-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="explore-changes-in-methane-ch4-emission-levels-using-the-raster-api">Explore Changes in Methane (CH4) Emission Levels Using the Raster API</h2>
 <p>In this notebook, we will explore the temporal impacts of methane emissions. We will visualize the outputs on a map using <code>folium</code>.</p>
-<div id="cell-15" class="cell" data-execution_count="35">
+<div id="cell-15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we create a dictionary where the start datetime values for each granule is queried more explicitly by year and month (e.g., 2020-02)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for December 2001 and again for December 2021, so we can visualize each event independently.</p>
-<div id="cell-17" class="cell" data-execution_count="36">
+<p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for month 1 mentioned in the next cell and again for month 2, so we can visualize each event independently.</p>
+<div id="cell-17" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color for displaying the tiles</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
@@ -1014,18 +1014,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>month1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-199001&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-199001&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="37">
+<div id="cell-18" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for date mentioned below</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>month2 <span class="op">=</span> <span class="st">'1990-08'</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>month2_tile <span class="op">=</span> requests.get(</span>
@@ -1048,11 +1048,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>month2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-199008&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-199008&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
@@ -1062,15 +1062,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualize-ch₄-emissions" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-ch₄-emissions">Visualize CH₄ Emissions</h2>
-<div id="cell-20" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For this study we are going to compare the CH₄ Emissions in 2001 and 2021 along the coast of California</span></span>
+<div id="cell-20" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For this study we are going to compare the CH₄ Emissions for month1 and month2 along the coast of California</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To change the location, you can simply insert the latitude and longitude of the area of your interest in the "location=(LAT, LONG)" statement</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer for tile fetched for date 1</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer for tile fetched for month 1</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The TileLayer library helps in manipulating and displaying raster layers on a map</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>map_layer_month1 <span class="op">=</span> TileLayer(</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
@@ -1082,7 +1082,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>map_layer_month1.add_to(map_.m1)</span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer for the tile fetched for date 2</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer for the tile fetched for month 2</span></span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>map_layer_month2 <span class="op">=</span> TileLayer(</span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
@@ -1094,7 +1094,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1122,7 +1122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_e1243d7c76ecac70f74b6ff27be9bdf2 {
+                #map_3e205a1d9065eb4136898f82129da896 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1136,7 +1136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_a0f6485b605c92a9a7f1464338f1b895 {
+                #map_7febf9ce109f7b61aebcecedf4cf2dc7 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1151,17 +1151,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_e1243d7c76ecac70f74b6ff27be9bdf2&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_3e205a1d9065eb4136898f82129da896&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_a0f6485b605c92a9a7f1464338f1b895&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_7febf9ce109f7b61aebcecedf4cf2dc7&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_e1243d7c76ecac70f74b6ff27be9bdf2 = L.map(
-                &quot;map_e1243d7c76ecac70f74b6ff27be9bdf2&quot;,
+            var map_3e205a1d9065eb4136898f82129da896 = L.map(
+                &quot;map_3e205a1d9065eb4136898f82129da896&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1175,20 +1175,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_8f729a8dfa2d493341171478589b1065 = L.tileLayer(
+            var tile_layer_110dc9342c1404277c3a8367d8f68c57 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_e1243d7c76ecac70f74b6ff27be9bdf2);
+            ).addTo(map_3e205a1d9065eb4136898f82129da896);
         
     
-            var tile_layer_4ce4050079116fa073b44a1165deae30 = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-199001\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_76dc52bc4ea36b0c1ffc89023c6e8d7d = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-199001\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_e1243d7c76ecac70f74b6ff27be9bdf2);
+            ).addTo(map_3e205a1d9065eb4136898f82129da896);
         
     
-            var map_a0f6485b605c92a9a7f1464338f1b895 = L.map(
-                &quot;map_a0f6485b605c92a9a7f1464338f1b895&quot;,
+            var map_7febf9ce109f7b61aebcecedf4cf2dc7 = L.map(
+                &quot;map_7febf9ce109f7b61aebcecedf4cf2dc7&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1202,20 +1202,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_a6661f54ff2f50cfc9db87239ade6233 = L.tileLayer(
+            var tile_layer_6efeedbcab8723cec9c80d625213fc2b = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_a0f6485b605c92a9a7f1464338f1b895);
+            ).addTo(map_7febf9ce109f7b61aebcecedf4cf2dc7);
         
     
-            var tile_layer_52e29cb00c66910eaeda1c6bd192b5b1 = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-199008\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_a4409c323c5d8563680fede3da28fe5d = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-199008\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_a0f6485b605c92a9a7f1464338f1b895);
+            ).addTo(map_7febf9ce109f7b61aebcecedf4cf2dc7);
         
     
-            map_e1243d7c76ecac70f74b6ff27be9bdf2.sync(map_a0f6485b605c92a9a7f1464338f1b895);
-            map_a0f6485b605c92a9a7f1464338f1b895.sync(map_e1243d7c76ecac70f74b6ff27be9bdf2);
+            map_3e205a1d9065eb4136898f82129da896.sync(map_7febf9ce109f7b61aebcecedf4cf2dc7);
+            map_7febf9ce109f7b61aebcecedf4cf2dc7.sync(map_3e205a1d9065eb4136898f82129da896);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -1226,7 +1226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-zonal-statistics" class="level1">
 <h1>Calculate Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas, United States.</p>
-<div id="cell-22" class="cell" data-execution_count="39">
+<div id="cell-22" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to Texas (USA)</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>texas_aoi <span class="op">=</span> {</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>, <span class="co"># Create a feature object</span></span>
@@ -1246,7 +1246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="40">
+<div id="cell-23" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the generated polygon</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>aoi_map <span class="op">=</span> Map(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1267,7 +1267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the map</span></span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1295,7 +1295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_c61acd860dc74819f404226b96e49bd5 {
+                #map_74916aea33e93d931e111aa1fc98b044 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1309,14 +1309,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_c61acd860dc74819f404226b96e49bd5&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_74916aea33e93d931e111aa1fc98b044&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_c61acd860dc74819f404226b96e49bd5 = L.map(
-                &quot;map_c61acd860dc74819f404226b96e49bd5&quot;,
+            var map_74916aea33e93d931e111aa1fc98b044 = L.map(
+                &quot;map_74916aea33e93d931e111aa1fc98b044&quot;,
                 {
                     center: [30.0, -101.0],
                     crs: L.CRS.EPSG3857,
@@ -1330,28 +1330,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_519a4a6209c1f24de73400bf143f52ab = L.tileLayer(
+            var tile_layer_529d066a6eaa69d54bd3aa273e0b012d = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_c61acd860dc74819f404226b96e49bd5);
+            ).addTo(map_74916aea33e93d931e111aa1fc98b044);
         
     
 
-        function geo_json_dfe3a694da8626ba837f6194a725bc60_onEachFeature(feature, layer) {
+        function geo_json_11014e14461d45e5ab210f646c0815b7_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_dfe3a694da8626ba837f6194a725bc60 = L.geoJson(null, {
-                onEachFeature: geo_json_dfe3a694da8626ba837f6194a725bc60_onEachFeature,
+        var geo_json_11014e14461d45e5ab210f646c0815b7 = L.geoJson(null, {
+                onEachFeature: geo_json_11014e14461d45e5ab210f646c0815b7_onEachFeature,
             
         });
 
-        function geo_json_dfe3a694da8626ba837f6194a725bc60_add (data) {
-            geo_json_dfe3a694da8626ba837f6194a725bc60
+        function geo_json_11014e14461d45e5ab210f646c0815b7_add (data) {
+            geo_json_11014e14461d45e5ab210f646c0815b7
                 .addData(data)
-                .addTo(map_c61acd860dc74819f404226b96e49bd5);
+                .addTo(map_74916aea33e93d931e111aa1fc98b044);
         }
-            geo_json_dfe3a694da8626ba837f6194a725bc60_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+            geo_json_11014e14461d45e5ab210f646c0815b7_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-95, 29], [-95, 33], [-104, 33], [-104, 29], [-95, 29]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
 
         
 </script>
@@ -1359,7 +1359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Before we generate stats for a specific item (observation), we first check the total number of items available within the collection and retrieve the information regarding their start datetime.</p>
-<div id="cell-25" class="cell" data-execution_count="41">
+<div id="cell-25" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the total number of items available within the collection</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span></span>
@@ -1368,7 +1368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 81 items</code></pre>
+<pre><code>Found 409 items</code></pre>
 </div>
 </div>
 <div id="cell-26" class="cell">
@@ -1376,7 +1376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we need to develop a function that runs through the data collection and generates the statistics for a specific item (granule) within the boundaries of the AOI polygon.</p>
-<div id="cell-28" class="cell" data-execution_count="43">
+<div id="cell-28" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1401,56 +1401,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing the computed statistics along with the item's datetime information</span></span>
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"datetime"</span>],</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>],</span>
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the function above, we can generate the statistics for the area of interest.</p>
-<div id="cell-30" class="cell" data-execution_count="44">
+<div id="cell-30" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the AOI polygon</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, texas_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 1.26 s, sys: 164 ms, total: 1.43 s
-Wall time: 30.7 s</code></pre>
+<pre><code>CPU times: user 8.14 s, sys: 1.1 s, total: 9.24 s
+Wall time: 3min 5s</code></pre>
 </div>
 </div>
-<div id="cell-31" class="cell" data-execution_count="45">
+<div id="cell-31" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>{'statistics': {'b1': {'min': 0.0,
-   'max': 0.24261310696601868,
-   'mean': 0.017281513661146164,
+   'max': 0.0871574655175209,
+   'mean': 0.0054928527937995065,
    'count': 144.0,
-   'sum': 2.4885380268096924,
-   'std': 0.03218882692249998,
-   'median': 0.006199824623763561,
+   'sum': 0.7909708023071289,
+   'std': 0.01329405556717722,
+   'median': 0.0009731901809573174,
    'majority': 0.0,
    'minority': 0.0,
    'unique': 144.0,
-   'histogram': [[118.0, 12.0, 7.0, 0.0, 4.0, 2.0, 0.0, 0.0, 0.0, 1.0],
+   'histogram': [[125.0, 10.0, 0.0, 2.0, 2.0, 0.0, 2.0, 2.0, 0.0, 1.0],
     [0.0,
-     0.024261310696601868,
-     0.048522621393203735,
-     0.0727839320898056,
-     0.09704524278640747,
-     0.12130655348300934,
-     0.1455678641796112,
-     0.16982917487621307,
-     0.19409048557281494,
-     0.2183517962694168,
-     0.24261310696601868]],
+     0.00871574692428112,
+     0.01743149384856224,
+     0.02614723891019821,
+     0.03486298769712448,
+     0.04357873275876045,
+     0.05229447782039642,
+     0.06101022660732269,
+     0.06972597539424896,
+     0.07844171673059464,
+     0.0871574655175209]],
    'valid_percent': 100.0,
    'masked_pixels': 0.0,
    'valid_pixels': 144.0,
-   'percentile_2': 1.882603100966662e-05,
-   'percentile_98': 0.13304823637008667}},
- 'datetime': '1996-09-01T00:00:00+00:00'}</code></pre>
+   'percentile_2': 4.348626885075646e-06,
+   'percentile_98': 0.058114333748817304}},
+ 'datetime': '2024-01-01T00:00:00+00:00'}</code></pre>
 </div>
 </div>
-<div id="cell-32" class="cell" data-execution_count="46">
+<div id="cell-32" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that converts statistics in JSON format into a pandas DataFrame</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1472,7 +1472,7 @@ Wall time: 30.7 s</code></pre>
 <span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="46">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 <div>
 
@@ -1504,108 +1504,108 @@ Wall time: 30.7 s</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>1996-09-01T00:00:00+00:00</td>
+<td>2024-01-01T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.242613</td>
-<td>0.017282</td>
+<td>0.087157</td>
+<td>0.005493</td>
 <td>144.0</td>
-<td>2.488538</td>
-<td>0.032189</td>
-<td>0.006200</td>
+<td>0.790971</td>
+<td>0.013294</td>
+<td>0.000973</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[118.0, 12.0, 7.0, 0.0, 4.0, 2.0, 0.0, 0.0, 0...</td>
+<td>[[125.0, 10.0, 0.0, 2.0, 2.0, 0.0, 2.0, 2.0, 0...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>0.000019</td>
-<td>0.133048</td>
-<td>1996-09-01 00:00:00+00:00</td>
+<td>0.000004</td>
+<td>0.058114</td>
+<td>2024-01-01 00:00:00+00:00</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>1996-08-01T00:00:00+00:00</td>
+<td>2023-12-01T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.149869</td>
-<td>0.013150</td>
+<td>0.085719</td>
+<td>0.006267</td>
 <td>144.0</td>
-<td>1.893571</td>
-<td>0.025734</td>
-<td>0.004216</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>144.0</td>
-<td>[[115.0, 13.0, 7.0, 2.0, 2.0, 0.0, 1.0, 1.0, 0...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>144.0</td>
-<td>0.000012</td>
-<td>0.140647</td>
-<td>1996-08-01 00:00:00+00:00</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>1996-07-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>0.116801</td>
-<td>0.009831</td>
-<td>144.0</td>
-<td>1.415661</td>
-<td>0.018683</td>
-<td>0.003339</td>
+<td>0.902417</td>
+<td>0.014087</td>
+<td>0.001410</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[116.0, 12.0, 7.0, 2.0, 2.0, 2.0, 0.0, 0.0, 1...</td>
+<td>[[121.0, 13.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
 <td>0.000008</td>
-<td>0.102214</td>
-<td>1996-07-01 00:00:00+00:00</td>
+<td>0.065356</td>
+<td>2023-12-01 00:00:00+00:00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2023-11-01T00:00:00+00:00</td>
+<td>0.0</td>
+<td>0.101338</td>
+<td>0.008064</td>
+<td>144.0</td>
+<td>1.161171</td>
+<td>0.015750</td>
+<td>0.002396</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>144.0</td>
+<td>[[113.0, 17.0, 6.0, 2.0, 1.0, 0.0, 3.0, 0.0, 0...</td>
+<td>100.0</td>
+<td>0.0</td>
+<td>144.0</td>
+<td>0.000014</td>
+<td>0.064772</td>
+<td>2023-11-01 00:00:00+00:00</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>1996-06-01T00:00:00+00:00</td>
+<td>2023-10-01T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.095908</td>
-<td>0.008784</td>
+<td>0.132546</td>
+<td>0.011134</td>
 <td>144.0</td>
-<td>1.264959</td>
-<td>0.015094</td>
-<td>0.003327</td>
+<td>1.603335</td>
+<td>0.021918</td>
+<td>0.003295</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[110.0, 16.0, 7.0, 4.0, 2.0, 2.0, 0.0, 0.0, 2...</td>
+<td>[[115.0, 15.0, 5.0, 2.0, 1.0, 0.0, 2.0, 2.0, 0...</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>0.000010</td>
-<td>0.077549</td>
-<td>1996-06-01 00:00:00+00:00</td>
+<td>0.000027</td>
+<td>0.095468</td>
+<td>2023-10-01 00:00:00+00:00</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>1996-05-01T00:00:00+00:00</td>
+<td>2023-09-01T00:00:00+00:00</td>
 <td>0.0</td>
-<td>0.070779</td>
-<td>0.005616</td>
+<td>0.084667</td>
+<td>0.009330</td>
 <td>144.0</td>
-<td>0.808633</td>
-<td>0.010489</td>
-<td>0.001941</td>
+<td>1.343461</td>
+<td>0.015327</td>
+<td>0.003779</td>
 <td>0.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>[[116.0, 13.0, 6.0, 2.0, 4.0, 0.0, 0.0, 2.0, 0...</td>
+<td>[[98.0, 26.0, 8.0, 3.0, 1.0, 1.0, 2.0, 3.0, 0....</td>
 <td>100.0</td>
 <td>0.0</td>
 <td>144.0</td>
-<td>0.000006</td>
-<td>0.056144</td>
-<td>1996-05-01 00:00:00+00:00</td>
+<td>0.000042</td>
+<td>0.062735</td>
+<td>2023-09-01 00:00:00+00:00</td>
 </tr>
 </tbody>
 </table>
@@ -1616,8 +1616,8 @@ Wall time: 30.7 s</code></pre>
 </div>
 <section id="visualize-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-the-data-as-a-time-series">Visualize the Data as a Time Series</h2>
-<p>We can now explore the wetland methane emissions time series (January 1980 – December 2021) available for the Texas area of the U.S. We can plot the data set using the code below:</p>
-<div id="cell-34" class="cell" data-execution_count="47">
+<p>We can now explore the wetland methane emissions time series (January 1990 – December 2024) available for the Texas area of the U.S. We can plot the data set using the code below:</p>
+<div id="cell-34" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
@@ -1642,9 +1642,9 @@ Wall time: 30.7 s</code></pre>
 <span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Monthly CH4 emissions g/m2"</span>)</span>
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Monthly CH4 emission Values for Texas, 1990-2024)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="47">
-<pre><code>Text(0.5, 1.0, 'Monthly CH4 emission Values for Texas, 1990-2024)')</code></pre>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Monthly CH4 emission Values for Texas, 1990-2024"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>Text(0.5, 1.0, 'Monthly CH4 emission Values for Texas, 1990-2024')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1655,18 +1655,18 @@ Wall time: 30.7 s</code></pre>
 </div>
 </div>
 <p>To take a closer look at the CH4 variability across this region, we are going to retrieve and display data collected during the October, 1990 observation.</p>
-<div id="cell-36" class="cell" data-execution_count="48">
+<div id="cell-36" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 1990-10 observation is the 3rd item in the list</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Considering that a list starts with "0", we need to insert "2" in the "items[2]" statement</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the start Date Time of the third granule in the collection</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>][<span class="st">"properties"</span>][<span class="st">"datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>][<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>1996-07-01T00:00:00+00:00</code></pre>
+<pre><code>2023-11-01T00:00:00+00:00</code></pre>
 </div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="51">
+<div id="cell-37" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A GET request is made for the 3rd item in the collection</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>october_tile <span class="op">=</span> requests.get(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>observed_tile <span class="op">=</span> requests.get(</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, the item number in the list, and its ID</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
@@ -1681,20 +1681,20 @@ Wall time: 30.7 s</code></pre>
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>october_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="51">
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>observed_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-199607&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
+ 'tiles': ['https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2&amp;item=lpjeosim-wetlandch4-monthgrid-v2-202311&amp;assets=ensemble-mean-ch4-wetlands-emissions&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=0.0%2C0.0003'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 180.0, 90.0],
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the CH4 variability for the Texas region for the October, 1990 timeframe</span></span>
+<div id="cell-38" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the CH4 variability for the Texas region for the time in previous cell.</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox <span class="op">=</span> Map(</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Base map is set to OpenStreetMap</span></span>
@@ -1711,7 +1711,7 @@ Wall time: 30.7 s</code></pre>
 <span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the map layer</span></span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>october_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observed_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Set the attribution and transparency</span></span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
@@ -1720,7 +1720,7 @@ Wall time: 30.7 s</code></pre>
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the map</span></span>
 <span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="52">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1748,7 +1748,7 @@ Wall time: 30.7 s</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_2e9b8d4dccdc30e85cf52020c5079c8c {
+                #map_320de85851bc0d009ac622afa48f70e8 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1762,14 +1762,14 @@ Wall time: 30.7 s</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_2e9b8d4dccdc30e85cf52020c5079c8c&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_320de85851bc0d009ac622afa48f70e8&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_2e9b8d4dccdc30e85cf52020c5079c8c = L.map(
-                &quot;map_2e9b8d4dccdc30e85cf52020c5079c8c&quot;,
+            var map_320de85851bc0d009ac622afa48f70e8 = L.map(
+                &quot;map_320de85851bc0d009ac622afa48f70e8&quot;,
                 {
                     center: [30.0, -100.0],
                     crs: L.CRS.EPSG3857,
@@ -1783,16 +1783,16 @@ Wall time: 30.7 s</code></pre>
 
         
     
-            var tile_layer_bbbd552303e1ec65b53e2c3c88dbf2da = L.tileLayer(
+            var tile_layer_cb559814a35dccf910728c2340473071 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_2e9b8d4dccdc30e85cf52020c5079c8c);
+            ).addTo(map_320de85851bc0d009ac622afa48f70e8);
         
     
-            var tile_layer_ce84e75459ca56ba71ad0dbba4edd58d = L.tileLayer(
-                &quot;https://dev.ghg.center/ghgcenter/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-199607\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
+            var tile_layer_6f36493651d08d0a8354419e33edc029 = L.tileLayer(
+                &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=lpjeosim-wetlandch4-monthgrid-v2\u0026item=lpjeosim-wetlandch4-monthgrid-v2-202311\u0026assets=ensemble-mean-ch4-wetlands-emissions\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=0.0%2C0.0003&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.5, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_2e9b8d4dccdc30e85cf52020c5079c8c);
+            ).addTo(map_320de85851bc0d009ac622afa48f70e8);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
