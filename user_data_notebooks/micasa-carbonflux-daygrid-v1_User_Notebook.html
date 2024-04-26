@@ -962,12 +962,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the information about the number of granules found in the collection</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span>).json()[<span class="st">"features"</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=800"</span>).json()[<span class="st">"features"</span>]</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 600 items</code></pre>
+<pre><code>Found 800 items</code></pre>
 </div>
 </div>
 <div id="cell-11" class="cell">
@@ -1000,7 +1000,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>date1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, collection date, and its ID</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># To change the year and month of the observed parameter, you can modify the "items['YYYY-MM-DD']" statement</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># To change the year, month and date of the observed parameter, you can modify the date mentioned above.</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[date1][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[date1][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the asset name</span></span>
@@ -1034,7 +1034,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>date2_tile <span class="op">=</span> requests.get(</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, collection date, and its ID</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># To change the year and month of the observed parameter, you can modify the "items['YYYY-MM-DD']" statement</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># To change the year, month and date of the observed parameter, you can modify the date mentioned above.</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[date2][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[date2][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the asset name</span></span>
@@ -1117,7 +1117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>colormap <span class="op">=</span> colormap.to_step(index<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.07</span>, <span class="fl">0.15</span>, <span class="fl">0.22</span>, <span class="fl">0.3</span>])</span>
 <span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the data unit as caption</span></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>colormap.caption <span class="op">=</span> <span class="st">'Rh Values (kg Carbon/m2/daily)'</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>colormap.caption <span class="op">=</span> <span class="st">'Rh Values (gm Carbon/m2/daily)'</span></span>
 <span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the legend and caption on the map</span></span>
 <span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>colormap.add_to(map_.m1)</span>
@@ -1152,7 +1152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_80a61f6a430cafcba9703a98f3ee99e4 {
+                #map_efc65515250c71c7104a5dade94764e5 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1167,7 +1167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_94087b50b5d7516ff8225cfd908e10eb {
+                #map_bc8d56847e95b09e0e0a4520cc239e49 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1182,17 +1182,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_80a61f6a430cafcba9703a98f3ee99e4&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_efc65515250c71c7104a5dade94764e5&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_94087b50b5d7516ff8225cfd908e10eb&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_bc8d56847e95b09e0e0a4520cc239e49&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_80a61f6a430cafcba9703a98f3ee99e4 = L.map(
-                &quot;map_80a61f6a430cafcba9703a98f3ee99e4&quot;,
+            var map_efc65515250c71c7104a5dade94764e5 = L.map(
+                &quot;map_efc65515250c71c7104a5dade94764e5&quot;,
                 {
                     center: [31.9, -99.9],
                     crs: L.CRS.EPSG3857,
@@ -1206,25 +1206,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_fdf0f653a8c3ddc7af8e3fdf0a2d68f8 = L.tileLayer(
+            var tile_layer_ff54528a434d7299366e205def60e325 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_80a61f6a430cafcba9703a98f3ee99e4);
+            ).addTo(map_efc65515250c71c7104a5dade94764e5);
         
     
-            var tile_layer_56e422944995a6881d71a914d786a78d = L.tileLayer(
+            var tile_layer_f30fe2e692c881c2371e4193a4a3fd6f = L.tileLayer(
                 &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=micasa-carbonflux-daygrid-v1\u0026item=micasa-carbonflux-daygrid-v1-20230101\u0026assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=-0.32319876551628113%2C5.9415082931518555&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_80a61f6a430cafcba9703a98f3ee99e4);
+            ).addTo(map_efc65515250c71c7104a5dade94764e5);
         
     
-            var marker_9364651e4fa0e4be6fd8198e1437257a = L.marker(
+            var marker_353980f446884549e8a2f4a6d8aea028 = L.marker(
                 [40.0, 5.0],
                 {}
-            ).addTo(map_80a61f6a430cafcba9703a98f3ee99e4);
+            ).addTo(map_efc65515250c71c7104a5dade94764e5);
         
     
-            marker_9364651e4fa0e4be6fd8198e1437257a.bindTooltip(
+            marker_353980f446884549e8a2f4a6d8aea028.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -1232,57 +1232,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var layer_control_e84d5366fb3cda2b5929416ed3b2889c = {
+            var layer_control_2600139d6636ee5bf6ea3e2ab2c02b3c = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_fdf0f653a8c3ddc7af8e3fdf0a2d68f8,
+                    &quot;openstreetmap&quot; : tile_layer_ff54528a434d7299366e205def60e325,
                 },
                 overlays :  {
-                    &quot;2023-01-01 Rh Level&quot; : tile_layer_56e422944995a6881d71a914d786a78d,
+                    &quot;2023-01-01 Rh Level&quot; : tile_layer_f30fe2e692c881c2371e4193a4a3fd6f,
                 },
             };
             L.control.layers(
-                layer_control_e84d5366fb3cda2b5929416ed3b2889c.base_layers,
-                layer_control_e84d5366fb3cda2b5929416ed3b2889c.overlays,
+                layer_control_2600139d6636ee5bf6ea3e2ab2c02b3c.base_layers,
+                layer_control_2600139d6636ee5bf6ea3e2ab2c02b3c.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_80a61f6a430cafcba9703a98f3ee99e4);
+            ).addTo(map_efc65515250c71c7104a5dade94764e5);
         
     
-    var color_map_b19e427c17d5e7ecac07faefd9909d7c = {};
+    var color_map_f3e786ab5e42ad390c9f4b7238b208da = {};
 
     
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.color = d3.scale.threshold()
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.color = d3.scale.threshold()
               .domain([0.0, 0.0006012024048096192, 0.0012024048096192384, 0.0018036072144288575, 0.002404809619238477, 0.003006012024048096, 0.003607214428857715, 0.004208416833667335, 0.004809619238476954, 0.005410821643286573, 0.006012024048096192, 0.006613226452905812, 0.00721442885771543, 0.00781563126252505, 0.00841683366733467, 0.009018036072144289, 0.009619238476953907, 0.010220440881763526, 0.010821643286573146, 0.011422845691382766, 0.012024048096192385, 0.012625250501002003, 0.013226452905811623, 0.013827655310621242, 0.01442885771543086, 0.01503006012024048, 0.0156312625250501, 0.01623246492985972, 0.01683366733466934, 0.017434869739478956, 0.018036072144288578, 0.018637274549098193, 0.019238476953907815, 0.019839679358717437, 0.02044088176352705, 0.021042084168336674, 0.021643286573146292, 0.02224448897795591, 0.022845691382765532, 0.023446893787575147, 0.02404809619238477, 0.024649298597194388, 0.025250501002004006, 0.025851703406813628, 0.026452905811623247, 0.027054108216432865, 0.027655310621242483, 0.028256513026052102, 0.02885771543086172, 0.029458917835671342, 0.03006012024048096, 0.03066132264529058, 0.0312625250501002, 0.03186372745490982, 0.03246492985971944, 0.033066132264529056, 0.03366733466933868, 0.03426853707414829, 0.03486973947895791, 0.03547094188376753, 0.036072144288577156, 0.036673346693386774, 0.037274549098196386, 0.03787575150300601, 0.03847695390781563, 0.03907815631262525, 0.03967935871743487, 0.040280561122244485, 0.0408817635270541, 0.04148296593186373, 0.04208416833667335, 0.042685370741482966, 0.043286573146292584, 0.0438877755511022, 0.04448897795591182, 0.045090180360721446, 0.045691382765531065, 0.046292585170340676, 0.046893787575150295, 0.04749498997995992, 0.04809619238476954, 0.04869739478957916, 0.049298597194388775, 0.049899799599198394, 0.05050100200400801, 0.05110220440881764, 0.051703406813627256, 0.05230460921843687, 0.05290581162324649, 0.05350701402805611, 0.05410821643286573, 0.054709418837675355, 0.05531062124248497, 0.055911823647294585, 0.056513026052104204, 0.05711422845691383, 0.05771543086172344, 0.05831663326653306, 0.058917835671342685, 0.0595190380761523, 0.06012024048096192, 0.06072144288577154, 0.06132264529058116, 0.06192384769539078, 0.0625250501002004, 0.06312625250501001, 0.06372745490981964, 0.06432865731462926, 0.06492985971943888, 0.06553106212424849, 0.06613226452905811, 0.06673346693386772, 0.06733466933867736, 0.06793587174348698, 0.06853707414829659, 0.06913827655310621, 0.06973947895791582, 0.07034068136272545, 0.07094188376753506, 0.07154308617234469, 0.07214428857715431, 0.07274549098196392, 0.07334669338677355, 0.07394789579158316, 0.07454909819639277, 0.07515030060120241, 0.07575150300601202, 0.07635270541082165, 0.07695390781563126, 0.07755511022044087, 0.0781563126252505, 0.07875751503006012, 0.07935871743486975, 0.07995991983967936, 0.08056112224448897, 0.0811623246492986, 0.0817635270541082, 0.08236472945891783, 0.08296593186372746, 0.08356713426853707, 0.0841683366733467, 0.0847695390781563, 0.08537074148296593, 0.08597194388777554, 0.08657314629258517, 0.0871743486973948, 0.0877755511022044, 0.08837675350701403, 0.08897795591182364, 0.08957915831663325, 0.09018036072144289, 0.0907815631262525, 0.09138276553106213, 0.09198396793587174, 0.09258517034068135, 0.09318637274549098, 0.09378757515030059, 0.09438877755511023, 0.09498997995991984, 0.09559118236472945, 0.09619238476953908, 0.09679358717434869, 0.09739478957915831, 0.09799599198396794, 0.09859719438877755, 0.09919839679358718, 0.09979959919839679, 0.10040080160320641, 0.10100200400801602, 0.10160320641282564, 0.10220440881763528, 0.10280561122244489, 0.10340681362725451, 0.10400801603206412, 0.10460921843687374, 0.10521042084168336, 0.10581162324649299, 0.10641282565130261, 0.10701402805611222, 0.10761523046092183, 0.10821643286573146, 0.10881763527054107, 0.10941883767535071, 0.11002004008016032, 0.11062124248496993, 0.11122244488977956, 0.11182364729458917, 0.1124248496993988, 0.11302605210420841, 0.11362725450901803, 0.11422845691382766, 0.11482965931863727, 0.11543086172344688, 0.1160320641282565, 0.11663326653306612, 0.11723446893787576, 0.11783567134268537, 0.11843687374749498, 0.1190380761523046, 0.11963927855711422, 0.12024048096192384, 0.12084168336673345, 0.12144288577154308, 0.1220440881763527, 0.12264529058116232, 0.12324649298597194, 0.12384769539078155, 0.12444889779559117, 0.1250501002004008, 0.1256513026052104, 0.12625250501002003, 0.12685370741482965, 0.12745490981963928, 0.1280561122244489, 0.12865731462925853, 0.12925851703406813, 0.12985971943887775, 0.13046092184368735, 0.13106212424849698, 0.13166332665330663, 0.13226452905811623, 0.13286573146292585, 0.13346693386773545, 0.13406813627254507, 0.13466933867735473, 0.13527054108216433, 0.13587174348697395, 0.13647294589178355, 0.13707414829659317, 0.1376753507014028, 0.13827655310621242, 0.13887775551102205, 0.13947895791583165, 0.14008016032064127, 0.1406813627254509, 0.14128256513026052, 0.14188376753507012, 0.14248496993987975, 0.14308617234468937, 0.143687374749499, 0.14428857715430862, 0.14488977955911822, 0.14549098196392785, 0.14609218436873747, 0.1466933867735471, 0.14729458917835672, 0.14789579158316632, 0.14849699398797594, 0.14909819639278554, 0.1496993987975952, 0.15030060120240482, 0.15090180360721442, 0.15150300601202404, 0.15210420841683364, 0.1527054108216433, 0.1533066132264529, 0.15390781563126252, 0.15450901803607214, 0.15511022044088174, 0.1557114228456914, 0.156312625250501, 0.15691382765531062, 0.15751503006012024, 0.15811623246492984, 0.1587174348697395, 0.1593186372745491, 0.15991983967935872, 0.16052104208416831, 0.16112224448897794, 0.1617234468937876, 0.1623246492985972, 0.16292585170340682, 0.1635270541082164, 0.16412825651302604, 0.16472945891783566, 0.1653306613226453, 0.16593186372745491, 0.1665330661322645, 0.16713426853707414, 0.16773547094188376, 0.1683366733466934, 0.168937875751503, 0.1695390781563126, 0.17014028056112224, 0.17074148296593186, 0.1713426853707415, 0.17194388777555109, 0.1725450901803607, 0.17314629258517034, 0.17374749498997996, 0.1743486973947896, 0.17494989979959918, 0.1755511022044088, 0.1761523046092184, 0.17675350701402806, 0.17735470941883769, 0.17795591182364728, 0.1785571142284569, 0.1791583166332665, 0.17975951903807616, 0.18036072144288579, 0.18096192384769538, 0.181563126252505, 0.1821643286573146, 0.18276553106212426, 0.18336673346693386, 0.18396793587174348, 0.1845691382765531, 0.1851703406813627, 0.18577154308617236, 0.18637274549098196, 0.18697394789579158, 0.18757515030060118, 0.1881763527054108, 0.18877755511022046, 0.18937875751503006, 0.18997995991983968, 0.19058116232464928, 0.1911823647294589, 0.19178356713426856, 0.19238476953907815, 0.19298597194388778, 0.19358717434869738, 0.194188376753507, 0.19478957915831663, 0.19539078156312625, 0.19599198396793588, 0.19659318637274548, 0.1971943887775551, 0.19779559118236473, 0.19839679358717435, 0.19899799599198395, 0.19959919839679358, 0.2002004008016032, 0.20080160320641283, 0.20140280561122245, 0.20200400801603205, 0.20260521042084167, 0.20320641282565127, 0.20380761523046093, 0.20440881763527055, 0.20501002004008015, 0.20561122244488977, 0.20621242484969937, 0.20681362725450902, 0.20741482965931865, 0.20801603206412825, 0.20861723446893787, 0.20921843687374747, 0.20981963927855712, 0.21042084168336672, 0.21102204408817635, 0.21162324649298597, 0.21222444889779557, 0.21282565130260522, 0.21342685370741482, 0.21402805611222445, 0.21462925851703404, 0.21523046092184367, 0.21583166332665332, 0.21643286573146292, 0.21703406813627255, 0.21763527054108214, 0.21823647294589177, 0.21883767535070142, 0.21943887775551102, 0.22004008016032064, 0.22064128256513024, 0.22124248496993987, 0.2218436873747495, 0.22244488977955912, 0.22304609218436874, 0.22364729458917834, 0.22424849699398797, 0.2248496993987976, 0.22545090180360722, 0.22605210420841682, 0.22665330661322644, 0.22725450901803607, 0.2278557114228457, 0.22845691382765532, 0.22905811623246491, 0.22965931863727454, 0.23026052104208414, 0.23086172344689376, 0.23146292585170342, 0.232064128256513, 0.23266533066132264, 0.23326653306613224, 0.23386773547094186, 0.23446893787575152, 0.2350701402805611, 0.23567134268537074, 0.23627254509018034, 0.23687374749498996, 0.2374749498997996, 0.2380761523046092, 0.23867735470941884, 0.23927855711422844, 0.23987975951903806, 0.24048096192384769, 0.2410821643286573, 0.2416833667334669, 0.24228456913827653, 0.24288577154308616, 0.24348697394789579, 0.2440881763527054, 0.244689378757515, 0.24529058116232463, 0.24589178356713426, 0.24649298597194388, 0.2470941883767535, 0.2476953907815631, 0.24829659318637273, 0.24889779559118233, 0.24949899799599198, 0.2501002004008016, 0.2507014028056112, 0.2513026052104208, 0.25190380761523046, 0.25250501002004005, 0.2531062124248497, 0.2537074148296593, 0.2543086172344689, 0.25490981963927856, 0.25551102204408815, 0.2561122244488978, 0.2567134268537074, 0.25731462925851706, 0.25791583166332666, 0.25851703406813625, 0.25911823647294585, 0.2597194388777555, 0.26032064128256516, 0.2609218436873747, 0.26152304609218435, 0.26212424849699395, 0.2627254509018036, 0.26332665330661326, 0.2639278557114228, 0.26452905811623245, 0.26513026052104205, 0.2657314629258517, 0.26633266533066136, 0.2669338677354709, 0.26753507014028055, 0.26813627254509015, 0.2687374749498998, 0.26933867735470945, 0.269939879759519, 0.27054108216432865, 0.27114228456913825, 0.2717434869739479, 0.27234468937875755, 0.2729458917835671, 0.27354709418837675, 0.27414829659318635, 0.274749498997996, 0.2753507014028056, 0.2759519038076152, 0.27655310621242485, 0.27715430861723445, 0.2777555110220441, 0.2783567134268537, 0.2789579158316633, 0.27955911823647295, 0.28016032064128255, 0.2807615230460922, 0.2813627254509018, 0.2819639278557114, 0.28256513026052105, 0.28316633266533064, 0.28376753507014024, 0.2843687374749499, 0.2849699398797595, 0.28557114228456915, 0.28617234468937874, 0.28677354709418834, 0.287374749498998, 0.2879759519038076, 0.28857715430861725, 0.28917835671342684, 0.28977955911823644, 0.2903807615230461, 0.2909819639278557, 0.29158316633266534, 0.29218436873747494, 0.29278557114228454, 0.2933867735470942, 0.2939879759519038, 0.29458917835671344, 0.295190380761523, 0.29579158316633264, 0.2963927855711423, 0.2969939879759519, 0.29759519038076154, 0.2981963927855711, 0.29879759519038074, 0.2993987975951904, 0.3])
               .range(['#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff']);
     
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.x = d3.scale.linear()
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.x = d3.scale.linear()
               .domain([0.0, 0.3])
               .range([0, 450 - 50]);
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.legend = L.control({position: 'topright'});
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.legend.addTo(map_80a61f6a430cafcba9703a98f3ee99e4);
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.legend = L.control({position: 'topright'});
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.legend.addTo(map_efc65515250c71c7104a5dade94764e5);
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.xAxis = d3.svg.axis()
-        .scale(color_map_b19e427c17d5e7ecac07faefd9909d7c.x)
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.xAxis = d3.svg.axis()
+        .scale(color_map_f3e786ab5e42ad390c9f4b7238b208da.x)
         .orient(&quot;top&quot;)
         .tickSize(1)
         .tickValues([0, 0.07, 0.15, 0.22, 0.3]);
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
         .attr(&quot;id&quot;, 'legend')
         .attr(&quot;width&quot;, 450)
         .attr(&quot;height&quot;, 40);
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.g = color_map_b19e427c17d5e7ecac07faefd9909d7c.svg.append(&quot;g&quot;)
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.g = color_map_f3e786ab5e42ad390c9f4b7238b208da.svg.append(&quot;g&quot;)
         .attr(&quot;class&quot;, &quot;key&quot;)
         .attr(&quot;transform&quot;, &quot;translate(25,16)&quot;);
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.g.selectAll(&quot;rect&quot;)
-        .data(color_map_b19e427c17d5e7ecac07faefd9909d7c.color.range().map(function(d, i) {
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.g.selectAll(&quot;rect&quot;)
+        .data(color_map_f3e786ab5e42ad390c9f4b7238b208da.color.range().map(function(d, i) {
           return {
-            x0: i ? color_map_b19e427c17d5e7ecac07faefd9909d7c.x(color_map_b19e427c17d5e7ecac07faefd9909d7c.color.domain()[i - 1]) : color_map_b19e427c17d5e7ecac07faefd9909d7c.x.range()[0],
-            x1: i < color_map_b19e427c17d5e7ecac07faefd9909d7c.color.domain().length ? color_map_b19e427c17d5e7ecac07faefd9909d7c.x(color_map_b19e427c17d5e7ecac07faefd9909d7c.color.domain()[i]) : color_map_b19e427c17d5e7ecac07faefd9909d7c.x.range()[1],
+            x0: i ? color_map_f3e786ab5e42ad390c9f4b7238b208da.x(color_map_f3e786ab5e42ad390c9f4b7238b208da.color.domain()[i - 1]) : color_map_f3e786ab5e42ad390c9f4b7238b208da.x.range()[0],
+            x1: i < color_map_f3e786ab5e42ad390c9f4b7238b208da.color.domain().length ? color_map_f3e786ab5e42ad390c9f4b7238b208da.x(color_map_f3e786ab5e42ad390c9f4b7238b208da.color.domain()[i]) : color_map_f3e786ab5e42ad390c9f4b7238b208da.x.range()[1],
             z: d
           };
         }))
@@ -1292,13 +1292,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         .attr(&quot;width&quot;, function(d) { return d.x1 - d.x0; })
         .style(&quot;fill&quot;, function(d) { return d.z; });
 
-    color_map_b19e427c17d5e7ecac07faefd9909d7c.g.call(color_map_b19e427c17d5e7ecac07faefd9909d7c.xAxis).append(&quot;text&quot;)
+    color_map_f3e786ab5e42ad390c9f4b7238b208da.g.call(color_map_f3e786ab5e42ad390c9f4b7238b208da.xAxis).append(&quot;text&quot;)
         .attr(&quot;class&quot;, &quot;caption&quot;)
         .attr(&quot;y&quot;, 21)
-        .text(&quot;Rh Values (kg Carbon/m2/daily)&quot;);
+        .text(&quot;Rh Values (gm Carbon/m2/daily)&quot;);
     
-            var map_94087b50b5d7516ff8225cfd908e10eb = L.map(
-                &quot;map_94087b50b5d7516ff8225cfd908e10eb&quot;,
+            var map_bc8d56847e95b09e0e0a4520cc239e49 = L.map(
+                &quot;map_bc8d56847e95b09e0e0a4520cc239e49&quot;,
                 {
                     center: [31.9, -99.9],
                     crs: L.CRS.EPSG3857,
@@ -1312,29 +1312,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_0229950d89ba60ed70294c7a7114f31d = L.tileLayer(
+            var tile_layer_6bde08e7a15106f096ce09da5ecb60ed = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_94087b50b5d7516ff8225cfd908e10eb);
+            ).addTo(map_bc8d56847e95b09e0e0a4520cc239e49);
         
     
-            var tile_layer_956435a5a0ad250f9cff00d86810df19 = L.tileLayer(
+            var tile_layer_96bea8e39fec4334987cd74c41e928e0 = L.tileLayer(
                 &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=micasa-carbonflux-daygrid-v1\u0026item=micasa-carbonflux-daygrid-v1-20230131\u0026assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=-0.32319876551628113%2C5.9415082931518555&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_94087b50b5d7516ff8225cfd908e10eb);
+            ).addTo(map_bc8d56847e95b09e0e0a4520cc239e49);
         
     
-            map_80a61f6a430cafcba9703a98f3ee99e4.sync(map_94087b50b5d7516ff8225cfd908e10eb);
-            map_94087b50b5d7516ff8225cfd908e10eb.sync(map_80a61f6a430cafcba9703a98f3ee99e4);
+            map_efc65515250c71c7104a5dade94764e5.sync(map_bc8d56847e95b09e0e0a4520cc239e49);
+            map_bc8d56847e95b09e0e0a4520cc239e49.sync(map_efc65515250c71c7104a5dade94764e5);
         
     
-            var marker_956148bc110e44ba9ce28c95122ce5ed = L.marker(
+            var marker_fdad00f4b55043428a91c76f85370d13 = L.marker(
                 [40.0, 5.0],
                 {}
-            ).addTo(map_94087b50b5d7516ff8225cfd908e10eb);
+            ).addTo(map_bc8d56847e95b09e0e0a4520cc239e49);
         
     
-            marker_956148bc110e44ba9ce28c95122ce5ed.bindTooltip(
+            marker_fdad00f4b55043428a91c76f85370d13.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -1342,19 +1342,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var layer_control_48b012cde60d4bbd9e9b35902b294b4a = {
+            var layer_control_5f27bc94d212498e8485cfbd07a9ad11 = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_0229950d89ba60ed70294c7a7114f31d,
+                    &quot;openstreetmap&quot; : tile_layer_6bde08e7a15106f096ce09da5ecb60ed,
                 },
                 overlays :  {
-                    &quot;2023-01-31 RH Level&quot; : tile_layer_956435a5a0ad250f9cff00d86810df19,
+                    &quot;2023-01-31 RH Level&quot; : tile_layer_96bea8e39fec4334987cd74c41e928e0,
                 },
             };
             L.control.layers(
-                layer_control_48b012cde60d4bbd9e9b35902b294b4a.base_layers,
-                layer_control_48b012cde60d4bbd9e9b35902b294b4a.overlays,
+                layer_control_5f27bc94d212498e8485cfbd07a9ad11.base_layers,
+                layer_control_5f27bc94d212498e8485cfbd07a9ad11.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_94087b50b5d7516ff8225cfd908e10eb);
+            ).addTo(map_bc8d56847e95b09e0e0a4520cc239e49);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -1434,7 +1434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_56883da2b31d200f1744a2c9325d522f {
+                #map_7616c32a5cf5b058cf2e04caea861e66 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1448,14 +1448,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_56883da2b31d200f1744a2c9325d522f&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_7616c32a5cf5b058cf2e04caea861e66&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_56883da2b31d200f1744a2c9325d522f = L.map(
-                &quot;map_56883da2b31d200f1744a2c9325d522f&quot;,
+            var map_7616c32a5cf5b058cf2e04caea861e66 = L.map(
+                &quot;map_7616c32a5cf5b058cf2e04caea861e66&quot;,
                 {
                     center: [32.81, -96.93],
                     crs: L.CRS.EPSG3857,
@@ -1469,28 +1469,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_fc33a6a73f3cbfdd18cf0da1f8ee19e5 = L.tileLayer(
+            var tile_layer_0b5d81c3bf14ce8f8e580ded04519b97 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_56883da2b31d200f1744a2c9325d522f);
+            ).addTo(map_7616c32a5cf5b058cf2e04caea861e66);
         
     
 
-        function geo_json_2fb81f776b595040a743fb18e591149c_onEachFeature(feature, layer) {
+        function geo_json_2ae180fc548679fd8c6fa275a3fd2c68_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_2fb81f776b595040a743fb18e591149c = L.geoJson(null, {
-                onEachFeature: geo_json_2fb81f776b595040a743fb18e591149c_onEachFeature,
+        var geo_json_2ae180fc548679fd8c6fa275a3fd2c68 = L.geoJson(null, {
+                onEachFeature: geo_json_2ae180fc548679fd8c6fa275a3fd2c68_onEachFeature,
             
         });
 
-        function geo_json_2fb81f776b595040a743fb18e591149c_add (data) {
-            geo_json_2fb81f776b595040a743fb18e591149c
+        function geo_json_2ae180fc548679fd8c6fa275a3fd2c68_add (data) {
+            geo_json_2ae180fc548679fd8c6fa275a3fd2c68
                 .addData(data)
-                .addTo(map_56883da2b31d200f1744a2c9325d522f);
+                .addTo(map_7616c32a5cf5b058cf2e04caea861e66);
         }
-            geo_json_2fb81f776b595040a743fb18e591149c_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+            geo_json_2ae180fc548679fd8c6fa275a3fd2c68_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
 
         
 </script>
@@ -1501,13 +1501,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="cell-25" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the total number of items available within the collection</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=800"</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 600 items</code></pre>
+<pre><code>Found 800 items</code></pre>
 </div>
 </div>
 <div id="cell-26" class="cell">
@@ -1770,8 +1770,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualize-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-the-data-as-a-time-series">Visualize the Data as a Time Series</h2>
-<p>We can now explore the Heterotrophic Respiration time series (January 2003 -December 2017) available for the Dallas, Texas area. We can plot the data set using the code below:</p>
-<div id="cell-36" class="cell" data-execution_count="26">
+<p>We can now explore the Heterotrophic Respiration time series (October 2021 - January 2024) available for the Dallas, Texas area. We can plot the data set using the code below:</p>
+<div id="cell-36" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>)) </span>
@@ -1793,12 +1793,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
 <span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"kg Carbon/m2/day"</span>)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"gm Carbon/m2/day"</span>)</span>
 <span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Heterotrophic Respiration Values for Dallas, Texas (May 2022 to January 2024)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
-<pre><code>Text(0.5, 1.0, 'Heterotrophic Respiration Values for Dallas, Texas (May 2022 to January 2024)')</code></pre>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Heterotrophic Respiration Values for Dallas, Texas (October 2021 to January 2024)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>Text(0.5, 1.0, 'Heterotrophic Respiration Values for Dallas, Texas (October 2021 to January 2024)')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1808,9 +1808,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>To take a closer look at the daily Heterotrophic Respiration variability across this region, we are going to retrieve and display data collected during the October, 2017 observation.</p>
-<div id="cell-38" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 2013-12-29 observation is the 3rd item in the list</span></span>
+<p>To take a closer look at the daily Heterotrophic Respiration variability across this region, we are going to retrieve and display data collected during the December, 2023 observation.</p>
+<div id="cell-38" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the third item in the list as the observation item.</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Considering that a list starts with "0", we need to insert "2" in the "items[2]" statement</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the start Date Time of the third granule in the collection</span></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>][<span class="st">"properties"</span>][<span class="st">"datetime"</span>]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1818,9 +1818,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>2023-12-29T00:00:00+00:00</code></pre>
 </div>
 </div>
-<div id="cell-39" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A GET request is made for the October 2017 tile</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>october_tile <span class="op">=</span> requests.get(</span>
+<div id="cell-39" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A GET request is made for the observed tile</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>observed_tile <span class="op">=</span> requests.get(</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, the item number in the list, and its ID</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -1838,8 +1838,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console </span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>october_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>observed_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -1850,8 +1850,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-2.842170943040401e-14, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-40" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the Rh level for the Dallas, Texas area for the October, 2017 timeframe</span></span>
+<div id="cell-40" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the Rh level for the Dallas, Texas area for the observed tile timeframe.</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox <span class="op">=</span> Map(</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Base map is set to OpenStreetMap</span></span>
@@ -1867,12 +1867,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">9</span>,</span>
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the map layer with the Rh level for October, 2017</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the map layer with the Rh level for observed tile</span></span>
 <span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>october_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observed_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the attribution, transparency, and the title along with enabling the visualization of the legend on the map </span></span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.7</span>, name<span class="op">=</span><span class="st">"October 2017 RH Level"</span>, overlay<span class="op">=</span> <span class="va">True</span>, legendEnabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, opacity <span class="op">=</span> <span class="fl">0.7</span>, name<span class="op">=</span><span class="st">" Observed tile RH Level"</span>, overlay<span class="op">=</span> <span class="va">True</span>, legendEnabled <span class="op">=</span> <span class="va">True</span></span>
 <span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the layer to the map</span></span>
@@ -1885,20 +1885,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>).add_to(aoi_map_bbox)</span>
 <span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a legend using the 'branca' library</span></span>
-<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>colormap <span class="op">=</span> branca.colormap.linear.PuRd_09.scale(<span class="dv">0</span>, <span class="fl">0.3</span>) <span class="co"># minimum value = 0, maximum value = 0.3 (kg Carbon/m2/daily)</span></span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>colormap <span class="op">=</span> branca.colormap.linear.PuRd_09.scale(<span class="dv">0</span>, <span class="fl">0.3</span>) <span class="co"># minimum value = 0, maximum value = 0.3 (gm Carbon/m2/daily)</span></span>
 <span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify the colormap according to the specified Rh values</span></span>
 <span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>colormap <span class="op">=</span> colormap.to_step(index<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.07</span>, <span class="fl">0.15</span>, <span class="fl">0.22</span>, <span class="fl">0.3</span>])</span>
 <span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the data unit as caption</span></span>
-<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>colormap.caption <span class="op">=</span> <span class="st">'Rh Values (kg Carbon/m2/daily)'</span></span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>colormap.caption <span class="op">=</span> <span class="st">'Rh Values (gm Carbon/m2/daily)'</span></span>
 <span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the legend and caption on the map</span></span>
 <span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>colormap.add_to(aoi_map_bbox)</span>
 <span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the map</span></span>
 <span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1926,7 +1926,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_4d5c82041596797c614ade8af059b990 {
+                #map_b44c8ec2eb277d6c9d71c6068d79c5cb {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1941,14 +1941,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_4d5c82041596797c614ade8af059b990&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_b44c8ec2eb277d6c9d71c6068d79c5cb&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_4d5c82041596797c614ade8af059b990 = L.map(
-                &quot;map_4d5c82041596797c614ade8af059b990&quot;,
+            var map_b44c8ec2eb277d6c9d71c6068d79c5cb = L.map(
+                &quot;map_b44c8ec2eb277d6c9d71c6068d79c5cb&quot;,
                 {
                     center: [32.8, -96.79],
                     crs: L.CRS.EPSG3857,
@@ -1962,25 +1962,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_2428926e0b0119a40f9ec7146ec58b4d = L.tileLayer(
+            var tile_layer_7508e31f24bc089717e5c7e842ce8c2f = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_4d5c82041596797c614ade8af059b990);
+            ).addTo(map_b44c8ec2eb277d6c9d71c6068d79c5cb);
         
     
-            var tile_layer_ced96753c1413142b6ba95ddb5538e78 = L.tileLayer(
+            var tile_layer_1b9da8ace68747ef621903248802588f = L.tileLayer(
                 &quot;https://ghg.center/api/raster/stac/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=micasa-carbonflux-daygrid-v1\u0026item=micasa-carbonflux-daygrid-v1-20231229\u0026assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=-0.32319876551628113%2C5.9415082931518555&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_4d5c82041596797c614ade8af059b990);
+            ).addTo(map_b44c8ec2eb277d6c9d71c6068d79c5cb);
         
     
-            var marker_43a731473b2f000bac31a93d82505439 = L.marker(
+            var marker_4183304ff8c957a97319ba77053b0562 = L.marker(
                 [40.0, 5.9],
                 {}
-            ).addTo(map_4d5c82041596797c614ade8af059b990);
+            ).addTo(map_b44c8ec2eb277d6c9d71c6068d79c5cb);
         
     
-            marker_43a731473b2f000bac31a93d82505439.bindTooltip(
+            marker_4183304ff8c957a97319ba77053b0562.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -1988,57 +1988,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var layer_control_dc095f8ed1e69c27329320c8fe710560 = {
+            var layer_control_9316b6b13b1564a77d147a7ccf270588 = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_2428926e0b0119a40f9ec7146ec58b4d,
+                    &quot;openstreetmap&quot; : tile_layer_7508e31f24bc089717e5c7e842ce8c2f,
                 },
                 overlays :  {
-                    &quot;October 2017 RH Level&quot; : tile_layer_ced96753c1413142b6ba95ddb5538e78,
+                    &quot; Observed tile RH Level&quot; : tile_layer_1b9da8ace68747ef621903248802588f,
                 },
             };
             L.control.layers(
-                layer_control_dc095f8ed1e69c27329320c8fe710560.base_layers,
-                layer_control_dc095f8ed1e69c27329320c8fe710560.overlays,
+                layer_control_9316b6b13b1564a77d147a7ccf270588.base_layers,
+                layer_control_9316b6b13b1564a77d147a7ccf270588.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_4d5c82041596797c614ade8af059b990);
+            ).addTo(map_b44c8ec2eb277d6c9d71c6068d79c5cb);
         
     
-    var color_map_8e07370e3129e6e302c2bc8745e2ab7d = {};
+    var color_map_e461bfd95b764e3bb487c4b5ef868683 = {};
 
     
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.color = d3.scale.threshold()
+    color_map_e461bfd95b764e3bb487c4b5ef868683.color = d3.scale.threshold()
               .domain([0.0, 0.0006012024048096192, 0.0012024048096192384, 0.0018036072144288575, 0.002404809619238477, 0.003006012024048096, 0.003607214428857715, 0.004208416833667335, 0.004809619238476954, 0.005410821643286573, 0.006012024048096192, 0.006613226452905812, 0.00721442885771543, 0.00781563126252505, 0.00841683366733467, 0.009018036072144289, 0.009619238476953907, 0.010220440881763526, 0.010821643286573146, 0.011422845691382766, 0.012024048096192385, 0.012625250501002003, 0.013226452905811623, 0.013827655310621242, 0.01442885771543086, 0.01503006012024048, 0.0156312625250501, 0.01623246492985972, 0.01683366733466934, 0.017434869739478956, 0.018036072144288578, 0.018637274549098193, 0.019238476953907815, 0.019839679358717437, 0.02044088176352705, 0.021042084168336674, 0.021643286573146292, 0.02224448897795591, 0.022845691382765532, 0.023446893787575147, 0.02404809619238477, 0.024649298597194388, 0.025250501002004006, 0.025851703406813628, 0.026452905811623247, 0.027054108216432865, 0.027655310621242483, 0.028256513026052102, 0.02885771543086172, 0.029458917835671342, 0.03006012024048096, 0.03066132264529058, 0.0312625250501002, 0.03186372745490982, 0.03246492985971944, 0.033066132264529056, 0.03366733466933868, 0.03426853707414829, 0.03486973947895791, 0.03547094188376753, 0.036072144288577156, 0.036673346693386774, 0.037274549098196386, 0.03787575150300601, 0.03847695390781563, 0.03907815631262525, 0.03967935871743487, 0.040280561122244485, 0.0408817635270541, 0.04148296593186373, 0.04208416833667335, 0.042685370741482966, 0.043286573146292584, 0.0438877755511022, 0.04448897795591182, 0.045090180360721446, 0.045691382765531065, 0.046292585170340676, 0.046893787575150295, 0.04749498997995992, 0.04809619238476954, 0.04869739478957916, 0.049298597194388775, 0.049899799599198394, 0.05050100200400801, 0.05110220440881764, 0.051703406813627256, 0.05230460921843687, 0.05290581162324649, 0.05350701402805611, 0.05410821643286573, 0.054709418837675355, 0.05531062124248497, 0.055911823647294585, 0.056513026052104204, 0.05711422845691383, 0.05771543086172344, 0.05831663326653306, 0.058917835671342685, 0.0595190380761523, 0.06012024048096192, 0.06072144288577154, 0.06132264529058116, 0.06192384769539078, 0.0625250501002004, 0.06312625250501001, 0.06372745490981964, 0.06432865731462926, 0.06492985971943888, 0.06553106212424849, 0.06613226452905811, 0.06673346693386772, 0.06733466933867736, 0.06793587174348698, 0.06853707414829659, 0.06913827655310621, 0.06973947895791582, 0.07034068136272545, 0.07094188376753506, 0.07154308617234469, 0.07214428857715431, 0.07274549098196392, 0.07334669338677355, 0.07394789579158316, 0.07454909819639277, 0.07515030060120241, 0.07575150300601202, 0.07635270541082165, 0.07695390781563126, 0.07755511022044087, 0.0781563126252505, 0.07875751503006012, 0.07935871743486975, 0.07995991983967936, 0.08056112224448897, 0.0811623246492986, 0.0817635270541082, 0.08236472945891783, 0.08296593186372746, 0.08356713426853707, 0.0841683366733467, 0.0847695390781563, 0.08537074148296593, 0.08597194388777554, 0.08657314629258517, 0.0871743486973948, 0.0877755511022044, 0.08837675350701403, 0.08897795591182364, 0.08957915831663325, 0.09018036072144289, 0.0907815631262525, 0.09138276553106213, 0.09198396793587174, 0.09258517034068135, 0.09318637274549098, 0.09378757515030059, 0.09438877755511023, 0.09498997995991984, 0.09559118236472945, 0.09619238476953908, 0.09679358717434869, 0.09739478957915831, 0.09799599198396794, 0.09859719438877755, 0.09919839679358718, 0.09979959919839679, 0.10040080160320641, 0.10100200400801602, 0.10160320641282564, 0.10220440881763528, 0.10280561122244489, 0.10340681362725451, 0.10400801603206412, 0.10460921843687374, 0.10521042084168336, 0.10581162324649299, 0.10641282565130261, 0.10701402805611222, 0.10761523046092183, 0.10821643286573146, 0.10881763527054107, 0.10941883767535071, 0.11002004008016032, 0.11062124248496993, 0.11122244488977956, 0.11182364729458917, 0.1124248496993988, 0.11302605210420841, 0.11362725450901803, 0.11422845691382766, 0.11482965931863727, 0.11543086172344688, 0.1160320641282565, 0.11663326653306612, 0.11723446893787576, 0.11783567134268537, 0.11843687374749498, 0.1190380761523046, 0.11963927855711422, 0.12024048096192384, 0.12084168336673345, 0.12144288577154308, 0.1220440881763527, 0.12264529058116232, 0.12324649298597194, 0.12384769539078155, 0.12444889779559117, 0.1250501002004008, 0.1256513026052104, 0.12625250501002003, 0.12685370741482965, 0.12745490981963928, 0.1280561122244489, 0.12865731462925853, 0.12925851703406813, 0.12985971943887775, 0.13046092184368735, 0.13106212424849698, 0.13166332665330663, 0.13226452905811623, 0.13286573146292585, 0.13346693386773545, 0.13406813627254507, 0.13466933867735473, 0.13527054108216433, 0.13587174348697395, 0.13647294589178355, 0.13707414829659317, 0.1376753507014028, 0.13827655310621242, 0.13887775551102205, 0.13947895791583165, 0.14008016032064127, 0.1406813627254509, 0.14128256513026052, 0.14188376753507012, 0.14248496993987975, 0.14308617234468937, 0.143687374749499, 0.14428857715430862, 0.14488977955911822, 0.14549098196392785, 0.14609218436873747, 0.1466933867735471, 0.14729458917835672, 0.14789579158316632, 0.14849699398797594, 0.14909819639278554, 0.1496993987975952, 0.15030060120240482, 0.15090180360721442, 0.15150300601202404, 0.15210420841683364, 0.1527054108216433, 0.1533066132264529, 0.15390781563126252, 0.15450901803607214, 0.15511022044088174, 0.1557114228456914, 0.156312625250501, 0.15691382765531062, 0.15751503006012024, 0.15811623246492984, 0.1587174348697395, 0.1593186372745491, 0.15991983967935872, 0.16052104208416831, 0.16112224448897794, 0.1617234468937876, 0.1623246492985972, 0.16292585170340682, 0.1635270541082164, 0.16412825651302604, 0.16472945891783566, 0.1653306613226453, 0.16593186372745491, 0.1665330661322645, 0.16713426853707414, 0.16773547094188376, 0.1683366733466934, 0.168937875751503, 0.1695390781563126, 0.17014028056112224, 0.17074148296593186, 0.1713426853707415, 0.17194388777555109, 0.1725450901803607, 0.17314629258517034, 0.17374749498997996, 0.1743486973947896, 0.17494989979959918, 0.1755511022044088, 0.1761523046092184, 0.17675350701402806, 0.17735470941883769, 0.17795591182364728, 0.1785571142284569, 0.1791583166332665, 0.17975951903807616, 0.18036072144288579, 0.18096192384769538, 0.181563126252505, 0.1821643286573146, 0.18276553106212426, 0.18336673346693386, 0.18396793587174348, 0.1845691382765531, 0.1851703406813627, 0.18577154308617236, 0.18637274549098196, 0.18697394789579158, 0.18757515030060118, 0.1881763527054108, 0.18877755511022046, 0.18937875751503006, 0.18997995991983968, 0.19058116232464928, 0.1911823647294589, 0.19178356713426856, 0.19238476953907815, 0.19298597194388778, 0.19358717434869738, 0.194188376753507, 0.19478957915831663, 0.19539078156312625, 0.19599198396793588, 0.19659318637274548, 0.1971943887775551, 0.19779559118236473, 0.19839679358717435, 0.19899799599198395, 0.19959919839679358, 0.2002004008016032, 0.20080160320641283, 0.20140280561122245, 0.20200400801603205, 0.20260521042084167, 0.20320641282565127, 0.20380761523046093, 0.20440881763527055, 0.20501002004008015, 0.20561122244488977, 0.20621242484969937, 0.20681362725450902, 0.20741482965931865, 0.20801603206412825, 0.20861723446893787, 0.20921843687374747, 0.20981963927855712, 0.21042084168336672, 0.21102204408817635, 0.21162324649298597, 0.21222444889779557, 0.21282565130260522, 0.21342685370741482, 0.21402805611222445, 0.21462925851703404, 0.21523046092184367, 0.21583166332665332, 0.21643286573146292, 0.21703406813627255, 0.21763527054108214, 0.21823647294589177, 0.21883767535070142, 0.21943887775551102, 0.22004008016032064, 0.22064128256513024, 0.22124248496993987, 0.2218436873747495, 0.22244488977955912, 0.22304609218436874, 0.22364729458917834, 0.22424849699398797, 0.2248496993987976, 0.22545090180360722, 0.22605210420841682, 0.22665330661322644, 0.22725450901803607, 0.2278557114228457, 0.22845691382765532, 0.22905811623246491, 0.22965931863727454, 0.23026052104208414, 0.23086172344689376, 0.23146292585170342, 0.232064128256513, 0.23266533066132264, 0.23326653306613224, 0.23386773547094186, 0.23446893787575152, 0.2350701402805611, 0.23567134268537074, 0.23627254509018034, 0.23687374749498996, 0.2374749498997996, 0.2380761523046092, 0.23867735470941884, 0.23927855711422844, 0.23987975951903806, 0.24048096192384769, 0.2410821643286573, 0.2416833667334669, 0.24228456913827653, 0.24288577154308616, 0.24348697394789579, 0.2440881763527054, 0.244689378757515, 0.24529058116232463, 0.24589178356713426, 0.24649298597194388, 0.2470941883767535, 0.2476953907815631, 0.24829659318637273, 0.24889779559118233, 0.24949899799599198, 0.2501002004008016, 0.2507014028056112, 0.2513026052104208, 0.25190380761523046, 0.25250501002004005, 0.2531062124248497, 0.2537074148296593, 0.2543086172344689, 0.25490981963927856, 0.25551102204408815, 0.2561122244488978, 0.2567134268537074, 0.25731462925851706, 0.25791583166332666, 0.25851703406813625, 0.25911823647294585, 0.2597194388777555, 0.26032064128256516, 0.2609218436873747, 0.26152304609218435, 0.26212424849699395, 0.2627254509018036, 0.26332665330661326, 0.2639278557114228, 0.26452905811623245, 0.26513026052104205, 0.2657314629258517, 0.26633266533066136, 0.2669338677354709, 0.26753507014028055, 0.26813627254509015, 0.2687374749498998, 0.26933867735470945, 0.269939879759519, 0.27054108216432865, 0.27114228456913825, 0.2717434869739479, 0.27234468937875755, 0.2729458917835671, 0.27354709418837675, 0.27414829659318635, 0.274749498997996, 0.2753507014028056, 0.2759519038076152, 0.27655310621242485, 0.27715430861723445, 0.2777555110220441, 0.2783567134268537, 0.2789579158316633, 0.27955911823647295, 0.28016032064128255, 0.2807615230460922, 0.2813627254509018, 0.2819639278557114, 0.28256513026052105, 0.28316633266533064, 0.28376753507014024, 0.2843687374749499, 0.2849699398797595, 0.28557114228456915, 0.28617234468937874, 0.28677354709418834, 0.287374749498998, 0.2879759519038076, 0.28857715430861725, 0.28917835671342684, 0.28977955911823644, 0.2903807615230461, 0.2909819639278557, 0.29158316633266534, 0.29218436873747494, 0.29278557114228454, 0.2933867735470942, 0.2939879759519038, 0.29458917835671344, 0.295190380761523, 0.29579158316633264, 0.2963927855711423, 0.2969939879759519, 0.29759519038076154, 0.2981963927855711, 0.29879759519038074, 0.2993987975951904, 0.3])
               .range(['#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff']);
     
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.x = d3.scale.linear()
+    color_map_e461bfd95b764e3bb487c4b5ef868683.x = d3.scale.linear()
               .domain([0.0, 0.3])
               .range([0, 450 - 50]);
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.legend = L.control({position: 'topright'});
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.legend.addTo(map_4d5c82041596797c614ade8af059b990);
+    color_map_e461bfd95b764e3bb487c4b5ef868683.legend = L.control({position: 'topright'});
+    color_map_e461bfd95b764e3bb487c4b5ef868683.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_e461bfd95b764e3bb487c4b5ef868683.legend.addTo(map_b44c8ec2eb277d6c9d71c6068d79c5cb);
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.xAxis = d3.svg.axis()
-        .scale(color_map_8e07370e3129e6e302c2bc8745e2ab7d.x)
+    color_map_e461bfd95b764e3bb487c4b5ef868683.xAxis = d3.svg.axis()
+        .scale(color_map_e461bfd95b764e3bb487c4b5ef868683.x)
         .orient(&quot;top&quot;)
         .tickSize(1)
         .tickValues([0, 0.07, 0.15, 0.22, 0.3]);
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
+    color_map_e461bfd95b764e3bb487c4b5ef868683.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
         .attr(&quot;id&quot;, 'legend')
         .attr(&quot;width&quot;, 450)
         .attr(&quot;height&quot;, 40);
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.g = color_map_8e07370e3129e6e302c2bc8745e2ab7d.svg.append(&quot;g&quot;)
+    color_map_e461bfd95b764e3bb487c4b5ef868683.g = color_map_e461bfd95b764e3bb487c4b5ef868683.svg.append(&quot;g&quot;)
         .attr(&quot;class&quot;, &quot;key&quot;)
         .attr(&quot;transform&quot;, &quot;translate(25,16)&quot;);
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.g.selectAll(&quot;rect&quot;)
-        .data(color_map_8e07370e3129e6e302c2bc8745e2ab7d.color.range().map(function(d, i) {
+    color_map_e461bfd95b764e3bb487c4b5ef868683.g.selectAll(&quot;rect&quot;)
+        .data(color_map_e461bfd95b764e3bb487c4b5ef868683.color.range().map(function(d, i) {
           return {
-            x0: i ? color_map_8e07370e3129e6e302c2bc8745e2ab7d.x(color_map_8e07370e3129e6e302c2bc8745e2ab7d.color.domain()[i - 1]) : color_map_8e07370e3129e6e302c2bc8745e2ab7d.x.range()[0],
-            x1: i < color_map_8e07370e3129e6e302c2bc8745e2ab7d.color.domain().length ? color_map_8e07370e3129e6e302c2bc8745e2ab7d.x(color_map_8e07370e3129e6e302c2bc8745e2ab7d.color.domain()[i]) : color_map_8e07370e3129e6e302c2bc8745e2ab7d.x.range()[1],
+            x0: i ? color_map_e461bfd95b764e3bb487c4b5ef868683.x(color_map_e461bfd95b764e3bb487c4b5ef868683.color.domain()[i - 1]) : color_map_e461bfd95b764e3bb487c4b5ef868683.x.range()[0],
+            x1: i < color_map_e461bfd95b764e3bb487c4b5ef868683.color.domain().length ? color_map_e461bfd95b764e3bb487c4b5ef868683.x(color_map_e461bfd95b764e3bb487c4b5ef868683.color.domain()[i]) : color_map_e461bfd95b764e3bb487c4b5ef868683.x.range()[1],
             z: d
           };
         }))
@@ -2048,10 +2048,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         .attr(&quot;width&quot;, function(d) { return d.x1 - d.x0; })
         .style(&quot;fill&quot;, function(d) { return d.z; });
 
-    color_map_8e07370e3129e6e302c2bc8745e2ab7d.g.call(color_map_8e07370e3129e6e302c2bc8745e2ab7d.xAxis).append(&quot;text&quot;)
+    color_map_e461bfd95b764e3bb487c4b5ef868683.g.call(color_map_e461bfd95b764e3bb487c4b5ef868683.xAxis).append(&quot;text&quot;)
         .attr(&quot;class&quot;, &quot;caption&quot;)
         .attr(&quot;y&quot;, 21)
-        .text(&quot;Rh Values (kg Carbon/m2/daily)&quot;);
+        .text(&quot;Rh Values (gm Carbon/m2/daily)&quot;);
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
