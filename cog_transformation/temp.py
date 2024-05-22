@@ -62,12 +62,19 @@ with raster_io_session:
             # Replace original "no data" values in data with new "no data" value
             data[data == src.nodata] = -9999
 
-            # Write the updated data to a new file
-            with tempfile.NamedTemporaryFile() as temp_file:
-                with rasterio.open(temp_file.name, "w", **meta) as dst:
-                    dst.write(data)
-                    s3_client.upload_file(
-                        Filename=temp_file.name,
-                        Bucket=bucket_name,
-                        Key=f"{new_cog_folder}/{collection_name}/{'/'.join(key.split('/')[3:])}",
-                    )
+            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                temp_file_path = temp_file.name
+
+            # Write the updated data to the temporary file
+            with rasterio.open(temp_file_path, "w", **meta) as dst:
+                dst.write(data)
+
+            # Upload the temporary file to S3
+            s3_client.upload_file(
+                Filename=temp_file_path,
+                Bucket=bucket_name,
+                Key=f"{new_cog_folder}/{collection_name}/{'/'.join(key.split('/')[3:])}",
+            )
+
+            # Clean up the temporary file
+            os.remove(temp_file_path)
