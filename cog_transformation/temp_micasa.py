@@ -42,14 +42,14 @@ source_keys = get_all_s3_keys(bucket_name, prefix)
 target_keys = get_all_s3_keys(
     bucket_name, "updated_with_nodata/micasa-carbonflux-daygrid-v1/"
 )
-keys = list(
-    set("/".join(string.split("/")[1:]) for string in source_keys)
-    ^ set("/".join(string.split("/")[2:]) for string in target_keys)
-)
+# keys = list(
+#     set("/".join(string.split("/")[1:]) for string in source_keys)
+#     ^ set("/".join(string.split("/")[2:]) for string in target_keys)
+# )
 
 with raster_io_session:
-    for key in keys:
-        with rasterio.open(f"s3://{bucket_name}/{prefix}{'/'.join(key.split('/')[2:])}") as src:
+    for key in source_keys:
+        with rasterio.open(f"s3://{bucket_name}/{key}") as src:
             # Read the data
             data = src.read()
 
@@ -74,8 +74,8 @@ with raster_io_session:
             s3_client.upload_file(
                 Filename=temp_file_path,
                 Bucket=bucket_name,
-                Key=f"{new_cog_folder}/{collection_name}/{'/'.join(key.split('/')[2:])}",
+                Key=f"{new_cog_folder}/{collection_name}/{'/'.join(key.split('/')[3:])}",
             )
-            
+
             # Clean up the temporary file
             os.remove(temp_file_path)
