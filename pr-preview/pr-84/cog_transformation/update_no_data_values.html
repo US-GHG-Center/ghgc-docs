@@ -859,14 +859,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            data[data <span class="op">==</span> src.nodata] <span class="op">=</span> <span class="op">-</span><span class="dv">9999</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the updated data to a new file</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tempfile.NamedTemporaryFile() <span class="im">as</span> temp_file:</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">with</span> rasterio.<span class="bu">open</span>(temp_file.name, <span class="st">'w'</span>, <span class="op">**</span>meta) <span class="im">as</span> dst:</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                    dst.write(data)</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                    s3_client.upload_file(</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                    Filename<span class="op">=</span>temp_file.name,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                    Bucket<span class="op">=</span>bucket_name,</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                    Key<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>new_cog_folder<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>key<span class="sc">.</span>split(<span class="st">'/'</span>)[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tempfile.NamedTemporaryFile(delete<span class="op">=</span><span class="va">False</span>) <span class="im">as</span> temp_file:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                temp_file_path <span class="op">=</span> temp_file.name</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Write the updated data to the temporary file</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> rasterio.<span class="bu">open</span>(temp_file_path, <span class="st">"w"</span>, <span class="op">**</span>meta) <span class="im">as</span> dst:</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                dst.write(data)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Upload the temporary file to S3</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            s3_client.upload_file(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                Filename<span class="op">=</span>temp_file_path,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                Bucket<span class="op">=</span>bucket_name,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>                Key<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>new_cog_folder<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="st">'/'</span><span class="sc">.</span>join(key.split(<span class="st">'/'</span>)[<span class="dv">3</span>:])<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Clean up the temporary file</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>            os.remove(temp_file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
