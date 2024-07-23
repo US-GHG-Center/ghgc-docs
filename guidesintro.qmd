@@ -1,75 +1,9 @@
 ---
-title: "QGIS User Guide Using US GHG Center Datasets" 
+title: "US Greenhouse Gas Center User Guides" 
 ---
 
-Welcome to the [U.S. Greenhouse Gas (GHG) Center](https://earth.gov/ghgcenter) QGIS GHG Dataset Usage Guide. This step-by-step guide is designed to help users interact and use GHG datasets using QGIS in the Hub. By the end of this short guide users will be able to access, display, and analyze GHG datasets through QGIS.
+Welcome to the [U.S. Greenhouse Gas (GHG) Center](https://earth.gov/ghgcenter) user guide page. These step-by-step guides are designed to inform users on how to use various US GHG Center hub functionalities. Guides are organized by functionality type.
 
-Join us as we show you how to access GHG Center datasets through QGIS using the STAC API Browser Plugin. This plugin will allow us to access datasets directly from the GHG Center and display them in QGIS. Once we have the dataset in QGIS we will show you a few examples on how to interact with the dataset witin QGIS including some simple raster analysis and map graphic creation. 
+Feel free to explore. 
 
-Let's get started.
 
-## Step-by-step
-1. Navigate to the US GHG Center webpage and press “Hub” on the top banner. 
-![Screenshot of US GHG wepage](QGISuserguide/Step0.5.png)
-
-2. Access JupyterHub using your login information. Scroll down and select “QGIS on Linux Desktop.” Then press start.
-![Screenshot of JupyterHub server options](QGISuserguide/Step1.png)
-
-3. QGIS should open using a Linux Desktop
-![Screenshot of QGIS through JupyterHub](QGISuserguide/Step2.png)
-
-4. Next select plugins and find the “STAC API Browser Plugin.” Select and open it.
-![Screenshot of QGIS plugin menu](QGISuserguide/Step3.png)
-
-5. Next with the STAC API Browser Plugin open, select the connection labeled “US GHG Center."
-![Screenshot of STAC API Browser Plugin](QGISuserguide/Step4.png)
-
-6. If US GHG Center is not one of the listed connections, we need to add it. This will allow the plugin to fetch datasets from the US GHG Center. To do this select "new connection." In the new connection window under name type “US GHG Center.” For the url use https://earth.gov/ghgcenter/api/stac/ and then click “Test connection.” Then press ok. 
-![Screenshot of New Connection tool](QGISuserguide/Step5.png)
-
-7. Next press “Fetch Connections.” Now the available datasets will be shown.
-![Screenshot of New Connection tool](QGISuserguide/Step6.png)
-
-8. Select a dataset and it will be displayed in QGIS for you to work with. For this example, we will be using “U.S. Gridded Anthropogenic Methane Emissions Inventory v2 Express Extension."
-![Screenshot of STAC API Browser](QGISuserguide/Step7.png)
-
-9. The available options show U.S. Gridded Anthropogenic Methane Emissions by year from 2012-2020. I will be selecting the 2020 dataset.
-![Screenshot of STAC API Browser](QGISuserguide/Step8.png)
-
-10. Click “View Assets” and choose a tiff to add the dataset to QGIS. For this example, we will be selecting “Total Agriculture (annual)” Then click “add selected assets as layers.” 
-![Screenshot of STAC API Browser displaying available datasets](QGISuserguide/Step9.png)
-
-11. Data should now be displayed in QGIS. Now to conduct some analysis and create an informative graphic. 
-![Screenshot of dataset displayed in QGIS](QGISuserguide/Step10.png)
-
-12. Right click over the data and select “properties.” Then select “Symbology.” As you can see the render type is currently set to “singleband gray.” This means our raster data is being displayed in grayscale. We would like to change that. 
-![Screenshot of layer properties tool](QGISuserguide/Step11.png)
-
-13. Before changing the symbology, we are going to conduct some simple statistical analysis on the dataset. Navigate to the toolbox tab and search for “raster layer statistics” under the “Raster Analysis” section. Then input the tiff file and click run. 
-![Screenshot of raster layer statistics tool](QGISuserguide/Step12.png)
-
-14. This raster analysis tool calculates several statistics including the mean, standard deviation, and the sum of squares, using our dataset.
-![Screenshot of raster layer statistics tool output](QGISuserguide/Step13.png)
-
-15. Next, we want to change the symbology so that our data is easier to interpret. As in Step 12 open the symbology for our dataset. Change the render type from “singleband gray” to “singleband psuedocolor.” This will allow us to display our data as a color gradient. For the color ramp we will be using “reds.” You can also change the mode in which the gradient is broken down. For this example, we will be using “equal interval” with band cut off’s rounded to whole numbers. Feel free to experiment but keep in mind that different display methods will influence how the audience interprets the data. 
-![Screenshot of symbology tool](QGISuserguide/Step14.1.png)
-![Screenshot of dataset with new symbology](QGISuserguide/Step14.2.png)
-
-16. Great, now our data is more intuitive to understand. But we could still use something to better contextualize our data. In this case we will be adding borders for the United States. We will be downloading and inserting a shapefile from [ArcGIS Hub.](https://hub.arcgis.com/datasets/1b02c87f62d24508970dc1a6df80c98e/explore) Download the shapefile. Then in QGIS navigate to “Layer”, then to “Add Layer,” then to “Add Vector Layer” from the dropdown menu. Navigate to your recently downloaded shapefile and add it. It should now be visible in QGIS.
-![Screenshot of ArcGIS Hub](QGISuserguide/Step15.1.png)
-![Screenshot of new shapefile in QGIS](QGISuserguide/Step15.2.png)
-
-17. Right now, our states shapefile covers our raster dataset. To fix this but keep the state borders visible, right click the shapefile navigate to the symbology page just as in Step 12. Then change "fill color" to transparent. 
-![Screenshot of layer symbology tool](QGISuserguide/Step16.1.png)
-![Screenshot of new symbology](QGISuserguide/Step16.2.png)
-
-18. Looks good! Now we can create our map graphic to inform readers. Navigate to “Project” then to “New Print Layout” and give it a title. We will be naming our print layout "US Agricultural Emissions 2020."
-![Screenshot of selecting new print layout tool](QGISuserguide/Step17.png)
-
-19. Next we will add the map to the layoout using the “add map” tool on the lefthand toolbar. 
-![Screenshot of map added to print layout](QGISuserguide/Step18.png)
-
-20. From the lefthand toolbar on this page we are able to add all standard cartographic elements. Make sure to include a title, a scale bar, a legend, a north arrow and metadata, which should include data sources and map projection. 
-![Final map graphic](QGISuserguide/Step19.png)
-
-Congragulations, you have successfully interacted with US GHG Center datasets through QGIS in JupyterHub!
