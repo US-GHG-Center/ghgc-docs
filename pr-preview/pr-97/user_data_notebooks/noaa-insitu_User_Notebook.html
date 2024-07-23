@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.54">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -789,7 +789,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#approach" id="toc-approach" class="nav-link active" data-scroll-target="#approach">Approach</a></li>
+  <li><a href="#run-this-notebook" id="toc-run-this-notebook" class="nav-link active" data-scroll-target="#run-this-notebook">Run this notebook</a></li>
+  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
   <ul class="collapse">
@@ -842,6 +843,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="run-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="run-this-notebook">Run this notebook</h2>
+<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below.</p>
+<p><a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fnoaa-insitu_User_Notebook.ipynb&amp;branch=main">Launch in the US GHG Center JupyterHub (requires access)</a></p>
+</section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
@@ -860,7 +866,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
 <section id="importing-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="importing-required-libraries">Importing required libraries</h3>
-<div id="cell-5" class="cell" data-execution_count="9">
+<div id="cell-6" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
@@ -871,7 +877,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="reading-the-noaa-data-from-github-repo" class="level2">
 <h2 class="anchored" data-anchor-id="reading-the-noaa-data-from-github-repo">Reading the NOAA data from GitHub repo</h2>
-<div id="cell-7" class="cell" data-execution_count="10">
+<div id="cell-8" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>github_repo_owner <span class="op">=</span> <span class="st">"NASA-IMPACT"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>github_repo_name <span class="op">=</span> <span class="st">"noaa-viz"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>folder_path_ch4, folder_path_co2 <span class="op">=</span> <span class="st">"flask/ch4"</span>, <span class="st">"flask/c02"</span></span>
@@ -899,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="concatenating-the-ch4-data-into-a-single-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="concatenating-the-ch4-data-into-a-single-dataframe">Concatenating the CH4 data into a single DataFrame</h2>
-<div id="cell-9" class="cell" data-execution_count="11">
+<div id="cell-10" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_info <span class="kw">in</span> file_list_ch4:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> file_info[<span class="st">"name"</span>].endswith(<span class="st">"txt"</span>):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        file_content <span class="op">=</span> append_github_file(file_info[<span class="st">"download_url"</span>])</span>
@@ -912,7 +918,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="concatenating-the-co2-data-into-a-single-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="concatenating-the-co2-data-into-a-single-dataframe">Concatenating the CO2 data into a single DataFrame</h2>
-<div id="cell-11" class="cell" data-execution_count="12">
+<div id="cell-12" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_info <span class="kw">in</span> file_list_co2:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> file_info[<span class="st">"name"</span>].endswith(<span class="st">"txt"</span>):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        file_content <span class="op">=</span> append_github_file(file_info[<span class="st">"download_url"</span>])</span>
@@ -925,7 +931,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-the-noaa-data-for-ch4-and-co2" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-noaa-data-for-ch4-and-co2">Visualizing the NOAA data for CH4 and CO2</h2>
-<div id="cell-13" class="cell" data-execution_count="13">
+<div id="cell-14" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>site_to_filter <span class="op">=</span> <span class="st">'ABP'</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_co2[combined_df_co2[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -959,7 +965,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="14">
+<div id="cell-15" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>site_to_filter <span class="op">=</span> <span class="st">'ABP'</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_ch4[combined_df_ch4[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(filtered_df[<span class="st">'datetime'</span>])</span>
