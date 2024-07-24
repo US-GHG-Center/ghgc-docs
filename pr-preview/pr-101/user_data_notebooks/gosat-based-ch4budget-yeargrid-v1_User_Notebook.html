@@ -789,7 +789,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#approach" id="toc-approach" class="nav-link active" data-scroll-target="#approach">Approach</a></li>
+  <li><a href="#run-this-notebook" id="toc-run-this-notebook" class="nav-link active" data-scroll-target="#run-this-notebook">Run this notebook</a></li>
+  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
   <ul class="collapse">
@@ -843,6 +844,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="run-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="run-this-notebook">Run this notebook</h2>
+<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below.</p>
+<p><a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fgosat-based-ch4budget-yeargrid-v1_User_Notebook.ipynb&amp;branch=main">Launch in the US GHG Center JupyterHub (requires access)</a></p>
+</section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
@@ -864,7 +870,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="querying-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-stac-api">Querying the STAC API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Spatio Temporal Asset Catalog (STAC) Application Programming Interface (API) where the granules for this collection are stored.</p>
-<div id="cell-5" class="cell">
+<div id="cell-6" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -875,7 +881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-6" class="cell">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/raster"</span></span>
@@ -885,13 +891,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for gosat budget methane. </span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"gosat-based-ch4budget-yeargrid-v1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-7" class="cell">
+<div id="cell-8" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the collection from STAC collections using appropriate endpoint.</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2012 to December 2018. By looking at the <code>dashboard:time density</code>, we observe that the data is available for only one year, i.e.&nbsp;2019.</p>
-<div id="cell-9" class="cell">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    items_url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items"</span></span>
@@ -913,13 +919,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell">
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -928,20 +934,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-changes-in-gosat-methane-budgets-ch4-levels-using-the-raster-api">Exploring Changes in GOSAT Methane budgets (CH4) Levels Using the Raster API</h2>
 <p>In this notebook, we will explore the impacts of methane emissions and by examining changes over time in urban regions. We will visualize the outputs on a map using <code>folium.</code></p>
-<div id="cell-14" class="cell">
+<div id="cell-15" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"prior-total"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-15" class="cell">
+<div id="cell-16" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values for a specific item</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-16" class="cell">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>items.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this for first January 2019.</p>
-<div id="cell-18" class="cell">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"rainbow"</span> <span class="co"># please select the color ramp from matplotlib library.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>january_2019_tile <span class="op">=</span> requests.get(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="st">'2019-01-01'</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="st">'2019-01-01'</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -954,7 +960,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-ch₄-emissions" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-ch₄-emissions">Visualizing CH₄ Emissions</h2>
-<div id="cell-20" class="cell">
+<div id="cell-21" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CH₄ Layer</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre of map [latitude,longitude]</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
@@ -983,7 +989,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculating-zonal-statistics" class="level1">
 <h1>Calculating Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas (USA).</p>
-<div id="cell-23" class="cell">
+<div id="cell-24" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Texas, USA</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>texas_aoi <span class="op">=</span> {</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
@@ -1007,7 +1013,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-24" class="cell">
+<div id="cell-25" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will plug in the coordinates for a location inside the the polygon and a zoom level</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>aoi_map <span class="op">=</span> Map(</span>
@@ -1021,18 +1027,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(texas_aoi, name<span class="op">=</span><span class="st">"Texas, USA"</span>).add_to(aoi_map)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-25" class="cell">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-26" class="cell">
+<div id="cell-27" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the first item</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-27" class="cell">
+<div id="cell-28" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
@@ -1046,14 +1052,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the function above we can generate the statistics for the AOI.</p>
-<div id="cell-29" class="cell">
+<div id="cell-30" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, texas_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-30" class="cell">
+<div id="cell-31" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-31" class="cell">
+<div id="cell-32" class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> [col.replace(<span class="st">"statistics.b1."</span>, <span class="st">""</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
@@ -1064,10 +1070,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-32" class="cell">
+<div id="cell-33" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">0</span>][<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-33" class="cell">
+<div id="cell-34" class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tile_2016 <span class="op">=</span> requests.get(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/stac/tilejson.json?collection=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">&amp;item=</span><span class="sc">{</span>items[<span class="dv">0</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
@@ -1076,7 +1082,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>tile_2016</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-34" class="cell">
+<div id="cell-35" class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use bbox initial zoom and map</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a map located w/in event bounds</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
