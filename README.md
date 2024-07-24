@@ -1,4 +1,4 @@
-# GHGC_docs
+# ghgc-docs
 This repository contains documentation for the [US Greenhouse Gas Center](https://earth.gov/ghgcenter). The documentation is rendered and published using [Quarto](https://quarto.org/).
 
 # Structure
