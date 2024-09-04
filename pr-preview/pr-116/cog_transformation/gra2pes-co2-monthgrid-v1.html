@@ -901,7 +901,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Failed to download </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">#download_s3_objects(raw_data_bucket, keys, "data")</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>download_s3_objects(raw_data_bucket, keys, <span class="st">"data"</span>)</span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="b74c98b4-7059-4f47-b6b2-ae9be7bc62dc" class="cell">
@@ -925,7 +925,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> var <span class="kw">in</span> [<span class="st">"PM25-PRI"</span>,<span class="st">"CO2"</span>,<span class="st">"CO"</span>,<span class="st">"NOX"</span>,<span class="st">"SOX"</span>]:</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        yearmonth <span class="op">=</span> extract_date_from_key(key)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        filename <span class="op">=</span> <span class="ss">f"output_final/GRA2PESv1.0_total_</span><span class="sc">{</span>(<span class="st">"-"</span>)<span class="sc">.</span>join(var.split(<span class="st">'_'</span>))<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>yearmonth<span class="sc">}</span><span class="ss">.tif"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        filename <span class="op">=</span> <span class="ss">f"output/GRA2PESv1.0_total_</span><span class="sc">{</span>(<span class="st">"-"</span>)<span class="sc">.</span>join(var.split(<span class="st">'_'</span>))<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>yearmonth<span class="sc">}</span><span class="ss">.tif"</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        data <span class="op">=</span> <span class="bu">getattr</span>(xds,var)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        data.rio.set_spatial_dims(<span class="st">"lon"</span>, <span class="st">"lat"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        data.rio.write_crs(<span class="st">"epsg:4326"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
