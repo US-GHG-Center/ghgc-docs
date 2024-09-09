@@ -1160,6 +1160,298 @@
     "text": "import numpy as np\nimport matplotlib.pyplot as plt\nimport rasterio\nfrom glob import glob\nimport pathlib\nimport boto3\nimport pandas as pd\nimport calendar\nimport seaborn as sns\nimport json\nimport re\n\n\n# Enter the year you want to run validation on\nvyear=2022 # summary json files will be later generated for the year you provide here\ndata_dir=\"data/\" # make sure you have the data for vyear in your data directory\n\n\nsession = boto3.session.Session()\ns3_client = session.client(\"s3\")\n\ndataset_name= \"odiac-ffco2-monthgrid-v2023\"\ncog_data_bucket=\"ghgc-data-store-develop\"\ncog_data_prefix = f\"transformed_cogs/{dataset_name}\"\n\n\ndef get_all_s3_keys(bucket, model_name, ext):\n    \"\"\"Get a list of all keys in an S3 bucket.\"\"\"\n    keys = []\n\n    kwargs = {\"Bucket\": bucket, \"Prefix\": f\"{model_name}/\"}\n    while True:\n        resp = s3_client.list_objects_v2(**kwargs)\n        for obj in resp[\"Contents\"]:\n            if obj[\"Key\"].endswith(ext) and \"historical\" not in obj[\"Key\"]:\n                keys.append(obj[\"Key\"])\n\n        try:\n            kwargs[\"ContinuationToken\"] = resp[\"NextContinuationToken\"]\n        except KeyError:\n            break\n\n    return keys\n\nkeys = get_all_s3_keys(cog_data_bucket, cog_data_prefix, \".tif\")\n\n# Extract only the COGs for selected year\npattern = re.compile(rf'{vyear}(0[1-9]|1[0-2])')\nkeys = [path for path in keys if pattern.search(path)]\n\n\n# Initialize the summary variables\nsummary_dict_netcdf, summary_dict_cog = {}, {}\noverall_stats_netcdf, overall_stats_cog = {}, {}\nfull_data_df_netcdf, full_data_df_cog = pd.DataFrame(), pd.DataFrame()\n\n\n# Process the COGs to get the statistics\nfor key in keys:\n    url=f\"s3://{cog_data_bucket}/{key}\"\n    with rasterio.open(url) as src:\n        filename_elements = re.split(\"[_ ? . ]\", url)\n        for band in src.indexes:\n            print(\"_\".join(filename_elements[1:6]))\n            idx = pd.MultiIndex.from_product(\n                    [\n                        [\"_\".join(filename_elements[1:6])],\n                        [filename_elements[5]],\n                        [x for x in np.arange(1, src.height + 1)],\n                    ]\n                )\n            raster_data = src.read(band)\n            raster_data[raster_data == -9999] = 0 # because we did that in the transformation script\n            temp = pd.DataFrame(index=idx, data=raster_data)\n            full_data_df_cog = full_data_df_cog._append(temp, ignore_index=False)\n\n            # Calculate summary statistics\n            min_value = np.float64(temp.values.min())\n            max_value = np.float64(temp.values.max())\n            mean_value = np.float64(temp.values.mean())\n            std_value = np.float64(temp.values.std())\n\n            summary_dict_cog[\n                    f'{\"_\".join(filename_elements[1:5])}_{filename_elements[5][:4]}_{calendar.month_name[int(filename_elements[5][4:])]}'\n                ] = {\n                    \"min_value\": min_value,\n                    \"max_value\": max_value,\n                    \"mean_value\": mean_value,\n                    \"std_value\": std_value,\n                }\n\n\n# Process the raw files for selected year to get the statistics \ntif_files = glob(f\"{data_dir}{vyear}/*.tif\", recursive=True)\nfor tif_file in tif_files:\n    file_name = pathlib.Path(tif_file).name[:-4]\n    print(file_name)\n    with rasterio.open(tif_file) as src:\n        for band in src.indexes:\n            idx = pd.MultiIndex.from_product(\n                [\n                    [pathlib.Path(tif_file).name[:-9]],\n                    [pathlib.Path(tif_file).name[-8:-4]],\n                    [x for x in np.arange(1, src.height + 1)],\n                ]\n            )\n            # Read the raster data\n            raster_data = src.read(band)\n            #raster_data[raster_data == -9999] = np.nan\n            temp = pd.DataFrame(index=idx, data=raster_data)\n            full_data_df_netcdf = full_data_df_netcdf._append(temp, ignore_index=False)\n\n            # Calculate summary statistics\n            min_value = np.float64(temp.values.min())\n            max_value = np.float64(temp.values.max())\n            mean_value = np.float64(temp.values.mean())\n            std_value = np.float64(temp.values.std())\n\n            summary_dict_netcdf[\n                f'{tif_file.split(\"/\")[-1][:-9]}_{calendar.month_name[int(tif_file.split(\"/\")[-1][-6:-4])]}'\n            ] = {\n                \"min_value\": min_value,\n                \"max_value\": max_value,\n                \"mean_value\": mean_value,\n                \"std_value\": std_value,\n            }\n            \n\n\n# Merge monthly stats for COGs and raw files in a csv file \ncog_df = pd.DataFrame(summary_dict_cog).T.reset_index()\nraw_df = pd.DataFrame(summary_dict_netcdf).T.reset_index()\ncog_df['date']= cog_df[\"index\"].apply(lambda x: (x.split(\"_\")[-1]+x.split(\"_\")[-2]) )\nraw_df['date']= raw_df[\"index\"].apply(lambda x: (x.split(\"_\")[-1]+str(vyear)) )\ncheck_df=pd.merge(cog_df, raw_df[[\"min_value\",\"max_value\",\"mean_value\",\"std_value\",\"date\"]], how='inner', on='date',suffixes=('', '_raw'))\ncheck_df.to_csv(f\"monthly_stats_{vyear}.csv\")\n\n\n# Calculate the overall data stat for that year\noverall_stats_netcdf[\"min_value\"] = np.float64(full_data_df_netcdf.values.min())\noverall_stats_netcdf[\"max_value\"] = np.float64(full_data_df_netcdf.values.max())\noverall_stats_netcdf[\"mean_value\"] = np.float64(full_data_df_netcdf.values.mean())\noverall_stats_netcdf[\"std_value\"] = np.float64(full_data_df_netcdf.values.std())\n\noverall_stats_cog[\"min_value\"] = np.float64(full_data_df_cog.values.min())\noverall_stats_cog[\"max_value\"] = np.float64(full_data_df_cog.values.max())\noverall_stats_cog[\"mean_value\"] = np.float64(full_data_df_cog.values.mean())\noverall_stats_cog[\"std_value\"] = np.float64(full_data_df_cog.values.std())\n\n\n\ndata = {\n    \"Stats for raw netCDF files.\": summary_dict_netcdf,\n    \"Stats for transformed COG files.\": summary_dict_cog\n}\n\n# Writing to JSON file\nwith open(f\"monthly_stats_{vyear}.json\", \"w\") as fp:\n    json.dump(data, fp, indent=4) \n\ndata = {\n    \"Stats for raw netCDF files.\": overall_stats_netcdf,\n    \"Stats for transformed COG files.\": overall_stats_cog\n}\n\n# Writing to JSON file\nwith open(f\"overall_stats_{vyear}.json\", \"w\") as fp:\n    json.dump(data, fp, indent=4) \n\n\n\n\n Back to top"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#contents",
+    "href": "index.html#contents",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "Contents",
+    "text": "Contents\n\nServices provided for accessing and analyzing the US GHG Center datasets, such as the JupyterHub environment for interactive computing.\nDataset usage examples, e.g. for the Wetland Methane Emissions from the LPJ-EOSIM model dataset, that shows how to load the dataset in Python in JupyterHub.\nDataset transformation scripts, which document the code used to transform datasets for display in the US GHG Center. An example is the ODIAC Fossil Fuel CO₂ Emissions dataset transformation code.\nData processing and verification reports that openly present the process we used to check and verify that any transformation did not alter the original source data. An example is the GOSAT-based Top-down Total and Natural Methane Emissions dataset.\nData Flow Diagrams, which provide a high level summary of how each dataset was integrated into the US GHG Center. See the MiCASA Land Carbon Flux Flow Diagram as an example.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "U.S. Greenhouse Gas Center: Documentation",
+    "section": "Contact",
+    "text": "Contact\nFor technical help or general questions, please contact the support team using the feedback form.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "data_workflow/micasa-carbonflux-daygrid-v1_Data_Flow.html",
+    "href": "data_workflow/micasa-carbonflux-daygrid-v1_Data_Flow.html",
+    "title": "MiCASA Land Carbon Flux - Data Workflow",
+    "section": "",
+    "text": "MiCASA Land Carbon Flux - Data Workflow\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Natural Greenhouse Gas Sources Emissions and Sinks",
+      "MiCASA Land Carbon Flux - Data Workflow"
+    ]
+  },
+  {
+    "objectID": "data_workflow/lpjeosim-wetlandch4-grid-v2_Data_Flow.html",
+    "href": "data_workflow/lpjeosim-wetlandch4-grid-v2_Data_Flow.html",
+    "title": "Wetland Methane Emissions, LPJ-EOSIM Model",
+    "section": "",
+    "text": "Wetland Methane Emissions, LPJ-EOSIM Model\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Natural Greenhouse Gas Sources Emissions and Sinks",
+      "Wetland Methane Emissions, LPJ-EOSIM Model"
+    ]
+  },
+  {
+    "objectID": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
+    "href": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
+    "title": "SEDAC Gridded World Population Data",
+    "section": "",
+    "text": "SEDAC Gridded World Population Data\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Socioeconomic",
+      "SEDAC Gridded World Population Data"
+    ]
+  },
+  {
+    "objectID": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
+    "href": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
+    "title": "EMIT Methane Point Source Plume Complexes",
+    "section": "",
+    "text": "EMIT Methane Point Source Plume Complexes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Large Emissions Events",
+      "EMIT Methane Point Source Plume Complexes"
+    ]
+  },
+  {
+    "objectID": "data_workflow/epa-ch4emission-grid-v2express_Data_Flow.html",
+    "href": "data_workflow/epa-ch4emission-grid-v2express_Data_Flow.html",
+    "title": "Gridded Anthropogenic Methane Emissions Inventory",
+    "section": "",
+    "text": "Gridded Anthropogenic Methane Emissions Inventory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Gridded Anthropogenic Greenhouse Gas Emissions",
+      "Gridded Anthropogenic Methane Emissions Inventory"
+    ]
+  },
+  {
+    "objectID": "data_workflow/vulcan-ffco2-yeargrid-v4_Data_Flow.html",
+    "href": "data_workflow/vulcan-ffco2-yeargrid-v4_Data_Flow.html",
+    "title": "Vulcan Fossil Fuel CO₂ Emissions, Version 4",
+    "section": "",
+    "text": "Vulcan Fossil Fuel CO₂ Emissions, Version 4\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Gridded Anthropogenic Greenhouse Gas Emissions",
+      "Vulcan Fossil Fuel CO₂ Emissions, Version 4"
+    ]
+  },
+  {
+    "objectID": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
+    "href": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
+    "title": "TM5-4DVar Isotopic CH₄ Inverse Fluxes",
+    "section": "",
+    "text": "TM5-4DVar Isotopic CH₄ Inverse Fluxes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Gridded Anthropogenic Greenhouse Gas Emissions",
+      "TM5-4DVar Isotopic CH₄ Inverse Fluxes"
+    ]
+  },
+  {
+    "objectID": "data_workflow/odiac-ffco2-monthgrid-v2023_Data_Flow.html",
+    "href": "data_workflow/odiac-ffco2-monthgrid-v2023_Data_Flow.html",
+    "title": "ODIAC Fossil Fuel CO₂ Emissions",
+    "section": "",
+    "text": "ODIAC Fossil Fuel CO₂ Emissions\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Gridded Anthropogenic Greenhouse Gas Emissions",
+      "ODIAC Fossil Fuel CO₂ Emissions"
+    ]
+  },
+  {
+    "objectID": "advanceduser.html",
+    "href": "advanceduser.html",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "",
+    "text": "Welcome to the U.S. Greenhouse Gas (GHG) Center: Advanced User Notebook, your gateway to exploring and analyzing curated datasets on greenhouse gas emissions. Our cloud-based system offers seamless access to Greenhouse Gas curated datasets. Dive into the data with our data usage Jupyter notebooks, designed for efficient exploration, visualization, and analysis. Whether you are focused on specific focus areas or product types, our dataset usage notebooks provide invaluable insights to drive informed decision-making.\nJoin us in our mission to make data-driven environmental solutions. Explore, analyze, and make a difference with the US GHG Center.\nView the US GHG Center Data Catalogg"
+  },
+  {
+    "objectID": "advanceduser.html#gridded-anthropogenic-greenhouse-gas-emissions",
+    "href": "advanceduser.html#gridded-anthropogenic-greenhouse-gas-emissions",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Gridded Anthropogenic Greenhouse Gas Emissions",
+    "text": "Gridded Anthropogenic Greenhouse Gas Emissions\n\nOCO-2 MIP Top-Down National CO₂ Budgets - Model Output"
+  },
+  {
+    "objectID": "advanceduser.html#natural-greenhouse-gas-emissions-and-sinks",
+    "href": "advanceduser.html#natural-greenhouse-gas-emissions-and-sinks",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Natural Greenhouse Gas Emissions and Sinks",
+    "text": "Natural Greenhouse Gas Emissions and Sinks"
+  },
+  {
+    "objectID": "advanceduser.html#large-emissions-events",
+    "href": "advanceduser.html#large-emissions-events",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Large Emissions Events",
+    "text": "Large Emissions Events"
+  },
+  {
+    "objectID": "advanceduser.html#greenhouse-gas-concentrations",
+    "href": "advanceduser.html#greenhouse-gas-concentrations",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Greenhouse Gas Concentrations",
+    "text": "Greenhouse Gas Concentrations"
+  },
+  {
+    "objectID": "advanceduser.html#socioeconomic",
+    "href": "advanceduser.html#socioeconomic",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Socioeconomic",
+    "text": "Socioeconomic"
+  },
+  {
+    "objectID": "advanceduser.html#contact",
+    "href": "advanceduser.html#contact",
+    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
+    "section": "Contact",
+    "text": "Contact\nFor technical help or general questions, please contact the support team using the feedback form."
+  },
+  {
+    "objectID": "data_usage.html",
+    "href": "data_usage.html",
+    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization."
+  },
+  {
+    "objectID": "data_usage.html#welcome",
+    "href": "data_usage.html#welcome",
+    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
+    "section": "",
+    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization."
+  },
+  {
+    "objectID": "data_usage.html#contents",
+    "href": "data_usage.html#contents",
+    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
+    "section": "Contents",
+    "text": "Contents\n\nDataset usage examples listed below."
+  },
+  {
+    "objectID": "data_usage.html#explore-data-usage-notebook",
+    "href": "data_usage.html#explore-data-usage-notebook",
+    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
+    "section": "Explore Data Usage Notebook",
+    "text": "Explore Data Usage Notebook\n\nCASA-GFED3 Land Carbon Flux\nAir-Sea CO₂ Flux, ECCO-Darwin Model v5\nEMIT Methane Point Source Plume Complexes\nU.S. Gridded Anthropogenic Methane Emissions Inventory\nGOSAT-based Top-down Total and Natural Methane Emissions\nWetland Methane Emissions, LPJ-wsl Model\nOCO-2 MIP Top-Down CO₂ Budgets\nOCO-2 GEOS Column CO₂ Concentrations\nODIAC Fossil Fuel CO₂ Emissions\nSEDAC Gridded World Population Density\nTM5-4DVar Isotopic CH₄ Inverse Fluxes\nAtmospheric Carbon Dioxide Concentrations from NOAA Global Monitoring Laboratory"
+  },
+  {
+    "objectID": "data_workflow/gra2pes-ghg-monthgrid-v1_Data_Flow.html",
+    "href": "data_workflow/gra2pes-ghg-monthgrid-v1_Data_Flow.html",
+    "title": "Greenhouse Gas And Air Pollutants Emissions System (GRA2PES)",
+    "section": "",
+    "text": "Greenhouse Gas And Air Pollutants Emissions System (GRA2PES)\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "data_workflow/gosat-based-ch4budget-yeargrid-v1_Data_Flow.html",
+    "href": "data_workflow/gosat-based-ch4budget-yeargrid-v1_Data_Flow.html",
+    "title": "GOSAT-based Top-down Total and Natural Methane Emissions",
+    "section": "",
+    "text": "GOSAT-based Top-down Total and Natural Methane Emissions\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Natural Greenhouse Gas Sources Emissions and Sinks",
+      "GOSAT-based Top-down Total and Natural Methane Emissions"
+    ]
+  },
+  {
+    "objectID": "data_workflow/oco2-mip-co2budget-yeargrid-v1_Data_Flow.html",
+    "href": "data_workflow/oco2-mip-co2budget-yeargrid-v1_Data_Flow.html",
+    "title": "OCO-2 MIP Top-Down CO₂ Budgets",
+    "section": "",
+    "text": "OCO-2 MIP Top-Down CO₂ Budgets\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Gridded Anthropogenic Greenhouse Gas Emissions",
+      "OCO-2 MIP Top-Down CO₂ Budgets"
+    ]
+  },
+  {
+    "objectID": "data_workflow/noaa-gggrn-ch4-concentrations_Data_Flow.html",
+    "href": "data_workflow/noaa-gggrn-ch4-concentrations_Data_Flow.html",
+    "title": "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory",
+    "section": "",
+    "text": "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Greenhouse Gas Concentrations",
+      "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory"
+    ]
+  },
+  {
+    "objectID": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
+    "href": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
+    "title": "OCO-2 GEOS Column CO₂ Concentrations",
+    "section": "",
+    "text": "OCO-2 GEOS Column CO₂ Concentrations\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Greenhouse Gas Concentrations",
+      "OCO-2 GEOS Column CO₂ Concentrations"
+    ]
+  },
+  {
+    "objectID": "data_workflow/noaa-gggrn-co2-concentrations_Data_Flow.html",
+    "href": "data_workflow/noaa-gggrn-co2-concentrations_Data_Flow.html",
+    "title": "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory",
+    "section": "",
+    "text": "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Greenhouse Gas Concentrations",
+      "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory"
+    ]
+  },
+  {
+    "objectID": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
+    "href": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
+    "title": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5",
+    "section": "",
+    "text": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Data Flow Diagrams",
+      "Natural Greenhouse Gas Sources Emissions and Sinks",
+      "Air-Sea CO₂ Flux, ECCO-Darwin Model v5"
+    ]
+  },
+  {
     "objectID": "datausage.html",
     "href": "datausage.html",
     "title": "U.S. Greenhouse Gas Center: Data Usage Notebooks",
@@ -1230,296 +1522,11 @@
     ]
   },
   {
-    "objectID": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
-    "href": "data_workflow/eccodarwin-co2flux-monthgrid-v5_Data_Flow.html",
-    "title": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5",
+    "objectID": "generating_statistics_for_validation/gra2pes-ghg-monthgrid-v1/gra2pes-ghg-monthgrid-v1-generate-statistics.html",
+    "href": "generating_statistics_for_validation/gra2pes-ghg-monthgrid-v1/gra2pes-ghg-monthgrid-v1-generate-statistics.html",
+    "title": "U.S. Greenhouse Gas Center Documentation",
     "section": "",
-    "text": "Air-Sea CO₂ Flux, ECCO-Darwin Model v5\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Natural Greenhouse Gas Sources Emissions and Sinks",
-      "Air-Sea CO₂ Flux, ECCO-Darwin Model v5"
-    ]
-  },
-  {
-    "objectID": "data_workflow/noaa-gggrn-co2-concentrations_Data_Flow.html",
-    "href": "data_workflow/noaa-gggrn-co2-concentrations_Data_Flow.html",
-    "title": "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory",
-    "section": "",
-    "text": "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Greenhouse Gas Concentrations",
-      "Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory"
-    ]
-  },
-  {
-    "objectID": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
-    "href": "data_workflow/oco2geos-co2-daygrid-v10r_Data_Flow.html",
-    "title": "OCO-2 GEOS Column CO₂ Concentrations",
-    "section": "",
-    "text": "OCO-2 GEOS Column CO₂ Concentrations\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Greenhouse Gas Concentrations",
-      "OCO-2 GEOS Column CO₂ Concentrations"
-    ]
-  },
-  {
-    "objectID": "data_workflow/noaa-gggrn-ch4-concentrations_Data_Flow.html",
-    "href": "data_workflow/noaa-gggrn-ch4-concentrations_Data_Flow.html",
-    "title": "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory",
-    "section": "",
-    "text": "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Greenhouse Gas Concentrations",
-      "Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory"
-    ]
-  },
-  {
-    "objectID": "data_workflow/oco2-mip-co2budget-yeargrid-v1_Data_Flow.html",
-    "href": "data_workflow/oco2-mip-co2budget-yeargrid-v1_Data_Flow.html",
-    "title": "OCO-2 MIP Top-Down CO₂ Budgets",
-    "section": "",
-    "text": "OCO-2 MIP Top-Down CO₂ Budgets\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Gridded Anthropogenic Greenhouse Gas Emissions",
-      "OCO-2 MIP Top-Down CO₂ Budgets"
-    ]
-  },
-  {
-    "objectID": "data_workflow/gosat-based-ch4budget-yeargrid-v1_Data_Flow.html",
-    "href": "data_workflow/gosat-based-ch4budget-yeargrid-v1_Data_Flow.html",
-    "title": "GOSAT-based Top-down Total and Natural Methane Emissions",
-    "section": "",
-    "text": "GOSAT-based Top-down Total and Natural Methane Emissions\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Natural Greenhouse Gas Sources Emissions and Sinks",
-      "GOSAT-based Top-down Total and Natural Methane Emissions"
-    ]
-  },
-  {
-    "objectID": "data_workflow/gra2pes-ghg-monthgrid-v1_Data_Flow.html",
-    "href": "data_workflow/gra2pes-ghg-monthgrid-v1_Data_Flow.html",
-    "title": "Greenhouse Gas And Air Pollutants Emissions System (GRA2PES)",
-    "section": "",
-    "text": "Greenhouse Gas And Air Pollutants Emissions System (GRA2PES)\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "data_usage.html",
-    "href": "data_usage.html",
-    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
-    "section": "",
-    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization."
-  },
-  {
-    "objectID": "data_usage.html#welcome",
-    "href": "data_usage.html#welcome",
-    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
-    "section": "",
-    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization."
-  },
-  {
-    "objectID": "data_usage.html#contents",
-    "href": "data_usage.html#contents",
-    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
-    "section": "Contents",
-    "text": "Contents\n\nDataset usage examples listed below."
-  },
-  {
-    "objectID": "data_usage.html#explore-data-usage-notebook",
-    "href": "data_usage.html#explore-data-usage-notebook",
-    "title": "Introduction to U.S. Greenhouse Gas Center: Data Usage Notebooks",
-    "section": "Explore Data Usage Notebook",
-    "text": "Explore Data Usage Notebook\n\nCASA-GFED3 Land Carbon Flux\nAir-Sea CO₂ Flux, ECCO-Darwin Model v5\nEMIT Methane Point Source Plume Complexes\nU.S. Gridded Anthropogenic Methane Emissions Inventory\nGOSAT-based Top-down Total and Natural Methane Emissions\nWetland Methane Emissions, LPJ-wsl Model\nOCO-2 MIP Top-Down CO₂ Budgets\nOCO-2 GEOS Column CO₂ Concentrations\nODIAC Fossil Fuel CO₂ Emissions\nSEDAC Gridded World Population Density\nTM5-4DVar Isotopic CH₄ Inverse Fluxes\nAtmospheric Carbon Dioxide Concentrations from NOAA Global Monitoring Laboratory"
-  },
-  {
-    "objectID": "advanceduser.html",
-    "href": "advanceduser.html",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "",
-    "text": "Welcome to the U.S. Greenhouse Gas (GHG) Center: Advanced User Notebook, your gateway to exploring and analyzing curated datasets on greenhouse gas emissions. Our cloud-based system offers seamless access to Greenhouse Gas curated datasets. Dive into the data with our data usage Jupyter notebooks, designed for efficient exploration, visualization, and analysis. Whether you are focused on specific focus areas or product types, our dataset usage notebooks provide invaluable insights to drive informed decision-making.\nJoin us in our mission to make data-driven environmental solutions. Explore, analyze, and make a difference with the US GHG Center.\nView the US GHG Center Data Catalogg"
-  },
-  {
-    "objectID": "advanceduser.html#gridded-anthropogenic-greenhouse-gas-emissions",
-    "href": "advanceduser.html#gridded-anthropogenic-greenhouse-gas-emissions",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Gridded Anthropogenic Greenhouse Gas Emissions",
-    "text": "Gridded Anthropogenic Greenhouse Gas Emissions\n\nOCO-2 MIP Top-Down National CO₂ Budgets - Model Output"
-  },
-  {
-    "objectID": "advanceduser.html#natural-greenhouse-gas-emissions-and-sinks",
-    "href": "advanceduser.html#natural-greenhouse-gas-emissions-and-sinks",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Natural Greenhouse Gas Emissions and Sinks",
-    "text": "Natural Greenhouse Gas Emissions and Sinks"
-  },
-  {
-    "objectID": "advanceduser.html#large-emissions-events",
-    "href": "advanceduser.html#large-emissions-events",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Large Emissions Events",
-    "text": "Large Emissions Events"
-  },
-  {
-    "objectID": "advanceduser.html#greenhouse-gas-concentrations",
-    "href": "advanceduser.html#greenhouse-gas-concentrations",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Greenhouse Gas Concentrations",
-    "text": "Greenhouse Gas Concentrations"
-  },
-  {
-    "objectID": "advanceduser.html#socioeconomic",
-    "href": "advanceduser.html#socioeconomic",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Socioeconomic",
-    "text": "Socioeconomic"
-  },
-  {
-    "objectID": "advanceduser.html#contact",
-    "href": "advanceduser.html#contact",
-    "title": "U.S. Greenhouse Gas Center: Advanced User Notebook",
-    "section": "Contact",
-    "text": "Contact\nFor technical help or general questions, please contact the support team using the feedback form."
-  },
-  {
-    "objectID": "data_workflow/odiac-ffco2-monthgrid-v2023_Data_Flow.html",
-    "href": "data_workflow/odiac-ffco2-monthgrid-v2023_Data_Flow.html",
-    "title": "ODIAC Fossil Fuel CO₂ Emissions",
-    "section": "",
-    "text": "ODIAC Fossil Fuel CO₂ Emissions\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Gridded Anthropogenic Greenhouse Gas Emissions",
-      "ODIAC Fossil Fuel CO₂ Emissions"
-    ]
-  },
-  {
-    "objectID": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
-    "href": "data_workflow/tm54dvar-ch4flux-monthgrid-v1_Data_Flow.html",
-    "title": "TM5-4DVar Isotopic CH₄ Inverse Fluxes",
-    "section": "",
-    "text": "TM5-4DVar Isotopic CH₄ Inverse Fluxes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Gridded Anthropogenic Greenhouse Gas Emissions",
-      "TM5-4DVar Isotopic CH₄ Inverse Fluxes"
-    ]
-  },
-  {
-    "objectID": "data_workflow/vulcan-ffco2-yeargrid-v4_Data_Flow.html",
-    "href": "data_workflow/vulcan-ffco2-yeargrid-v4_Data_Flow.html",
-    "title": "Vulcan Fossil Fuel CO₂ Emissions, Version 4",
-    "section": "",
-    "text": "Vulcan Fossil Fuel CO₂ Emissions, Version 4\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Gridded Anthropogenic Greenhouse Gas Emissions",
-      "Vulcan Fossil Fuel CO₂ Emissions, Version 4"
-    ]
-  },
-  {
-    "objectID": "data_workflow/epa-ch4emission-grid-v2express_Data_Flow.html",
-    "href": "data_workflow/epa-ch4emission-grid-v2express_Data_Flow.html",
-    "title": "Gridded Anthropogenic Methane Emissions Inventory",
-    "section": "",
-    "text": "Gridded Anthropogenic Methane Emissions Inventory\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Gridded Anthropogenic Greenhouse Gas Emissions",
-      "Gridded Anthropogenic Methane Emissions Inventory"
-    ]
-  },
-  {
-    "objectID": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
-    "href": "data_workflow/emit-ch4plume-v1_Data_Flow.html",
-    "title": "EMIT Methane Point Source Plume Complexes",
-    "section": "",
-    "text": "EMIT Methane Point Source Plume Complexes\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Large Emissions Events",
-      "EMIT Methane Point Source Plume Complexes"
-    ]
-  },
-  {
-    "objectID": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
-    "href": "data_workflow/sedac-popdensity-yeargrid5yr-v4.11_Data_Flow.html",
-    "title": "SEDAC Gridded World Population Data",
-    "section": "",
-    "text": "SEDAC Gridded World Population Data\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Socioeconomic",
-      "SEDAC Gridded World Population Data"
-    ]
-  },
-  {
-    "objectID": "data_workflow/lpjeosim-wetlandch4-grid-v2_Data_Flow.html",
-    "href": "data_workflow/lpjeosim-wetlandch4-grid-v2_Data_Flow.html",
-    "title": "Wetland Methane Emissions, LPJ-EOSIM Model",
-    "section": "",
-    "text": "Wetland Methane Emissions, LPJ-EOSIM Model\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Natural Greenhouse Gas Sources Emissions and Sinks",
-      "Wetland Methane Emissions, LPJ-EOSIM Model"
-    ]
-  },
-  {
-    "objectID": "data_workflow/micasa-carbonflux-daygrid-v1_Data_Flow.html",
-    "href": "data_workflow/micasa-carbonflux-daygrid-v1_Data_Flow.html",
-    "title": "MiCASA Land Carbon Flux - Data Workflow",
-    "section": "",
-    "text": "MiCASA Land Carbon Flux - Data Workflow\n\n\n\nData Flow Diagram Extending From Acquisition/Creation to User Delivery\n\n\n\n\n\n\n Back to top",
-    "crumbs": [
-      "Data Flow Diagrams",
-      "Natural Greenhouse Gas Sources Emissions and Sinks",
-      "MiCASA Land Carbon Flux - Data Workflow"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "U.S. Greenhouse Gas Center: Documentation",
-    "section": "",
-    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization.",
-    "crumbs": [
-      "Welcome"
-    ]
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "U.S. Greenhouse Gas Center: Documentation",
-    "section": "",
-    "text": "The U.S. Greenhouse Gas (GHG) Center provides a cloud-based system for exploring and analyzing U.S. government and other curated greenhouse gas datasets.\nOn this site, you can find the technical documentation for the services the center provides, how to load the datasets, and how the datasets were transformed from their source formats (eg. netCDF, HDF, etc.) into cloud-optimized formats that enable efficient cloud data access and visualization.",
-    "crumbs": [
-      "Welcome"
-    ]
-  },
-  {
-    "objectID": "index.html#contents",
-    "href": "index.html#contents",
-    "title": "U.S. Greenhouse Gas Center: Documentation",
-    "section": "Contents",
-    "text": "Contents\n\nServices provided for accessing and analyzing the US GHG Center datasets, such as the JupyterHub environment for interactive computing.\nDataset usage examples, e.g. for the Wetland Methane Emissions from the LPJ-EOSIM model dataset, that shows how to load the dataset in Python in JupyterHub.\nDataset transformation scripts, which document the code used to transform datasets for display in the US GHG Center. An example is the ODIAC Fossil Fuel CO₂ Emissions dataset transformation code.\nData processing and verification reports that openly present the process we used to check and verify that any transformation did not alter the original source data. An example is the GOSAT-based Top-down Total and Natural Methane Emissions dataset.\nData Flow Diagrams, which provide a high level summary of how each dataset was integrated into the US GHG Center. See the MiCASA Land Carbon Flux Flow Diagram as an example.",
-    "crumbs": [
-      "Welcome"
-    ]
-  },
-  {
-    "objectID": "index.html#contact",
-    "href": "index.html#contact",
-    "title": "U.S. Greenhouse Gas Center: Documentation",
-    "section": "Contact",
-    "text": "Contact\nFor technical help or general questions, please contact the support team using the feedback form.",
-    "crumbs": [
-      "Welcome"
-    ]
+    "text": "import xarray as xr\nimport os\nimport glob\nfrom  datetime import datetime\nimport boto3\nimport s3fs\nimport tempfile\nimport numpy as np\nimport pandas as pd\nimport re\nimport json\n\n\nraw_files = glob.glob(\"data/*.nc4\")\noutput_files= glob.glob(\"output_final2/*.tif\")\n\n\ndef extract_date_from_key(key):\n    # Split the key to isolate the part that contains the date\n    parts = key.split('_')\n    for part in parts:\n        # Check if the part is numeric and has the length of 6 (YYYYMM format)\n        if part.isdigit() and len(part) == 6:\n            return part\n    return None\n\n\noverall_raw= []\nraw= pd.DataFrame(columns=['filename','min_raw','max_raw','mean_raw','std_raw'])\nfor file in raw_files:\n    xds= xr.open_dataset(file)\n    year_month = extract_date_from_key(file)\n    for var in [\"PM25-PRI\",\"CO2\",\"CO\",\"NOX\",\"SOX\"]:\n        data = getattr(xds,var)\n        overall_raw.append(data)\n        data = np.ma.masked_where((data == -9999), data)\n        min_val = np.nanmin(data)\n        max_val = np.nanmax(data)\n        mean_val = np.nanmean(data)\n        std_val = np.nanstd(data)\n        stats = [f\"{var}_{year_month}\", min_val, max_val, mean_val, std_val]\n        raw.loc[len(raw)] = stats\n\n\noverall_cog=[]\ncog= pd.DataFrame(columns=['filename','min_cog','max_cog','mean_cog','std_cog'])\nfor file in output_files:\n    data= xr.open_dataarray(file)\n    \n    year_month = file[:-4][-6:]\n    var = file.split(\"_\")[-2]\n    overall_cog.append(data)\n    data = np.ma.masked_where((data == -9999), data)\n    \n    \n    min_val = np.nanmin(data)\n    max_val = np.nanmax(data)\n    mean_val = np.nanmean(data)\n    std_val = np.nanstd(data)\n    stats = [f\"{var}_{year_month}\", min_val, max_val, mean_val, std_val]\n    cog.loc[len(cog)] = stats\n\n\n# validation for reprojected data (non zero) - overall calculation\noverall_raw= np.array(overall_raw)\noverall_raw= np.ma.masked_where((overall_raw == -9999) , overall_raw)\nnan_min = np.nanmin(overall_raw)\nnan_max = np.nanmax(overall_raw)\nnan_mean = np.nanmean(overall_raw)\nnan_std = np.nanstd(overall_raw)\n[\"overall_raw\",nan_min,nan_max,nan_mean,nan_std]\n\n['overall_raw', 0.0, 110011.766, 5.1753755, 172.26357]\n\n\n\noverall_cog= np.array(overall_cog)\nnan_min = np.nanmin(overall_cog)\nnan_max = np.nanmax(overall_cog)\nnan_mean = np.nanmean(overall_cog)\nnan_std = np.nanstd(overall_cog)\n[\"overall_cog\",nan_min,nan_max,nan_mean,nan_std]\n\n['overall_cog', 0.0, 110011.766, 5.1753297, 172.27177]\n\n\n\npd.merge(cog, raw, on='filename', how='inner').to_json(\"monthly_stats.json\")\n\n\nkeys = [\"overall_raw\", \"nan_min\", \"nan_max\", \"nan_mean\", \"nan_std\"]\nvalues = [\"overall_cog\", 0.0, 110011.766, 5.1753297, 172.27177]\n\n# Create a dictionary from the lists\ndata_dict = dict(zip(keys, values))\n\n# Save the dictionary as a JSON file\nwith open(\"overall_stats.json\", \"w\") as json_file:\n    json.dump(data_dict, json_file, indent=4)\n\n\n\n\n Back to top"
   },
   {
     "objectID": "cog_transformation/oco2-mip-co2budget-yeargrid-v1.html",
