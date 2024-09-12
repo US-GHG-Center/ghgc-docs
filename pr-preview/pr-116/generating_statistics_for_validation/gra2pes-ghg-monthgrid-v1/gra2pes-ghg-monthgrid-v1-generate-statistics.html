@@ -927,15 +927,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pd.merge(cog, raw, on<span class="op">=</span><span class="st">'filename'</span>, how<span class="op">=</span><span class="st">'inner'</span>).to_json(<span class="st">"monthly_stats.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="1b9c7790-37d6-4654-b260-c6656ac0af81" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> [<span class="st">"overall_raw"</span>, <span class="st">"nan_min"</span>, <span class="st">"nan_max"</span>, <span class="st">"nan_mean"</span>, <span class="st">"nan_std"</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> [<span class="st">"overall_cog"</span>, <span class="fl">0.0</span>, <span class="fl">110011.766</span>, <span class="fl">5.1753297</span>, <span class="fl">172.27177</span>]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary from the lists</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>data_dict <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(keys, values))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the dictionary as a JSON file</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"overall_stats.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> json_file:</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    json.dump(data_dict, json_file, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> [<span class="st">"data"</span>, <span class="st">"nan_min"</span>, <span class="st">"nan_max"</span>, <span class="st">"nan_mean"</span>, <span class="st">"nan_std"</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>values_set1 <span class="op">=</span> [<span class="st">"overall_raw"</span>, <span class="fl">0.0</span>, <span class="fl">110011.766</span>, <span class="fl">5.1753297</span>, <span class="fl">172.27177</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>values_set2 <span class="op">=</span> [<span class="st">"overall_cog"</span>, <span class="fl">0.0</span>, <span class="fl">110011.766</span>, <span class="fl">5.1753297</span>, <span class="fl">172.27177</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>data_dict <span class="op">=</span> {key: [val1, val2] <span class="cf">for</span> key, val1, val2 <span class="kw">in</span> <span class="bu">zip</span>(keys, values_set1, values_set2)}</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the dictionary as a JSON file</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"overall_stats.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> json_file:</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    json.dump(data_dict, json_file, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
