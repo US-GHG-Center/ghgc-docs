@@ -959,7 +959,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
 <section id="importing-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="importing-required-libraries">Importing required libraries</h3>
-<div id="cell-5" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -970,19 +970,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="querying-the-feature-vector-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-feature-vector-api">Querying the Feature Vector API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Feature Vector Application Programming Interface (API) where the items for this collection are stored.</p>
-<div id="cell-7" class="cell">
+<div id="cell-7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>FEATURE_API_URL<span class="op">=</span><span class="st">"https://earth.gov/ghgcenter/api/features"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-8" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch metadata (e.g.station_code, station name, elevation)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_metadata(region):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="7">
+<div id="cell-9" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch CSV data for a station with a limit parameter</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_station_data_csv(station_code, gas_type, frequency, elevation_m, limit<span class="op">=</span><span class="dv">100000</span>):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the ?f=csv and limit query to get more rows</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://dev.ghg.center/api/features/collections/public.nist_testbed_influx_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://earth.gov/ghgcenter/api/features/collections/public.nist_flux_in_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(url)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        </span>
@@ -1009,7 +1009,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-the-ch₄-data-for-two-nec-stations" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-ch₄-data-for-two-nec-stations">Visualizing the CH₄ data for two NEC stations</h2>
-<div id="cell-11" class="cell" data-execution_count="8">
+<div id="cell-11" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get station name and elevation from metdata dataframe</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data for site01 (elevation 256) and site09 (elevation 277), using limit=10000</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4/co2 select the ghg </span></span>
@@ -1039,9 +1039,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show plot</span></span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Failed to fetch data for site01. Status code: 404
-Failed to fetch data for site09. Status code: 404
-No data available for one or both stations. Exiting.</code></pre>
+<pre><code>https://earth.gov/ghgcenter/api/features/collections/public.nist_flux_in_site01_ch4_hourly_concentrations/items?f=csv&amp;elevation_m=256&amp;limit=10000
+https://earth.gov/ghgcenter/api/features/collections/public.nist_flux_in_site09_ch4_hourly_concentrations/items?f=csv&amp;elevation_m=277&amp;limit=10000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="influx-testbed-ghg-concentrations_User_Notebook_files/figure-html/cell-6-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 

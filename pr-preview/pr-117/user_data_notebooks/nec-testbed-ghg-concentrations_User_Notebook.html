@@ -977,12 +977,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch metadata (e.g.station_code, station name, elevation)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_metadata(region):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="8">
+<div id="cell-9" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch CSV data for a station with a limit parameter</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_station_data_csv(station_code, gas_type, frequency, elevation_m, limit<span class="op">=</span><span class="dv">10000</span>):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the ?f=csv and limit query to get more rows</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://dev.ghg.center/api/features/collections/public.nist_testbed_nec_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_nec_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(url)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(response)</span>
@@ -1009,7 +1009,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-the-ch₄-data-for-two-nec-stations" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-ch₄-data-for-two-nec-stations">Visualizing the CH₄ data for two NEC stations</h2>
-<div id="cell-11" class="cell" data-execution_count="9">
+<div id="cell-11" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get station name and elevation from metdata dataframe</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data for UNY (elevation 230) and TMD (elevation 489), using limit=10000</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4/co2 select the ghg </span></span>
@@ -1038,7 +1038,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show plot</span></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;Response [200]&gt;
+<pre><code>https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_nec_uny_ch4_hourly_concentrations/items?f=csv&amp;elevation_m=483&amp;limit=10000
+&lt;Response [200]&gt;
+https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_nec_tmd_ch4_hourly_concentrations/items?f=csv&amp;elevation_m=561&amp;limit=10000
 &lt;Response [200]&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
