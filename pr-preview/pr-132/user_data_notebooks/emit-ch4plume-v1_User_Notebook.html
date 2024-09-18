@@ -1081,7 +1081,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-14" class="cell">
+<div id="cell-14" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -1099,7 +1099,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <p>First, you need to import the required libraries. Once imported, they allow better execution of a query in the GHG Center <strong>Spatio Temporal Asset Catalog (STAC)</strong> Application Programming Interface (API) where the granules for this collection are stored. You will learn the functionality of each library throughout the notebook.</p>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1154,7 +1154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>collection_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, you will examine the contents of the <code>collection</code> under the <code>temporal</code> variable. You’ll see that the data is available since August 2022. Looking at the <code>dashboard: time density</code>, you can see that observations are conducted daily and non-periodically (i.e., there are plumes emissions for multiple places on the same dates).</p>
-<div id="cell-20" class="cell" data-execution_count="12">
+<div id="cell-20" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that would search for data collection in the US GHG Center STAC API</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we need to define the function</span></span>
@@ -1237,7 +1237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="map-out-selected-tiles" class="level2">
 <h2 class="anchored" data-anchor-id="map-out-selected-tiles">Map Out Selected Tiles</h2>
 <p>You will now explore global methane emission plumes from point sources and visualize the results on a map using folium.</p>
-<div id="cell-24" class="cell" data-execution_count="15">
+<div id="cell-24" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Once again, apply the function created above "get_item_count" to the Air-Sea CO2 Flux ECCO-Darwin collection</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This step allows retrieving the number of granules “observations” in the collection.</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
@@ -1254,7 +1254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"ch4-plume-emissions"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Below, you will enter the minimum and maximum values to provide our upper and lower bounds in the <code>rescale_values</code>.</p>
-<div id="cell-26" class="cell" data-execution_count="16">
+<div id="cell-26" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values for a specific item</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:plume_complexes[<span class="bu">list</span>(plume_complexes.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:plume_complexes[<span class="bu">list</span>(plume_complexes.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1332,7 +1332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-zonal-statistics" class="level1">
 <h1>Calculate Zonal Statistics</h1>
 <p>To perform zonal statistics, you first need to create a polygon. In this use case, you are creating a polygon using the plume’s retrieved coordinates.</p>
-<div id="cell-31" class="cell" data-execution_count="19">
+<div id="cell-31" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the coordinates of the plume feature (using the 'item_id')</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plumes_coordinates <span class="op">=</span> plume_complexes[item_id][<span class="st">"geometry"</span>][<span class="st">"coordinates"</span>]</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1390,7 +1390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] refers to the first item (granule) in the list/collection</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="23">
+<div id="cell-35" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>

@@ -983,74 +983,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objs <span class="im">as</span> go</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/rrimal/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(</code></pre>
+</div>
 </div>
 </section>
 <section id="querying-the-feature-vector-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-feature-vector-api">Querying the Feature Vector API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Feature Vector Application Programming Interface (API) where the items for this collection are stored.</p>
-<div id="cell-7" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>FEATURE_API_URL<span class="op">=</span><span class="st">"https://earth.gov/ghgcenter/api/features"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-7" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>FEATURE_API_URL<span class="op">=</span><span class="st">"https://earth.gov/ghgcenter/api/features"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch CSV data for a station with a limit parameter</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_station_data_csv(station_code, gas_type, frequency, elevation_m, limit<span class="op">=</span><span class="dv">100000</span>):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the ?f=csv and limit query to get more rows</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_lam_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(url)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if the response is successful</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> response.status_code <span class="op">!=</span> <span class="dv">200</span>:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Failed to fetch data for </span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">. Status code: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> pd.DataFrame()</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if the content type is CSV</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        content_type <span class="op">=</span> response.headers.get(<span class="st">'Content-Type'</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'text/csv'</span> <span class="kw">not</span> <span class="kw">in</span> content_type:</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Unexpected content type for </span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>content_type<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Response content:"</span>, response.text)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> pd.DataFrame()</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Read the CSV content into a pandas DataFrame</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        csv_data <span class="op">=</span> StringIO(response.text)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.read_csv(csv_data)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.RequestException <span class="im">as</span> e:</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Request failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.DataFrame()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-8" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch CSV data for a station with a limit parameter</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_station_data_csv(station_code, gas_type, frequency, elevation_m, limit<span class="op">=</span><span class="dv">100000</span>):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the ?f=csv and limit query to get more rows</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_lam_</span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>gas_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>frequency<span class="sc">}</span><span class="ss">_concentrations/items?f=csv&amp;elevation_m=</span><span class="sc">{</span>elevation_m<span class="sc">}</span><span class="ss">&amp;limit=</span><span class="sc">{</span>limit<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(url)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if the response is successful</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> response.status_code <span class="op">!=</span> <span class="dv">200</span>:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Failed to fetch data for </span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">. Status code: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> pd.DataFrame()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check if the content type is CSV</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        content_type <span class="op">=</span> response.headers.get(<span class="st">'Content-Type'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'text/csv'</span> <span class="kw">not</span> <span class="kw">in</span> content_type:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Unexpected content type for </span><span class="sc">{</span>station_code<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>content_type<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Response content:"</span>, response.text)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> pd.DataFrame()</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Read the CSV content into a pandas DataFrame</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        csv_data <span class="op">=</span> StringIO(response.text)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.read_csv(csv_data)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.RequestException <span class="im">as</span> e:</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Request failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.DataFrame()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualizing-the-co₂-data-for-two-nec-stations" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-co₂-data-for-two-nec-stations">Visualizing the CO₂ data for two NEC stations</h2>
-<div id="cell-10" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get station name and elevation from metdata dataframe</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data for SCI (elevation 489) and COM (elevation 9), using limit=10000</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4/co2 select the ghg </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sci_data <span class="op">=</span> get_station_data_csv(<span class="st">'sci'</span>, <span class="st">'co2'</span>, <span class="st">'hourly'</span>, <span class="dv">489</span>, limit<span class="op">=</span><span class="dv">10000</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>com_data <span class="op">=</span> get_station_data_csv(<span class="st">'com'</span>, <span class="st">'co2'</span>, <span class="st">'hourly'</span>, <span class="dv">9</span>, limit<span class="op">=</span><span class="dv">10000</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if data was successfully retrieved before proceeding</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> sci_data.empty <span class="kw">or</span> com_data.empty:</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"No data available for one or both stations. Exiting."</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert the 'datetime' column to datetime for plotting</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    sci_data[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(sci_data[<span class="st">'datetime'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    com_data[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(com_data[<span class="st">'datetime'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the data</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    plt.plot(sci_data[<span class="st">'datetime'</span>], sci_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'SCI (489m)'</span>, color<span class="op">=</span><span class="st">'blue'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    plt.plot(com_data[<span class="st">'datetime'</span>], com_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'COM (9m)'</span>, color<span class="op">=</span><span class="st">'green'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Carbon Dioxide (CO₂) Hourly Concentrations Over Time for SCI and COM Stations'</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time'</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'CO₂ Concentration (ppm)'</span>)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show plot</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-10" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get station name and elevation from metdata dataframe</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data for SCI (elevation 489) and COM (elevation 9), using limit=10000</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4/co2 select the ghg </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sci_data <span class="op">=</span> get_station_data_csv(<span class="st">'sci'</span>, <span class="st">'co2'</span>, <span class="st">'hourly'</span>, <span class="dv">489</span>, limit<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>com_data <span class="op">=</span> get_station_data_csv(<span class="st">'com'</span>, <span class="st">'co2'</span>, <span class="st">'hourly'</span>, <span class="dv">9</span>, limit<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if data was successfully retrieved before proceeding</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> sci_data.empty <span class="kw">or</span> com_data.empty:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"No data available for one or both stations. Exiting."</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert the 'datetime' column to datetime for plotting</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    sci_data[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(sci_data[<span class="st">'datetime'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    com_data[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(com_data[<span class="st">'datetime'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the data</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    plt.plot(sci_data[<span class="st">'datetime'</span>], sci_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'SCI (489m)'</span>, color<span class="op">=</span><span class="st">'blue'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    plt.plot(com_data[<span class="st">'datetime'</span>], com_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'COM (9m)'</span>, color<span class="op">=</span><span class="st">'green'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Carbon Dioxide (CO₂) Hourly Concentrations Over Time for SCI and COM Stations'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'CO₂ Concentration (ppm)'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show plot</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_lam_sci_co2_hourly_concentrations/items?f=csv&amp;elevation_m=489&amp;limit=10000
 https://earth.gov/ghgcenter/api/features/collections/public.nist_testbed_lam_com_co2_hourly_concentrations/items?f=csv&amp;elevation_m=9&amp;limit=10000</code></pre>

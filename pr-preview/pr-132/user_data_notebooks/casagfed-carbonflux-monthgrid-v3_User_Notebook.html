@@ -983,7 +983,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="querying-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-stac-api">Querying the STAC API</h2>
 <p>Please run the next cell to import the required libraries.</p>
-<div id="cell-6" class="cell" data-execution_count="2">
+<div id="cell-6" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium.plugins</span>
@@ -997,7 +997,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   warnings.warn(</code></pre>
 </div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/raster"</span></span>
@@ -1006,12 +1006,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for CASA GFED Land-Atmosphere Carbon Flux monthly emissions. </span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"casagfed-carbonflux-monthgrid-v3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="4">
+<div id="cell-8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from STAC collections using the appropriate endpoint</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the 'requests' library allows a HTTP request possible</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>{'id': 'casagfed-carbonflux-monthgrid-v3',
  'type': 'Collection',
  'links': [{'rel': 'items',
@@ -1072,7 +1072,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2003 to December 2017. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is monthly.</p>
-<div id="cell-10" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that would search for the above data collection in the STAC API</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
@@ -1095,7 +1095,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-11" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the above function and check the total number of items available within the collection</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
@@ -1104,10 +1104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Found 180 items</code></pre>
 </div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="7">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>{'id': 'casagfed-carbonflux-monthgrid-v3-201712',
  'bbox': [-180.0, -90.0, 180.0, 90.0],
  'type': 'Feature',
@@ -1407,18 +1407,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploring-changes-in-carbon-flux-levels-using-the-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-changes-in-carbon-flux-levels-using-the-raster-api">Exploring Changes in Carbon Flux Levels Using the Raster API</h2>
 <p>We will explore changes in the land atmosphere Carbon flux <code>Heterotrophic Respiration</code> and examine their impacts over time. We’ll then visualize the outputs on a map using <code>folium</code>.</p>
-<div id="cell-14" class="cell" data-execution_count="8">
+<div id="cell-14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># rh = Heterotrophic Respiration</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"rh"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Below, we are entering the minimum and maximum values to provide our upper and lower bounds in <code>rescale_values</code>.</p>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for December 2003 and again for December 2017, so that we can visualize each event independently.</p>
-<div id="cell-18" class="cell" data-execution_count="10">
+<div id="cell-18" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"purd"</span> <span class="co"># please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1431,7 +1431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>december_2003_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -1442,7 +1442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-19" class="cell" data-execution_count="11">
+<div id="cell-19" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we apply the same process used in the previous step for the December 2017 tile</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>december_2017_tile <span class="op">=</span> requests.get(</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>items[<span class="st">'2017-12'</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>items[<span class="st">'2017-12'</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -1451,7 +1451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>december_2017_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -1465,7 +1465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-land-atmosphere-carbon-flux-heterotrophic-respiration" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-land-atmosphere-carbon-flux-heterotrophic-respiration">Visualizing Land-Atmosphere Carbon Flux (Heterotrophic Respiration)</h2>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-21" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For this study we are going to compare the RH level in 2003 and 2017 over the State of Texas </span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To change the location, you can simply insert the latitude and longitude of the area of your interest in the "location=(LAT, LONG)" statement</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For example, you can change the current statement "location=(31.9, -99.9)" to "location=(34, -118)" to monitor the RH level in California instead of Texas</span></span>
@@ -1515,7 +1515,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
 <span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1543,7 +1543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_2568d271cee858934c7bd78097d8bf6c {
+                #map_c4a165a86e35816dc6fe306bc91abda5 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1558,7 +1558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_aaa2c8843b2a25305b4c65014f14d94e {
+                #map_4c592a14e1e98db6943cc5d1a25598ed {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1573,17 +1573,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_2568d271cee858934c7bd78097d8bf6c&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_c4a165a86e35816dc6fe306bc91abda5&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_aaa2c8843b2a25305b4c65014f14d94e&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_4c592a14e1e98db6943cc5d1a25598ed&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_2568d271cee858934c7bd78097d8bf6c = L.map(
-                &quot;map_2568d271cee858934c7bd78097d8bf6c&quot;,
+            var map_c4a165a86e35816dc6fe306bc91abda5 = L.map(
+                &quot;map_c4a165a86e35816dc6fe306bc91abda5&quot;,
                 {
                     center: [31.9, -99.9],
                     crs: L.CRS.EPSG3857,
@@ -1597,31 +1597,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_cfa09e18609b5b286c3a0b927173dda9 = L.tileLayer(
+            var tile_layer_49c6f5a19751eb8e73aa29bc7b2f9b90 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_cfa09e18609b5b286c3a0b927173dda9.addTo(map_2568d271cee858934c7bd78097d8bf6c);
+            tile_layer_49c6f5a19751eb8e73aa29bc7b2f9b90.addTo(map_c4a165a86e35816dc6fe306bc91abda5);
         
     
-            var tile_layer_728763e97e8fed65cc785de578d58220 = L.tileLayer(
+            var tile_layer_a8d6e895235856c4e61dc937f620eda3 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/casagfed-carbonflux-monthgrid-v3/items/casagfed-carbonflux-monthgrid-v3-200312/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=0.0%2C0.6039900183677673&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_728763e97e8fed65cc785de578d58220.addTo(map_2568d271cee858934c7bd78097d8bf6c);
+            tile_layer_a8d6e895235856c4e61dc937f620eda3.addTo(map_c4a165a86e35816dc6fe306bc91abda5);
         
     
-            var marker_2ce7fdb69cd4669c47b849002853be1a = L.marker(
+            var marker_7b55ff6982875d34b2d68250d0704649 = L.marker(
                 [40.0, 5.0],
                 {}
-            ).addTo(map_2568d271cee858934c7bd78097d8bf6c);
+            ).addTo(map_c4a165a86e35816dc6fe306bc91abda5);
         
     
-            marker_2ce7fdb69cd4669c47b849002853be1a.bindTooltip(
+            marker_7b55ff6982875d34b2d68250d0704649.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -1629,58 +1629,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var layer_control_f604ff7163aba74d2b0235581ccd2e37_layers = {
+            var layer_control_0a87b8349022f2d6e874fa16bf1e17a4_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_cfa09e18609b5b286c3a0b927173dda9,
+                    &quot;openstreetmap&quot; : tile_layer_49c6f5a19751eb8e73aa29bc7b2f9b90,
                 },
                 overlays :  {
-                    &quot;December 2003 RH Level&quot; : tile_layer_728763e97e8fed65cc785de578d58220,
+                    &quot;December 2003 RH Level&quot; : tile_layer_a8d6e895235856c4e61dc937f620eda3,
                 },
             };
-            let layer_control_f604ff7163aba74d2b0235581ccd2e37 = L.control.layers(
-                layer_control_f604ff7163aba74d2b0235581ccd2e37_layers.base_layers,
-                layer_control_f604ff7163aba74d2b0235581ccd2e37_layers.overlays,
+            let layer_control_0a87b8349022f2d6e874fa16bf1e17a4 = L.control.layers(
+                layer_control_0a87b8349022f2d6e874fa16bf1e17a4_layers.base_layers,
+                layer_control_0a87b8349022f2d6e874fa16bf1e17a4_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_2568d271cee858934c7bd78097d8bf6c);
+            ).addTo(map_c4a165a86e35816dc6fe306bc91abda5);
 
         
     
-    var color_map_ce664534ccf357dce37f00fa6c6037ad = {};
+    var color_map_8654129a7601173eb057f7559db608ed = {};
 
     
-    color_map_ce664534ccf357dce37f00fa6c6037ad.color = d3.scale.threshold()
+    color_map_8654129a7601173eb057f7559db608ed.color = d3.scale.threshold()
               .domain([0.0, 0.0006012024048096192, 0.0012024048096192384, 0.0018036072144288575, 0.002404809619238477, 0.003006012024048096, 0.003607214428857715, 0.004208416833667335, 0.004809619238476954, 0.005410821643286573, 0.006012024048096192, 0.006613226452905812, 0.00721442885771543, 0.00781563126252505, 0.00841683366733467, 0.009018036072144289, 0.009619238476953907, 0.010220440881763526, 0.010821643286573146, 0.011422845691382766, 0.012024048096192385, 0.012625250501002003, 0.013226452905811623, 0.013827655310621242, 0.01442885771543086, 0.01503006012024048, 0.0156312625250501, 0.01623246492985972, 0.01683366733466934, 0.017434869739478956, 0.018036072144288578, 0.018637274549098193, 0.019238476953907815, 0.019839679358717437, 0.02044088176352705, 0.021042084168336674, 0.021643286573146292, 0.02224448897795591, 0.022845691382765532, 0.023446893787575147, 0.02404809619238477, 0.024649298597194388, 0.025250501002004006, 0.025851703406813628, 0.026452905811623247, 0.027054108216432865, 0.027655310621242483, 0.028256513026052102, 0.02885771543086172, 0.029458917835671342, 0.03006012024048096, 0.03066132264529058, 0.0312625250501002, 0.03186372745490982, 0.03246492985971944, 0.033066132264529056, 0.03366733466933868, 0.03426853707414829, 0.03486973947895791, 0.03547094188376753, 0.036072144288577156, 0.036673346693386774, 0.037274549098196386, 0.03787575150300601, 0.03847695390781563, 0.03907815631262525, 0.03967935871743487, 0.040280561122244485, 0.0408817635270541, 0.04148296593186373, 0.04208416833667335, 0.042685370741482966, 0.043286573146292584, 0.0438877755511022, 0.04448897795591182, 0.045090180360721446, 0.045691382765531065, 0.046292585170340676, 0.046893787575150295, 0.04749498997995992, 0.04809619238476954, 0.04869739478957916, 0.049298597194388775, 0.049899799599198394, 0.05050100200400801, 0.05110220440881764, 0.051703406813627256, 0.05230460921843687, 0.05290581162324649, 0.05350701402805611, 0.05410821643286573, 0.054709418837675355, 0.05531062124248497, 0.055911823647294585, 0.056513026052104204, 0.05711422845691383, 0.05771543086172344, 0.05831663326653306, 0.058917835671342685, 0.0595190380761523, 0.06012024048096192, 0.06072144288577154, 0.06132264529058116, 0.06192384769539078, 0.0625250501002004, 0.06312625250501001, 0.06372745490981964, 0.06432865731462926, 0.06492985971943888, 0.06553106212424849, 0.06613226452905811, 0.06673346693386772, 0.06733466933867736, 0.06793587174348698, 0.06853707414829659, 0.06913827655310621, 0.06973947895791582, 0.07034068136272545, 0.07094188376753506, 0.07154308617234469, 0.07214428857715431, 0.07274549098196392, 0.07334669338677355, 0.07394789579158316, 0.07454909819639277, 0.07515030060120241, 0.07575150300601202, 0.07635270541082165, 0.07695390781563126, 0.07755511022044087, 0.0781563126252505, 0.07875751503006012, 0.07935871743486975, 0.07995991983967936, 0.08056112224448897, 0.0811623246492986, 0.0817635270541082, 0.08236472945891783, 0.08296593186372746, 0.08356713426853707, 0.0841683366733467, 0.0847695390781563, 0.08537074148296593, 0.08597194388777554, 0.08657314629258517, 0.0871743486973948, 0.0877755511022044, 0.08837675350701403, 0.08897795591182364, 0.08957915831663325, 0.09018036072144289, 0.0907815631262525, 0.09138276553106213, 0.09198396793587174, 0.09258517034068135, 0.09318637274549098, 0.09378757515030059, 0.09438877755511023, 0.09498997995991984, 0.09559118236472945, 0.09619238476953908, 0.09679358717434869, 0.09739478957915831, 0.09799599198396794, 0.09859719438877755, 0.09919839679358718, 0.09979959919839679, 0.10040080160320641, 0.10100200400801602, 0.10160320641282564, 0.10220440881763528, 0.10280561122244489, 0.10340681362725451, 0.10400801603206412, 0.10460921843687374, 0.10521042084168336, 0.10581162324649299, 0.10641282565130261, 0.10701402805611222, 0.10761523046092183, 0.10821643286573146, 0.10881763527054107, 0.10941883767535071, 0.11002004008016032, 0.11062124248496993, 0.11122244488977956, 0.11182364729458917, 0.1124248496993988, 0.11302605210420841, 0.11362725450901803, 0.11422845691382766, 0.11482965931863727, 0.11543086172344688, 0.1160320641282565, 0.11663326653306612, 0.11723446893787576, 0.11783567134268537, 0.11843687374749498, 0.1190380761523046, 0.11963927855711422, 0.12024048096192384, 0.12084168336673345, 0.12144288577154308, 0.1220440881763527, 0.12264529058116232, 0.12324649298597194, 0.12384769539078155, 0.12444889779559117, 0.1250501002004008, 0.1256513026052104, 0.12625250501002003, 0.12685370741482965, 0.12745490981963928, 0.1280561122244489, 0.12865731462925853, 0.12925851703406813, 0.12985971943887775, 0.13046092184368735, 0.13106212424849698, 0.13166332665330663, 0.13226452905811623, 0.13286573146292585, 0.13346693386773545, 0.13406813627254507, 0.13466933867735473, 0.13527054108216433, 0.13587174348697395, 0.13647294589178355, 0.13707414829659317, 0.1376753507014028, 0.13827655310621242, 0.13887775551102205, 0.13947895791583165, 0.14008016032064127, 0.1406813627254509, 0.14128256513026052, 0.14188376753507012, 0.14248496993987975, 0.14308617234468937, 0.143687374749499, 0.14428857715430862, 0.14488977955911822, 0.14549098196392785, 0.14609218436873747, 0.1466933867735471, 0.14729458917835672, 0.14789579158316632, 0.14849699398797594, 0.14909819639278554, 0.1496993987975952, 0.15030060120240482, 0.15090180360721442, 0.15150300601202404, 0.15210420841683364, 0.1527054108216433, 0.1533066132264529, 0.15390781563126252, 0.15450901803607214, 0.15511022044088174, 0.1557114228456914, 0.156312625250501, 0.15691382765531062, 0.15751503006012024, 0.15811623246492984, 0.1587174348697395, 0.1593186372745491, 0.15991983967935872, 0.16052104208416831, 0.16112224448897794, 0.1617234468937876, 0.1623246492985972, 0.16292585170340682, 0.1635270541082164, 0.16412825651302604, 0.16472945891783566, 0.1653306613226453, 0.16593186372745491, 0.1665330661322645, 0.16713426853707414, 0.16773547094188376, 0.1683366733466934, 0.168937875751503, 0.1695390781563126, 0.17014028056112224, 0.17074148296593186, 0.1713426853707415, 0.17194388777555109, 0.1725450901803607, 0.17314629258517034, 0.17374749498997996, 0.1743486973947896, 0.17494989979959918, 0.1755511022044088, 0.1761523046092184, 0.17675350701402806, 0.17735470941883769, 0.17795591182364728, 0.1785571142284569, 0.1791583166332665, 0.17975951903807616, 0.18036072144288579, 0.18096192384769538, 0.181563126252505, 0.1821643286573146, 0.18276553106212426, 0.18336673346693386, 0.18396793587174348, 0.1845691382765531, 0.1851703406813627, 0.18577154308617236, 0.18637274549098196, 0.18697394789579158, 0.18757515030060118, 0.1881763527054108, 0.18877755511022046, 0.18937875751503006, 0.18997995991983968, 0.19058116232464928, 0.1911823647294589, 0.19178356713426856, 0.19238476953907815, 0.19298597194388778, 0.19358717434869738, 0.194188376753507, 0.19478957915831663, 0.19539078156312625, 0.19599198396793588, 0.19659318637274548, 0.1971943887775551, 0.19779559118236473, 0.19839679358717435, 0.19899799599198395, 0.19959919839679358, 0.2002004008016032, 0.20080160320641283, 0.20140280561122245, 0.20200400801603205, 0.20260521042084167, 0.20320641282565127, 0.20380761523046093, 0.20440881763527055, 0.20501002004008015, 0.20561122244488977, 0.20621242484969937, 0.20681362725450902, 0.20741482965931865, 0.20801603206412825, 0.20861723446893787, 0.20921843687374747, 0.20981963927855712, 0.21042084168336672, 0.21102204408817635, 0.21162324649298597, 0.21222444889779557, 0.21282565130260522, 0.21342685370741482, 0.21402805611222445, 0.21462925851703404, 0.21523046092184367, 0.21583166332665332, 0.21643286573146292, 0.21703406813627255, 0.21763527054108214, 0.21823647294589177, 0.21883767535070142, 0.21943887775551102, 0.22004008016032064, 0.22064128256513024, 0.22124248496993987, 0.2218436873747495, 0.22244488977955912, 0.22304609218436874, 0.22364729458917834, 0.22424849699398797, 0.2248496993987976, 0.22545090180360722, 0.22605210420841682, 0.22665330661322644, 0.22725450901803607, 0.2278557114228457, 0.22845691382765532, 0.22905811623246491, 0.22965931863727454, 0.23026052104208414, 0.23086172344689376, 0.23146292585170342, 0.232064128256513, 0.23266533066132264, 0.23326653306613224, 0.23386773547094186, 0.23446893787575152, 0.2350701402805611, 0.23567134268537074, 0.23627254509018034, 0.23687374749498996, 0.2374749498997996, 0.2380761523046092, 0.23867735470941884, 0.23927855711422844, 0.23987975951903806, 0.24048096192384769, 0.2410821643286573, 0.2416833667334669, 0.24228456913827653, 0.24288577154308616, 0.24348697394789579, 0.2440881763527054, 0.244689378757515, 0.24529058116232463, 0.24589178356713426, 0.24649298597194388, 0.2470941883767535, 0.2476953907815631, 0.24829659318637273, 0.24889779559118233, 0.24949899799599198, 0.2501002004008016, 0.2507014028056112, 0.2513026052104208, 0.25190380761523046, 0.25250501002004005, 0.2531062124248497, 0.2537074148296593, 0.2543086172344689, 0.25490981963927856, 0.25551102204408815, 0.2561122244488978, 0.2567134268537074, 0.25731462925851706, 0.25791583166332666, 0.25851703406813625, 0.25911823647294585, 0.2597194388777555, 0.26032064128256516, 0.2609218436873747, 0.26152304609218435, 0.26212424849699395, 0.2627254509018036, 0.26332665330661326, 0.2639278557114228, 0.26452905811623245, 0.26513026052104205, 0.2657314629258517, 0.26633266533066136, 0.2669338677354709, 0.26753507014028055, 0.26813627254509015, 0.2687374749498998, 0.26933867735470945, 0.269939879759519, 0.27054108216432865, 0.27114228456913825, 0.2717434869739479, 0.27234468937875755, 0.2729458917835671, 0.27354709418837675, 0.27414829659318635, 0.274749498997996, 0.2753507014028056, 0.2759519038076152, 0.27655310621242485, 0.27715430861723445, 0.2777555110220441, 0.2783567134268537, 0.2789579158316633, 0.27955911823647295, 0.28016032064128255, 0.2807615230460922, 0.2813627254509018, 0.2819639278557114, 0.28256513026052105, 0.28316633266533064, 0.28376753507014024, 0.2843687374749499, 0.2849699398797595, 0.28557114228456915, 0.28617234468937874, 0.28677354709418834, 0.287374749498998, 0.2879759519038076, 0.28857715430861725, 0.28917835671342684, 0.28977955911823644, 0.2903807615230461, 0.2909819639278557, 0.29158316633266534, 0.29218436873747494, 0.29278557114228454, 0.2933867735470942, 0.2939879759519038, 0.29458917835671344, 0.295190380761523, 0.29579158316633264, 0.2963927855711423, 0.2969939879759519, 0.29759519038076154, 0.2981963927855711, 0.29879759519038074, 0.2993987975951904, 0.3])
               .range(['#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff']);
     
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.x = d3.scale.linear()
+    color_map_8654129a7601173eb057f7559db608ed.x = d3.scale.linear()
               .domain([0.0, 0.3])
               .range([0, 450 - 50]);
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.legend = L.control({position: 'topright'});
-    color_map_ce664534ccf357dce37f00fa6c6037ad.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
-    color_map_ce664534ccf357dce37f00fa6c6037ad.legend.addTo(map_2568d271cee858934c7bd78097d8bf6c);
+    color_map_8654129a7601173eb057f7559db608ed.legend = L.control({position: 'topright'});
+    color_map_8654129a7601173eb057f7559db608ed.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_8654129a7601173eb057f7559db608ed.legend.addTo(map_c4a165a86e35816dc6fe306bc91abda5);
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.xAxis = d3.svg.axis()
-        .scale(color_map_ce664534ccf357dce37f00fa6c6037ad.x)
+    color_map_8654129a7601173eb057f7559db608ed.xAxis = d3.svg.axis()
+        .scale(color_map_8654129a7601173eb057f7559db608ed.x)
         .orient(&quot;top&quot;)
         .tickSize(1)
         .tickValues([0.0, 0.07, 0.15, 0.22, 0.3]);
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
+    color_map_8654129a7601173eb057f7559db608ed.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
         .attr(&quot;id&quot;, 'legend')
         .attr(&quot;width&quot;, 450)
         .attr(&quot;height&quot;, 40);
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.g = color_map_ce664534ccf357dce37f00fa6c6037ad.svg.append(&quot;g&quot;)
+    color_map_8654129a7601173eb057f7559db608ed.g = color_map_8654129a7601173eb057f7559db608ed.svg.append(&quot;g&quot;)
         .attr(&quot;class&quot;, &quot;key&quot;)
         .attr(&quot;transform&quot;, &quot;translate(25,16)&quot;);
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.g.selectAll(&quot;rect&quot;)
-        .data(color_map_ce664534ccf357dce37f00fa6c6037ad.color.range().map(function(d, i) {
+    color_map_8654129a7601173eb057f7559db608ed.g.selectAll(&quot;rect&quot;)
+        .data(color_map_8654129a7601173eb057f7559db608ed.color.range().map(function(d, i) {
           return {
-            x0: i ? color_map_ce664534ccf357dce37f00fa6c6037ad.x(color_map_ce664534ccf357dce37f00fa6c6037ad.color.domain()[i - 1]) : color_map_ce664534ccf357dce37f00fa6c6037ad.x.range()[0],
-            x1: i < color_map_ce664534ccf357dce37f00fa6c6037ad.color.domain().length ? color_map_ce664534ccf357dce37f00fa6c6037ad.x(color_map_ce664534ccf357dce37f00fa6c6037ad.color.domain()[i]) : color_map_ce664534ccf357dce37f00fa6c6037ad.x.range()[1],
+            x0: i ? color_map_8654129a7601173eb057f7559db608ed.x(color_map_8654129a7601173eb057f7559db608ed.color.domain()[i - 1]) : color_map_8654129a7601173eb057f7559db608ed.x.range()[0],
+            x1: i < color_map_8654129a7601173eb057f7559db608ed.color.domain().length ? color_map_8654129a7601173eb057f7559db608ed.x(color_map_8654129a7601173eb057f7559db608ed.color.domain()[i]) : color_map_8654129a7601173eb057f7559db608ed.x.range()[1],
             z: d
           };
         }))
@@ -1690,13 +1690,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         .attr(&quot;width&quot;, function(d) { return d.x1 - d.x0; })
         .style(&quot;fill&quot;, function(d) { return d.z; });
 
-    color_map_ce664534ccf357dce37f00fa6c6037ad.g.call(color_map_ce664534ccf357dce37f00fa6c6037ad.xAxis).append(&quot;text&quot;)
+    color_map_8654129a7601173eb057f7559db608ed.g.call(color_map_8654129a7601173eb057f7559db608ed.xAxis).append(&quot;text&quot;)
         .attr(&quot;class&quot;, &quot;caption&quot;)
         .attr(&quot;y&quot;, 21)
         .text(&quot;Rh Values (kg Carbon/m2/month)&quot;);
     
-            var map_aaa2c8843b2a25305b4c65014f14d94e = L.map(
-                &quot;map_aaa2c8843b2a25305b4c65014f14d94e&quot;,
+            var map_4c592a14e1e98db6943cc5d1a25598ed = L.map(
+                &quot;map_4c592a14e1e98db6943cc5d1a25598ed&quot;,
                 {
                     center: [31.9, -99.9],
                     crs: L.CRS.EPSG3857,
@@ -1710,35 +1710,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_4a5503d199ee924e81f9c3e33f3b2c51 = L.tileLayer(
+            var tile_layer_c4fdc3a62eaf6fffa060e476735b2f7a = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_4a5503d199ee924e81f9c3e33f3b2c51.addTo(map_aaa2c8843b2a25305b4c65014f14d94e);
+            tile_layer_c4fdc3a62eaf6fffa060e476735b2f7a.addTo(map_4c592a14e1e98db6943cc5d1a25598ed);
         
     
-            var tile_layer_a87971af5b016f5cd8018cae05d47410 = L.tileLayer(
+            var tile_layer_c8b3f8b4ab7c344f4e26a0e31d57781b = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/casagfed-carbonflux-monthgrid-v3/items/casagfed-carbonflux-monthgrid-v3-201712/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=0.0%2C0.6039900183677673&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_a87971af5b016f5cd8018cae05d47410.addTo(map_aaa2c8843b2a25305b4c65014f14d94e);
+            tile_layer_c8b3f8b4ab7c344f4e26a0e31d57781b.addTo(map_4c592a14e1e98db6943cc5d1a25598ed);
         
     
-            map_2568d271cee858934c7bd78097d8bf6c.sync(map_aaa2c8843b2a25305b4c65014f14d94e);
-            map_aaa2c8843b2a25305b4c65014f14d94e.sync(map_2568d271cee858934c7bd78097d8bf6c);
+            map_c4a165a86e35816dc6fe306bc91abda5.sync(map_4c592a14e1e98db6943cc5d1a25598ed);
+            map_4c592a14e1e98db6943cc5d1a25598ed.sync(map_c4a165a86e35816dc6fe306bc91abda5);
         
     
-            var marker_10036912ba52403c93e7ba7e1c5dc55d = L.marker(
+            var marker_3207965280494949a2255cdb4503f02a = L.marker(
                 [40.0, 5.0],
                 {}
-            ).addTo(map_aaa2c8843b2a25305b4c65014f14d94e);
+            ).addTo(map_4c592a14e1e98db6943cc5d1a25598ed);
         
     
-            marker_10036912ba52403c93e7ba7e1c5dc55d.bindTooltip(
+            marker_3207965280494949a2255cdb4503f02a.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -1746,19 +1746,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            var layer_control_44249bb3b87d48759ee835012bcd46af_layers = {
+            var layer_control_e8383eb7f71f4ca29297868b97d48a41_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_4a5503d199ee924e81f9c3e33f3b2c51,
+                    &quot;openstreetmap&quot; : tile_layer_c4fdc3a62eaf6fffa060e476735b2f7a,
                 },
                 overlays :  {
-                    &quot;December 2017 RH Level&quot; : tile_layer_a87971af5b016f5cd8018cae05d47410,
+                    &quot;December 2017 RH Level&quot; : tile_layer_c8b3f8b4ab7c344f4e26a0e31d57781b,
                 },
             };
-            let layer_control_44249bb3b87d48759ee835012bcd46af = L.control.layers(
-                layer_control_44249bb3b87d48759ee835012bcd46af_layers.base_layers,
-                layer_control_44249bb3b87d48759ee835012bcd46af_layers.overlays,
+            let layer_control_e8383eb7f71f4ca29297868b97d48a41 = L.control.layers(
+                layer_control_e8383eb7f71f4ca29297868b97d48a41_layers.base_layers,
+                layer_control_e8383eb7f71f4ca29297868b97d48a41_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_aaa2c8843b2a25305b4c65014f14d94e);
+            ).addTo(map_4c592a14e1e98db6943cc5d1a25598ed);
 
         
 </script>
@@ -1770,7 +1770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculating-zonal-statistics" class="level1">
 <h1>Calculating Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this case we are creating a polygon in Texas (USA).</p>
-<div id="cell-24" class="cell" data-execution_count="13">
+<div id="cell-24" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to Dallas, Texas (USA)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>texas_dallas_aoi <span class="op">=</span> {</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
@@ -1790,7 +1790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="14">
+<div id="cell-25" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will plug in the coordinates for a location inside the the polygon and a zoom level</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>aoi_map <span class="op">=</span> Map(</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
@@ -1802,7 +1802,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(texas_dallas_aoi, name<span class="op">=</span><span class="st">"Texas, Dallas"</span>).add_to(aoi_map)</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1830,7 +1830,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_25e8c40d7ccce990757e5b7c5672128d {
+                #map_c146f317ce8913a2100fa2083d272a69 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -1844,14 +1844,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_25e8c40d7ccce990757e5b7c5672128d&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_c146f317ce8913a2100fa2083d272a69&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_25e8c40d7ccce990757e5b7c5672128d = L.map(
-                &quot;map_25e8c40d7ccce990757e5b7c5672128d&quot;,
+            var map_c146f317ce8913a2100fa2083d272a69 = L.map(
+                &quot;map_c146f317ce8913a2100fa2083d272a69&quot;,
                 {
                     center: [32.81, -96.93],
                     crs: L.CRS.EPSG3857,
@@ -1865,41 +1865,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_79f8737033b060dd64c24293e4a81038 = L.tileLayer(
+            var tile_layer_7a482b73c6f9ba19ef830b2515044ba0 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_79f8737033b060dd64c24293e4a81038.addTo(map_25e8c40d7ccce990757e5b7c5672128d);
+            tile_layer_7a482b73c6f9ba19ef830b2515044ba0.addTo(map_c146f317ce8913a2100fa2083d272a69);
         
     
 
-        function geo_json_796b0e919f9eb123f8d4ce20105ef0cf_onEachFeature(feature, layer) {
+        function geo_json_4f6f360c36a883cb9140eee219f8ca1f_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_796b0e919f9eb123f8d4ce20105ef0cf = L.geoJson(null, {
-                onEachFeature: geo_json_796b0e919f9eb123f8d4ce20105ef0cf_onEachFeature,
+        var geo_json_4f6f360c36a883cb9140eee219f8ca1f = L.geoJson(null, {
+                onEachFeature: geo_json_4f6f360c36a883cb9140eee219f8ca1f_onEachFeature,
             
         });
 
-        function geo_json_796b0e919f9eb123f8d4ce20105ef0cf_add (data) {
-            geo_json_796b0e919f9eb123f8d4ce20105ef0cf
+        function geo_json_4f6f360c36a883cb9140eee219f8ca1f_add (data) {
+            geo_json_4f6f360c36a883cb9140eee219f8ca1f
                 .addData(data);
         }
-            geo_json_796b0e919f9eb123f8d4ce20105ef0cf_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
-        geo_json_796b0e919f9eb123f8d4ce20105ef0cf.setStyle(function(feature) {return feature.properties.style;});
+            geo_json_4f6f360c36a883cb9140eee219f8ca1f_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+        geo_json_4f6f360c36a883cb9140eee219f8ca1f.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_796b0e919f9eb123f8d4ce20105ef0cf.addTo(map_25e8c40d7ccce990757e5b7c5672128d);
+            geo_json_4f6f360c36a883cb9140eee219f8ca1f.addTo(map_c146f317ce8913a2100fa2083d272a69);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="15">
+<div id="cell-26" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the total number of items available for this location</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span></span>
@@ -1909,10 +1909,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Found 180 items</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="16">
+<div id="cell-27" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the first item</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>{'id': 'casagfed-carbonflux-monthgrid-v3-201712',
  'bbox': [-180.0, -90.0, 180.0, 90.0],
  'type': 'Feature',
@@ -2208,7 +2208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   'https://stac-extensions.github.io/projection/v1.1.0/schema.json']}</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="17">
+<div id="cell-28" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
@@ -2222,7 +2222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"start_datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>],</span>
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-29" class="cell" data-execution_count="18">
+<div id="cell-29" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify the start Date Time of the first observation in the collection</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>])</span>
@@ -2232,7 +2232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>With the function above, we can generate the statistics for the area of interest. Now, we are going to print the wall time - the real-world-time - using the %%time command for the entire collection!</p>
-<div id="cell-31" class="cell" data-execution_count="19">
+<div id="cell-31" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, texas_dallas_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2416,14 +2416,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]]}, 'properties': {'statistics': {'b1': {'min': 0.03646999970078468, 'max': 0.05527999997138977, 'mean': 0.04348228871822357, 'count': 6.300000190734863, 'sum': 0.2739384174346924, 'std': 0.005476967955864938, 'median': 0.04210999980568886, 'majority': 0.03646999970078468, 'minority': 0.03646999970078468, 'unique': 12.0, 'histogram': [[2.0, 0.0, 3.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0, 1.0], [0.03646999970078468, 0.03835099935531616, 0.04023199900984764, 0.04211299866437912, 0.0439939983189106, 0.04587499797344208, 0.047756001353263855, 0.049637001007795334, 0.05151800066232681, 0.05339900031685829, 0.05527999997138977]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 12.0, 'percentile_2': 0.03646999970078468, 'percentile_98': 0.05527999997138977}}}}
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]]}, 'properties': {'statistics': {'b1': {'min': 0.017059998586773872, 'max': 0.023930000141263008, 'mean': 0.020088793709874153, 'count': 6.300000190734863, 'sum': 0.12655940651893616, 'std': 0.002199509794210104, 'median': 0.019680000841617584, 'majority': 0.017059998586773872, 'minority': 0.017059998586773872, 'unique': 12.0, 'histogram': [[2.0, 0.0, 1.0, 2.0, 1.0, 0.0, 2.0, 1.0, 1.0, 2.0], [0.017059998586773872, 0.017746997997164726, 0.01843399927020073, 0.019120998680591583, 0.019807999953627586, 0.02049499936401844, 0.021182000637054443, 0.021869000047445297, 0.02255599945783615, 0.023243000730872154, 0.023930000141263008]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 12.0, 'percentile_2': 0.017059998586773872, 'percentile_98': 0.023930000141263008}}}}
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-96.1, 32.28], [-96.1, 33.28], [-97.58, 33.28], [-97.58, 32.28], [-96.1, 32.28]]]}, 'properties': {'statistics': {'b1': {'min': 0.01664000004529953, 'max': 0.02370999939739704, 'mean': 0.019474824890494347, 'count': 6.300000190734863, 'sum': 0.12269140034914017, 'std': 0.0023577335642611815, 'median': 0.019190000370144844, 'majority': 0.01664000004529953, 'minority': 0.01664000004529953, 'unique': 12.0, 'histogram': [[2.0, 1.0, 0.0, 2.0, 1.0, 1.0, 3.0, 0.0, 0.0, 2.0], [0.01664000004529953, 0.017347000539302826, 0.018053999170660973, 0.01876099966466427, 0.019468000158667564, 0.02017499879002571, 0.020881999284029007, 0.021588999778032303, 0.0222960002720356, 0.023002998903393745, 0.02370999939739704]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 12.0, 'percentile_2': 0.01664000004529953, 'percentile_98': 0.02370999939739704}}}}
-CPU times: user 1.24 s, sys: 309 ms, total: 1.55 s
-Wall time: 1min 22s</code></pre>
+CPU times: user 1.12 s, sys: 303 ms, total: 1.42 s
+Wall time: 1min 34s</code></pre>
 </div>
 </div>
-<div id="cell-32" class="cell" data-execution_count="20">
+<div id="cell-32" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate stats for the first item in the collection</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>{'statistics': {'b1': {'min': 0.024049999192357063,
    'max': 0.04072999954223633,
    'mean': 0.03167419135570526,
@@ -2454,7 +2454,7 @@ Wall time: 1min 22s</code></pre>
  'start_datetime': '2017-12-01T00:00:00+00:00'}</code></pre>
 </div>
 </div>
-<div id="cell-33" class="cell" data-execution_count="21">
+<div id="cell-33" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that goes through every single item in the collection and populates their properties - including the minimum, maximum, and sum of their values - in a table.</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
@@ -2465,7 +2465,7 @@ Wall time: 1min 22s</code></pre>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>) <span class="co"># the number of granules displayed in the table can be changed by increasing or decreasing the value inserted here!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <div>
 
 
@@ -2608,7 +2608,7 @@ Wall time: 1min 22s</code></pre>
 <section id="visualizing-the-data-as-a-time-series" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</h2>
 <p>We can now explore the Heterotrophic Respiration time series (January 2003 -December 2017) available for the Dallas, Texas area. We can plot the data set using the code below:</p>
-<div id="cell-35" class="cell" data-execution_count="22">
+<div id="cell-35" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>)) <span class="co">#determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
@@ -2624,7 +2624,7 @@ Wall time: 1min 22s</code></pre>
 <span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
 <span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"kg Carbon/m2/month"</span>)</span>
 <span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Heterotrophic Respiration Values for Dallas, Texas (2003-2017)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>Text(0.5, 1.0, 'Heterotrophic Respiration Values for Dallas, Texas (2003-2017)')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -2635,7 +2635,7 @@ Wall time: 1min 22s</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="23">
+<div id="cell-36" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now let's examine the Rh level for the 3rd item in the collection for Dallas, Texas area</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2,... therefore items[2] is referring to the third item in the list/collection</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items[<span class="dv">2</span>][<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>]) <span class="co">#print the start Date Time of the third granule in the collection!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2643,7 +2643,7 @@ Wall time: 1min 22s</code></pre>
 <pre><code>2017-10-01T00:00:00+00:00</code></pre>
 </div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="24">
+<div id="cell-37" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the third granule in the collection and set the color scheme and rescale values. </span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>october_tile <span class="op">=</span> requests.get(</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>items[<span class="dv">2</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -2652,7 +2652,7 @@ Wall time: 1min 22s</code></pre>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>october_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -2663,7 +2663,7 @@ Wall time: 1min 22s</code></pre>
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="25">
+<div id="cell-38" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map the Rh level for the Dallas, Texas area for the October, 2017 timeframe</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox <span class="op">=</span> Map(</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
@@ -2693,7 +2693,7 @@ Wall time: 1min 22s</code></pre>
 <span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>colormap.add_to(aoi_map_bbox)</span>
 <span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>aoi_map_bbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2721,7 +2721,7 @@ Wall time: 1min 22s</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_b18e4e421e4320d93377eb2ec813b7cd {
+                #map_d63dc3fcc91fc3b814bc9b368d2f9033 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2736,14 +2736,14 @@ Wall time: 1min 22s</code></pre>
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_b18e4e421e4320d93377eb2ec813b7cd&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d63dc3fcc91fc3b814bc9b368d2f9033&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_b18e4e421e4320d93377eb2ec813b7cd = L.map(
-                &quot;map_b18e4e421e4320d93377eb2ec813b7cd&quot;,
+            var map_d63dc3fcc91fc3b814bc9b368d2f9033 = L.map(
+                &quot;map_d63dc3fcc91fc3b814bc9b368d2f9033&quot;,
                 {
                     center: [32.8, -96.79],
                     crs: L.CRS.EPSG3857,
@@ -2757,31 +2757,31 @@ Wall time: 1min 22s</code></pre>
 
         
     
-            var tile_layer_80695508056a49c2fd3ce5e53159d901 = L.tileLayer(
+            var tile_layer_2d32a0746069cd0c02e38a4ec068c6f5 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_80695508056a49c2fd3ce5e53159d901.addTo(map_b18e4e421e4320d93377eb2ec813b7cd);
+            tile_layer_2d32a0746069cd0c02e38a4ec068c6f5.addTo(map_d63dc3fcc91fc3b814bc9b368d2f9033);
         
     
-            var tile_layer_f1948109cb609b88d65d39d9a1f05879 = L.tileLayer(
+            var tile_layer_c10a8ef8bf4545e62916981e8994f5d0 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/casagfed-carbonflux-monthgrid-v3/items/casagfed-carbonflux-monthgrid-v3-201710/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rh\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=0.0%2C0.6039900183677673&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_f1948109cb609b88d65d39d9a1f05879.addTo(map_b18e4e421e4320d93377eb2ec813b7cd);
+            tile_layer_c10a8ef8bf4545e62916981e8994f5d0.addTo(map_d63dc3fcc91fc3b814bc9b368d2f9033);
         
     
-            var marker_1c40c6f328d8f4f3102c588cb0f6b17a = L.marker(
+            var marker_d20204226564bb900a9294fe360bd5a0 = L.marker(
                 [40.0, 5.9],
                 {}
-            ).addTo(map_b18e4e421e4320d93377eb2ec813b7cd);
+            ).addTo(map_d63dc3fcc91fc3b814bc9b368d2f9033);
         
     
-            marker_1c40c6f328d8f4f3102c588cb0f6b17a.bindTooltip(
+            marker_d20204226564bb900a9294fe360bd5a0.bindTooltip(
                 `<div>
                      both
                  </div>`,
@@ -2789,58 +2789,58 @@ Wall time: 1min 22s</code></pre>
             );
         
     
-            var layer_control_da633cf7b0f52e140121490d7927a778_layers = {
+            var layer_control_5e01092467e5c62a74e8b9765eb72bb4_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_80695508056a49c2fd3ce5e53159d901,
+                    &quot;openstreetmap&quot; : tile_layer_2d32a0746069cd0c02e38a4ec068c6f5,
                 },
                 overlays :  {
-                    &quot;October 2017 RH Level&quot; : tile_layer_f1948109cb609b88d65d39d9a1f05879,
+                    &quot;October 2017 RH Level&quot; : tile_layer_c10a8ef8bf4545e62916981e8994f5d0,
                 },
             };
-            let layer_control_da633cf7b0f52e140121490d7927a778 = L.control.layers(
-                layer_control_da633cf7b0f52e140121490d7927a778_layers.base_layers,
-                layer_control_da633cf7b0f52e140121490d7927a778_layers.overlays,
+            let layer_control_5e01092467e5c62a74e8b9765eb72bb4 = L.control.layers(
+                layer_control_5e01092467e5c62a74e8b9765eb72bb4_layers.base_layers,
+                layer_control_5e01092467e5c62a74e8b9765eb72bb4_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_b18e4e421e4320d93377eb2ec813b7cd);
+            ).addTo(map_d63dc3fcc91fc3b814bc9b368d2f9033);
 
         
     
-    var color_map_bde09018ab691e4f64c5afe21a73beec = {};
+    var color_map_6353bff4833d2c84182c4e6e7029d6ae = {};
 
     
-    color_map_bde09018ab691e4f64c5afe21a73beec.color = d3.scale.threshold()
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.color = d3.scale.threshold()
               .domain([0.0, 0.0006012024048096192, 0.0012024048096192384, 0.0018036072144288575, 0.002404809619238477, 0.003006012024048096, 0.003607214428857715, 0.004208416833667335, 0.004809619238476954, 0.005410821643286573, 0.006012024048096192, 0.006613226452905812, 0.00721442885771543, 0.00781563126252505, 0.00841683366733467, 0.009018036072144289, 0.009619238476953907, 0.010220440881763526, 0.010821643286573146, 0.011422845691382766, 0.012024048096192385, 0.012625250501002003, 0.013226452905811623, 0.013827655310621242, 0.01442885771543086, 0.01503006012024048, 0.0156312625250501, 0.01623246492985972, 0.01683366733466934, 0.017434869739478956, 0.018036072144288578, 0.018637274549098193, 0.019238476953907815, 0.019839679358717437, 0.02044088176352705, 0.021042084168336674, 0.021643286573146292, 0.02224448897795591, 0.022845691382765532, 0.023446893787575147, 0.02404809619238477, 0.024649298597194388, 0.025250501002004006, 0.025851703406813628, 0.026452905811623247, 0.027054108216432865, 0.027655310621242483, 0.028256513026052102, 0.02885771543086172, 0.029458917835671342, 0.03006012024048096, 0.03066132264529058, 0.0312625250501002, 0.03186372745490982, 0.03246492985971944, 0.033066132264529056, 0.03366733466933868, 0.03426853707414829, 0.03486973947895791, 0.03547094188376753, 0.036072144288577156, 0.036673346693386774, 0.037274549098196386, 0.03787575150300601, 0.03847695390781563, 0.03907815631262525, 0.03967935871743487, 0.040280561122244485, 0.0408817635270541, 0.04148296593186373, 0.04208416833667335, 0.042685370741482966, 0.043286573146292584, 0.0438877755511022, 0.04448897795591182, 0.045090180360721446, 0.045691382765531065, 0.046292585170340676, 0.046893787575150295, 0.04749498997995992, 0.04809619238476954, 0.04869739478957916, 0.049298597194388775, 0.049899799599198394, 0.05050100200400801, 0.05110220440881764, 0.051703406813627256, 0.05230460921843687, 0.05290581162324649, 0.05350701402805611, 0.05410821643286573, 0.054709418837675355, 0.05531062124248497, 0.055911823647294585, 0.056513026052104204, 0.05711422845691383, 0.05771543086172344, 0.05831663326653306, 0.058917835671342685, 0.0595190380761523, 0.06012024048096192, 0.06072144288577154, 0.06132264529058116, 0.06192384769539078, 0.0625250501002004, 0.06312625250501001, 0.06372745490981964, 0.06432865731462926, 0.06492985971943888, 0.06553106212424849, 0.06613226452905811, 0.06673346693386772, 0.06733466933867736, 0.06793587174348698, 0.06853707414829659, 0.06913827655310621, 0.06973947895791582, 0.07034068136272545, 0.07094188376753506, 0.07154308617234469, 0.07214428857715431, 0.07274549098196392, 0.07334669338677355, 0.07394789579158316, 0.07454909819639277, 0.07515030060120241, 0.07575150300601202, 0.07635270541082165, 0.07695390781563126, 0.07755511022044087, 0.0781563126252505, 0.07875751503006012, 0.07935871743486975, 0.07995991983967936, 0.08056112224448897, 0.0811623246492986, 0.0817635270541082, 0.08236472945891783, 0.08296593186372746, 0.08356713426853707, 0.0841683366733467, 0.0847695390781563, 0.08537074148296593, 0.08597194388777554, 0.08657314629258517, 0.0871743486973948, 0.0877755511022044, 0.08837675350701403, 0.08897795591182364, 0.08957915831663325, 0.09018036072144289, 0.0907815631262525, 0.09138276553106213, 0.09198396793587174, 0.09258517034068135, 0.09318637274549098, 0.09378757515030059, 0.09438877755511023, 0.09498997995991984, 0.09559118236472945, 0.09619238476953908, 0.09679358717434869, 0.09739478957915831, 0.09799599198396794, 0.09859719438877755, 0.09919839679358718, 0.09979959919839679, 0.10040080160320641, 0.10100200400801602, 0.10160320641282564, 0.10220440881763528, 0.10280561122244489, 0.10340681362725451, 0.10400801603206412, 0.10460921843687374, 0.10521042084168336, 0.10581162324649299, 0.10641282565130261, 0.10701402805611222, 0.10761523046092183, 0.10821643286573146, 0.10881763527054107, 0.10941883767535071, 0.11002004008016032, 0.11062124248496993, 0.11122244488977956, 0.11182364729458917, 0.1124248496993988, 0.11302605210420841, 0.11362725450901803, 0.11422845691382766, 0.11482965931863727, 0.11543086172344688, 0.1160320641282565, 0.11663326653306612, 0.11723446893787576, 0.11783567134268537, 0.11843687374749498, 0.1190380761523046, 0.11963927855711422, 0.12024048096192384, 0.12084168336673345, 0.12144288577154308, 0.1220440881763527, 0.12264529058116232, 0.12324649298597194, 0.12384769539078155, 0.12444889779559117, 0.1250501002004008, 0.1256513026052104, 0.12625250501002003, 0.12685370741482965, 0.12745490981963928, 0.1280561122244489, 0.12865731462925853, 0.12925851703406813, 0.12985971943887775, 0.13046092184368735, 0.13106212424849698, 0.13166332665330663, 0.13226452905811623, 0.13286573146292585, 0.13346693386773545, 0.13406813627254507, 0.13466933867735473, 0.13527054108216433, 0.13587174348697395, 0.13647294589178355, 0.13707414829659317, 0.1376753507014028, 0.13827655310621242, 0.13887775551102205, 0.13947895791583165, 0.14008016032064127, 0.1406813627254509, 0.14128256513026052, 0.14188376753507012, 0.14248496993987975, 0.14308617234468937, 0.143687374749499, 0.14428857715430862, 0.14488977955911822, 0.14549098196392785, 0.14609218436873747, 0.1466933867735471, 0.14729458917835672, 0.14789579158316632, 0.14849699398797594, 0.14909819639278554, 0.1496993987975952, 0.15030060120240482, 0.15090180360721442, 0.15150300601202404, 0.15210420841683364, 0.1527054108216433, 0.1533066132264529, 0.15390781563126252, 0.15450901803607214, 0.15511022044088174, 0.1557114228456914, 0.156312625250501, 0.15691382765531062, 0.15751503006012024, 0.15811623246492984, 0.1587174348697395, 0.1593186372745491, 0.15991983967935872, 0.16052104208416831, 0.16112224448897794, 0.1617234468937876, 0.1623246492985972, 0.16292585170340682, 0.1635270541082164, 0.16412825651302604, 0.16472945891783566, 0.1653306613226453, 0.16593186372745491, 0.1665330661322645, 0.16713426853707414, 0.16773547094188376, 0.1683366733466934, 0.168937875751503, 0.1695390781563126, 0.17014028056112224, 0.17074148296593186, 0.1713426853707415, 0.17194388777555109, 0.1725450901803607, 0.17314629258517034, 0.17374749498997996, 0.1743486973947896, 0.17494989979959918, 0.1755511022044088, 0.1761523046092184, 0.17675350701402806, 0.17735470941883769, 0.17795591182364728, 0.1785571142284569, 0.1791583166332665, 0.17975951903807616, 0.18036072144288579, 0.18096192384769538, 0.181563126252505, 0.1821643286573146, 0.18276553106212426, 0.18336673346693386, 0.18396793587174348, 0.1845691382765531, 0.1851703406813627, 0.18577154308617236, 0.18637274549098196, 0.18697394789579158, 0.18757515030060118, 0.1881763527054108, 0.18877755511022046, 0.18937875751503006, 0.18997995991983968, 0.19058116232464928, 0.1911823647294589, 0.19178356713426856, 0.19238476953907815, 0.19298597194388778, 0.19358717434869738, 0.194188376753507, 0.19478957915831663, 0.19539078156312625, 0.19599198396793588, 0.19659318637274548, 0.1971943887775551, 0.19779559118236473, 0.19839679358717435, 0.19899799599198395, 0.19959919839679358, 0.2002004008016032, 0.20080160320641283, 0.20140280561122245, 0.20200400801603205, 0.20260521042084167, 0.20320641282565127, 0.20380761523046093, 0.20440881763527055, 0.20501002004008015, 0.20561122244488977, 0.20621242484969937, 0.20681362725450902, 0.20741482965931865, 0.20801603206412825, 0.20861723446893787, 0.20921843687374747, 0.20981963927855712, 0.21042084168336672, 0.21102204408817635, 0.21162324649298597, 0.21222444889779557, 0.21282565130260522, 0.21342685370741482, 0.21402805611222445, 0.21462925851703404, 0.21523046092184367, 0.21583166332665332, 0.21643286573146292, 0.21703406813627255, 0.21763527054108214, 0.21823647294589177, 0.21883767535070142, 0.21943887775551102, 0.22004008016032064, 0.22064128256513024, 0.22124248496993987, 0.2218436873747495, 0.22244488977955912, 0.22304609218436874, 0.22364729458917834, 0.22424849699398797, 0.2248496993987976, 0.22545090180360722, 0.22605210420841682, 0.22665330661322644, 0.22725450901803607, 0.2278557114228457, 0.22845691382765532, 0.22905811623246491, 0.22965931863727454, 0.23026052104208414, 0.23086172344689376, 0.23146292585170342, 0.232064128256513, 0.23266533066132264, 0.23326653306613224, 0.23386773547094186, 0.23446893787575152, 0.2350701402805611, 0.23567134268537074, 0.23627254509018034, 0.23687374749498996, 0.2374749498997996, 0.2380761523046092, 0.23867735470941884, 0.23927855711422844, 0.23987975951903806, 0.24048096192384769, 0.2410821643286573, 0.2416833667334669, 0.24228456913827653, 0.24288577154308616, 0.24348697394789579, 0.2440881763527054, 0.244689378757515, 0.24529058116232463, 0.24589178356713426, 0.24649298597194388, 0.2470941883767535, 0.2476953907815631, 0.24829659318637273, 0.24889779559118233, 0.24949899799599198, 0.2501002004008016, 0.2507014028056112, 0.2513026052104208, 0.25190380761523046, 0.25250501002004005, 0.2531062124248497, 0.2537074148296593, 0.2543086172344689, 0.25490981963927856, 0.25551102204408815, 0.2561122244488978, 0.2567134268537074, 0.25731462925851706, 0.25791583166332666, 0.25851703406813625, 0.25911823647294585, 0.2597194388777555, 0.26032064128256516, 0.2609218436873747, 0.26152304609218435, 0.26212424849699395, 0.2627254509018036, 0.26332665330661326, 0.2639278557114228, 0.26452905811623245, 0.26513026052104205, 0.2657314629258517, 0.26633266533066136, 0.2669338677354709, 0.26753507014028055, 0.26813627254509015, 0.2687374749498998, 0.26933867735470945, 0.269939879759519, 0.27054108216432865, 0.27114228456913825, 0.2717434869739479, 0.27234468937875755, 0.2729458917835671, 0.27354709418837675, 0.27414829659318635, 0.274749498997996, 0.2753507014028056, 0.2759519038076152, 0.27655310621242485, 0.27715430861723445, 0.2777555110220441, 0.2783567134268537, 0.2789579158316633, 0.27955911823647295, 0.28016032064128255, 0.2807615230460922, 0.2813627254509018, 0.2819639278557114, 0.28256513026052105, 0.28316633266533064, 0.28376753507014024, 0.2843687374749499, 0.2849699398797595, 0.28557114228456915, 0.28617234468937874, 0.28677354709418834, 0.287374749498998, 0.2879759519038076, 0.28857715430861725, 0.28917835671342684, 0.28977955911823644, 0.2903807615230461, 0.2909819639278557, 0.29158316633266534, 0.29218436873747494, 0.29278557114228454, 0.2933867735470942, 0.2939879759519038, 0.29458917835671344, 0.295190380761523, 0.29579158316633264, 0.2963927855711423, 0.2969939879759519, 0.29759519038076154, 0.2981963927855711, 0.29879759519038074, 0.2993987975951904, 0.3])
               .range(['#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#f7f4f9ff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#cea4cfff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#e1237dff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff', '#67001fff']);
     
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.x = d3.scale.linear()
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.x = d3.scale.linear()
               .domain([0.0, 0.3])
               .range([0, 450 - 50]);
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.legend = L.control({position: 'topright'});
-    color_map_bde09018ab691e4f64c5afe21a73beec.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
-    color_map_bde09018ab691e4f64c5afe21a73beec.legend.addTo(map_b18e4e421e4320d93377eb2ec813b7cd);
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.legend = L.control({position: 'topright'});
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.legend.addTo(map_d63dc3fcc91fc3b814bc9b368d2f9033);
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.xAxis = d3.svg.axis()
-        .scale(color_map_bde09018ab691e4f64c5afe21a73beec.x)
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.xAxis = d3.svg.axis()
+        .scale(color_map_6353bff4833d2c84182c4e6e7029d6ae.x)
         .orient(&quot;top&quot;)
         .tickSize(1)
         .tickValues([0.0, 0.07, 0.15, 0.22, 0.3]);
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.svg = d3.select(&quot;.legend.leaflet-control&quot;).append(&quot;svg&quot;)
         .attr(&quot;id&quot;, 'legend')
         .attr(&quot;width&quot;, 450)
         .attr(&quot;height&quot;, 40);
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.g = color_map_bde09018ab691e4f64c5afe21a73beec.svg.append(&quot;g&quot;)
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.g = color_map_6353bff4833d2c84182c4e6e7029d6ae.svg.append(&quot;g&quot;)
         .attr(&quot;class&quot;, &quot;key&quot;)
         .attr(&quot;transform&quot;, &quot;translate(25,16)&quot;);
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.g.selectAll(&quot;rect&quot;)
-        .data(color_map_bde09018ab691e4f64c5afe21a73beec.color.range().map(function(d, i) {
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.g.selectAll(&quot;rect&quot;)
+        .data(color_map_6353bff4833d2c84182c4e6e7029d6ae.color.range().map(function(d, i) {
           return {
-            x0: i ? color_map_bde09018ab691e4f64c5afe21a73beec.x(color_map_bde09018ab691e4f64c5afe21a73beec.color.domain()[i - 1]) : color_map_bde09018ab691e4f64c5afe21a73beec.x.range()[0],
-            x1: i < color_map_bde09018ab691e4f64c5afe21a73beec.color.domain().length ? color_map_bde09018ab691e4f64c5afe21a73beec.x(color_map_bde09018ab691e4f64c5afe21a73beec.color.domain()[i]) : color_map_bde09018ab691e4f64c5afe21a73beec.x.range()[1],
+            x0: i ? color_map_6353bff4833d2c84182c4e6e7029d6ae.x(color_map_6353bff4833d2c84182c4e6e7029d6ae.color.domain()[i - 1]) : color_map_6353bff4833d2c84182c4e6e7029d6ae.x.range()[0],
+            x1: i < color_map_6353bff4833d2c84182c4e6e7029d6ae.color.domain().length ? color_map_6353bff4833d2c84182c4e6e7029d6ae.x(color_map_6353bff4833d2c84182c4e6e7029d6ae.color.domain()[i]) : color_map_6353bff4833d2c84182c4e6e7029d6ae.x.range()[1],
             z: d
           };
         }))
@@ -2850,7 +2850,7 @@ Wall time: 1min 22s</code></pre>
         .attr(&quot;width&quot;, function(d) { return d.x1 - d.x0; })
         .style(&quot;fill&quot;, function(d) { return d.z; });
 
-    color_map_bde09018ab691e4f64c5afe21a73beec.g.call(color_map_bde09018ab691e4f64c5afe21a73beec.xAxis).append(&quot;text&quot;)
+    color_map_6353bff4833d2c84182c4e6e7029d6ae.g.call(color_map_6353bff4833d2c84182c4e6e7029d6ae.xAxis).append(&quot;text&quot;)
         .attr(&quot;class&quot;, &quot;caption&quot;)
         .attr(&quot;y&quot;, 21)
         .text(&quot;Rh Values (kg Carbon/m2/month)&quot;);
