@@ -1,5 +1,6 @@
 import xarray
 from datetime import datetime
+import re
 
 def tm54dvar_ch4flux_mask_monthgrid_v5_transformation(file_obj, name, nodata):
     """Tranformation function for the tm5 ch4 influx dataset
