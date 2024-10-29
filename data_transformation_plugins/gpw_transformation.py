@@ -21,7 +21,7 @@ def gpw_transformation(file_obj, name, nodata):
     # # insert date of generated COG into filename
     filename_elements.pop()
     filename_elements.append(filename_elements[-3])
-    xds = xds.where(xds == nodata, -9999)
+    xds = xds.where(xds != nodata, -9999)
     xds.rio.set_spatial_dims("x", "y", inplace=True)
     xds.rio.write_crs("epsg:4326", inplace=True)
     xds.rio.write_nodata(-9999, inplace=True)

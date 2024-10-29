@@ -31,7 +31,7 @@ def ecco_darwin_transformation(file_obj, name, nodata):
             data = xds[var]
 
             data = data.reindex(latitude=list(reversed(data.latitude)))
-            data = data.where(data == nodata, -9999)
+            data = data.where(data != nodata, -9999)
             data.rio.set_spatial_dims("longitude", "latitude", inplace=True)
             data.rio.write_crs("epsg:4326", inplace=True)
             data.rio.write_nodata(-9999, inplace=True)

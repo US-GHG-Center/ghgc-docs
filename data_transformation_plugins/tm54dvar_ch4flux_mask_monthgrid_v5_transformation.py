@@ -27,7 +27,7 @@ def tm54dvar_ch4flux_mask_monthgrid_v5_transformation(file_obj, name, nodata):
         for var in variable:
             data = getattr(xds.isel(months=time_increment), var)
             data = data.isel(lat=slice(None, None, -1))
-            data = data.where(data == nodata, -9999)
+            data = data.where(data != nodata, -9999)
             data.rio.set_spatial_dims("lon", "lat", inplace=True)
             data.rio.write_crs("epsg:4326", inplace=True)
             data.rio.write_nodata(-9999, inplace=True)
