@@ -30,4 +30,5 @@ def gpw_transformation(file_obj, name, nodata):
     # # add extension
     cog_filename = f"{cog_filename}.tif"
     var_data_netcdf[cog_filename] = xds
+    
     return var_data_netcdf
