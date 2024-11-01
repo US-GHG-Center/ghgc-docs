@@ -44,4 +44,4 @@ def upload_files_to_s3(folder_path, bucket_name, s3_folder, exclude_files):
 # Example usage:
 # upload_folder_to_s3("path/to/local/folder", "my-s3-bucket", "my/s3/folder", ["exclude1.ext", "exclude2.ext"])
 if __name__ == "__main__":
-    upload_files_to_s3("data_transformation_plugins", "ghgc-data-store-develop", "data_transformation_plugins", ["__init__.py", "push_to_s3.py", "README.md"])
+    upload_files_to_s3("data_transformation_plugins", "ghgc-data-store-develop", "data_transformation_plugins", ["__init__.py", "push_to_s3.py", "README.md", "sample_transformation.ipynb"])

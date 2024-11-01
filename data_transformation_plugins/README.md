@@ -7,3 +7,9 @@ These functions/files are created by the `developer` to transform a single data 
 ## Naming convention for the transformation files in the folder
 - `name of python file` - `collectionname_transformation.py`
 `collectionname` refers to the STAC collection name of the dataset followed by the word `transformation`. Make sure the `collectionname` within the filename matches with the `collectionname` passed as a `parameter` to the DAG.
+
+## Steps for running the pipeline
+- Test convert a single netCDF file for a new dataset using the `sample_transformation.ipynb` notebook.
+- Create a new `data transformation plugin` python file for the new dataset using the convention mentioned above.
+- `push_to_s3.py` is not yet plugged into the `CI/CD pipeline` so after creating the plugin, run the python file in the terminal. Running the python file will only push the files that are not present on the S3 folder.
+- At this point, the tasks from `ghgc-docs` are completed.
