@@ -2,7 +2,7 @@ import xarray
 from datetime import datetime
 import re
 
-def tm54dvar_ch4flux_mask_monthgrid_v5_transformation(file_obj, name, nodata):
+def tm5_4dvar_update_noaa_transformation(file_obj, name, nodata):
     """Tranformation function for the tm5 ch4 influx dataset
 
     Args:
@@ -25,6 +25,8 @@ def tm54dvar_ch4flux_mask_monthgrid_v5_transformation(file_obj, name, nodata):
         filename_elements = re.split("[_ .]", filename)
         start_time = datetime(int(filename_elements[-2]), time_increment + 1, 1)
         for var in variable:
+            filename = name.split("/")[-1]
+            filename_elements = re.split("[_ .]", filename)
             data = getattr(xds.isel(months=time_increment), var)
             data = data.isel(lat=slice(None, None, -1))
             data = data.where(data != nodata, -9999)
