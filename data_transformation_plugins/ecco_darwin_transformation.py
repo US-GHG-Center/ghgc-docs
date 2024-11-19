@@ -1,5 +1,7 @@
-import xarray
 import re
+
+import xarray
+
 
 def ecco_darwin_transformation(file_obj, name, nodata):
     """Tranformation function for the ecco darwin dataset
@@ -15,9 +17,9 @@ def ecco_darwin_transformation(file_obj, name, nodata):
     var_data_netcdf = {}
     xds = xarray.open_dataset(file_obj)
     xds = xds.rename({"y": "latitude", "x": "longitude"})
-    xds = xds.assign_coords(longitude=((xds.longitude / 1440) * 360) - 180).sortby(
-        "longitude"
-    )
+    xds = xds.assign_coords(
+        longitude=((xds.longitude / 1440) * 360) - 180
+    ).sortby("longitude")
     xds = xds.assign_coords(latitude=((xds.latitude / 721) * 180) - 90).sortby(
         "latitude"
     )
@@ -43,5 +45,5 @@ def ecco_darwin_transformation(file_obj, name, nodata):
         # # add extension
         cog_filename = f"{cog_filename}.tif"
         var_data_netcdf[cog_filename] = data
-        
+
     return var_data_netcdf

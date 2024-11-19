@@ -1,5 +1,7 @@
-import xarray
 import re
+
+import xarray
+
 
 def gosat_ch4_transformation(file_obj, name, nodata):
     """Tranformation function for the ecco darwin dataset
@@ -33,5 +35,5 @@ def gosat_ch4_transformation(file_obj, name, nodata):
         data.rio.set_spatial_dims("lon", "lat")
         data.rio.write_crs("epsg:4326", inplace=True)
         var_data_netcdf[cog_filename] = data
-    
+
     return var_data_netcdf

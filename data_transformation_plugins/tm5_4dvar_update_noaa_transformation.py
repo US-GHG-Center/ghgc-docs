@@ -1,6 +1,8 @@
-import xarray
-from datetime import datetime
 import re
+from datetime import datetime
+
+import xarray
+
 
 def tm5_4dvar_update_noaa_transformation(file_obj, name, nodata):
     """Tranformation function for the tm5 ch4 influx dataset

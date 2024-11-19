@@ -1,5 +1,7 @@
-import xarray
 import re
+
+import xarray
+
 
 def geos_oco2_transformation(file_obj, name, nodata):
     """Tranformation function for the oco2 geos dataset
