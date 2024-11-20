@@ -1,10 +1,15 @@
 import re
+from typing import Dict
 
 import xarray
+from s3fs import S3File
+from xarray import DataArray
 
 
-def gpw_transformation(file_obj, name, nodata):
-    """Tranformation function for the gridded population dataset
+def gpw_transformation(
+    file_obj: S3File, name: str, nodata: int
+) -> Dict[str, DataArray]:
+    """Transformation function for the gridded population dataset
 
     Args:
         file_obj (s3fs object): s3fs sile object for one file of the dataset

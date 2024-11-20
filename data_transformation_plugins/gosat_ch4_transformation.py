@@ -1,10 +1,15 @@
 import re
+from typing import Dict
 
 import xarray
+from s3fs import S3File
+from xarray import DataArray
 
 
-def gosat_ch4_transformation(file_obj, name, nodata):
-    """Tranformation function for the ecco darwin dataset
+def gosat_ch4_transformation(
+    file_obj: S3File, name: str, nodata: int
+) -> Dict[str, DataArray]:
+    """Transformation function for the ecco darwin dataset
 
     Args:
         file_obj (s3fs object): s3fs sile object for one file of the dataset
@@ -29,7 +34,7 @@ def gosat_ch4_transformation(file_obj, name, nodata):
         cog_filename = f"{cog_filename}.tif"
 
         data = data.reindex(lat=list(reversed(data.lat)))
-        data = data.where(data != -9999, -9999)
+        data = data.where(data != nodata, -9999)
         data.rio.write_nodata(-9999, inplace=True)
 
         data.rio.set_spatial_dims("lon", "lat")

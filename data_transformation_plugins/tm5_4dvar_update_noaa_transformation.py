@@ -1,11 +1,16 @@
 import re
 from datetime import datetime
+from typing import Dict
 
 import xarray
+from s3fs import S3File
+from xarray import DataArray
 
 
-def tm5_4dvar_update_noaa_transformation(file_obj, name, nodata):
-    """Tranformation function for the tm5 ch4 influx dataset
+def tm5_4dvar_update_noaa_transformation(
+    file_obj: S3File, name: str, nodata: int
+) -> Dict[str, DataArray]:
+    """Transformation function for the tm5 ch4 influx dataset
 
     Args:
         file_obj (s3fs object): s3fs sile object for one file of the dataset
