@@ -21,7 +21,7 @@ def gpw_transformation(
     """
 
     var_data_netcdf = {}
-    xds = xarray.open_dataarray(file_obj, engine="rasterio")
+    xds = xarray.open_dataarray(file_obj)
 
     filename = name.split("/")[-1]
     filename_elements = re.split("[_ .]", filename)
