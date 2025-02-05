@@ -1067,171 +1067,2827 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"sedac-popdensity-yeargrid5yr-v4.11"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-10" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'requests' library allows a HTTP request possible</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using PySTAC client</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac' library allows a HTTP request possible</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>{'id': 'sedac-popdensity-yeargrid5yr-v4.11',
- 'type': 'Collection',
- 'links': [{'rel': 'items',
-   'type': 'application/geo+json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11/items'},
-  {'rel': 'parent',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/'},
-  {'rel': 'root',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/'},
-  {'rel': 'self',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11'}],
- 'title': 'SEDAC Gridded World Population Density v4.11',
- 'extent': {'spatial': {'bbox': [[-180,
-     -90,
-     179.99999999999983,
-     89.99999999999991]]},
-  'temporal': {'interval': [['2000-01-01 00:00:00+00',
-     '2020-01-01 00:00:00+00']]}},
- 'license': 'CC-BY-4.0',
- 'renders': {'dashboard': {'assets': ['population-density'],
-   'rescale': [[0, 1000]],
-   'colormap_name': 'ylorrd'},
-  'population-density': {'assets': ['population-density'],
-   'rescale': [[0, 1000]],
-   'colormap_name': 'ylorrd'}},
- 'summaries': {'datetime': ['2000-01-01T00:00:00Z',
-   '2005-01-01T00:00:00Z',
-   '2010-01-01T00:00:00Z',
-   '2015-01-01T00:00:00Z',
-   '2020-01-01T00:00:00Z']},
- 'description': 'The Socioeconomic Data and Applications Center (SEDAC) Gridded Population of the World (GPW), version 4, revision 11 dataset contains a Population Density product that provides estimates of population density (number of persons per square kilometer (persons/km²)) at five year intervals for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km at the equator) grid. The dataset can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. The source dataset can be found at https://doi.org/10.7927/H49C6VHW',
- 'item_assets': {'population_density': {'type': 'image/tiff; application=geotiff; profile=cloud-optimized',
-   'roles': ['data', 'layer'],
-   'title': 'Population Density',
-   'description': 'Gridded population density estimates for the years 2000, 2005, 2010, 2015, and 2020 from Gridded Population of the World (GPW) version 4, revision 11.'}},
- 'stac_version': '1.0.0',
- 'stac_extensions': ['https://stac-extensions.github.io/render/v1.0.0/schema.json',
-  'https://stac-extensions.github.io/item-assets/v1.0.0/schema.json'],
- 'dashboard:is_periodic': False,
- 'dashboard:time_density': 'year'}</code></pre>
+
+
+<style>
+.pystac-summary {
+    cursor: pointer;
+    display:list-item;
+}
+.pystac-key {
+    color: rgb(0, 128, 0);
+    font-weight: 700;
+}
+.pystac-key-value {
+    display: inline-block;
+    margin: 0px 0.5em 0px 0px;
+}
+</style>
+<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output">
+    <div class="container" style="line-height: normal;">
+        <ul style="padding: 0px; margin: 0px; list-style: none; display: block;">
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"Collection"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">id</span>
+            <span style="color: rgb(186, 33, 33);">"sedac-popdensity-yeargrid5yr-v4.11"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">stac_version</span>
+            <span style="color: rgb(186, 33, 33);">"1.0.0"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">description</span>
+            <span style="color: rgb(186, 33, 33);">"The Socioeconomic Data and Applications Center (SEDAC) Gridded Population of the World (GPW), version 4, revision 11 dataset contains a Population Density product that provides estimates of population density (number of persons per square kilometer (persons/km²)) at five year intervals for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km at the equator) grid. The dataset can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. The source dataset can be found at https://doi.org/10.7927/H49C6VHW"</span>
+        </li>
+    
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">links</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 4 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">0</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"items"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11/items"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/geo+json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">1</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"parent"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">2</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"root"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"US GHG Center STAC API"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">3</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"self"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">stac_extensions</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"https://stac-extensions.github.io/render/v1.0.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"https://stac-extensions.github.io/item-assets/v1.0.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">renders</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">dashboard</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">assets</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"population-density"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">rescale</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">1000</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">colormap_name</span>
+            <span style="color: rgb(186, 33, 33);">"ylorrd"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">population-density</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">assets</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"population-density"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">rescale</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">1000</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">colormap_name</span>
+            <span style="color: rgb(186, 33, 33);">"ylorrd"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">item_assets</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">population_density</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">roles</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"data"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"layer"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"Population Density"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">description</span>
+            <span style="color: rgb(186, 33, 33);">"Gridded population density estimates for the years 2000, 2005, 2010, 2015, and 2020 from Gridded Population of the World (GPW) version 4, revision 11."</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">dashboard:is_periodic</span>
+            <span style="color: rgb(186, 33, 33);">False</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">dashboard:time_density</span>
+            <span style="color: rgb(186, 33, 33);">"year"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"SEDAC Gridded World Population Density v4.11"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">extent</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">spatial</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">bbox</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 4 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">temporal</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">interval</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"2000-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"2020-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">license</span>
+            <span style="color: rgb(186, 33, 33);">"CC-BY-4.0"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">summaries</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">datetime</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 5 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"2000-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"2005-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">"2010-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">"2015-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">4</span>
+            <span style="color: rgb(186, 33, 33);">"2020-01-01T00:00:00Z"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+        </ul>
+    </div>
+</div>
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under <code>summaries</code> we see that the data is available from January 2000 to December 2020. By looking at the <code>dashboard:time density</code> we observe that the data is available for the years 2000, 2005, 2010, 2015, 2020.</p>
 <div id="cell-12" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that would search for a data collection in the US GHG Center STAC API</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we need to define the function</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The name of the function = "get_item_count"</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The argument that will be passed through the defined function = "collection_id"</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set a counter for the number of items existing in the collection</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the path to retrieve the granules (items) of the collection of interest in the STAC API</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    items_url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items"</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a while loop to make HTTP requests until there are no more URLs associated with the collection in the STAC API</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Retrieve information about the granules by sending a "get" request to the STAC API using the defined collection path</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(items_url)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If the items do not exist, print an error message and quit the loop</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> response.ok:</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"error getting items"</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            exit()</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Return the results of the HTTP response as JSON</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        stac <span class="op">=</span> response.json()</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Increase the "count" by the number of items (granules) returned in the response</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="bu">int</span>(stac[<span class="st">"context"</span>].get(<span class="st">"returned"</span>, <span class="dv">0</span>))</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Retrieve information about the next URL associated with the collection in the STAC API (if applicable)</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="bu">next</span> <span class="op">=</span> [link <span class="cf">for</span> link <span class="kw">in</span> stac[<span class="st">"links"</span>] <span class="cf">if</span> link[<span class="st">"rel"</span>] <span class="op">==</span> <span class="st">"next"</span>]</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Exit the loop if there are no other URLs</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="bu">next</span>:</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ensure the information gathered by other STAC API links associated with the collection are added to the original path</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># "href" is the identifier for each of the tiles stored in the STAC API</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        items_url <span class="op">=</span> <span class="bu">next</span>[<span class="dv">0</span>][<span class="st">"href"</span>]</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the information about the total number of granules found associated with the collection</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-13" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the function created above "get_item_count" to the data collection</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the information about the number of granules found in the collection</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Found 5 items</code></pre>
 </div>
 </div>
-<div id="cell-14" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-13" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+
+
+<style>
+.pystac-summary {
+    cursor: pointer;
+    display:list-item;
+}
+.pystac-key {
+    color: rgb(0, 128, 0);
+    font-weight: 700;
+}
+.pystac-key-value {
+    display: inline-block;
+    margin: 0px 0.5em 0px 0px;
+}
+</style>
+<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output">
+    <div class="container" style="line-height: normal;">
+        <ul style="padding: 0px; margin: 0px; list-style: none; display: block;">
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"Feature"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">stac_version</span>
+            <span style="color: rgb(186, 33, 33);">"1.0.0"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">id</span>
+            <span style="color: rgb(186, 33, 33);">"sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">properties</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">end_datetime</span>
+            <span style="color: rgb(186, 33, 33);">"2020-01-01T00:00:00+00:00"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">start_datetime</span>
+            <span style="color: rgb(186, 33, 33);">"2020-01-01T00:00:00+00:00"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">datetime</span>
+            <span style="color: rgb(186, 33, 33);">None</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">geometry</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"Polygon"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">coordinates</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 5 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">1</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">2</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">3</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">4</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">links</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 5 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">0</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"collection"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">1</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"parent"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">2</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"root"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"US GHG Center STAC API"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">3</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"self"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"application/geo+json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">4</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"preview"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020/map?assets=population-density&amp;rescale=0%2C1000&amp;colormap_name=ylorrd"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"text/html"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"Map of Item"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">assets</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">population-density</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"s3://ghgc-data-store/sedac-popdensity-yeargrid5yr-v4.11/gpw_v4_population_density_rev11_2020_30_sec_2020.tif"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"image/tiff; application=geotiff"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"Population Density"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">description</span>
+            <span style="color: rgb(186, 33, 33);">"Gridded population density estimates for the years 2000, 2005, 2010, 2015, and 2020 from Gridded Population of the World (GPW) version 4, revision 11."</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">proj:bbox</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 4 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">proj:epsg</span>
+            <span style="color: rgb(186, 33, 33);">4326</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">proj:wkt2</span>
+            <span style="color: rgb(186, 33, 33);">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">proj:shape</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">21600</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">43200</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">raster:bands</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">0</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">scale</span>
+            <span style="color: rgb(186, 33, 33);">1.0</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">nodata</span>
+            <span style="color: rgb(186, 33, 33);">-9999.0</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">offset</span>
+            <span style="color: rgb(186, 33, 33);">0.0</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">sampling</span>
+            <span style="color: rgb(186, 33, 33);">"area"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">data_type</span>
+            <span style="color: rgb(186, 33, 33);">"float32"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">histogram</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">max</span>
+            <span style="color: rgb(186, 33, 33);">30795.859375</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">min</span>
+            <span style="color: rgb(186, 33, 33);">-1505.7174072265625</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">count</span>
+            <span style="color: rgb(186, 33, 33);">11</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">buckets</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 10 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">129008</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">362</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">52</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">22</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">4</span>
+            <span style="color: rgb(186, 33, 33);">7</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">5</span>
+            <span style="color: rgb(186, 33, 33);">2</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">6</span>
+            <span style="color: rgb(186, 33, 33);">2</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">7</span>
+            <span style="color: rgb(186, 33, 33);">0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">8</span>
+            <span style="color: rgb(186, 33, 33);">1</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">9</span>
+            <span style="color: rgb(186, 33, 33);">1</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">statistics</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">mean</span>
+            <span style="color: rgb(186, 33, 33);">55.30964721876762</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">stddev</span>
+            <span style="color: rgb(186, 33, 33);">319.5376065398882</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">maximum</span>
+            <span style="color: rgb(186, 33, 33);">30795.859375</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">minimum</span>
+            <span style="color: rgb(186, 33, 33);">-1505.7174072265625</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">valid_percent</span>
+            <span style="color: rgb(186, 33, 33);">24.69196319580078</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">proj:geometry</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"Polygon"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">coordinates</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 5 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">0</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">1</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">2</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">3</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">4</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">proj:projjson</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">id</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">code</span>
+            <span style="color: rgb(186, 33, 33);">4326</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">authority</span>
+            <span style="color: rgb(186, 33, 33);">"EPSG"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">name</span>
+            <span style="color: rgb(186, 33, 33);">"WGS 84"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"GeographicCRS"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">datum</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">name</span>
+            <span style="color: rgb(186, 33, 33);">"World Geodetic System 1984"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"GeodeticReferenceFrame"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">ellipsoid</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">name</span>
+            <span style="color: rgb(186, 33, 33);">"WGS 84"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">semi_major_axis</span>
+            <span style="color: rgb(186, 33, 33);">6378137</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">inverse_flattening</span>
+            <span style="color: rgb(186, 33, 33);">298.257223563</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">$schema</span>
+            <span style="color: rgb(186, 33, 33);">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">coordinate_system</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">axis</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">0</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">name</span>
+            <span style="color: rgb(186, 33, 33);">"Geodetic latitude"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">unit</span>
+            <span style="color: rgb(186, 33, 33);">"degree"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">direction</span>
+            <span style="color: rgb(186, 33, 33);">"north"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">abbreviation</span>
+            <span style="color: rgb(186, 33, 33);">"Lat"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">1</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">name</span>
+            <span style="color: rgb(186, 33, 33);">"Geodetic longitude"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">unit</span>
+            <span style="color: rgb(186, 33, 33);">"degree"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">direction</span>
+            <span style="color: rgb(186, 33, 33);">"east"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">abbreviation</span>
+            <span style="color: rgb(186, 33, 33);">"Lon"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">subtype</span>
+            <span style="color: rgb(186, 33, 33);">"ellipsoidal"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">proj:transform</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 9 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">0.00833333333333333</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">0.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">0.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">4</span>
+            <span style="color: rgb(186, 33, 33);">-0.00833333333333333</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">5</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">6</span>
+            <span style="color: rgb(186, 33, 33);">0.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">7</span>
+            <span style="color: rgb(186, 33, 33);">0.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">8</span>
+            <span style="color: rgb(186, 33, 33);">1.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">roles</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"data"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"layer"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-key">rendered_preview</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">href</span>
+            <span style="color: rgb(186, 33, 33);">"https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020/preview.png?assets=population-density&amp;rescale=0%2C1000&amp;colormap_name=ylorrd"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">type</span>
+            <span style="color: rgb(186, 33, 33);">"image/png"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">title</span>
+            <span style="color: rgb(186, 33, 33);">"Rendered preview"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">rel</span>
+            <span style="color: rgb(186, 33, 33);">"preview"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">roles</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 1 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"overview"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">bbox</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 4 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">2</span>
+            <span style="color: rgb(186, 33, 33);">179.99999999999983</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">3</span>
+            <span style="color: rgb(186, 33, 33);">89.99999999999991</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary">
+            <span class="pystac-key">stac_extensions</span>
+            <span style="padding-left: 0.5em; color: rgb(64, 128, 128); font-style: italic;">[] 2 items</span>
+        </summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">0</span>
+            <span style="color: rgb(186, 33, 33);">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">1</span>
+            <span style="color: rgb(186, 33, 33);">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li style="overflow-wrap: break-word; padding-left: 2.125em; text-indent: -0.5em;">
+            <span class="pystac-key pystac-key-value">collection</span>
+            <span style="color: rgb(186, 33, 33);">"sedac-popdensity-yeargrid5yr-v4.11"</span>
+        </li>
+    
+                
+            
+        </ul>
+    </div>
+</div>
+</div>
 </div>
 </section>
 <section id="visual-comparison-across-time-periods" class="level2">
 <h2 class="anchored" data-anchor-id="visual-comparison-across-time-periods">Visual Comparison Across Time Periods</h2>
-<p>We will explore changes in population density in urban regions. In this notebook, we’ll explore the changes in population density over time. We’ll then visualize the outputs on a map using <code>folium</code>.</p>
-<div id="cell-16" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we create a dictionary where the start datetime values for each granule is queried more explicitly by year and month (e.g., 2020-02)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, we need to specify the asset name for this collection</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The asset name is referring to the raster band containing the pixel values for the parameter of interest</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For the case of the SEDAC Gridded World Population Density collection, the parameter of interest is “population-density”</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"population-density"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Below, we are entering the minimum and maximum values to provide our upper and lower bounds in the <code>rescale_values</code>.</p>
-<div id="cell-18" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You will explore changes in population density in urban regions. In this notebook, we’ll explore the changes in population density over time.You will visualize the outputs on a map using <code>folium</code>.</p>
+<div id="cell-15" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we create a dictionary where the start datetime values for each granule is queried more explicitly by year and month (e.g., 2020-02)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, we need to specify the asset name for this collection</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The asset name is referring to the raster band containing the pixel values for the parameter of interest</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># For the case of the SEDAC Gridded World Population Density collection, the parameter of interest is “population-density”</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"population-density"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we will pass the item id, collection name, asset name, and the <code>rescaling factor</code> to the <code>Raster API</code> endpoint. We will do this twice, once for January 2000 and again for January 2020, so that we can visualize each event independently.</p>
-<div id="cell-20" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color map for displaying the first observation (event)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"rainbow"</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>first_date <span class="op">=</span> <span class="st">'2020-01'</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>second_date <span class="op">=</span> <span class="st">'2000-01'</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the 2020 tile</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>january_2020_tile <span class="op">=</span> requests.get(</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, the item number in the list, and its ID</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>items[first_date][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>items[first_date][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the asset name</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the color formula and colormap for custom visualization</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the minimum and maximum values for rescaling</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Return the response in JSON format </span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>january_2020_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="cell-17" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color map for displaying the first observation (event)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"rainbow"</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>first_date <span class="op">=</span> items[<span class="st">"2020-01"</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> first_date.collection_id</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> first_date.<span class="bu">id</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> first_date.assets[asset_name]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"min"</span>),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'max': 30795.859375, 'min': -1505.7174072265625}</code></pre>
+</div>
+</div>
+<div id="cell-18" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>month1_tile <span class="op">=</span> requests.get(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>month1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -1242,31 +3898,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-8.526512829121202e-14, -4.263256414560601e-14, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the 2000 tile</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>january_2000_tile <span class="op">=</span> requests.get(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the collection name, the item number in the list, and its ID</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>items[second_date][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>items[second_date][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the asset name</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the color formula and colormap for custom visualization</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pass the minimum and maximum values for rescaling</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Return the response in JSON format  </span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>january_2000_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="cell-19" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for date mentioned below</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>second_date <span class="op">=</span> items[<span class="st">"2000-01"</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> second_date.collection_id</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> second_date.<span class="bu">id</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> second_date.assets[asset_name]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"min"</span>),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>month2_tile <span class="op">=</span> requests.get(</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>month2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'max': 20757.5234375, 'min': -800.1041259765625}</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density&amp;color_formula=gamma+r+1.05&amp;colormap_name=rainbow&amp;rescale=-1505.7174072265625%2C30795.859375'],
+ 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density&amp;color_formula=gamma+r+1.05&amp;colormap_name=rainbow&amp;rescale=-800.1041259765625%2C20757.5234375'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.0, 179.99999999999983, 89.99999999999991],
@@ -1276,14 +3941,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="map-out-selected-tiles" class="level2">
 <h2 class="anchored" data-anchor-id="map-out-selected-tiles">Map Out Selected Tiles</h2>
-<div id="cell-23" class="cell" data-execution_count="19">
+<div id="cell-21" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for population density Layer</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">9</span>) <span class="co">#Los Angeles</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer (January 2020)</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>map_layer_2020 <span class="op">=</span> TileLayer(</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>january_2020_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -1293,7 +3958,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer (January 2000)</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>map_layer_2000 <span class="op">=</span> TileLayer(</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>january_2000_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -1303,7 +3968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -1331,7 +3996,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_1cbd4156314064072e725b000da099b5 {
+                #map_d88c2b32deb8e6b7b229fc0f51260268 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1345,7 +4010,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_3b12d8d88972e56836291a160653f370 {
+                #map_47925b66cd71683b4d54fcf16a2f7d15 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -1360,17 +4025,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_1cbd4156314064072e725b000da099b5&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d88c2b32deb8e6b7b229fc0f51260268&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_3b12d8d88972e56836291a160653f370&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_47925b66cd71683b4d54fcf16a2f7d15&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_1cbd4156314064072e725b000da099b5 = L.map(
-                &quot;map_1cbd4156314064072e725b000da099b5&quot;,
+            var map_d88c2b32deb8e6b7b229fc0f51260268 = L.map(
+                &quot;map_d88c2b32deb8e6b7b229fc0f51260268&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1384,26 +4049,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_0405a91277b77c8a7e399c59d65c7a58 = L.tileLayer(
+            var tile_layer_c7dd9045a094bebc5458b5aa2e95a778 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_0405a91277b77c8a7e399c59d65c7a58.addTo(map_1cbd4156314064072e725b000da099b5);
+            tile_layer_c7dd9045a094bebc5458b5aa2e95a778.addTo(map_d88c2b32deb8e6b7b229fc0f51260268);
         
     
-            var tile_layer_b7b23dfb88d60d5a26d7151547e7d3a9 = L.tileLayer(
+            var tile_layer_28926348ef795300de9c74cd3eb18070 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=-1505.7174072265625%2C30795.859375&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_b7b23dfb88d60d5a26d7151547e7d3a9.addTo(map_1cbd4156314064072e725b000da099b5);
+            tile_layer_28926348ef795300de9c74cd3eb18070.addTo(map_d88c2b32deb8e6b7b229fc0f51260268);
         
     
-            var map_3b12d8d88972e56836291a160653f370 = L.map(
-                &quot;map_3b12d8d88972e56836291a160653f370&quot;,
+            var map_47925b66cd71683b4d54fcf16a2f7d15 = L.map(
+                &quot;map_47925b66cd71683b4d54fcf16a2f7d15&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
@@ -1417,26 +4082,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_e4f2d46d46e61e82267bd2638125f1e7 = L.tileLayer(
+            var tile_layer_e588db17abcd97b8fb2326ad81033450 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_e4f2d46d46e61e82267bd2638125f1e7.addTo(map_3b12d8d88972e56836291a160653f370);
+            tile_layer_e588db17abcd97b8fb2326ad81033450.addTo(map_47925b66cd71683b4d54fcf16a2f7d15);
         
     
-            var tile_layer_5f8191ebc9dbb2a02697bd126115c5f6 = L.tileLayer(
-                &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=-1505.7174072265625%2C30795.859375&quot;,
+            var tile_layer_66f29e3edd7ef1f46f05413e67aea22a = L.tileLayer(
+                &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=-800.1041259765625%2C20757.5234375&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_5f8191ebc9dbb2a02697bd126115c5f6.addTo(map_3b12d8d88972e56836291a160653f370);
+            tile_layer_66f29e3edd7ef1f46f05413e67aea22a.addTo(map_47925b66cd71683b4d54fcf16a2f7d15);
         
     
-            map_1cbd4156314064072e725b000da099b5.sync(map_3b12d8d88972e56836291a160653f370);
-            map_3b12d8d88972e56836291a160653f370.sync(map_1cbd4156314064072e725b000da099b5);
+            map_d88c2b32deb8e6b7b229fc0f51260268.sync(map_47925b66cd71683b4d54fcf16a2f7d15);
+            map_47925b66cd71683b4d54fcf16a2f7d15.sync(map_d88c2b32deb8e6b7b229fc0f51260268);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -1447,7 +4112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculating-zonal-statistics" class="level1">
 <h1>Calculating Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas (USA).</p>
-<div id="cell-25" class="cell" data-execution_count="23">
+<div id="cell-23" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># San Francisco, CA USA</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a polygon for the area of interest (aoi)</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>sanfrancisco_aoi <span class="op">=</span> {</span>
@@ -1467,141 +4132,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the generated polygon</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll plug in the coordinates for a location</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Central to the study area and a reasonable zoom level</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>aoi_map <span class="op">=</span> Map(</span>
+<div id="cell-24" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available within the collection</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Base map is set to OpenStreetMap</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the spatial properties for the map</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="fl">37.81</span>,<span class="op">-</span><span class="fl">122.52</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the zoom value</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert the polygon to the map</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(sanfrancisco_aoi, name<span class="op">=</span><span class="st">"San Francisco, CA USA"</span>).add_to(aoi_map)</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the map</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
-<html>
-<head>
-    
-    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
-    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
-    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
-    
-            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
-            <style>
-                #map_1c45ce3c0a1cd802110e5e4f825dcc53 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-        
-</head>
-<body>
-    
-    
-            <div class=&quot;folium-map&quot; id=&quot;map_1c45ce3c0a1cd802110e5e4f825dcc53&quot; ></div>
-        
-</body>
-<script>
-    
-    
-            var map_1c45ce3c0a1cd802110e5e4f825dcc53 = L.map(
-                &quot;map_1c45ce3c0a1cd802110e5e4f825dcc53&quot;,
-                {
-                    center: [37.81, -122.52],
-                    crs: L.CRS.EPSG3857,
-                    zoom: 10,
-                    zoomControl: true,
-                    preferCanvas: false,
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_d2d8ecdfacbd72ac283cdeae88d2042f = L.tileLayer(
-                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            );
-        
-    
-            tile_layer_d2d8ecdfacbd72ac283cdeae88d2042f.addTo(map_1c45ce3c0a1cd802110e5e4f825dcc53);
-        
-    
-
-        function geo_json_a45ca6395495c08b8f1e0685a2a0ba8d_onEachFeature(feature, layer) {
-            layer.on({
-            });
-        };
-        var geo_json_a45ca6395495c08b8f1e0685a2a0ba8d = L.geoJson(null, {
-                onEachFeature: geo_json_a45ca6395495c08b8f1e0685a2a0ba8d_onEachFeature,
-            
-        });
-
-        function geo_json_a45ca6395495c08b8f1e0685a2a0ba8d_add (data) {
-            geo_json_a45ca6395495c08b8f1e0685a2a0ba8d
-                .addData(data);
-        }
-            geo_json_a45ca6395495c08b8f1e0685a2a0ba8d_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-122.52709933248232, 37.816224913955665], [-122.52709933248232, 37.69714432421999], [-122.3493837208909, 37.69714432421999], [-122.3493837208909, 37.816224913955665], [-122.52709933248232, 37.816224913955665]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
-
-        
-    
-            geo_json_a45ca6395495c08b8f1e0685a2a0ba8d.addTo(map_1c45ce3c0a1cd802110e5e4f825dcc53);
-        
-</script>
-</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
-</div>
-</div>
-<div id="cell-27" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available within the collection</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Found 5 items</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div id="cell-25" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>{'id': 'sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020',
  'bbox': [-180.0, -90.0, 179.99999999999983, 89.99999999999991],
  'type': 'Feature',
@@ -1697,50 +4243,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now that we created the polygon for the area of interest, we need to develop a function that runs through the data collection and generates the statistics for a specific item (granule) within the boundaries of the AOI polygon.</p>
-<div id="cell-30" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The function takes an item (granule) and a JSON (polygon) as input parameters</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Raster API Endpoint for computing statistics</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/cog/statistics"</span>,</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass the URL to the item, asset name, and raster identifier as parameters</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"url"</span>: item[<span class="st">"assets"</span>][asset_name][<span class="st">"href"</span>]},</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Send the GeoJSON object (polygon) along with the request</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        json<span class="op">=</span>geojson,</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the response in JSON format</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    ).json()</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing the computed statistics along with the item's datetime information.</span></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"start_datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>],</span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-27" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The function takes an item (granule) and a JSON (polygon) as input parameters</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Raster API Endpoint for computing statistics</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/cog/statistics"</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass the URL to the item, asset name, and raster identifier as parameters</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"url"</span>: item[<span class="st">"assets"</span>][asset_name][<span class="st">"href"</span>]},</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Send the GeoJSON object (polygon) along with the request</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        json<span class="op">=</span>geojson,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the response in JSON format</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    ).json()</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing the computed statistics along with the item's datetime information.</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"start_datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>],</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the function above we can generate the statistics for the AOI.</p>
-<div id="cell-32" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the polygon</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, sanfrancisco_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-29" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the polygon</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, sanfrancisco_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 46.8 ms, sys: 7.31 ms, total: 54.1 ms
-Wall time: 4.79 s</code></pre>
+<pre><code>CPU times: user 55.8 ms, sys: 9.81 ms, total: 65.6 ms
+Wall time: 3.65 s</code></pre>
 </div>
 </div>
-<div id="cell-33" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div id="cell-30" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>{'statistics': {'b1': {'min': 0.0,
    'max': 38470.6796875,
    'mean': 5629.80859375,
@@ -1772,29 +4318,29 @@ Wall time: 4.79 s</code></pre>
 </div>
 </div>
 <p>Create a function that goes through every single item in the collection and populates their properties - including the minimum, maximum, and sum of their values - in a table.</p>
-<div id="cell-35" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that converts statistics in JSON format into a pandas DataFrame</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the JSON data</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Replace the naming "statistics.b1" in the columns</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> [col.replace(<span class="st">"statistics.b1."</span>, <span class="st">""</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the datetime format</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"start_datetime"</span>])</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the cleaned format</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div id="cell-32" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that converts statistics in JSON format into a pandas DataFrame</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the JSON data</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Replace the naming "statistics.b1" in the columns</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> [col.replace(<span class="st">"statistics.b1."</span>, <span class="st">""</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the datetime format</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"start_datetime"</span>])</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the cleaned format</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 
 
@@ -1937,55 +4483,55 @@ Wall time: 4.79 s</code></pre>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>We can now explore the SEDAC population density dataset time series available for the Texas, Dallas area of USA. We can plot the dataset using the code below:</p>
-<div id="cell-37" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>], <span class="co"># X-axis: sorted datetime</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>], <span class="co"># Y-axis: maximum pop density</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>, <span class="co"># Line color</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Line width</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Population density over the years"</span>, <span class="co"># Legend label</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Population density"</span>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Population density over San Francisco, CA USA (2000-2020)"</span>)</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">###</span></span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>].iloc[<span class="dv">0</span>],           <span class="co"># X-coordinate of the text</span></span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>].<span class="bu">min</span>(),              <span class="co"># Y-coordinate of the text</span></span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Source: NASA SEDAC Gridded World Population Density"</span>,                  </span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,                             <span class="co"># Font size</span></span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"right"</span>,             <span class="co"># Horizontal alignment</span></span>
-<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"bottom"</span>,              <span class="co"># Vertical alignment</span></span>
-<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
-<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
-<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>], <span class="co"># X-axis: sorted datetime</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>], <span class="co"># Y-axis: maximum pop density</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>, <span class="co"># Line color</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Line width</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Population density over the years"</span>, <span class="co"># Legend label</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Population density"</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Population density over San Francisco, CA USA (2000-2020)"</span>)</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="co">###</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>].iloc[<span class="dv">0</span>],           <span class="co"># X-coordinate of the text</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>].<span class="bu">min</span>(),              <span class="co"># Y-coordinate of the text</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Source: NASA SEDAC Gridded World Population Density"</span>,                  </span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,                             <span class="co"># Font size</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"right"</span>,             <span class="co"># Horizontal alignment</span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"bottom"</span>,              <span class="co"># Vertical alignment</span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sedac-popdensity-yeargrid5yr-v4.11_User_Notebook_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="sedac-popdensity-yeargrid5yr-v4.11_User_Notebook_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
