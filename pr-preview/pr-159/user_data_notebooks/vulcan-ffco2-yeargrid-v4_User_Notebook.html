@@ -297,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Utilizing NASA’s EMIT Instrument to Monitor Methane Plumes from Point Source Emitters</span></a>
+ <span class="menu-text">EMIT Methane Point Source Plume Complexes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -930,17 +930,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#run-this-notebook" id="toc-run-this-notebook" class="nav-link active" data-scroll-target="#run-this-notebook">Run this notebook</a></li>
+  <li><a href="#access-this-notebook" id="toc-access-this-notebook" class="nav-link active" data-scroll-target="#access-this-notebook">Access this Notebook</a></li>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of Contents</a></li>
+  <li><a href="#data-summary-and-application" id="toc-data-summary-and-application" class="nav-link" data-scroll-target="#data-summary-and-application">Data Summary and Application</a></li>
   <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
   <ul class="collapse">
-  <li><a href="#querying-the-stac-api" id="toc-querying-the-stac-api" class="nav-link" data-scroll-target="#querying-the-stac-api">Querying the STAC API</a></li>
-  <li><a href="#visualizing-total-fossil-fuel-co₂-emissions" id="toc-visualizing-total-fossil-fuel-co₂-emissions" class="nav-link" data-scroll-target="#visualizing-total-fossil-fuel-co₂-emissions">Visualizing Total Fossil Fuel CO₂ Emissions</a></li>
+  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
+  <li><a href="#visual-comparison-across-time-periods" id="toc-visual-comparison-across-time-periods" class="nav-link" data-scroll-target="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
+  <li><a href="#map-out-selected-tiles" id="toc-map-out-selected-tiles" class="nav-link" data-scroll-target="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
   </ul></li>
   <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a>
   <ul class="collapse">
-  <li><a href="#visualizing-the-data-as-a-time-series" id="toc-visualizing-the-data-as-a-time-series" class="nav-link" data-scroll-target="#visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</a></li>
+  <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time-Series Analysis</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
   </ul>
@@ -985,10 +988,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="run-this-notebook" class="level2">
-<h2 class="anchored" data-anchor-id="run-this-notebook">Run this notebook</h2>
-<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below.</p>
-<p><a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fvulcan-ffco2-yeargrid-v4_User_Notebook_User_Notebook.ipynb&amp;branch=main">Launch in the US GHG Center JupyterHub (requires access)</a></p>
+<section id="access-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
+<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
+<p>Access the <a href="https://us-ghg-center.github.io/ghgc-docs/user_data_notebooks/vulcan-ffco2-yeargrid-v4_User_Notebook_User_Notebook.html"><strong>Vulcan Fossil Fuel CO₂ Emissions</strong></a> notebook in the US GHG Center JupyterHub.</p>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#data-summary-and-application">Data Summary and Application</a></li>
+<li><a href="#approach">Approach</a></li>
+<li><a href="#about-the-data">About the Data</a></li>
+<li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
+<li><a href="#query-the-stac-api">Query the STAC API</a></li>
+<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
+<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
+<li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
+<li><a href="#time-series-analysis">Time-Series Analysis</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</section>
+<section id="data-summary-and-application" class="level2">
+<h2 class="anchored" data-anchor-id="data-summary-and-application">Data Summary and Application</h2>
+<ul>
+<li><strong>Spatial coverage</strong>: Contiguous United States</li>
+<li><strong>Spatial resolution</strong>: 1 km x 1 km</li>
+<li><strong>Temporal extent</strong>: 2010 - 2021</li>
+<li><strong>Temporal resolution</strong>: Annual</li>
+<li><strong>Unit</strong>: Metric tons of carbon dioxide per 1 km x 1 km grid cell per year</li>
+<li><strong>Utility</strong>: Climate Research</li>
+</ul>
+<p>For more, visit the <a href="https://earth.gov/ghgcenter/data-catalog/vulcan-ffco2-yeargrid-v4">Vulcan Fossil Fuel CO₂ Emissions</a> data overview page.</p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
@@ -1018,8 +1048,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="querying-the-stac-api" class="level2">
-<h2 class="anchored" data-anchor-id="querying-the-stac-api">Querying the STAC API</h2>
+<section id="query-the-stac-api" class="level2">
+<h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Spatio Temporal Asset Catalog (STAC) Application Programming Interface (API) where the granules for this collection are stored.</p>
 <div id="a7602b2d-2650-42cb-9ae3-09eb3fe7891b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
@@ -1879,6 +1909,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   'https://stac-extensions.github.io/projection/v1.1.0/schema.json']}</code></pre>
 </div>
 </div>
+</section>
+<section id="visual-comparison-across-time-periods" class="level2">
+<h2 class="anchored" data-anchor-id="visual-comparison-across-time-periods">Visual Comparison Across Time Periods</h2>
 <div id="01619ee2-728c-4abc-9edf-a2c85d87128d" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">4</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items_vulcan} </span>
@@ -1940,8 +1973,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="visualizing-total-fossil-fuel-co₂-emissions" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-total-fossil-fuel-co₂-emissions">Visualizing Total Fossil Fuel CO₂ Emissions</h2>
+<section id="map-out-selected-tiles" class="level2">
+<h2 class="anchored" data-anchor-id="map-out-selected-tiles">Map Out Selected Tiles</h2>
 <div id="6cf3c0f1-8d39-4cdd-96c7-96e6229c1584" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2131,883 +2164,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="65d66484" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new map to display the generated polygon</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll plug in the coordinates for a location</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Central to the study area and a reasonable zoom level</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>aoi_map <span class="op">=</span> Map(</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Base map is set to OpenStreetMap</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">"OpenStreetMap"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the spatial properties for the map</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>[</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="fl">37.81</span>,<span class="op">-</span><span class="fl">122.52</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the zoom value</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert the polygon to the map</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(sanfrancisco_aoi, name<span class="op">=</span><span class="st">"San Franciso, USA"</span>).add_to(aoi_map)</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the map</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>aoi_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
-<html>
-<head>
-    
-    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
-    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
-    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
-    
-            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
-            <style>
-                #map_1f812dc79aafab9f75d2426f1aab1c41 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-        
-</head>
-<body>
-    
-    
-            <div class=&quot;folium-map&quot; id=&quot;map_1f812dc79aafab9f75d2426f1aab1c41&quot; ></div>
-        
-</body>
-<script>
-    
-    
-            var map_1f812dc79aafab9f75d2426f1aab1c41 = L.map(
-                &quot;map_1f812dc79aafab9f75d2426f1aab1c41&quot;,
-                {
-                    center: [37.81, -122.52],
-                    crs: L.CRS.EPSG3857,
-                    zoom: 10,
-                    zoomControl: true,
-                    preferCanvas: false,
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_d06728416bc21e1ccfbd500edb9cf456 = L.tileLayer(
-                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            );
-        
-    
-            tile_layer_d06728416bc21e1ccfbd500edb9cf456.addTo(map_1f812dc79aafab9f75d2426f1aab1c41);
-        
-    
-
-        function geo_json_7fd1ab67803e332c43cab843cf02798e_onEachFeature(feature, layer) {
-            layer.on({
-            });
-        };
-        var geo_json_7fd1ab67803e332c43cab843cf02798e = L.geoJson(null, {
-                onEachFeature: geo_json_7fd1ab67803e332c43cab843cf02798e_onEachFeature,
-            
-        });
-
-        function geo_json_7fd1ab67803e332c43cab843cf02798e_add (data) {
-            geo_json_7fd1ab67803e332c43cab843cf02798e
-                .addData(data);
-        }
-            geo_json_7fd1ab67803e332c43cab843cf02798e_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-122.52709933248232, 37.816224913955665], [-122.52709933248232, 37.69714432421999], [-122.3493837208909, 37.69714432421999], [-122.3493837208909, 37.816224913955665], [-122.52709933248232, 37.816224913955665]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
-
-        
-    
-            geo_json_7fd1ab67803e332c43cab843cf02798e.addTo(map_1f812dc79aafab9f75d2426f1aab1c41);
-        
-</script>
-</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
-</div>
-</div>
-<div id="7b0cf1d8" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available within the collection</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Found 12 items</code></pre>
-</div>
-</div>
-<div id="960fc2da" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>{'id': 'vulcan-ffco2-yeargrid-v4-2021',
- 'bbox': [-128.22654896758996,
-  22.857766529124284,
-  -65.30917199495289,
-  51.44087947724907],
- 'type': 'Feature',
- 'links': [{'rel': 'collection',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/collections/vulcan-ffco2-yeargrid-v4'},
-  {'rel': 'parent',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/collections/vulcan-ffco2-yeargrid-v4'},
-  {'rel': 'root',
-   'type': 'application/json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/'},
-  {'rel': 'self',
-   'type': 'application/geo+json',
-   'href': 'https://earth.gov/ghgcenter/api/stac/collections/vulcan-ffco2-yeargrid-v4/items/vulcan-ffco2-yeargrid-v4-2021'},
-  {'title': 'Map of Item',
-   'href': 'https://earth.gov/ghgcenter/api/raster/collections/vulcan-ffco2-yeargrid-v4/items/vulcan-ffco2-yeargrid-v4-2021/map?assets=total-co2&amp;rescale=0%2C500&amp;colormap_name=spectral_r',
-   'rel': 'preview',
-   'type': 'text/html'}],
- 'assets': {'air-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/AIR_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Airport CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from taxi, take-off, and landing up to 3000 ft.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 318726.1875,
-      'min': 0.11889950931072235,
-      'count': 11,
-      'buckets': [14659, 40, 6, 2, 4, 0, 2, 0, 0, 1]},
-     'statistics': {'mean': 1190.7966562457523,
-      'stddev': 5906.230747537605,
-      'maximum': 318726.1875,
-      'minimum': 0.11889950931072235,
-      'valid_percent': 3.083506571888412}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'cmt-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/CMT_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Cement CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from cement production.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 538037.5,
-      'min': 14599.9677734375,
-      'count': 11,
-      'buckets': [10, 15, 19, 7, 9, 4, 4, 6, 0, 1]},
-     'statistics': {'mean': 181749.84,
-      'stddev': 114981.70564725697,
-      'maximum': 538037.5,
-      'minimum': 14599.9677734375,
-      'valid_percent': 0.015717207618025753}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'cmv-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/CMV_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Commercial Marine Vessels CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from commercial marine vessels while maneuvering, hoteling, cruising and traveling within reduced speed zones at ports and shipping lanes. Includes only activity within 12 nautical miles (~22km) from the U.S. shoreline.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 15446.8408203125,
-      'min': 8.111214810924139e-07,
-      'count': 11,
-      'buckets': [17370, 16, 5, 1, 2, 0, 1, 0, 0, 1]},
-     'statistics': {'mean': 32.60311997010807,
-      'stddev': 210.77205857399764,
-      'maximum': 15446.8408203125,
-      'minimum': 8.111214810924139e-07,
-      'valid_percent': 3.6455539163090127}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'com-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/COM_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Commercial CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from Commercial buildings.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 41811.0625,
-      'min': 6.441725486361349e-10,
-      'count': 11,
-      'buckets': [178117, 7, 1, 1, 0, 0, 1, 0, 0, 2]},
-     'statistics': {'mean': 10.866918777964285,
-      'stddev': 175.08472372009805,
-      'maximum': 41811.0625,
-      'minimum': 6.441725486361349e-10,
-      'valid_percent': 37.32920634388412}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'elc-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/ELC_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Powerplants CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from power plants.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 5685384.0,
-      'min': 1.3666567610925995e-05,
-      'count': 11,
-      'buckets': [3813, 90, 29, 26, 8, 8, 6, 2, 0, 1]},
-     'statistics': {'mean': 94311.64850615115,
-      'stddev': 355198.87374596845,
-      'maximum': 5685384.0,
-      'minimum': 1.3666567610925995e-05,
-      'valid_percent': 0.8346885059012876}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'ind-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/IND_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Industrial CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from Industrial buildings.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 3248811.0,
-      'min': 7.467048507292517e-11,
-      'count': 11,
-      'buckets': [110441, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
-     'statistics': {'mean': 120.20799152496333,
-      'stddev': 9843.60430747931,
-      'maximum': 3248811.0,
-      'minimum': 7.467048507292517e-11,
-      'valid_percent': 23.14453125}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'nrd-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/NRD_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Nonroad CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from off-road engines, equipment and vehicles including waterborne pleasure craft.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 2277.109619140625,
-      'min': 1.7788032380394725e-07,
-      'count': 11,
-      'buckets': [227435, 26, 5, 1, 0, 1, 1, 0, 0, 2]},
-     'statistics': {'mean': 6.1029197128425166,
-      'stddev': 14.197089191407585,
-      'maximum': 2277.109619140625,
-      'minimum': 1.7788032380394725e-07,
-      'valid_percent': 47.66945245439914}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'onr-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/ONR_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Onroad CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from mobile vehicles on roads.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 16120.27734375,
-      'min': 0.0011055185459554195,
-      'count': 11,
-      'buckets': [195583, 803, 88, 22, 3, 2, 0, 0, 0, 1]},
-     'statistics': {'mean': 64.57338856601969,
-      'stddev': 230.03362908149538,
-      'maximum': 16120.27734375,
-      'minimum': 0.0011055185459554195,
-      'valid_percent': 41.179503084763944}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'res-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/RES_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Residential CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions from Residential buildings.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 10387.0556640625,
-      'min': 9.804268508162295e-09,
-      'count': 11,
-      'buckets': [204532, 112, 28, 7, 4, 3, 3, 2, 1, 1]},
-     'statistics': {'mean': 12.793920651903093,
-      'stddev': 91.07716732362586,
-      'maximum': 10387.0556640625,
-      'minimum': 9.804268508162295e-09,
-      'valid_percent': 42.896031719420606}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'rrd-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/RRD_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total Railroad CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual ffCO₂ emissions coming from railroads.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 4935.501953125,
-      'min': 7.793863915139809e-05,
-      'count': 11,
-      'buckets': [43982, 167, 38, 9, 7, 5, 3, 2, 1, 2]},
-     'statistics': {'mean': 24.959290754478015,
-      'stddev': 94.2219837346061,
-      'maximum': 4935.501953125,
-      'minimum': 7.793863915139809e-05,
-      'valid_percent': 9.266027360515022}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'total-co2': {'href': 's3://ghgc-data-store/vulcan-ffco2-yeargrid-v4/TOT_CO2_USA_mosaic_grid_1km_mn_2021.tif',
-   'type': 'image/tiff; application=geotiff',
-   'roles': ['data', 'layer'],
-   'title': 'Total of all sectors CO₂ Emissions',
-   'proj:bbox': [-128.22654896758996,
-    22.857766529124284,
-    -65.30917199495289,
-    51.44087947724907],
-   'proj:epsg': 4326,
-   'proj:wkt2': 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]',
-   'proj:shape': [2649, 5831],
-   'description': 'Estimated total annual CO₂ emissions from fossil fuel combustion (ffCO₂) across all sectors.',
-   'raster:bands': [{'scale': 1.0,
-     'nodata': -9999.0,
-     'offset': 0.0,
-     'sampling': 'area',
-     'data_type': 'float32',
-     'histogram': {'max': 272530.15625,
-      'min': 1.7858106104995386e-07,
-      'count': 11,
-      'buckets': [227843, 81, 36, 7, 3, 6, 1, 4, 1, 1]},
-     'statistics': {'mean': 162.91311194255712,
-      'stddev': 2080.549384731812,
-      'maximum': 272530.15625,
-      'minimum': 1.7858106104995386e-07,
-      'valid_percent': 47.7767485917382}}],
-   'proj:geometry': {'type': 'Polygon',
-    'coordinates': [[[-128.22654896758996, 22.857766529124284],
-      [-65.30917199495289, 22.857766529124284],
-      [-65.30917199495289, 51.44087947724907],
-      [-128.22654896758996, 51.44087947724907],
-      [-128.22654896758996, 22.857766529124284]]]},
-   'proj:projjson': {'id': {'code': 4326, 'authority': 'EPSG'},
-    'name': 'WGS 84',
-    'type': 'GeographicCRS',
-    'datum': {'name': 'World Geodetic System 1984',
-     'type': 'GeodeticReferenceFrame',
-     'ellipsoid': {'name': 'WGS 84',
-      'semi_major_axis': 6378137,
-      'inverse_flattening': 298.257223563}},
-    '$schema': 'https://proj.org/schemas/v0.7/projjson.schema.json',
-    'coordinate_system': {'axis': [{'name': 'Geodetic latitude',
-       'unit': 'degree',
-       'direction': 'north',
-       'abbreviation': 'Lat'},
-      {'name': 'Geodetic longitude',
-       'unit': 'degree',
-       'direction': 'east',
-       'abbreviation': 'Lon'}],
-     'subtype': 'ellipsoidal'}},
-   'proj:transform': [0.01079015211329739,
-    0.0,
-    -128.22654896758996,
-    0.0,
-    -0.01079015211329739,
-    51.44087947724907,
-    0.0,
-    0.0,
-    1.0]},
-  'rendered_preview': {'title': 'Rendered preview',
-   'href': 'https://earth.gov/ghgcenter/api/raster/collections/vulcan-ffco2-yeargrid-v4/items/vulcan-ffco2-yeargrid-v4-2021/preview.png?assets=total-co2&amp;rescale=0%2C500&amp;colormap_name=spectral_r',
-   'rel': 'preview',
-   'roles': ['overview'],
-   'type': 'image/png'}},
- 'geometry': {'type': 'Polygon',
-  'coordinates': [[[-128.22654896758996, 22.857766529124284],
-    [-65.30917199495289, 22.857766529124284],
-    [-65.30917199495289, 51.44087947724907],
-    [-128.22654896758996, 51.44087947724907],
-    [-128.22654896758996, 22.857766529124284]]]},
- 'collection': 'vulcan-ffco2-yeargrid-v4',
- 'properties': {'end_datetime': '2021-12-31T00:00:00+00:00',
-  'start_datetime': '2021-01-01T00:00:00+00:00'},
- 'stac_version': '1.0.0',
- 'stac_extensions': ['https://stac-extensions.github.io/raster/v1.1.0/schema.json',
-  'https://stac-extensions.github.io/projection/v1.1.0/schema.json']}</code></pre>
-</div>
-</div>
 <p>Now that we created the polygon for the area of interest, we need to develop a function that runs through the data collection and generates the statistics for a specific item (granule) within the boundaries of the AOI polygon.</p>
 <div id="8c7dcae7" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The function takes an item (granule) and a JSON (polygon) as input parameters</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Raster API Endpoint for computing statistics</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/cog/statistics"</span>,</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass the URL to the item, asset name, and raster identifier as parameters</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"url"</span>: item[<span class="st">"assets"</span>][asset_name][<span class="st">"href"</span>]},</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Send the GeoJSON object (polygon) along with the request</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        json<span class="op">=</span>geojson,</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the response in JSON format</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    ).json()</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the result</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(result)</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing the computed statistics along with the item's datetime information.</span></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>],</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The function takes an item (granule) and a JSON (polygon) as input parameters</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_stats(item, geojson):</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> requests.post(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Raster API Endpoint for computing statistics</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/cog/statistics"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Pass the URL to the item, asset name, and raster identifier as parameters</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"url"</span>: item[<span class="st">"assets"</span>][asset_name][<span class="st">"href"</span>]},</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Send the GeoJSON object (polygon) along with the request</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        json<span class="op">=</span>geojson,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the response in JSON format</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    ).json()</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the result</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(result)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing the computed statistics along with the item's datetime information.</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>result[<span class="st">"properties"</span>],</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>],</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="d3666ccb" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a for loop that iterates over all the existing items in the collection</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The loop will then retrieve the information for the start datetime of each item in the list</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>])</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Exit the loop after printing the start datetime for the first item in the collection</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a for loop that iterates over all the existing items in the collection</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The loop will then retrieve the information for the start datetime of each item in the list</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>])</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Exit the loop after printing the start datetime for the first item in the collection</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2021-01-01</code></pre>
 </div>
 </div>
 <p>With the function above we can generate the statistics for the AOI.</p>
 <div id="fce6ec4a" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the polygon</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, sanfrancisco_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate statistics using the created function "generate_stats" within the bounding box defined by the polygon</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [generate_stats(item, sanfrancisco_aoi) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-122.52709933248232, 37.816224913955665], [-122.52709933248232, 37.69714432421999], [-122.3493837208909, 37.69714432421999], [-122.3493837208909, 37.816224913955665], [-122.52709933248232, 37.816224913955665]]]}, 'properties': {'statistics': {'b1': {'min': 25.978267669677734, 'max': 18724.814453125, 'mean': 3894.744873046875, 'count': 184.8000030517578, 'sum': 719748.875, 'std': 3835.0934799558668, 'median': 3031.908447265625, 'majority': 495.4798583984375, 'minority': 25.978267669677734, 'unique': 162.0, 'histogram': [[92.0, 36.0, 28.0, 13.0, 15.0, 11.0, 2.0, 4.0, 2.0, 1.0], [25.978267669677734, 1895.86181640625, 3765.745361328125, 5635.62841796875, 7505.51220703125, 9375.396484375, 11245.279296875, 13115.1630859375, 14985.046875, 16854.9296875, 18724.814453125]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 204.0, 'percentile_2': 65.28433990478516, 'percentile_98': 14337.2021484375}}}}
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-122.52709933248232, 37.816224913955665], [-122.52709933248232, 37.69714432421999], [-122.3493837208909, 37.69714432421999], [-122.3493837208909, 37.816224913955665], [-122.52709933248232, 37.816224913955665]]]}, 'properties': {'statistics': {'b1': {'min': 24.12389373779297, 'max': 18437.34375, 'mean': 3825.1865234375, 'count': 184.8000030517578, 'sum': 706894.5, 'std': 3754.7805528419367, 'median': 3005.8427734375, 'majority': 487.8852844238281, 'minority': 24.12389373779297, 'unique': 162.0, 'histogram': [[92.0, 36.0, 28.0, 12.0, 17.0, 10.0, 3.0, 4.0, 1.0, 1.0], [24.12389373779297, 1865.4459228515625, 3706.767822265625, 5548.08984375, 7389.412109375, 9230.734375, 11072.0556640625, 12913.3779296875, 14754.7001953125, 16596.021484375, 18437.34375]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 204.0, 'percentile_2': 61.36553192138672, 'percentile_98': 13841.6083984375}}}}
@@ -3027,8 +2235,8 @@ Wall time: 10.7 s</code></pre>
 </div>
 <p>Create a function that goes through every single item in the collection and populates their properties - including the minimum, maximum, and sum of their values - in a table.</p>
 <div id="ee0e9a7e" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>{'statistics': {'b1': {'min': 25.978267669677734,
    'max': 18724.814453125,
@@ -3061,27 +2269,27 @@ Wall time: 10.7 s</code></pre>
 </div>
 </div>
 <div id="d6b249ee" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that converts statistics in JSON format into a pandas DataFrame</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the JSON data</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Replace the naming "statistics.b1" in the columns</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> [col.replace(<span class="st">"statistics.b1."</span>, <span class="st">""</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the datetime format</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"datetime"</span>])</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the cleaned format</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that converts statistics in JSON format into a pandas DataFrame</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_stats(stats_json) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the JSON data</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.json_normalize(stats_json)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Replace the naming "statistics.b1" in the columns</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> [col.replace(<span class="st">"statistics.b1."</span>, <span class="st">""</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the datetime format</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"datetime"</span>])</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the cleaned format</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 <div>
 
@@ -3222,54 +2430,54 @@ Wall time: 10.7 s</code></pre>
 </div>
 </div>
 </div>
-<section id="visualizing-the-data-as-a-time-series" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-the-data-as-a-time-series">Visualizing the Data as a Time Series</h2>
+<section id="time-series-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>We can now explore the total fossil fuel emission time series (2010 -2021) available for the Dallas, Texas area of the U.S. We can plot the data set using the code below:</p>
 <div id="ec61db4a" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>], <span class="co"># X-axis: sorted datetime</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>], <span class="co"># Y-axis: maximum CO₂</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>, <span class="co"># Line color</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Line width</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"CO₂ emissions"</span>, <span class="co"># Legend label</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"tC/km²/year"</span>)</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation <span class="op">=</span> <span class="dv">90</span>)</span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Total Fossil Fuel CO₂ Emissions for San Francisco, CA (2010-2021)"</span>)</span>
-<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
-<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
-<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>].iloc[<span class="dv">0</span>],           <span class="co"># X-coordinate of the text</span></span>
-<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
-<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
-<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Created by: US GHG Center"</span>,      <span class="co">#example text            </span></span>
-<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,                             <span class="co"># Font size</span></span>
-<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
-<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
-<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
-<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
-<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>], <span class="co"># X-axis: sorted datetime</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>], <span class="co"># Y-axis: maximum CO₂</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>, <span class="co"># Line color</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Line width</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"CO₂ emissions"</span>, <span class="co"># Legend label</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"tC/km²/year"</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation <span class="op">=</span> <span class="dv">90</span>)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Total Fossil Fuel CO₂ Emissions for San Francisco, CA (2010-2021)"</span>)</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>].iloc[<span class="dv">0</span>],           <span class="co"># X-coordinate of the text</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Created by: US GHG Center"</span>,      <span class="co">#example text            </span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,                             <span class="co"># Font size</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="vulcan-ffco2-yeargrid-v4_User_Notebook_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="vulcan-ffco2-yeargrid-v4_User_Notebook_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>

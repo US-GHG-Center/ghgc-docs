@@ -297,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Utilizing NASA’s EMIT Instrument to Monitor Methane Plumes from Point Source Emitters</span></a>
+ <span class="menu-text">EMIT Methane Point Source Plume Complexes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -930,12 +930,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#run-this-notebook" id="toc-run-this-notebook" class="nav-link active" data-scroll-target="#run-this-notebook">Run this notebook</a></li>
+  <li><a href="#access-this-notebook" id="toc-access-this-notebook" class="nav-link active" data-scroll-target="#access-this-notebook">Access this Notebook</a></li>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of Contents</a></li>
+  <li><a href="#data-summary-and-application" id="toc-data-summary-and-application" class="nav-link" data-scroll-target="#data-summary-and-application">Data Summary and Application</a></li>
   <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
   <ul class="collapse">
-  <li><a href="#querying-the-stac-api" id="toc-querying-the-stac-api" class="nav-link" data-scroll-target="#querying-the-stac-api">Querying the STAC API</a></li>
+  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
   <li><a href="#exploring-changes-in-goes-methne-ch4-levels-using-the-raster-api" id="toc-exploring-changes-in-goes-methne-ch4-levels-using-the-raster-api" class="nav-link" data-scroll-target="#exploring-changes-in-goes-methne-ch4-levels-using-the-raster-api">Exploring Changes in GOES Methne (CH4) Levels Using the Raster API</a></li>
   <li><a href="#visualizing-ch₄-emissions" id="toc-visualizing-ch₄-emissions" class="nav-link" data-scroll-target="#visualizing-ch₄-emissions">Visualizing CH₄ Emissions</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -982,10 +984,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="run-this-notebook" class="level2">
-<h2 class="anchored" data-anchor-id="run-this-notebook">Run this notebook</h2>
-<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below.</p>
-<p><a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fgoes-ch4plume-v1_User_Notebook.ipynb&amp;branch=main">Launch in the US GHG Center JupyterHub (requires access)</a></p>
+<section id="access-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
+<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
+<p>Access the <a href="https://us-ghg-center.github.io/ghgc-docs/user_data_notebooks/goes-ch4plume-v1_User_Notebook.html"><strong>Geostationary Satellite Observations of Extreme and Transient Methane Emissions from Oil and Gas Infrastructure</strong></a> notebook in the US GHG Center JupyterHub.</p>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#data-summary-and-application">Data Summary and Application</a></li>
+<li><a href="#approach">Approach</a></li>
+<li><a href="#about-the-data">About the Data</a></li>
+<li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
+<li><a href="#query-the-stac-api">Query the STAC API</a></li>
+<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
+<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
+<li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
+<li><a href="#time-series-analysis">Time-Series Analysis</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</section>
+<section id="data-summary-and-application" class="level2">
+<h2 class="anchored" data-anchor-id="data-summary-and-application">Data Summary and Application</h2>
+<ul>
+<li><strong>Spatial coverage</strong>: North and South America</li>
+<li><strong>Spatial resolution</strong>: 1 km x 1 km (nadir)</li>
+<li><strong>Temporal extent</strong>: April 7, 2019 - July 26, 2023</li>
+<li><strong>Temporal resolution</strong>: 5 minutes</li>
+<li><strong>Unit</strong>: Total column methane enhancement above background, moles of methane per square meter</li>
+<li><strong>Utility</strong>: Climate Research</li>
+</ul>
+<p>For more, visit the <a href="https://earth.gov/ghgcenter/data-catalog/goes-ch4plume-v1">Geostationary Satellite Observations of Extreme and Transient Methane Emissions from Oil and Gas Infrastructure</a> data overview page.</p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
@@ -1004,10 +1033,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Install the Required Libraries</h1>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<section id="querying-the-stac-api" class="level2">
-<h2 class="anchored" data-anchor-id="querying-the-stac-api">Querying the STAC API</h2>
+<section id="query-the-stac-api" class="level2">
+<h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Spatio Temporal Asset Catalog (STAC) Application Programming Interface (API) where the granules for this collection are stored.</p>
-<div id="cell-6" class="cell" data-execution_count="7">
+<div id="cell-8" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -1018,7 +1047,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="8">
+<div id="cell-9" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/raster"</span></span>
@@ -1028,7 +1057,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for gosat budget methane. </span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"goes-ch4plume-v1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="9">
+<div id="cell-10" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the collection from STAC collections using appropriate endpoint.</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">"</span>).json()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1075,7 +1104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from April 7, 2019 . By looking at the <code>dashboard:time density</code>, we observe that the data is available for multiple days.</p>
-<div id="cell-10" class="cell" data-execution_count="10">
+<div id="cell-12" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_item_count(collection_id):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    items_url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items"</span></span>
@@ -1097,7 +1126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="11">
+<div id="cell-13" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>number_of_items <span class="op">=</span> get_item_count(collection_name)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(<span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=</span><span class="sc">{</span>number_of_items<span class="sc">}</span><span class="ss">"</span>).json()[<span class="st">"features"</span>]</span>
@@ -1106,7 +1135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Found 457 items</code></pre>
 </div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="12">
+<div id="cell-14" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -1195,20 +1224,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploring-changes-in-goes-methne-ch4-levels-using-the-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-changes-in-goes-methne-ch4-levels-using-the-raster-api">Exploring Changes in GOES Methne (CH4) Levels Using the Raster API</h2>
 <p>In this notebook, we will explore the impacts of methane emissions and by examining changes over time in urban regions. We will visualize the outputs on a map using <code>folium.</code></p>
-<div id="cell-15" class="cell" data-execution_count="14">
+<div id="cell-17" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicity by year and month (e.g., 2020-02)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {item[<span class="st">"properties"</span>][<span class="st">"datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"rad"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="15">
+<div id="cell-18" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching the min and max values for a specific item</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {<span class="st">"max"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"max"</span>], <span class="st">"min"</span>:items[<span class="bu">list</span>(items.keys())[<span class="dv">0</span>]][<span class="st">"assets"</span>][asset_name][<span class="st">"raster:bands"</span>][<span class="dv">0</span>][<span class="st">"histogram"</span>][<span class="st">"min"</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-17" class="cell">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>items.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we will pass the item id, collection name, and <code>rescaling_factor</code> to the <code>Raster API</code> endpoint.</p>
-<div id="cell-19" class="cell" data-execution_count="16">
+<div id="cell-21" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"plasma"</span> <span class="co"># please select the color ramp from matplotlib library.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>april_2019_tile <span class="op">=</span> requests.get(</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>items[<span class="st">'2019-04-07'</span>][<span class="st">'collection'</span>]<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>items[<span class="st">'2019-04-07'</span>][<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -1234,7 +1263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-ch₄-emissions" class="level2">
 <h2 class="anchored" data-anchor-id="visualizing-ch₄-emissions">Visualizing CH₄ Emissions</h2>
-<div id="cell-21" class="cell" data-execution_count="19">
+<div id="cell-23" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CH₄ Layer</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre of map [latitude,longitude]</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="fl">26.29</span>, <span class="op">-</span><span class="fl">104.53</span>), zoom_start<span class="op">=</span><span class="dv">10</span>)</span>
@@ -1911,8 +1940,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" class="pagination-link" aria-label="Utilizing NASA's EMIT Instrument to Monitor Methane Plumes from Point Source Emitters">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Utilizing NASA’s EMIT Instrument to Monitor Methane Plumes from Point Source Emitters</span>
+      <a href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" class="pagination-link" aria-label="EMIT Methane Point Source Plume Complexes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">EMIT Methane Point Source Plume Complexes</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
