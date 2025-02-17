@@ -32,6 +32,7 @@ def goes_to_wgs(ds, variable_name):
 
 def goes_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.DataArray]:
     """Process a single GOES NetCDF file from S3File object and return transformed DataArray."""
+    var_data_netcdf = {}
     with xr.open_dataset(file_obj, engine="h5netcdf") as ds:
         time_coverage_start = ds.attrs.get("time_coverage_start", None)
         if not time_coverage_start:
