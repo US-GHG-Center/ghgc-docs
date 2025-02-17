@@ -44,7 +44,6 @@ def goes_radF_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.D
         # Create the output filename
         band_name = name.split("_G16")[0][-5:]  # Split before "G16" and take band
         cog_filename = f"G16ABI_{band_name}_{formatted_time}Z.tif"
-        print(filename)
         
         da = goes_to_wgs(ds, variable_name="Rad")
         
