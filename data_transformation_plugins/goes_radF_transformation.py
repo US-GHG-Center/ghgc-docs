@@ -61,7 +61,7 @@ def goes_radF_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.D
         # Format the final timestamp
         iso_timestamp = f"{formatted_date}T{hour:02d}:{minute:02d}:{second:02d}Z"
 
-        cog_filename = f"G16ABI_{band_name}_{formatted_time}Z.tif"
+        cog_filename = f"G16ABI_{band_name}_{iso_timestamp}.tif"
         
         da = goes_to_wgs(ds, variable_name="Rad")
         
