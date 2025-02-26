@@ -69,6 +69,9 @@ def goes_radF_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.D
         da = da.rio.clip(aoi_gdf.geometry, aoi_gdf.crs, drop=True)
         da = da.fillna(nodata)
 
+        da.rio.write_crs("EPSG:4326", inplace=True)
+        da = da.rio.set_nodata(-9999)
+
         var_data_netcdf[cog_filename] = da
         
         return var_data_netcdf
