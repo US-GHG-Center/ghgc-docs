@@ -31,7 +31,7 @@ def goes_to_wgs(ds, variable_name):
     da = ds[variable_name]
     return da.rio.reproject("EPSG:4326", resampling=Resampling.nearest)
 
-def goes_radF_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.DataArray]:
+def goes_radF_C02_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.DataArray]:
     """Process a single GOES NetCDF file from S3File object and return transformed DataArray."""
     var_data_netcdf = {}
     with xr.open_dataset(file_obj, engine="h5netcdf") as ds:
