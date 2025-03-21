@@ -33,10 +33,16 @@ def raster_stats(item, geojson,**kwargs):
     ##print(result)
 
     # Return a dictionary containing the computed statistics along with the item's datetime information.
-    return {
-        **result["properties"],
-        "datetime": item["properties"]["start_datetime"],
-    }
+    try:
+        return {
+            **result["properties"],
+            "datetime": item["properties"]["start_datetime"],
+        }
+    except KeyError as err:
+        return {
+            **result["features"][0]["properties"],
+            'datetime': item["properties"]["start_datetime"],
+        }
 
 def clean_stats(stats_json) -> pd.DataFrame:
     """
