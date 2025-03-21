@@ -70,7 +70,7 @@ def generate_stats(items,geojson,**kwargs):
     print('Done!')
     return df
 
-def generate_html_colorbar(color_map,rescale_values,label=None):
+def generate_html_colorbar(color_map,rescale_values,label=None,dark=False):
     """
     Creates html-formatted string which can be added to Folium maps to display a colorbar. Required inputs: colormap (matplotlib-accepted string), rescale_values in the form of a dictionary containing keys 'max' and 'min' which specify the desired colorbar range. Optional inputs: label, which will display above the colorbar. Output: html-formatted string detailing construction of the colorbar.
     """
@@ -103,10 +103,16 @@ def generate_html_colorbar(color_map,rescale_values,label=None):
 #                {colors[4]} {80}%, {colors[5]}); height: 10px;"></div>
 #    </div>
 #    '''
-
+    if dark:
+        bg_color = "rgba(0, 0, 0, 0.8)"
+        font_color="white"
+    else:
+        bg_color = "rgba(255, 255, 255, 0.8)"
+        font_color="black"
+    
     legend_html = f'''
-    <div style="position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: rgba(255, 255, 255, 0.8);
-             border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: black;">
+    <div style="position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: {bg_color};
+             border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: {font_color};">
         <b>{label}</b><br>
         <div style="display: flex; justify-content: space-between;">
             <div>{tick_val[0]}</div> 
