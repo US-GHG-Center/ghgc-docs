@@ -935,7 +935,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-summary-and-application" id="toc-data-summary-and-application" class="nav-link" data-scroll-target="#data-summary-and-application">Data Summary and Application</a></li>
   <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
-  <li><a href="#stac-terminology" id="toc-stac-terminology" class="nav-link" data-scroll-target="#stac-terminology">STAC Terminology</a></li>
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps using Folium</a>
@@ -1040,15 +1040,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/ct-ch4-monthgrid-v2023">CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes</a> data overview page.</p>
 </section>
 </section>
-<section id="stac-terminology" class="level2">
-<h2 class="anchored" data-anchor-id="stac-terminology">STAC Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes - <code>item</code>: One granule in the dataset, e.g.&nbsp;one monthly file of methane inverse fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;microbial, fossil, or pyrogenic methane fluxes - <code>STAC API</code>: Endpoint for fetching the data itself - <code>Raster API</code>: Endpoint for fetching data <strong>imagery</strong></p>
+<section id="terminology" class="level2">
+<h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
+<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes - <code>item</code>: One granule in the dataset, e.g.&nbsp;one monthly file of methane inverse fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;microbial, fossil, or pyrogenic methane fluxes - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching the data itself - <code>Raster API</code>: Endpoint for fetching data <strong>imagery</strong></p>
 </section>
 <section id="install-the-required-libraries" class="level1">
 <h1>Install the Required Libraries</h1>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="1">
+<div id="cell-8" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
@@ -1064,8 +1064,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-stac-api" class="level1">
 <h1>Query the STAC API</h1>
-<p>First, we are going to import the required libraries. Once imported, they allow better executing a query in the GHG Center Spatio Temporal Asset Catalog (STAC) Application Programming Interface (API) where the granules for this collection are stored.</p>
-<div id="cell-10" class="cell" data-execution_count="2">
+<p><strong>STAC API Collection Names</strong></p>
+<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for theCarbonTracker-CH₄ Isotopic Methane Inverse Fluxes dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/ct-ch4-monthgrid-v2023"><strong>ct-ch4-monthgrid-v2023</strong></a>.*</p>
+<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
+<div id="cell-11" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1079,7 +1081,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes </span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"ct-ch4-monthgrid-v2023"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="3">
+<div id="cell-12" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library allows a HTTP request possible</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
@@ -1087,7 +1089,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="19">
 
 
 <style>
@@ -2335,28 +2337,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, we need to specify the asset name for this collection</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The asset name is referring to the raster band containing the pixel values for the parameter of interest</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For this notebook, we'll focus on microbial sources of CH4 fluxes, so our asset of interest is:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"microbial"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 1998 to December 2021. By looking at the <code>dashboard:time density</code>, we observe that the data is periodic with monthly time density.</p>
-<div id="cell-14" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-14" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Found 288 items</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2010-01-01T00:00:00Z'</span>,<span class="st">'2010-12-31T00:00:00Z'</span>]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-15" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2010-01-01T00:00:00Z'</span>,<span class="st">'2010-12-31T00:00:00Z'</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Item id=ct-ch4-monthgrid-v2023-201012&gt;
 &lt;Item id=ct-ch4-monthgrid-v2023-201011&gt;
@@ -2372,11 +2368,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=ct-ch4-monthgrid-v2023-201001&gt;</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div id="cell-16" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
 
 
 <style>
@@ -2432,49 +2428,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
             
                 
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">id</span>
-            <span class="pystac-v">"ct-ch4-monthgrid-v2023-202112"</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">properties</span></summary>
+                    <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
+        
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
             
                 
         <li class="pystac-row">
-            <span class="pystac-k">end_datetime</span>
-            <span class="pystac-v">"2021-12-31T00:00:00+00:00"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">start_datetime</span>
-            <span class="pystac-v">"2021-12-01T00:00:00+00:00"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">datetime</span>
-            <span class="pystac-v">None</span>
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
         </li>
     
             
         
     </ul>
-        </details></li>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li class="pystac-row">
+            <span class="pystac-k">id</span>
+            <span class="pystac-v">"ct-ch4-monthgrid-v2023-202112"</span>
+        </li>
     
                 
             
@@ -2703,6 +2694,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">bbox</span><span class="pystac-l">[] 4 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">-90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">2</span>
+            <span class="pystac-v">180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">3</span>
+            <span class="pystac-v">90.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">properties</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">end_datetime</span>
+            <span class="pystac-v">"2021-12-31T00:00:00+00:00"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">start_datetime</span>
+            <span class="pystac-v">"2021-12-01T00:00:00+00:00"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">datetime</span>
+            <span class="pystac-v">None</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    <li><details>
         <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 5 items</span></summary>
         
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
@@ -2810,7 +2898,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/"</span>
         </li>
     
             
@@ -2820,15 +2908,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="pystac-row">
             <span class="pystac-k">type</span>
             <span class="pystac-v">"application/json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"US GHG Center STAC API"</span>
         </li>
     
             
@@ -6319,98 +6398,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
             
                 
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">bbox</span><span class="pystac-l">[] 4 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-180.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-90.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">180.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">90.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
                     
         <li class="pystac-row">
             <span class="pystac-k">collection</span>
@@ -6431,23 +6418,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-19" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-19" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To access the year value from each item more easily, this will let us query more explicitly by year and month (e.g., 2020-02)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-20" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color for displaying the tiles</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Please refer to matplotlib library if you'd prefer choosing a different color ramp.</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"purd"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-20" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"purd"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify which two date/times you would like to visualize, using the format of items_dict.keys()</span></span>
+<div id="cell-21" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, we need to specify the asset name for this collection</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The asset name is referring to the raster band containing the pixel values for the parameter of interest.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Availabe assets are listed under the 'assets' parameter when investigating an item.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For this notebook, we'll focus on microbial sources of CH4 fluxes, so our asset of interest is:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"microbial"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify two date/times that you would like to visualize, using the format of items_dict.keys()</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2021-07"</span>,<span class="st">"2021-01"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Below, we use some statistics of the raster data to set upper and lower limits for our color bar. These are saved as the <code>rescale_values</code>, and will be passed to the Raster API in the following step(s).</p>
-<div id="cell-23" class="cell" data-execution_count="11">
+<div id="cell-24" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID for the first date</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
@@ -6457,7 +6449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the raster bands' information</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>[{'scale': 1.0,
   'nodata': -9999.0,
   'offset': 0.0,
@@ -6474,7 +6466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="12">
+<div id="cell-25" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use mean, scaled stddev, and minimum to generate an appropriate color bar range.</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>][<span class="st">'statistics'</span>][<span class="st">'mean'</span>] <span class="op">+</span> <span class="fl">2.5</span><span class="op">*</span>raster_bands[<span class="dv">0</span>][<span class="st">'statistics'</span>][<span class="st">'stddev'</span>],</span>
@@ -6486,8 +6478,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>{'max': 14.726680399504753, 'min': 0.0}</code></pre>
 </div>
 </div>
-<p>Now, you will pass the item id, collection name, asset name, and the <code>rescaling factor</code> to the <code>Raster API</code> endpoint. This step is done twice, one for each date/time you will visualize. This step tells the Raster API which collection, item, and asset you want to view, and specifies the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a <code>tile</code>.</p>
-<div id="cell-26" class="cell" data-execution_count="13">
+<p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
+<div id="cell-27" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for your first date/time</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -6498,7 +6490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -6509,7 +6501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-28" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the above for your second date/time</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we do not calculate new rescale_values for this tile, because we dates tiles 1 and 2 to have the same colorbar range for best visual comparison.</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>observation_date_2 <span class="op">=</span> items_dict[dates[<span class="dv">1</span>]]</span>
@@ -6526,7 +6518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>observation_date_2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -6541,8 +6533,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate-map" class="level2">
 <h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
 <p>First, we’ll define the Area of Interest (AOI) as a GEOJSON. This will be visualized as a filled polygon on the map.</p>
-<div id="cell-29" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The AOI is currently set to Eastern Cananda, North America.</span></span>
+<div id="cell-30" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The AOI is currently set to Eastern Canada, North America.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"type"</span>: <span class="st">"FeatureCollection"</span>,</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"features"</span>: [</span>
@@ -6567,7 +6559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will use the <code>DualMap</code> format from <code>folium</code> to visualize our two dates side-by-side for the area of interest. Below we add the desired layers to our map and add markers to identify the date/times shown.</p>
-<div id="cell-31" class="cell" data-execution_count="16">
+<div id="cell-32" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the center location of the map by changing the "center_latlon = (LAT,LON)" statement.</span></span>
@@ -6602,7 +6594,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -6622,7 +6614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
@@ -6630,7 +6622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_b6b83eaa153ddc953ff5de586f627254 {
+                #map_a083ab97b60b55f43d606461472f1b81 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -6644,7 +6636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_2c28c36465d9ab03d92e497ae21f8383 {
+                #map_8e8b38c2bffee61408a423a6d0494bed {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -6659,17 +6651,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_b6b83eaa153ddc953ff5de586f627254&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_a083ab97b60b55f43d606461472f1b81&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_2c28c36465d9ab03d92e497ae21f8383&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_8e8b38c2bffee61408a423a6d0494bed&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_b6b83eaa153ddc953ff5de586f627254 = L.map(
-                &quot;map_b6b83eaa153ddc953ff5de586f627254&quot;,
+            var map_a083ab97b60b55f43d606461472f1b81 = L.map(
+                &quot;map_a083ab97b60b55f43d606461472f1b81&quot;,
                 {
                     center: [52.0, -95.3],
                     crs: L.CRS.EPSG3857,
@@ -6683,47 +6675,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_7817785e8b63f04ba6835bb0503a3981 = L.tileLayer(
+            var tile_layer_cf089b7b89f001eddb3db8156edf89c0 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_7817785e8b63f04ba6835bb0503a3981.addTo(map_b6b83eaa153ddc953ff5de586f627254);
+            tile_layer_cf089b7b89f001eddb3db8156edf89c0.addTo(map_a083ab97b60b55f43d606461472f1b81);
         
     
-            var tile_layer_a894ad1e47d45bdd9d66cb9f5d9550ff = L.tileLayer(
+            var tile_layer_36a8415773988694a8eb31f5952f075f = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/ct-ch4-monthgrid-v2023/items/ct-ch4-monthgrid-v2023-202107/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=microbial\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=0.0%2C14.726680399504753&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_a894ad1e47d45bdd9d66cb9f5d9550ff.addTo(map_b6b83eaa153ddc953ff5de586f627254);
+            tile_layer_36a8415773988694a8eb31f5952f075f.addTo(map_a083ab97b60b55f43d606461472f1b81);
         
     
 
-        function geo_json_62912df4f529980c9c735187335a4232_onEachFeature(feature, layer) {
+        function geo_json_9b494d245858fc0b2836e058fc0f5750_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_62912df4f529980c9c735187335a4232 = L.geoJson(null, {
-                onEachFeature: geo_json_62912df4f529980c9c735187335a4232_onEachFeature,
+        var geo_json_9b494d245858fc0b2836e058fc0f5750 = L.geoJson(null, {
+                onEachFeature: geo_json_9b494d245858fc0b2836e058fc0f5750_onEachFeature,
             
         });
 
-        function geo_json_62912df4f529980c9c735187335a4232_add (data) {
-            geo_json_62912df4f529980c9c735187335a4232
+        function geo_json_9b494d245858fc0b2836e058fc0f5750_add (data) {
+            geo_json_9b494d245858fc0b2836e058fc0f5750
                 .addData(data);
         }
-            geo_json_62912df4f529980c9c735187335a4232_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_9b494d245858fc0b2836e058fc0f5750_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+        geo_json_9b494d245858fc0b2836e058fc0f5750.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_62912df4f529980c9c735187335a4232.addTo(map_b6b83eaa153ddc953ff5de586f627254);
+            geo_json_9b494d245858fc0b2836e058fc0f5750.addTo(map_a083ab97b60b55f43d606461472f1b81);
         
     
-            var map_2c28c36465d9ab03d92e497ae21f8383 = L.map(
-                &quot;map_2c28c36465d9ab03d92e497ae21f8383&quot;,
+            var map_8e8b38c2bffee61408a423a6d0494bed = L.map(
+                &quot;map_8e8b38c2bffee61408a423a6d0494bed&quot;,
                 {
                     center: [52.0, -95.3],
                     crs: L.CRS.EPSG3857,
@@ -6737,50 +6730,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_0a9e94200dd5d6a557628dd2d5245131 = L.tileLayer(
+            var tile_layer_8467f659c1604cc558e1e0aa04c84008 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_0a9e94200dd5d6a557628dd2d5245131.addTo(map_2c28c36465d9ab03d92e497ae21f8383);
+            tile_layer_8467f659c1604cc558e1e0aa04c84008.addTo(map_8e8b38c2bffee61408a423a6d0494bed);
         
     
-            var tile_layer_def9b571823c81d528ee86da308f7b4a = L.tileLayer(
+            var tile_layer_677dec5fed45ca53989a928a79d0098a = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/ct-ch4-monthgrid-v2023/items/ct-ch4-monthgrid-v2023-202101/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=microbial\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=0.0%2C14.726680399504753&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_def9b571823c81d528ee86da308f7b4a.addTo(map_2c28c36465d9ab03d92e497ae21f8383);
+            tile_layer_677dec5fed45ca53989a928a79d0098a.addTo(map_8e8b38c2bffee61408a423a6d0494bed);
         
     
-            map_b6b83eaa153ddc953ff5de586f627254.sync(map_2c28c36465d9ab03d92e497ae21f8383);
-            map_2c28c36465d9ab03d92e497ae21f8383.sync(map_b6b83eaa153ddc953ff5de586f627254);
+            map_a083ab97b60b55f43d606461472f1b81.sync(map_8e8b38c2bffee61408a423a6d0494bed);
+            map_8e8b38c2bffee61408a423a6d0494bed.sync(map_a083ab97b60b55f43d606461472f1b81);
         
     
 
-        function geo_json_e2b4c2bd5ebc484fba922de829855077_onEachFeature(feature, layer) {
+        function geo_json_da2fbfaa45474caa8ff2975c96835ec0_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_e2b4c2bd5ebc484fba922de829855077 = L.geoJson(null, {
-                onEachFeature: geo_json_e2b4c2bd5ebc484fba922de829855077_onEachFeature,
+        var geo_json_da2fbfaa45474caa8ff2975c96835ec0 = L.geoJson(null, {
+                onEachFeature: geo_json_da2fbfaa45474caa8ff2975c96835ec0_onEachFeature,
             
         });
 
-        function geo_json_e2b4c2bd5ebc484fba922de829855077_add (data) {
-            geo_json_e2b4c2bd5ebc484fba922de829855077
+        function geo_json_da2fbfaa45474caa8ff2975c96835ec0_add (data) {
+            geo_json_da2fbfaa45474caa8ff2975c96835ec0
                 .addData(data);
         }
-            geo_json_e2b4c2bd5ebc484fba922de829855077_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_da2fbfaa45474caa8ff2975c96835ec0_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+        geo_json_da2fbfaa45474caa8ff2975c96835ec0.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_62912df4f529980c9c735187335a4232.addTo(map_b6b83eaa153ddc953ff5de586f627254);
+            geo_json_9b494d245858fc0b2836e058fc0f5750.addTo(map_a083ab97b60b55f43d606461472f1b81);
         
     
-            geo_json_e2b4c2bd5ebc484fba922de829855077.addTo(map_2c28c36465d9ab03d92e497ae21f8383);
+            geo_json_da2fbfaa45474caa8ff2975c96835ec0.addTo(map_8e8b38c2bffee61408a423a6d0494bed);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
@@ -6792,7 +6786,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-zonal-statistics" class="level1">
 <h1>Calculate Zonal Statistics</h1>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Eastern Canada, North America.</p>
-<div id="cell-34" class="cell" data-execution_count="17">
+<div id="cell-35" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give your AOI a name to be used in your time series plot later on.</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>aoi_name<span class="op">=</span><span class="st">'Eastern Canada'</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This AOI is defined as a GEOJSON.</span></span>
@@ -6820,7 +6814,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Before we generate stats for a specific item (observation), we first check the total number of items available within the collection and retrieve the information regarding their start datetime.</p>
-<div id="cell-36" class="cell" data-execution_count="18">
+<div id="cell-37" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available within the collection</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=600"</span></span>
@@ -6832,10 +6826,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Found 288 items</code></pre>
 </div>
 </div>
-<div id="cell-37" class="cell" data-scrolled="true" data-execution_count="19">
+<div id="cell-38" class="cell" data-scrolled="true" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <pre><code>{'id': 'ct-ch4-monthgrid-v2023-202112',
  'bbox': [-180.0, -90.0, 180.0, 90.0],
  'type': 'Feature',
@@ -6991,7 +6985,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now that we created the polygon for the area of interest, we need to develop a function that runs through the data collection and generates the statistics for a specific item (granule) within the boundaries of the AOI polygon.</p>
-<div id="cell-39" class="cell" data-execution_count="25">
+<div id="cell-40" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The bounding box should be passed to the geojson param as a geojson Feature or FeatureCollection</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that retrieves information regarding a specific granule using its asset name and raster identifier and generates the statistics for it</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -7022,7 +7016,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"datetime"</span>: item[<span class="st">"properties"</span>][<span class="st">"start_datetime"</span>][:<span class="dv">10</span>],</span>
 <span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-40" class="cell" data-execution_count="26">
+<div id="cell-41" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a for loop that iterates over all the existing items in the collection</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -7036,7 +7030,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Generate the statistics for the AOI</p>
-<div id="cell-42" class="cell" data-scrolled="true" data-execution_count="28">
+<div id="cell-43" class="cell" data-scrolled="true" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -7331,15 +7325,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]]}, 'properties': {'statistics': {'b1': {'min': 0.0, 'max': 6.267062122183495, 'mean': 0.5678876677918412, 'count': 259.8399963378906, 'sum': 147.55992951936526, 'std': 0.8610775943653526, 'median': 0.1611261353076228, 'majority': 0.0, 'minority': 4.156168904904075e-10, 'unique': 284.0, 'histogram': [[214, 34, 24, 17, 6, 1, 0, 1, 1, 1], [0.0, 0.6267062122183494, 1.2534124244366989, 1.8801186366550482, 2.5068248488733977, 3.1335310610917473, 3.7602372733100964, 4.386943485528446, 5.0136496977467955, 5.640355909965145, 6.267062122183495]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 299.0, 'percentile_2': 0.0, 'percentile_98': 2.8905791518097645}}}}
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]]}, 'properties': {'statistics': {'b1': {'min': 0.0, 'max': 6.477494208660046, 'mean': 0.5699989876993, 'count': 259.8399963378906, 'sum': 148.10853487638747, 'std': 0.8755125202638817, 'median': 0.15927442437727665, 'majority': 0.0, 'minority': 4.2129290519522307e-10, 'unique': 284.0, 'histogram': [[214, 34, 27, 15, 4, 2, 0, 2, 0, 1], [0.0, 0.6477494208660046, 1.2954988417320092, 1.9432482625980139, 2.5909976834640185, 3.238747104330023, 3.8864965251960277, 4.534245946062033, 5.181995366928037, 5.829744787794041, 6.477494208660046]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 299.0, 'percentile_2': 0.0, 'percentile_98': 2.9444735531688546}}}}
 {'type': 'Feature', 'geometry': {'type': 'Polygon', 'coordinates': [[[-106.81091327586626, 58.13717287115446], [-106.81091327586626, 46.689085955377266], [-84.5565048510494, 46.689085955377266], [-84.5565048510494, 58.13717287115446], [-106.81091327586626, 58.13717287115446]]]}, 'properties': {'statistics': {'b1': {'min': 0.0, 'max': 5.487630900127566, 'mean': 0.507990310697017, 'count': 259.8399963378906, 'sum': 131.9962004711968, 'std': 0.6974951985005828, 'median': 0.2336568614736159, 'majority': 0.0, 'minority': 4.159851305708303e-10, 'unique': 284.0, 'histogram': [[210, 37, 30, 14, 4, 1, 1, 1, 0, 1], [0.0, 0.5487630900127566, 1.0975261800255132, 1.6462892700382699, 2.1950523600510263, 2.743815450063783, 3.2925785400765397, 3.841341630089296, 4.390104720102053, 4.938867810114809, 5.487630900127566]], 'valid_percent': 100.0, 'masked_pixels': 0.0, 'valid_pixels': 299.0, 'percentile_2': 0.0, 'percentile_98': 2.4764134782542455}}}}
-CPU times: user 3.92 s, sys: 607 ms, total: 4.53 s
-Wall time: 3min 24s</code></pre>
+CPU times: user 1.09 s, sys: 211 ms, total: 1.3 s
+Wall time: 1min 25s</code></pre>
 </div>
 </div>
 <p>Create a function that goes through every single item in the collection and populates their properties - including the minimum, maximum, and sum of their values - in a table.</p>
-<div id="cell-44" class="cell" data-execution_count="29">
+<div id="cell-45" class="cell" data-execution_count="39">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the stats for the first item in the collection</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <pre><code>{'statistics': {'b1': {'min': 0.0,
    'max': 5.108452536076932,
    'mean': 0.4624914437653177,
@@ -7370,14 +7364,14 @@ Wall time: 3min 24s</code></pre>
  'datetime': '2021-12-01'}</code></pre>
 </div>
 </div>
-<div id="cell-45" class="cell" data-execution_count="31">
+<div id="cell-46" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="40">
 <div>
 
 
@@ -7520,7 +7514,7 @@ Wall time: 3min 24s</code></pre>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>Let’s look at the maximum methane flux within our AOI over the full time range of the dataset. The code below generates a time series plot from the table above.</p>
-<div id="cell-47" class="cell" data-execution_count="32">
+<div id="cell-48" class="cell" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">"datetime"</span>)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
