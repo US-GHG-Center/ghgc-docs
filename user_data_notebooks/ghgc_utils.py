@@ -45,10 +45,16 @@ def raster_stats(item, geojson,**kwargs):
             "datetime": item["properties"]["start_datetime"],
         }
     except KeyError as err:
-        return {
-            **result["features"][0]["properties"],
-            'datetime': item["properties"]["start_datetime"],
-        }
+        try:
+            return {
+                **result["features"][0]["properties"],
+                'datetime': item["properties"]["start_datetime"],
+            }
+        except TypeError as err:
+            return {
+                **result["features"][0]["properties"],
+                "datetime": item.properties["start_datetime"]
+            }
     except TypeError as err:
         return {
             **result["properties"],
