@@ -56,10 +56,16 @@ def raster_stats(item, geojson,**kwargs):
                 "datetime": item.properties["start_datetime"]
             }
     except TypeError as err:
-        return {
-            **result["properties"],
-            "datetime": item.properties["start_datetime"]
-        }
+        try:
+            return {
+                **result["properties"],
+                "datetime": item.properties["start_datetime"]
+            }
+        except KeyError:
+            return {
+                **result["properties"],
+                "datetime": item.properties["datetime"]
+            }
 
 def clean_stats(stats_json) -> pd.DataFrame:
     """
@@ -89,7 +95,10 @@ def generate_stats(items,geojson,**kwargs):
         try:
             date = item["properties"]["start_datetime"]  # Get the associated date
         except TypeError:
-            date = item.properties["start_datetime"]
+            try:
+                date = item.properties["start_datetime"]
+            except KeyError:
+                date = item.properties["datetime"]
         year_month = date[:7].replace('-', '')  # Convert datetime to year-month
         stats[year_month] = raster_stats(item, geojson,**kwargs)
     df = clean_stats(stats)
