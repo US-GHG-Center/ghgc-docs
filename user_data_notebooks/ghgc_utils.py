@@ -4,30 +4,36 @@ import datetime
 import matplotlib.pyplot as plt
 from matplotlib.colors import rgb2hex
 import numpy as np
+import sys
 
 def raster_stats(item, geojson,**kwargs):
     """
     Returns Raster API statistics for an item. Inputs: item, geojson, url = Raster API url, asset = asset name within item. Outputs: dictionary containing statistics over the bounding box and item's datetime information.
     """
 
-    # A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics
     try:
-        result = requests.post(
-
-            # Raster API Endpoint for computing statistics
-            f"{kwargs['url']}/cog/statistics",
-
-            # Pass the URL to the item, asset name, and raster identifier as parameters
-            params={"url": item["assets"][kwargs['asset']]["href"]},
-
-            # Send the GeoJSON object (polygon) along with the request
-            json=geojson,
-
-        # Return the response in JSON format
-        ).json()
+        url = item["assets"][kwargs["asset"]]["href"]
+    except TypeError as err:
+        url = item.assets[kwargs["asset"]].href
     except KeyError as err:
-        print('Make sure you include \'url\' and \'asset\' as keyword arguments!')
-        raise err
+        print('KeyError in raster_stats: Make sure you include \'url\' and \'asset\' as keyword arguments!')
+        sys.exit()      
+    
+    # A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics
+    result = requests.post(
+
+        # Raster API Endpoint for computing statistics
+        f"{kwargs['url']}/cog/statistics",
+
+        # Pass the URL to the item, asset name, and raster identifier as parameters
+        params={"url": url},
+
+        # Send the GeoJSON object (polygon) along with the request
+        json=geojson,
+
+    # Return the response in JSON format
+    ).json()
+
 
     # Print the result
     ##print(result)
@@ -39,9 +45,20 @@ def raster_stats(item, geojson,**kwargs):
             "datetime": item["properties"]["start_datetime"],
         }
     except KeyError as err:
+        try:
+            return {
+                **result["features"][0]["properties"],
+                'datetime': item["properties"]["start_datetime"],
+            }
+        except TypeError as err:
+            return {
+                **result["features"][0]["properties"],
+                "datetime": item.properties["start_datetime"]
+            }
+    except TypeError as err:
         return {
-            **result["features"][0]["properties"],
-            'datetime': item["properties"]["start_datetime"],
+            **result["properties"],
+            "datetime": item.properties["start_datetime"]
         }
 
 def clean_stats(stats_json) -> pd.DataFrame:
@@ -69,7 +86,10 @@ def generate_stats(items,geojson,**kwargs):
     stats = {}
     print('Generating stats...')
     for item in items:
-        date = item["properties"]["start_datetime"]  # Get the associated date
+        try:
+            date = item["properties"]["start_datetime"]  # Get the associated date
+        except TypeError:
+            date = item.properties["start_datetime"]
         year_month = date[:7].replace('-', '')  # Convert datetime to year-month
         stats[year_month] = raster_stats(item, geojson,**kwargs)
     df = clean_stats(stats)
