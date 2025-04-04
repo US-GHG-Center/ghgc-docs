@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.43">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,8 +73,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-4379b0ccadffce622b03caf4c46266b3.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-30c3aa176b88e096d18e0995c66ee82a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -1047,10 +1047,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;GOSAT-based Top-down Total and Natural Methane Emissions - <code>item</code>: One granule in the dataset, e.g.&nbsp;one annual file of fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;anthropogenic methane emissions - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available collections - <code>Raster API</code>: Endpoint for fetching data, for imagery and statistics</p>
+<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;GOSAT-based Top-down Total and Natural Methane Emissions - <code>item</code>: One granule in the dataset, e.g.&nbsp;one annual file of fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;anthropogenic methane emissions - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
 </section>
 <section id="install-the-required-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
+<p>The libraries below allow better execution of a query in the GHG Center <strong>Spatio Temporal Asset Catalog (STAC)</strong> Application Programming Interface (API), where the granules for this collection are stored. You will learn the functionality of each library throughout the notebook.</p>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
 <div id="cell-8" class="cell" data-execution_count="1">
@@ -1075,7 +1076,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
-<p>The libraries above allow better execution of a query in the GHG Center <strong>Spatio Temporal Asset Catalog (STAC)</strong> Application Programming Interface (API), where the granules for this collection are stored. You will learn the functionality of each library throughout the notebook.</p>
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <strong>STAC API</strong> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GOSAT-based Top-down Total and Natural Methane Emissions dataset is <strong>gosat-based-ch4budget-yeargrid-v1</strong>*</p>
@@ -1174,7 +1174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 4 items</span></summary>
+        <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 5 items</span></summary>
         
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
@@ -1342,6 +1342,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="pystac-row">
             <span class="pystac-k">type</span>
             <span class="pystac-v">"application/json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">4</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">rel</span>
+            <span class="pystac-v">"http://www.opengis.net/def/rel/ogc/1.0/queryables"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">href</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/collections/gosat-based-ch4budget-yeargrid-v1/queryables"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">type</span>
+            <span class="pystac-v">"application/schema+json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">title</span>
+            <span class="pystac-v">"Queryables"</span>
         </li>
     
             
@@ -2646,7 +2697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2010 to December 2022. By looking at the <code>dashboard:time density</code>, we observe that the data is annual over that time period.</p>
-<div id="cell-14" class="cell" data-execution_count="4">
+<div id="cell-14" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -7503,9 +7554,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items; we can then query more easily by date/time, e.g. "2020"</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>][:<span class="dv">4</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-16" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can then query more easily by date/time, e.g. "2020"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>][:<span class="dv">4</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-17" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
@@ -7552,7 +7604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>{'max': 6.551439731574392, 'min': -6.551439731574392}</code></pre>
 </div>
 </div>
-<p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale_values</code> to the <code>Raster API</code> endpoint. This step is done twice, once for each date/time you want to visualize.</p>
+<p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
 <div id="cell-24" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a color map for displaying the data</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
@@ -7582,10 +7634,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="cell-26" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>first_date <span class="op">=</span> items_dict[dates[<span class="dv">1</span>]]</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>second_date <span class="op">=</span> items_dict[dates[<span class="dv">1</span>]]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> first_date.collection_id</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> first_date.<span class="bu">id</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> second_date.collection_id</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> second_date.<span class="bu">id</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the second date</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>tile_2 <span class="op">=</span> requests.get(</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -7595,12 +7647,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>).json()</span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>tile_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>tile_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/gosat-based-ch4budget-yeargrid-v1/items/gosat-based-ch4budget-yeargrid-v1-2010/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=post-total&amp;color_formula=gamma+r+1.05&amp;colormap_name=spectral_r&amp;rescale=-0%2C3'],
+ 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/gosat-based-ch4budget-yeargrid-v1/items/gosat-based-ch4budget-yeargrid-v1-2020/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=post-total&amp;color_formula=gamma+r+1.05&amp;colormap_name=spectral_r&amp;rescale=-0%2C3'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-182.5, -90.9777777777778, 177.5, 90.97777777777777],
@@ -7615,7 +7667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre of map set via location=(latitude,longitude)</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">25</span>, <span class="op">-</span><span class="dv">80</span>), zoom_start<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Map layer showing first date</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate map layer showing first date</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>map_layer_1 <span class="op">=</span> TileLayer(</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile_1[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
@@ -7623,29 +7675,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>map_layer_1.add_to(map_.m1)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapy layer showing second date</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>map_layer_2 <span class="op">=</span> TileLayer(</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile_2[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>dates[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>map_layer_2.add_to(map_.m2)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a layer control to switch between map layers</span></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>).add_to(map_)</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use a function from the'ghgc_utils' module create an HTML colorbar representation.</span></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="st">'tC/km2/year'</span>)</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add layer to the map</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>map_layer_1.add_to(map_.m1)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapy layer showing second date</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>map_layer_2 <span class="op">=</span> TileLayer(</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile_2[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>dates[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add layer to the map</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>map_layer_2.add_to(map_.m2)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Add controls to toggle map elements on/off</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>).add_to(map_)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use a function from the'ghgc_utils' module create an HTML colorbar representation.</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="st">'tC/km2/year'</span>)</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
@@ -7674,7 +7728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_a1e85e15d9024e822322add6c75f8b85 {
+                #map_6d667e7f375bb057910ab0955df2f76e {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -7688,7 +7742,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_80c4782a1ef160e23883c2d241e71220 {
+                #map_ea5c462056263cc1367286e3838ec100 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -7727,17 +7781,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_a1e85e15d9024e822322add6c75f8b85&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_6d667e7f375bb057910ab0955df2f76e&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_80c4782a1ef160e23883c2d241e71220&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_ea5c462056263cc1367286e3838ec100&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_a1e85e15d9024e822322add6c75f8b85 = L.map(
-                &quot;map_a1e85e15d9024e822322add6c75f8b85&quot;,
+            var map_6d667e7f375bb057910ab0955df2f76e = L.map(
+                &quot;map_6d667e7f375bb057910ab0955df2f76e&quot;,
                 {
                     center: [25.0, -80.0],
                     crs: L.CRS.EPSG3857,
@@ -7751,42 +7805,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_35d4724ff67418ae3efaceca02f14b31 = L.tileLayer(
+            var tile_layer_4288a2c19ba05c035f30aad30f045d05 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_35d4724ff67418ae3efaceca02f14b31.addTo(map_a1e85e15d9024e822322add6c75f8b85);
+            tile_layer_4288a2c19ba05c035f30aad30f045d05.addTo(map_6d667e7f375bb057910ab0955df2f76e);
         
     
-            var tile_layer_af6c457ab7a44dea8ad1f466fa98b43b = L.tileLayer(
+            var tile_layer_280039a41ff7769866593c62e7aa9c62 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/gosat-based-ch4budget-yeargrid-v1/items/gosat-based-ch4budget-yeargrid-v1-2010/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=post-total\u0026color_formula=gamma+r+1.05\u0026colormap_name=spectral_r\u0026rescale=-0%2C3&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_af6c457ab7a44dea8ad1f466fa98b43b.addTo(map_a1e85e15d9024e822322add6c75f8b85);
+            tile_layer_280039a41ff7769866593c62e7aa9c62.addTo(map_6d667e7f375bb057910ab0955df2f76e);
         
     
-            var layer_control_c22f2da57411a82ea0bfbf7852fbdff4_layers = {
+            var layer_control_abd3a6899f2e704831f4412f7264ba33_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_35d4724ff67418ae3efaceca02f14b31,
+                    &quot;openstreetmap&quot; : tile_layer_4288a2c19ba05c035f30aad30f045d05,
                 },
                 overlays :  {
-                    &quot;2010&quot; : tile_layer_af6c457ab7a44dea8ad1f466fa98b43b,
+                    &quot;2010&quot; : tile_layer_280039a41ff7769866593c62e7aa9c62,
                 },
             };
-            let layer_control_c22f2da57411a82ea0bfbf7852fbdff4 = L.control.layers(
-                layer_control_c22f2da57411a82ea0bfbf7852fbdff4_layers.base_layers,
-                layer_control_c22f2da57411a82ea0bfbf7852fbdff4_layers.overlays,
+            let layer_control_abd3a6899f2e704831f4412f7264ba33 = L.control.layers(
+                layer_control_abd3a6899f2e704831f4412f7264ba33_layers.base_layers,
+                layer_control_abd3a6899f2e704831f4412f7264ba33_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_a1e85e15d9024e822322add6c75f8b85);
+            ).addTo(map_6d667e7f375bb057910ab0955df2f76e);
 
         
     
-            var map_80c4782a1ef160e23883c2d241e71220 = L.map(
-                &quot;map_80c4782a1ef160e23883c2d241e71220&quot;,
+            var map_ea5c462056263cc1367286e3838ec100 = L.map(
+                &quot;map_ea5c462056263cc1367286e3838ec100&quot;,
                 {
                     center: [25.0, -80.0],
                     crs: L.CRS.EPSG3857,
@@ -7800,41 +7854,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_df93ed325aa3ee7bd695d378317d392b = L.tileLayer(
+            var tile_layer_563e59c77eacdab95ca3102e5b68db48 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_df93ed325aa3ee7bd695d378317d392b.addTo(map_80c4782a1ef160e23883c2d241e71220);
+            tile_layer_563e59c77eacdab95ca3102e5b68db48.addTo(map_ea5c462056263cc1367286e3838ec100);
         
     
-            var tile_layer_26968225e78838f5c62577014d65de0d = L.tileLayer(
+            var tile_layer_7a32dc47dd7f2039d3ef18c14a777269 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/gosat-based-ch4budget-yeargrid-v1/items/gosat-based-ch4budget-yeargrid-v1-2020/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=post-total\u0026color_formula=gamma+r+1.05\u0026colormap_name=spectral_r\u0026rescale=-0%2C3&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_26968225e78838f5c62577014d65de0d.addTo(map_80c4782a1ef160e23883c2d241e71220);
+            tile_layer_7a32dc47dd7f2039d3ef18c14a777269.addTo(map_ea5c462056263cc1367286e3838ec100);
         
     
-            map_a1e85e15d9024e822322add6c75f8b85.sync(map_80c4782a1ef160e23883c2d241e71220);
-            map_80c4782a1ef160e23883c2d241e71220.sync(map_a1e85e15d9024e822322add6c75f8b85);
+            map_6d667e7f375bb057910ab0955df2f76e.sync(map_ea5c462056263cc1367286e3838ec100);
+            map_ea5c462056263cc1367286e3838ec100.sync(map_6d667e7f375bb057910ab0955df2f76e);
         
     
-            var layer_control_c296a32e9ef3431a871ca1864e7fb740_layers = {
+            var layer_control_37980808c1734ba3aa2c91ea4333a13b_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_df93ed325aa3ee7bd695d378317d392b,
+                    &quot;openstreetmap&quot; : tile_layer_563e59c77eacdab95ca3102e5b68db48,
                 },
                 overlays :  {
-                    &quot;2020&quot; : tile_layer_26968225e78838f5c62577014d65de0d,
+                    &quot;2020&quot; : tile_layer_7a32dc47dd7f2039d3ef18c14a777269,
                 },
             };
-            let layer_control_c296a32e9ef3431a871ca1864e7fb740 = L.control.layers(
-                layer_control_c296a32e9ef3431a871ca1864e7fb740_layers.base_layers,
-                layer_control_c296a32e9ef3431a871ca1864e7fb740_layers.overlays,
+            let layer_control_37980808c1734ba3aa2c91ea4333a13b = L.control.layers(
+                layer_control_37980808c1734ba3aa2c91ea4333a13b_layers.base_layers,
+                layer_control_37980808c1734ba3aa2c91ea4333a13b_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_80c4782a1ef160e23883c2d241e71220);
+            ).addTo(map_ea5c462056263cc1367286e3838ec100);
 
         
 </script>
@@ -7845,88 +7899,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculating-zonal-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="calculating-zonal-statistics">Calculating Zonal Statistics</h2>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Texas (USA).</p>
-<div id="cell-31" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Texas, USA</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {},</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: {</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">29</span>],</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">33</span>],</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">104</span>, <span class="dv">33</span>],</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">104</span>,<span class="dv">29</span>],</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">29</span>]</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span>,</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-31" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Texas, USA"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Texas, USA</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {},</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: {</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>            [</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">29</span>],</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">33</span>],</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">104</span>, <span class="dv">33</span>],</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">104</span>,<span class="dv">29</span>],</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="dv">95</span>, <span class="dv">29</span>]</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-32" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check total number of items available within the collection</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> requests.get(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>STAC_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ss">/items?limit=300"</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>).json()[<span class="st">"features"</span>]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the total number of items (granules) found</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Generate the statistics for the AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the Raster API.</p>
+<div id="cell-33" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats(items,aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first five rows of our statistics DataFrame</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Found 13 items</code></pre>
+<pre><code>Generating stats...
+Done!
+CPU times: user 49 ms, sys: 0 ns, total: 49 ms
+Wall time: 2.63 s</code></pre>
 </div>
-</div>
-<div id="cell-33" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> [ghgc_utils.generate_stats(item, aoi,asset_name) <span class="cf">for</span> item <span class="kw">in</span> items]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-File <span class="ansi-green-fg">&lt;timed exec&gt;:1</span>
-
-<span class="ansi-red-fg">TypeError</span>: generate_stats() takes 2 positional arguments but 3 were given</pre>
-</div>
-</div>
-</div>
-<div id="cell-34" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>stats[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
-<pre><code>{'statistics': {'b1': {'min': 0.45840875428297767,
-   'max': 2.563434123331244,
-   'mean': 1.3501146985384829,
-   'count': 1.9799998998641968,
-   'sum': 2.6732269679113765,
-   'std': 0.5669339642223294,
-   'median': 1.0878720382884925,
-   'majority': 0.45840875428297767,
-   'minority': 0.45840875428297767,
-   'unique': 6.0,
-   'histogram': [[2, 0, 1, 0, 0, 2, 0, 0, 0, 1],
-    [0.45840875428297767,
-     0.6689112911878043,
-     0.8794138280926309,
-     1.0899163649974577,
-     1.300418901902284,
-     1.5109214388071108,
-     1.7214239757119376,
-     1.931926512616764,
-     2.1424290495215907,
-     2.352931586426417,
-     2.563434123331244]],
-   'valid_percent': 100.0,
-   'masked_pixels': 0.0,
-   'valid_pixels': 6.0,
-   'percentile_2': 0.45840875428297767,
-   'percentile_98': 2.563434123331244}},
- 'datetime': '2022-01-01T00:00:00+00:00'}</code></pre>
-</div>
-</div>
-<div id="cell-35" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(<span class="st">"datetime"</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <div>
 
 
@@ -7956,109 +7963,109 @@ File <span class="ansi-green-fg">&lt;timed exec&gt;:1</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">12</td>
-<td>2010-01-01T00:00:00+00:00</td>
-<td>0.522762</td>
-<td>2.687274</td>
-<td>1.615991</td>
-<td>1.98</td>
-<td>3.199662</td>
-<td>0.718321</td>
-<td>1.176316</td>
-<td>0.522762</td>
-<td>0.522762</td>
-<td>6.0</td>
-<td>[[1, 0, 1, 1, 0, 1, 0, 0, 0, 2], [0.5227617384...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>0.522762</td>
-<td>2.687274</td>
-<td>2010-01-01 00:00:00+00:00</td>
+<td data-quarto-table-cell-role="th">0</td>
+<td>2022-01-01T00:00:00+00:00</td>
+<td>0.45840875428297767069</td>
+<td>2.56343412333124387459</td>
+<td>1.35011469853848287137</td>
+<td>1.97999989986419677734</td>
+<td>2.67322696791137648376</td>
+<td>0.56693396422232944509</td>
+<td>1.08787203828849254883</td>
+<td>0.45840875428297767069</td>
+<td>0.45840875428297767069</td>
+<td>6.00000000000000000000</td>
+<td>[[2, 0, 1, 0, 0, 2, 0, 0, 0, 1], [0.4584087542...</td>
+<td>100.00000000000000000000</td>
+<td>0.00000000000000000000</td>
+<td>6.00000000000000000000</td>
+<td>0.45840875428297767069</td>
+<td>2.56343412333124387459</td>
+<td>2022-01-01 00:00:00+00:00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">11</td>
-<td>2011-01-01T00:00:00+00:00</td>
-<td>0.266725</td>
-<td>2.235993</td>
-<td>1.301970</td>
-<td>1.98</td>
-<td>2.577901</td>
-<td>0.610951</td>
-<td>0.960086</td>
-<td>0.266725</td>
-<td>0.266725</td>
-<td>6.0</td>
-<td>[[1, 0, 1, 1, 0, 1, 0, 0, 1, 1], [0.2667253696...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>0.266725</td>
-<td>2.235993</td>
-<td>2011-01-01 00:00:00+00:00</td>
+<td data-quarto-table-cell-role="th">1</td>
+<td>2021-01-01T00:00:00+00:00</td>
+<td>0.41740630436583853191</td>
+<td>2.97732164356297479557</td>
+<td>1.40986536395883654826</td>
+<td>1.97999989986419677734</td>
+<td>2.79153327946049589769</td>
+<td>0.71912405002717583180</td>
+<td>1.02930576307184451501</td>
+<td>0.41740630436583853191</td>
+<td>0.41740630436583853191</td>
+<td>6.00000000000000000000</td>
+<td>[[2, 0, 1, 0, 1, 0, 1, 0, 0, 1], [0.4174063043...</td>
+<td>100.00000000000000000000</td>
+<td>0.00000000000000000000</td>
+<td>6.00000000000000000000</td>
+<td>0.41740630436583853191</td>
+<td>2.97732164356297479557</td>
+<td>2021-01-01 00:00:00+00:00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">10</td>
-<td>2012-01-01T00:00:00+00:00</td>
-<td>0.380561</td>
-<td>2.395962</td>
-<td>1.422850</td>
-<td>1.98</td>
-<td>2.817244</td>
-<td>0.630351</td>
-<td>1.037681</td>
-<td>0.380561</td>
-<td>0.380561</td>
-<td>6.0</td>
-<td>[[1, 0, 1, 1, 0, 0, 1, 0, 1, 1], [0.3805614366...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>0.380561</td>
-<td>2.395962</td>
-<td>2012-01-01 00:00:00+00:00</td>
+<td data-quarto-table-cell-role="th">2</td>
+<td>2020-01-01T00:00:00+00:00</td>
+<td>0.39260556661190376682</td>
+<td>2.61960828202497308936</td>
+<td>1.30133326455075293282</td>
+<td>1.97999989986419677734</td>
+<td>2.57663973350043917776</td>
+<td>0.62324224034026320940</td>
+<td>0.97894313322725490245</td>
+<td>0.39260556661190376682</td>
+<td>0.39260556661190376682</td>
+<td>6.00000000000000000000</td>
+<td>[[2, 0, 1, 0, 1, 0, 1, 0, 0, 1], [0.3926055666...</td>
+<td>100.00000000000000000000</td>
+<td>0.00000000000000000000</td>
+<td>6.00000000000000000000</td>
+<td>0.39260556661190376682</td>
+<td>2.61960828202497308936</td>
+<td>2020-01-01 00:00:00+00:00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
-<td>2013-01-01T00:00:00+00:00</td>
-<td>0.532251</td>
-<td>2.535978</td>
-<td>1.568220</td>
-<td>1.98</td>
-<td>3.105075</td>
-<td>0.655252</td>
-<td>1.170210</td>
-<td>0.532251</td>
-<td>0.532251</td>
-<td>6.0</td>
-<td>[[1, 1, 0, 1, 0, 0, 1, 0, 0, 2], [0.5322511442...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>0.532251</td>
-<td>2.535978</td>
-<td>2013-01-01 00:00:00+00:00</td>
+<td data-quarto-table-cell-role="th">3</td>
+<td>2019-01-01T00:00:00+00:00</td>
+<td>0.52185597867942956629</td>
+<td>2.67803361303974618579</td>
+<td>1.40968879498951937812</td>
+<td>1.97999989986419677734</td>
+<td>2.79118367291892877091</td>
+<td>0.66793838483582601562</td>
+<td>0.95320635699237210581</td>
+<td>0.52185597867942956629</td>
+<td>0.52185597867942956629</td>
+<td>6.00000000000000000000</td>
+<td>[[1, 1, 1, 0, 0, 1, 0, 1, 0, 1], [0.5218559786...</td>
+<td>100.00000000000000000000</td>
+<td>0.00000000000000000000</td>
+<td>6.00000000000000000000</td>
+<td>0.52185597867942956629</td>
+<td>2.67803361303974618579</td>
+<td>2019-01-01 00:00:00+00:00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
-<td>2014-01-01T00:00:00+00:00</td>
-<td>0.450945</td>
-<td>2.553213</td>
-<td>1.479748</td>
-<td>1.98</td>
-<td>2.929900</td>
-<td>0.578882</td>
-<td>1.198123</td>
-<td>0.450945</td>
-<td>0.450945</td>
-<td>6.0</td>
-<td>[[1, 1, 0, 1, 0, 0, 2, 0, 0, 1], [0.4509453464...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>0.450945</td>
-<td>2.553213</td>
-<td>2014-01-01 00:00:00+00:00</td>
+<td data-quarto-table-cell-role="th">4</td>
+<td>2018-01-01T00:00:00+00:00</td>
+<td>0.55289134985276822132</td>
+<td>2.62495718225180807437</td>
+<td>1.42760922946317037052</td>
+<td>1.97999989986419677734</td>
+<td>2.82666613138228051127</td>
+<td>0.58242521861862195376</td>
+<td>1.08680679995756301892</td>
+<td>0.55289134985276822132</td>
+<td>0.55289134985276822132</td>
+<td>6.00000000000000000000</td>
+<td>[[1, 1, 1, 0, 0, 1, 1, 0, 0, 1], [0.5528913498...</td>
+<td>100.00000000000000000000</td>
+<td>0.00000000000000000000</td>
+<td>6.00000000000000000000</td>
+<td>0.55289134985276822132</td>
+<td>2.62495718225180807437</td>
+<td>2018-01-01 00:00:00+00:00</td>
 </tr>
 </tbody>
 </table>
@@ -8066,75 +8073,56 @@ File <span class="ansi-green-fg">&lt;timed exec&gt;:1</span>
 </div>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats(items,aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Generating stats...</code></pre>
-</div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-File <span class="ansi-green-fg">&lt;timed exec&gt;:1</span>
-
-File <span class="ansi-green-fg">~/ghgc-docs/user_data_notebooks/ghgc_utils.py:72</span>, in <span class="ansi-cyan-fg">generate_stats</span><span class="ansi-blue-fg">(items, geojson, **kwargs)</span>
-<span class="ansi-green-fg ansi-bold">     70</span> <span style="color:rgb(0,135,0)">print</span>(<span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">Generating stats...</span><span style="color:rgb(175,0,0)">'</span>)
-<span class="ansi-green-fg ansi-bold">     71</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> item <span style="font-weight:bold;color:rgb(175,0,255)">in</span> items:
-<span class="ansi-green-fg">---&gt; 72</span>     date <span style="color:rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg">[</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">"</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">properties</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">"</span><span class="ansi-yellow-bg">]</span>[<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">start_datetime</span><span style="color:rgb(175,0,0)">"</span>]  <span style="font-style:italic;color:rgb(95,135,135)"># Get the associated date</span>
-<span class="ansi-green-fg ansi-bold">     73</span>     year_month <span style="color:rgb(98,98,98)">=</span> date[:<span style="color:rgb(98,98,98)">7</span>]<span style="color:rgb(98,98,98)">.</span>replace(<span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">-</span><span style="color:rgb(175,0,0)">'</span>, <span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">'</span>)  <span style="font-style:italic;color:rgb(95,135,135)"># Convert datetime to year-month</span>
-<span class="ansi-green-fg ansi-bold">     74</span>     stats[year_month] <span style="color:rgb(98,98,98)">=</span> raster_stats(item, geojson,<span style="color:rgb(98,98,98)">*</span><span style="color:rgb(98,98,98)">*</span>kwargs)
-
-<span class="ansi-red-fg">TypeError</span>: string indices must be integers, not 'str'</pre>
-</div>
-</div>
-</div>
-<div id="cell-37" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>], <span class="co"># X-axis: sorted datetime</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>], <span class="co"># Y-axis: maximum CO₂</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>, <span class="co"># Line color</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Line width</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"CO₂ emissions"</span>, <span class="co"># Legend label</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"tC/km²/year"</span>)</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation <span class="op">=</span> <span class="dv">90</span>)</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Total methane emissions for Texas (2010-2022)"</span>)</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"datetime"</span>].iloc[<span class="dv">0</span>],           <span class="co"># X-coordinate of the text</span></span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"max"</span>].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Created by: US GHG Center"</span>,      <span class="co">#example text            </span></span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,                             <span class="co"># Font size</span></span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 10 is width, 5 is height</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by date</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">"datetime"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a stat to plot: min, mean, max, median, etc.</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>which_stat <span class="op">=</span> <span class="st">"mean"</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    [d[<span class="dv">0</span>:<span class="dv">4</span>] <span class="cf">for</span> d <span class="kw">in</span> df[<span class="st">"datetime"</span>]], <span class="co"># X-axis: sorted datetime</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    df[which_stat], <span class="co"># Y-axis: maximum CO₂</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#6AB547"</span>, <span class="co"># Line color in hex format</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>, <span class="co"># Line width</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">"</span>, <span class="co"># Legend label</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"tC/km²/year"</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>which_stat<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span>aoi_name<span class="sc">}</span><span class="ss"> (2010-2022)"</span>)</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span>([d[<span class="dv">0</span>:<span class="dv">4</span>] <span class="cf">for</span> d <span class="kw">in</span> df[<span class="st">"datetime"</span>]]),           <span class="co"># X-coordinate of the text</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    df[which_stat].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Source: </span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">"</span>,      <span class="co">#example text            </span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>,                             <span class="co"># Font size</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series</span></span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="gosat-based-ch4budget-yeargrid-v1_User_Notebook_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="gosat-based-ch4budget-yeargrid-v1_User_Notebook_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
