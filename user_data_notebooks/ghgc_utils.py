@@ -99,7 +99,7 @@ def generate_stats(items,geojson,**kwargs):
                 date = item.properties["start_datetime"]
             except KeyError:
                 date = item.properties["datetime"]
-        year_month = date[:7].replace('-', '')  # Convert datetime to year-month
+        year_month = date[:10].replace('-', '')  # Convert datetime to year-month
         stats[year_month] = raster_stats(item, geojson,**kwargs)
     df = clean_stats(stats)
     print('Done!')
