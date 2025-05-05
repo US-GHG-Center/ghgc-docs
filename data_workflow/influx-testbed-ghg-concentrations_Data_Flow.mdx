@@ -1,0 +1,52 @@
+# Workflow Instructions for Downloading and Processing INFLUX ghg concentration data
+
+> **Note:** This data is processed on-demand and does not run on a schedule.
+
+---
+
+## Step 1: Run the Jupyter Notebook to convert .dat to .csv
+
+Execute the notebook `/cog_transformation/influx-testbed-ghg-concentrations.ipynb` to download Influx tower data for all available sites:
+
+This notebook will download influx tower data for all available sites
+
+🔹 Ensure that `download_and_extract_zip_files()` and `filter_dict()` functions are un-commented in the last block<br />
+🔹 Must have the `UrbanTestBed-Metadata - INFLUX.csv` located within the `/cog_transformation` directory to process data<br />
+🔹Outputs are saved into `/cog_transformation/output/PSU_INFLUX_INSITU`<br />
+
+
+## Step 2: Upload `/cog_transformation/output/PSU_INFLUX_INSITU/*.csv` into AWS S3 Bucket 🪣
+
+🔹 🪣 Bucket info: ghgc-data-store-develop/transformed_csv/NIST_INFLUX
+
+
+
+## Step 3: Login to [sm2a.dev.ghg.center](https://sm2a.dev.ghg.center/) and run veda_ingest_vector Airflow DAG 💨. See below for manual triggering config.
+
+🔹 veda_ingest_vector will find the items in the S3 Bucket 🪣, convert to proper format, and ingest 
+
+Parameters for Manual Triggering of Collection (copy and paste config below)
+{
+    "bucket": "ghgc-data-store-develop",
+    "collection": "",
+    "extra_flags": [
+        "-lco",
+        "OVERWRITE=YES",
+        "-overwrite",
+        "-oo",
+        "X_POSSIBLE_NAMES=longitude",
+        "-oo",
+        "Y_POSSIBLE_NAMES=latitude"
+    ],
+    "filename_regex": ".*csv$",
+    "id_template": "{}",
+    "invalidate_cloudfront": true,
+    "prefix": "transformed_csv/NIST_INFLUX/",
+    "source_projection": "EPSG:4326",
+    "target_projection": "EPSG:4326",
+    "vector": true
+}
+
+> **Note:** Leave `collection` blank in the config file. The current process (with `collection` left blank), allows for each site to have its own CSV file based on the site number.
+
+
