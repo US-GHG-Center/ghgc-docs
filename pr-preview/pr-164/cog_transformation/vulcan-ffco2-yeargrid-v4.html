@@ -1138,7 +1138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>OVERVIEW_RESAMPLING <span class="op">=</span> <span class="st">'average'</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> glob.glob(<span class="st">"reproj2/*.tif"</span>):</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="ss">f"test/</span><span class="sc">{</span><span class="bu">file</span><span class="sc">.</span>split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="ss">f"output/</span><span class="sc">{</span><span class="bu">file</span><span class="sc">.</span>split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a temporary file to hold the COG</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> tempfile.NamedTemporaryFile(suffix<span class="op">=</span><span class="st">'.tif'</span>, delete<span class="op">=</span><span class="va">False</span>) <span class="im">as</span> temp_file:       </span>
@@ -1157,7 +1157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="4da3a099-bf4c-4210-87a4-ee5934732303" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># validation for final data with overviews - overall calculation</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>overall_final<span class="op">=</span>[]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> glob.glob(<span class="st">"test/*.tif"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> glob.glob(<span class="st">"output/*.tif"</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>[<span class="st">'filename'</span>, <span class="st">'min(transformed)'</span>, <span class="st">'max(transformed)'</span>, <span class="st">'mean(transformed)'</span>, <span class="st">'std(transformed)'</span>])</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> files:</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> rasterio.<span class="bu">open</span>(<span class="bu">file</span>) <span class="im">as</span> src:</span>
@@ -1176,8 +1176,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        max_val <span class="op">=</span> np.nanmax(data)</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        mean_val <span class="op">=</span> np.nanmean(data)</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> np.nansum(data) </span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        stats <span class="op">=</span> [output_tif, min_val, max_val, mean_val, std_val]</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        df2.loc[<span class="bu">len</span>(df2)] <span class="op">=</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        std_val <span class="op">=</span> np.nanstd(data)  </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        stats <span class="op">=</span> [output_tif, min_val, max_val, mean_val, std_val]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        df2.loc[<span class="bu">len</span>(df2)] <span class="op">=</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="ad2f7d75-a883-4071-8541-0635fc217f62" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># validation for final data (with overviews) - overall calculation</span></span>
