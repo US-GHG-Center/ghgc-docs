@@ -1,4 +1,6 @@
 import xarray as xr
+from typing import Dict, List, Optional
+
 
 def odiac_ffco2_monthgrid_v2024_transformation(file_obj, name: str, nodata: int) -> Dict[str, xr.DataArray]:
     """Process a single ODIAC tif file from S3File object and return transformed DataArray."""
