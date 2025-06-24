@@ -864,25 +864,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Code used to transform <a href="https://daac.ornl.gov/CMS/guides/CMS_Global_Map_Mangrove_Canopy.html">Global Mangrove Distribution, Aboveground Biomass, and Canopy Height</a> from .tif to Cloud Optimized Geotiff.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<p>-Author: Kyle Lesinger</p>
+<div id="cell-1" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xarray</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rasterio</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rioxarray <span class="im">as</span> rxr</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dateutil.relativedelta <span class="im">import</span> relativedelta</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing <span class="im">as</span> mp</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.warp <span class="im">import</span> calculate_default_transform, reproject, Resampling</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> botocore</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>os.getcwd()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> boto3</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rasterio</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rioxarray <span class="im">as</span> rxr</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.warp <span class="im">import</span> calculate_default_transform, reproject, Resampling</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> botocore</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>'/Users/klesinger/Library/CloudStorage/GoogleDrive-kdl0040@uah.edu/My Drive/INGEST_DOCS/coastal-zones'</code></pre>
 </div>
@@ -903,8 +897,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>AWS_SECRET_ACCESS_KEY<span class="op">=</span><span class="st">''</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>AWS_SESSION_TOKEN<span class="op">=</span><span class="st">''</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>session <span class="op">=</span> boto3.session.Session(profile_name<span class="op">=</span><span class="st">'ghgc-smce'</span>)</span>
+<p>Approach</p>
+<p>1.) Read .tif files from S3 bucket 2.) Convert to COGs on local drive 3.) Move converted COGs to their final S3 location</p>
+<div id="cell-5" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>session <span class="op">=</span> boto3.session.Session(profile_name<span class="op">=</span><span class="st">''</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>s3_client <span class="op">=</span> boto3.client(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'s3'</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    aws_access_key_id<span class="op">=</span>AWS_ACCESS_KEY_ID,</span>
@@ -921,546 +917,147 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> s3fs.S3FileSystem()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_s3_keys(bucket, model_name, ext):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get a list of all keys in an S3 bucket."""</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> []</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> {<span class="st">"Bucket"</span>: bucket, <span class="st">"Prefix"</span>: <span class="ss">f"</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">/"</span>}</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> s3_client.list_objects_v2(<span class="op">**</span>kwargs)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> obj[<span class="st">"Key"</span>].endswith(ext) <span class="kw">and</span> <span class="st">"historical"</span> <span class="kw">not</span> <span class="kw">in</span> obj[<span class="st">"Key"</span>]:</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                keys.append(obj[<span class="st">"Key"</span>])</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            kwargs[<span class="st">"ContinuationToken"</span>] <span class="op">=</span> resp[<span class="st">"NextContinuationToken"</span>]</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">KeyError</span>:</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> keys</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> get_all_s3_keys(raw_data_bucket, raw_data_prefix, <span class="st">".tif"</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>keys</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>['coastal-observatory/data/Mangrove_agb_AndamanAndNicobar.tif',
- 'coastal-observatory/data/Mangrove_agb_Angola.tif',
- 'coastal-observatory/data/Mangrove_agb_Anguilla.tif',
- 'coastal-observatory/data/Mangrove_agb_AntiguaAndBarbuda.tif',
- 'coastal-observatory/data/Mangrove_agb_Aruba.tif',
- 'coastal-observatory/data/Mangrove_agb_Australia.tif',
- 'coastal-observatory/data/Mangrove_agb_Bahamas.tif',
- 'coastal-observatory/data/Mangrove_agb_Bahrain.tif',
- 'coastal-observatory/data/Mangrove_agb_Bangladesh.tif',
- 'coastal-observatory/data/Mangrove_agb_Barbados.tif',
- 'coastal-observatory/data/Mangrove_agb_Belize.tif',
- 'coastal-observatory/data/Mangrove_agb_Benin.tif',
- 'coastal-observatory/data/Mangrove_agb_Brazil.tif',
- 'coastal-observatory/data/Mangrove_agb_BritishVirginIslands.tif',
- 'coastal-observatory/data/Mangrove_agb_Brunei.tif',
- 'coastal-observatory/data/Mangrove_agb_Cambodia.tif',
- 'coastal-observatory/data/Mangrove_agb_Cameroon.tif',
- 'coastal-observatory/data/Mangrove_agb_CarribeanCaymanIslands.tif',
- 'coastal-observatory/data/Mangrove_agb_China.tif',
- 'coastal-observatory/data/Mangrove_agb_Colombia.tif',
- 'coastal-observatory/data/Mangrove_agb_Comoros.tif',
- 'coastal-observatory/data/Mangrove_agb_CostaRica.tif',
- 'coastal-observatory/data/Mangrove_agb_CoteDivoire.tif',
- 'coastal-observatory/data/Mangrove_agb_Cuba.tif',
- 'coastal-observatory/data/Mangrove_agb_DemocraticRepublicOfCongo.tif',
- 'coastal-observatory/data/Mangrove_agb_Djibouti.tif',
- 'coastal-observatory/data/Mangrove_agb_DominicanRepublic.tif',
- 'coastal-observatory/data/Mangrove_agb_EcuadorWithGalapagos.tif',
- 'coastal-observatory/data/Mangrove_agb_Egypt.tif',
- 'coastal-observatory/data/Mangrove_agb_ElSalvador.tif',
- 'coastal-observatory/data/Mangrove_agb_EquatorialGuinea.tif',
- 'coastal-observatory/data/Mangrove_agb_Eritrea.tif',
- 'coastal-observatory/data/Mangrove_agb_EuropaIsland.tif',
- 'coastal-observatory/data/Mangrove_agb_Fiji.tif',
- 'coastal-observatory/data/Mangrove_agb_Fiji2.tif',
- 'coastal-observatory/data/Mangrove_agb_FrenchGuyana.tif',
- 'coastal-observatory/data/Mangrove_agb_FrenchPolynesia.tif',
- 'coastal-observatory/data/Mangrove_agb_Gabon.tif',
- 'coastal-observatory/data/Mangrove_agb_Gambia.tif',
- 'coastal-observatory/data/Mangrove_agb_Ghana.tif',
- 'coastal-observatory/data/Mangrove_agb_Grenada.tif',
- 'coastal-observatory/data/Mangrove_agb_Guadeloupe.tif',
- 'coastal-observatory/data/Mangrove_agb_Guam.tif',
- 'coastal-observatory/data/Mangrove_agb_Guatemala.tif',
- 'coastal-observatory/data/Mangrove_agb_Guinea.tif',
- 'coastal-observatory/data/Mangrove_agb_GuineaBissau.tif',
- 'coastal-observatory/data/Mangrove_agb_Guyana.tif',
- 'coastal-observatory/data/Mangrove_agb_Haiti.tif',
- 'coastal-observatory/data/Mangrove_agb_Hawaii.tif',
- 'coastal-observatory/data/Mangrove_agb_Honduras.tif',
- 'coastal-observatory/data/Mangrove_agb_HongKong.tif',
- 'coastal-observatory/data/Mangrove_agb_India.tif',
- 'coastal-observatory/data/Mangrove_agb_Indonesia.tif',
- 'coastal-observatory/data/Mangrove_agb_Iran.tif',
- 'coastal-observatory/data/Mangrove_agb_Jamaica.tif',
- 'coastal-observatory/data/Mangrove_agb_Japan.tif',
- 'coastal-observatory/data/Mangrove_agb_Kenya.tif',
- 'coastal-observatory/data/Mangrove_agb_Liberia.tif',
- 'coastal-observatory/data/Mangrove_agb_Macau.tif',
- 'coastal-observatory/data/Mangrove_agb_Madagascar.tif',
- 'coastal-observatory/data/Mangrove_agb_Malaysia.tif',
- 'coastal-observatory/data/Mangrove_agb_Martinique.tif',
- 'coastal-observatory/data/Mangrove_agb_Mauritania.tif',
- 'coastal-observatory/data/Mangrove_agb_Mayotte.tif',
- 'coastal-observatory/data/Mangrove_agb_Mexico.tif',
- 'coastal-observatory/data/Mangrove_agb_Micronesia.tif',
- 'coastal-observatory/data/Mangrove_agb_Mozambique.tif',
- 'coastal-observatory/data/Mangrove_agb_Myanmar.tif',
- 'coastal-observatory/data/Mangrove_agb_NewCaledonia.tif',
- 'coastal-observatory/data/Mangrove_agb_Newzealand.tif',
- 'coastal-observatory/data/Mangrove_agb_Nicaragua.tif',
- 'coastal-observatory/data/Mangrove_agb_Nigeria.tif',
- 'coastal-observatory/data/Mangrove_agb_NorthernMarianaIslands.tif',
- 'coastal-observatory/data/Mangrove_agb_Oman.tif',
- 'coastal-observatory/data/Mangrove_agb_Pakistan.tif',
- 'coastal-observatory/data/Mangrove_agb_Palau.tif',
- 'coastal-observatory/data/Mangrove_agb_Panama.tif',
- 'coastal-observatory/data/Mangrove_agb_PapuaNewGuinea.tif',
- 'coastal-observatory/data/Mangrove_agb_Peru.tif',
- 'coastal-observatory/data/Mangrove_agb_Philipines.tif',
- 'coastal-observatory/data/Mangrove_agb_PuertoRico.tif',
- 'coastal-observatory/data/Mangrove_agb_Qatar.tif',
- 'coastal-observatory/data/Mangrove_agb_ReunionAndMauritius.tif',
- 'coastal-observatory/data/Mangrove_agb_SaintKittsAndNevis.tif',
- 'coastal-observatory/data/Mangrove_agb_SaintLucia.tif',
- 'coastal-observatory/data/Mangrove_agb_SaintVincentAndTheGrenadines.tif',
- 'coastal-observatory/data/Mangrove_agb_Samoa.tif',
- 'coastal-observatory/data/Mangrove_agb_SaudiArabia.tif',
- 'coastal-observatory/data/Mangrove_agb_Senegal.tif',
- 'coastal-observatory/data/Mangrove_agb_Seychelles.tif',
- 'coastal-observatory/data/Mangrove_agb_SierraLeone.tif',
- 'coastal-observatory/data/Mangrove_agb_Singapore.tif',
- 'coastal-observatory/data/Mangrove_agb_SolomonIslands.tif',
- 'coastal-observatory/data/Mangrove_agb_Somalia.tif',
- 'coastal-observatory/data/Mangrove_agb_Somalia2.tif',
- 'coastal-observatory/data/Mangrove_agb_Soudan.tif',
- 'coastal-observatory/data/Mangrove_agb_SouthAfrica.tif',
- 'coastal-observatory/data/Mangrove_agb_SriLanka.tif',
- 'coastal-observatory/data/Mangrove_agb_Suriname.tif',
- 'coastal-observatory/data/Mangrove_agb_Taiwan.tif',
- 'coastal-observatory/data/Mangrove_agb_Tanzania.tif',
- 'coastal-observatory/data/Mangrove_agb_Thailand.tif',
- 'coastal-observatory/data/Mangrove_agb_TimorLeste.tif',
- 'coastal-observatory/data/Mangrove_agb_Togo.tif',
- 'coastal-observatory/data/Mangrove_agb_Tonga.tif',
- 'coastal-observatory/data/Mangrove_agb_TrinidadAndTobago.tif',
- 'coastal-observatory/data/Mangrove_agb_TurksAndCaicosIslands.tif',
- 'coastal-observatory/data/Mangrove_agb_Tuvalu.tif',
- 'coastal-observatory/data/Mangrove_agb_UnitedArabEmirates.tif',
- 'coastal-observatory/data/Mangrove_agb_UnitedStates.tif',
- 'coastal-observatory/data/Mangrove_agb_Vanuatu.tif',
- 'coastal-observatory/data/Mangrove_agb_Venezuela.tif',
- 'coastal-observatory/data/Mangrove_agb_Vietnam.tif',
- 'coastal-observatory/data/Mangrove_agb_VirginIslandsUs.tif',
- 'coastal-observatory/data/Mangrove_agb_WallisAndFutuna.tif',
- 'coastal-observatory/data/Mangrove_agb_Yemen.tif',
- 'coastal-observatory/data/Mangrove_hba95_AndamanAndNicobar.tif',
- 'coastal-observatory/data/Mangrove_hba95_Angola.tif',
- 'coastal-observatory/data/Mangrove_hba95_Anguilla.tif',
- 'coastal-observatory/data/Mangrove_hba95_AntiguaAndBarbuda.tif',
- 'coastal-observatory/data/Mangrove_hba95_Aruba.tif',
- 'coastal-observatory/data/Mangrove_hba95_Australia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Bahamas.tif',
- 'coastal-observatory/data/Mangrove_hba95_Bahrain.tif',
- 'coastal-observatory/data/Mangrove_hba95_Bangladesh.tif',
- 'coastal-observatory/data/Mangrove_hba95_Barbados.tif',
- 'coastal-observatory/data/Mangrove_hba95_Belize.tif',
- 'coastal-observatory/data/Mangrove_hba95_Benin.tif',
- 'coastal-observatory/data/Mangrove_hba95_Brazil.tif',
- 'coastal-observatory/data/Mangrove_hba95_BritishVirginIslands.tif',
- 'coastal-observatory/data/Mangrove_hba95_Brunei.tif',
- 'coastal-observatory/data/Mangrove_hba95_Cambodia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Cameroon.tif',
- 'coastal-observatory/data/Mangrove_hba95_CarribeanCaymanIslands.tif',
- 'coastal-observatory/data/Mangrove_hba95_China.tif',
- 'coastal-observatory/data/Mangrove_hba95_Colombia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Comoros.tif',
- 'coastal-observatory/data/Mangrove_hba95_CostaRica.tif',
- 'coastal-observatory/data/Mangrove_hba95_Cote.tif',
- 'coastal-observatory/data/Mangrove_hba95_CotedIvoire.tif',
- 'coastal-observatory/data/Mangrove_hba95_Cuba.tif',
- 'coastal-observatory/data/Mangrove_hba95_DemocraticRepublicOfCongo.tif',
- 'coastal-observatory/data/Mangrove_hba95_Djibouti.tif',
- 'coastal-observatory/data/Mangrove_hba95_DominicanRepublic.tif',
- 'coastal-observatory/data/Mangrove_hba95_EcuadorWithGalapagos.tif',
- 'coastal-observatory/data/Mangrove_hba95_Egypt.tif',
- 'coastal-observatory/data/Mangrove_hba95_ElSalvador.tif',
- 'coastal-observatory/data/Mangrove_hba95_EquatorialGuinea.tif',
- 'coastal-observatory/data/Mangrove_hba95_Eritrea.tif',
- 'coastal-observatory/data/Mangrove_hba95_EuropaIsland.tif',
- 'coastal-observatory/data/Mangrove_hba95_Fiji.tif',
- 'coastal-observatory/data/Mangrove_hba95_Fiji2.tif',
- 'coastal-observatory/data/Mangrove_hba95_FrenchGuiana.tif',
- 'coastal-observatory/data/Mangrove_hba95_FrenchPolynesia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Gabon.tif',
- 'coastal-observatory/data/Mangrove_hba95_Gambia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Ghana.tif',
- 'coastal-observatory/data/Mangrove_hba95_Grenada.tif',
- 'coastal-observatory/data/Mangrove_hba95_Guadeloupe.tif',
- 'coastal-observatory/data/Mangrove_hba95_Guam.tif',
- 'coastal-observatory/data/Mangrove_hba95_Guatemala.tif',
- 'coastal-observatory/data/Mangrove_hba95_Guinea.tif',
- 'coastal-observatory/data/Mangrove_hba95_GuineaBissau.tif',
- 'coastal-observatory/data/Mangrove_hba95_Guyana.tif',
- 'coastal-observatory/data/Mangrove_hba95_Haiti.tif',
- 'coastal-observatory/data/Mangrove_hba95_Hawaii.tif',
- 'coastal-observatory/data/Mangrove_hba95_Honduras.tif',
- 'coastal-observatory/data/Mangrove_hba95_HongKong.tif',
- 'coastal-observatory/data/Mangrove_hba95_India.tif',
- 'coastal-observatory/data/Mangrove_hba95_Indonesia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Iran.tif',
- 'coastal-observatory/data/Mangrove_hba95_Jamaica.tif',
- 'coastal-observatory/data/Mangrove_hba95_Japan.tif',
- 'coastal-observatory/data/Mangrove_hba95_Kenya.tif',
- 'coastal-observatory/data/Mangrove_hba95_Liberia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Macau.tif',
- 'coastal-observatory/data/Mangrove_hba95_Madagascar.tif',
- 'coastal-observatory/data/Mangrove_hba95_Malaysia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Martinique.tif',
- 'coastal-observatory/data/Mangrove_hba95_Mauritania.tif',
- 'coastal-observatory/data/Mangrove_hba95_Mayotte.tif',
- 'coastal-observatory/data/Mangrove_hba95_Mexico.tif',
- 'coastal-observatory/data/Mangrove_hba95_Micronesia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Mozambique.tif',
- 'coastal-observatory/data/Mangrove_hba95_Myanmar.tif',
- 'coastal-observatory/data/Mangrove_hba95_NewCaledonia.tif',
- 'coastal-observatory/data/Mangrove_hba95_NewZealand.tif',
- 'coastal-observatory/data/Mangrove_hba95_Nicaragua.tif',
- 'coastal-observatory/data/Mangrove_hba95_Nigeria.tif',
- 'coastal-observatory/data/Mangrove_hba95_NorthernMarianaIslands.tif',
- 'coastal-observatory/data/Mangrove_hba95_Oman.tif',
- 'coastal-observatory/data/Mangrove_hba95_Pakistan.tif',
- 'coastal-observatory/data/Mangrove_hba95_Palau.tif',
- 'coastal-observatory/data/Mangrove_hba95_Panama.tif',
- 'coastal-observatory/data/Mangrove_hba95_PapuaNewGuinea.tif',
- 'coastal-observatory/data/Mangrove_hba95_Peru.tif',
- 'coastal-observatory/data/Mangrove_hba95_Philipines.tif',
- 'coastal-observatory/data/Mangrove_hba95_PuertoRico.tif',
- 'coastal-observatory/data/Mangrove_hba95_Qatar.tif',
- 'coastal-observatory/data/Mangrove_hba95_ReunionAndMauritius.tif',
- 'coastal-observatory/data/Mangrove_hba95_SaintKittsAndNevis.tif',
- 'coastal-observatory/data/Mangrove_hba95_SaintLucia.tif',
- 'coastal-observatory/data/Mangrove_hba95_SaintVincentAndTheGrenadines.tif',
- 'coastal-observatory/data/Mangrove_hba95_Samoa.tif',
- 'coastal-observatory/data/Mangrove_hba95_SaudiArabia.tif',
- 'coastal-observatory/data/Mangrove_hba95_Senegal.tif',
- 'coastal-observatory/data/Mangrove_hba95_Seychelles.tif',
- 'coastal-observatory/data/Mangrove_hba95_SierraLeone.tif',
- 'coastal-observatory/data/Mangrove_hba95_Singapore.tif',
- 'coastal-observatory/data/Mangrove_hba95_SolomonIslands.tif',
- 'coastal-observatory/data/Mangrove_hba95_Somalia.tif',
- 'coastal-observatory/data/Mangrove_hba95_SouthAfrica.tif',
- 'coastal-observatory/data/Mangrove_hba95_SriLanka.tif',
- 'coastal-observatory/data/Mangrove_hba95_Sudan.tif',
- 'coastal-observatory/data/Mangrove_hba95_Suriname.tif',
- 'coastal-observatory/data/Mangrove_hba95_Taiwan.tif',
- 'coastal-observatory/data/Mangrove_hba95_Tanzania.tif',
- 'coastal-observatory/data/Mangrove_hba95_Thailand.tif',
- 'coastal-observatory/data/Mangrove_hba95_TimorLeste.tif',
- 'coastal-observatory/data/Mangrove_hba95_Togo.tif',
- 'coastal-observatory/data/Mangrove_hba95_Tonga.tif',
- 'coastal-observatory/data/Mangrove_hba95_TrinidadAndTobago.tif',
- 'coastal-observatory/data/Mangrove_hba95_TurksAndCaicosIslands.tif',
- 'coastal-observatory/data/Mangrove_hba95_Tuvalu.tif',
- 'coastal-observatory/data/Mangrove_hba95_UnitedArabEmirates.tif',
- 'coastal-observatory/data/Mangrove_hba95_UnitedStates.tif',
- 'coastal-observatory/data/Mangrove_hba95_Vanuatu.tif',
- 'coastal-observatory/data/Mangrove_hba95_Venezuela.tif',
- 'coastal-observatory/data/Mangrove_hba95_Vietnam.tif',
- 'coastal-observatory/data/Mangrove_hba95_VirginIslandsUs.tif',
- 'coastal-observatory/data/Mangrove_hba95_WallisAndFutuna.tif',
- 'coastal-observatory/data/Mangrove_hba95_Yemen.tif',
- 'coastal-observatory/data/Mangrove_hmax95_AndamanAndNicobar.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Angola.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Anguilla.tif',
- 'coastal-observatory/data/Mangrove_hmax95_AntiguaAndBarbuda.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Aruba.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Australia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Bahamas.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Bahrain.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Bangladesh.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Barbados.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Belize.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Benin.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Brazil.tif',
- 'coastal-observatory/data/Mangrove_hmax95_BritishVirginIslands.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Brunei.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Cambodia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Cameroon.tif',
- 'coastal-observatory/data/Mangrove_hmax95_CarribeanCaymanIslands.tif',
- 'coastal-observatory/data/Mangrove_hmax95_China.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Colombia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Comoros.tif',
- 'coastal-observatory/data/Mangrove_hmax95_CostaRica.tif',
- 'coastal-observatory/data/Mangrove_hmax95_CoteDivoire.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Cuba.tif',
- 'coastal-observatory/data/Mangrove_hmax95_DemocraticRepublicOfCongo.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Djibouti.tif',
- 'coastal-observatory/data/Mangrove_hmax95_DominicanRepublic.tif',
- 'coastal-observatory/data/Mangrove_hmax95_EcuadorWithGalapagos.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Egypt.tif',
- 'coastal-observatory/data/Mangrove_hmax95_ElSalvador.tif',
- 'coastal-observatory/data/Mangrove_hmax95_EquatorialGuinea.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Eritrea.tif',
- 'coastal-observatory/data/Mangrove_hmax95_EuropaIsland.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Fiji.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Fiji2.tif',
- 'coastal-observatory/data/Mangrove_hmax95_FrenchGuyana.tif',
- 'coastal-observatory/data/Mangrove_hmax95_FrenchPolynesia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Gabon.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Gambia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Ghana.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Grenada.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Guadeloupe.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Guam.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Guatemala.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Guinea.tif',
- 'coastal-observatory/data/Mangrove_hmax95_GuineaBissau.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Guyana.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Haiti.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Hawaii.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Honduras.tif',
- 'coastal-observatory/data/Mangrove_hmax95_HongKong.tif',
- 'coastal-observatory/data/Mangrove_hmax95_India.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Indonesia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Iran.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Jamaica.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Japan.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Kenya.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Liberia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Macau.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Madagascar.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Malaysia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Martinique.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Mauritania.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Mayotte.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Mexico.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Micronesia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Mozambique.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Myanmar.tif',
- 'coastal-observatory/data/Mangrove_hmax95_NewCaledonia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Newzealand.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Nicaragua.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Nigeria.tif',
- 'coastal-observatory/data/Mangrove_hmax95_NorthernMarianaIslands.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Oman.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Pakistan.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Palau.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Panama.tif',
- 'coastal-observatory/data/Mangrove_hmax95_PapuaNewGuinea.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Peru.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Philipines.tif',
- 'coastal-observatory/data/Mangrove_hmax95_PuertoRico.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Qatar.tif',
- 'coastal-observatory/data/Mangrove_hmax95_ReunionAndMauritius.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SaintKittsAndNevis.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SaintLucia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SaintVincentAndTheGrenadines.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Samoa.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SaudiArabia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Senegal.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Seychelles.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SierraLeone.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Singapore.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SolomonIslands.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Somalia.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Somalia2.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Soudan.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SouthAfrica.tif',
- 'coastal-observatory/data/Mangrove_hmax95_SriLanka.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Suriname.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Taiwan.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Tanzania.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Thailand.tif',
- 'coastal-observatory/data/Mangrove_hmax95_TimorLeste.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Togo.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Tonga.tif',
- 'coastal-observatory/data/Mangrove_hmax95_TrinidadAndTobago.tif',
- 'coastal-observatory/data/Mangrove_hmax95_TurksAndCaicosIslands.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Tuvalu.tif',
- 'coastal-observatory/data/Mangrove_hmax95_UnitedArabEmirates.tif',
- 'coastal-observatory/data/Mangrove_hmax95_UnitedStates.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Vanuatu.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Venezuela.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Vietnam.tif',
- 'coastal-observatory/data/Mangrove_hmax95_VirginIslandsUs.tif',
- 'coastal-observatory/data/Mangrove_hmax95_WallisAndFutuna.tif',
- 'coastal-observatory/data/Mangrove_hmax95_Yemen.tif']</code></pre>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Based on visual inspection of the dataset, this will be inserted into the filename</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>start_str <span class="op">=</span> pd.to_datetime(<span class="st">"2000-01-01"</span>).date().isoformat()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>end_str <span class="op">=</span> pd.to_datetime(<span class="st">"2009-12-31"</span>).date().isoformat()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div id="cell-7" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_s3_keys(bucket, model_name, ext):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get a list of all keys in an S3 bucket."""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> []</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> {<span class="st">"Bucket"</span>: bucket, <span class="st">"Prefix"</span>: <span class="ss">f"</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">/"</span>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        resp <span class="op">=</span> s3_client.list_objects_v2(<span class="op">**</span>kwargs)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> obj <span class="kw">in</span> resp[<span class="st">"Contents"</span>]:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> obj[<span class="st">"Key"</span>].endswith(ext) <span class="kw">and</span> <span class="st">"historical"</span> <span class="kw">not</span> <span class="kw">in</span> obj[<span class="st">"Key"</span>]:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                keys.append(obj[<span class="st">"Key"</span>])</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            kwargs[<span class="st">"ContinuationToken"</span>] <span class="op">=</span> resp[<span class="st">"NextContinuationToken"</span>]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">KeyError</span>:</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> keys</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> get_all_s3_keys(raw_data_bucket, raw_data_prefix, <span class="st">".tif"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>keys</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Based on visual inspection of the dataset</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>start_str <span class="op">=</span> pd.to_datetime(<span class="st">"2000-01-01"</span>).date().isoformat()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>end_str <span class="op">=</span> pd.to_datetime(<span class="st">"2009-12-31"</span>).date().isoformat()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-8" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_cog_filename(f, start_str, end_str):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> Path(f).stem</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example: "Mangrove_agb_AndamanAndNicobar.tif" -&gt; "Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example: "Mangrove_hmax95_Yemen.tif" -&gt; "Mangrove_hmax95_Yemen_2000-01-01day_2009-12-31.tif"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simply append the date range to the stem</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>f<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>start_str<span class="sc">}</span><span class="ss">day_</span><span class="sc">{</span>end_str<span class="sc">}</span><span class="ss">.tif"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cog_filename</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_cog_filename(f, start_str, end_str):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> Path(f).stem</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example: "Mangrove_agb_AndamanAndNicobar.tif" -&gt; "Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif"</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example: "Mangrove_hmax95_Yemen.tif" -&gt; "Mangrove_hmax95_Yemen_2000-01-01day_2009-12-31.tif"</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simply append the date range to the stem</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>f<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>start_str<span class="sc">}</span><span class="ss">day_</span><span class="sc">{</span>end_str<span class="sc">}</span><span class="ss">.tif"</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cog_filename</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-9" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define COG profile for rasterio</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>COG_PROFILE <span class="op">=</span> {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driver"</span>: <span class="st">"COG"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define COG profile for rasterio</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>COG_PROFILE <span class="op">=</span> {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driver"</span>: <span class="st">"COG"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-9" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert_to_proper_CRS_and_cogify(name, cog_filename, cog_data_bucket, cog_data_prefix):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    s3_key <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_data_prefix<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    reproject_filename <span class="op">=</span> <span class="ss">f"reproj/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a temporary file for the downloaded S3 object</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    temp_input_file <span class="op">=</span> <span class="ss">f"temp_</span><span class="sc">{</span>os<span class="sc">.</span>path<span class="sc">.</span>basename(name)<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip everything if the COG already exists in S3</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        s3_client.head_object(Bucket<span class="op">=</span>cog_data_bucket, Key<span class="op">=</span>s3_key)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[SKIP] s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss"> already exists"</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> botocore.exceptions.ClientError <span class="im">as</span> e:</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        error_code <span class="op">=</span> e.response[<span class="st">"Error"</span>][<span class="st">"Code"</span>]</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If it's a 404, object doesn't exist → proceed</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If it's 403 (Forbidden), we don't have permission to check, so proceed anyway</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> error_code <span class="kw">not</span> <span class="kw">in</span> [<span class="st">"404"</span>, <span class="st">"403"</span>]:</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For 403, we'll try to upload anyway and let it fail if the object exists</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Download the file from S3 first</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[DOWNLOAD] Downloading </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> from S3..."</span>)</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        s3_client.download_file(raw_data_bucket, name, temp_input_file)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Reproject using the local file</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[REPROJECT] </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> → </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss"> (EPSG:4326)"</span>)</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> rasterio.<span class="bu">open</span>(temp_input_file) <span class="im">as</span> src:</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>            dst_crs <span class="op">=</span> <span class="st">"EPSG:4326"</span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>            transform, width, height <span class="op">=</span> calculate_default_transform(</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>                src.crs, dst_crs, src.width, src.height, <span class="op">*</span>src.bounds</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>            kwargs <span class="op">=</span> src.meta.copy()</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>            kwargs.update({</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>                <span class="st">"driver"</span>: <span class="st">"COG"</span>,                 <span class="co"># write a COG instead of plain GTiff</span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>                <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>,           <span class="co"># or "LZW"</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>                <span class="st">"crs"</span>: dst_crs,</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>                <span class="st">"transform"</span>: transform,</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>                <span class="st">"width"</span>: width,</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>                <span class="st">"height"</span>: height</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> rasterio.<span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss">"</span>, <span class="st">"w"</span>, <span class="op">**</span>kwargs) <span class="im">as</span> dst:</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                reproject(</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                    source<span class="op">=</span>rasterio.band(src, <span class="dv">1</span>),</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>                    destination<span class="op">=</span>rasterio.band(dst, <span class="dv">1</span>),</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>                    src_transform<span class="op">=</span>src.transform,</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>                    src_crs<span class="op">=</span>src.crs,</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>                    dst_transform<span class="op">=</span>transform,</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>                    dst_crs<span class="op">=</span>dst_crs,</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>                    resampling<span class="op">=</span>Resampling.nearest,</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>                    wrapdateline<span class="op">=</span><span class="va">True</span></span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3) COGify &amp; upload</span></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[COGIFY] </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss"> → s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>        ds <span class="op">=</span> rxr.open_rasterio(reproject_filename)</span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>        ds <span class="op">=</span> ds.rename({<span class="st">"y"</span>: <span class="st">"lat"</span>, <span class="st">"x"</span>: <span class="st">"lon"</span>})</span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>        ds.rio.set_spatial_dims(<span class="st">"lon"</span>, <span class="st">"lat"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>        ds.rio.write_nodata(<span class="op">-</span><span class="dv">9999</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> tempfile.NamedTemporaryFile() <span class="im">as</span> tmp:</span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>            ds.rio.to_raster(tmp.name, <span class="op">**</span>COG_PROFILE)</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>            s3_client.upload_file(</span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>                Filename <span class="op">=</span> tmp.name, </span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>                Bucket <span class="op">=</span> cog_data_bucket, </span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>                Key <span class="op">=</span> s3_key)</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[SUCCESS] Uploaded to s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] Failed to process </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">str</span>(e)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span></span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">finally</span>:</span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Clean up temporary input file</span></span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(temp_input_file):</span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>            os.remove(temp_input_file)</span>
-<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[CLEANUP] removed temporary input file </span><span class="sc">{</span>temp_input_file<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Clean up local intermediate</span></span>
-<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(reproject_filename):</span>
-<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>            os.remove(reproject_filename)</span>
-<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[CLEANUP] removed intermediate </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-10" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"reproj"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> <span class="bu">sorted</span>(keys):</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> create_cog_filename(name, start_str, end_str)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cog_filename)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    convert_to_proper_CRS_and_cogify(name, cog_filename, cog_data_bucket, cog_data_prefix)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_AndamanAndNicobar.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_AndamanAndNicobar.tif → reproj/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif (EPSG:4326)
-[COGIFY] reproj/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
-[SUCCESS] Uploaded to s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
-[CLEANUP] removed temporary input file temp_Mangrove_agb_AndamanAndNicobar.tif
-[CLEANUP] removed intermediate reproj/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
-Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_Angola.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_Angola.tif → reproj/Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif (EPSG:4326)
-[COGIFY] reproj/Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif
-[SUCCESS] Uploaded to s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif
-[CLEANUP] removed temporary input file temp_Mangrove_agb_Angola.tif
-[CLEANUP] removed intermediate reproj/Mangrove_agb_Angola_2000-01-01day_2009-12-31.tif
-Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_Anguilla.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_Anguilla.tif → reproj/Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif (EPSG:4326)
-[COGIFY] reproj/Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif
-[SUCCESS] Uploaded to s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif
-[CLEANUP] removed temporary input file temp_Mangrove_agb_Anguilla.tif
-[CLEANUP] removed intermediate reproj/Mangrove_agb_Anguilla_2000-01-01day_2009-12-31.tif
-Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_AntiguaAndBarbuda.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_AntiguaAndBarbuda.tif → reproj/Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif (EPSG:4326)
-[COGIFY] reproj/Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif
-[SUCCESS] Uploaded to s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif
-[CLEANUP] removed temporary input file temp_Mangrove_agb_AntiguaAndBarbuda.tif
-[CLEANUP] removed intermediate reproj/Mangrove_agb_AntiguaAndBarbuda_2000-01-01day_2009-12-31.tif
-Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_Aruba.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_Aruba.tif → reproj/Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif (EPSG:4326)
-[COGIFY] reproj/Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif
-[SUCCESS] Uploaded to s3://ghgc-data-store/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif
-[CLEANUP] removed temporary input file temp_Mangrove_agb_Aruba.tif
-[CLEANUP] removed intermediate reproj/Mangrove_agb_Aruba_2000-01-01day_2009-12-31.tif
-Mangrove_agb_Australia_2000-01-01day_2009-12-31.tif
-[DOWNLOAD] Downloading coastal-observatory/data/Mangrove_agb_Australia.tif from S3...
-[REPROJECT] coastal-observatory/data/Mangrove_agb_Australia.tif → reproj/Mangrove_agb_Australia_2000-01-01day_2009-12-31.tif (EPSG:4326)</code></pre>
-</div>
+<div id="cell-10" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert_to_proper_CRS_and_cogify(name, cog_filename, cog_data_bucket, cog_data_prefix):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    s3_key <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_data_prefix<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    reproject_filename <span class="op">=</span> <span class="ss">f"reproj/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a temporary file for the downloaded S3 object</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    temp_input_file <span class="op">=</span> <span class="ss">f"temp_</span><span class="sc">{</span>os<span class="sc">.</span>path<span class="sc">.</span>basename(name)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip everything if the COG already exists in S3</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        s3_client.head_object(Bucket<span class="op">=</span>cog_data_bucket, Key<span class="op">=</span>s3_key)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[SKIP] s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss"> already exists"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> botocore.exceptions.ClientError <span class="im">as</span> e:</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        error_code <span class="op">=</span> e.response[<span class="st">"Error"</span>][<span class="st">"Code"</span>]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If it's a 404, object doesn't exist → proceed</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If it's 403 (Forbidden), we don't have permission to check, so proceed anyway</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> error_code <span class="kw">not</span> <span class="kw">in</span> [<span class="st">"404"</span>, <span class="st">"403"</span>]:</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For 403, we'll try to upload anyway and let it fail if the object exists</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Download the file from S3 first</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[DOWNLOAD] Downloading </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> from S3..."</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        s3_client.download_file(raw_data_bucket, name, temp_input_file)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Reproject using the local file</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[REPROJECT] </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> → </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss"> (EPSG:4326)"</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> rasterio.<span class="bu">open</span>(temp_input_file) <span class="im">as</span> src:</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>            dst_crs <span class="op">=</span> <span class="st">"EPSG:4326"</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>            transform, width, height <span class="op">=</span> calculate_default_transform(</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>                src.crs, dst_crs, src.width, src.height, <span class="op">*</span>src.bounds</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>            kwargs <span class="op">=</span> src.meta.copy()</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>            kwargs.update({</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>                <span class="st">"driver"</span>: <span class="st">"COG"</span>,                 <span class="co"># write a COG instead of plain GTiff</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>,           <span class="co"># or "LZW"</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>                <span class="st">"crs"</span>: dst_crs,</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>                <span class="st">"transform"</span>: transform,</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>                <span class="st">"width"</span>: width,</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>                <span class="st">"height"</span>: height</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> rasterio.<span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss">"</span>, <span class="st">"w"</span>, <span class="op">**</span>kwargs) <span class="im">as</span> dst:</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>                reproject(</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>                    source<span class="op">=</span>rasterio.band(src, <span class="dv">1</span>),</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>                    destination<span class="op">=</span>rasterio.band(dst, <span class="dv">1</span>),</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>                    src_transform<span class="op">=</span>src.transform,</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>                    src_crs<span class="op">=</span>src.crs,</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>                    dst_transform<span class="op">=</span>transform,</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>                    dst_crs<span class="op">=</span>dst_crs,</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>                    resampling<span class="op">=</span>Resampling.nearest,</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>                    wrapdateline<span class="op">=</span><span class="va">True</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3) COGify &amp; upload</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[COGIFY] </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss"> → s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>        ds <span class="op">=</span> rxr.open_rasterio(reproject_filename)</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>        ds <span class="op">=</span> ds.rename({<span class="st">"y"</span>: <span class="st">"lat"</span>, <span class="st">"x"</span>: <span class="st">"lon"</span>})</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>        ds.rio.set_spatial_dims(<span class="st">"lon"</span>, <span class="st">"lat"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>        ds.rio.write_nodata(<span class="op">-</span><span class="dv">9999</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> tempfile.NamedTemporaryFile() <span class="im">as</span> tmp:</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>            ds.rio.to_raster(tmp.name, <span class="op">**</span>COG_PROFILE)</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>            s3_client.upload_file(</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>                Filename <span class="op">=</span> tmp.name, </span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>                Bucket <span class="op">=</span> cog_data_bucket, </span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>                Key <span class="op">=</span> s3_key)</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[SUCCESS] Uploaded to s3://</span><span class="sc">{</span>cog_data_bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>s3_key<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] Failed to process </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">str</span>(e)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span></span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">finally</span>:</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Clean up temporary input file</span></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(temp_input_file):</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>            os.remove(temp_input_file)</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[CLEANUP] removed temporary input file </span><span class="sc">{</span>temp_input_file<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Clean up local intermediate</span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(reproject_filename):</span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>            os.remove(reproject_filename)</span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[CLEANUP] removed intermediate </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Run a loop to go through all of the items within the S3 bucket</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"reproj"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> <span class="bu">sorted</span>(keys):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> create_cog_filename(name, start_str, end_str)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cog_filename)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    convert_to_proper_CRS_and_cogify(name, cog_filename, cog_data_bucket, cog_data_prefix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="49">
 <pre><code>'coastal-observatory/data/Mangrove_hmax95_Yemen.tif'</code></pre>
-</div>
-</div>
-<div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Path(name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>PosixPath('coastal-observatory/data/Mangrove_agb_AndamanAndNicobar.tif')</code></pre>
 </div>
 </div>
 
