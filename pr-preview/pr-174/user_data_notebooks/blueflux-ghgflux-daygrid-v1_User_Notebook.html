@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" rel="next">
-<link href="../user_data_notebooks/ct-ch4-monthgrid-v2023_User_Notebook.html" rel="prev">
+<link href="../user_data_notebooks/influx-testbed-ghg-concentrations_User_Notebook.html" rel="next">
+<link href="../user_data_notebooks/noaa-insitu_User_Notebook.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -378,6 +378,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../user_data_notebooks/blueflux-ghgflux-daygrid-v1_User_Notebook.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">BlueFlux CO₂ and Methane Fluxes for Southern Florida Wetlands</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/influx-testbed-ghg-concentrations_User_Notebook.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Carbon Dioxide and Methane Concentrations from the Indianapolis Flux Experiment (INFLUX)</span></a>
   </div>
@@ -398,12 +404,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/ct-ch4-monthgrid-v2023_User_Notebook.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../user_data_notebooks/blueflux-ghgflux-daygrid-v1_User_Notebook.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">BlueFlux CO₂ and Methane Fluxes for Southern Florida Wetlands</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -967,7 +967,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong>Spatial coverage</strong>: Southern Florida (82.22 W, 79.96 W, 26.68 N, 24.48 N)</li>
 <li><strong>Spatial resolution</strong>: 500m</li>
-<li><strong>Temporal extent</strong>: 25, 2000 - August 31, 2024</li>
+<li><strong>Temporal extent</strong>: February 25, 2000 - August 31, 2024</li>
 <li><strong>Temporal resolution</strong>: Daily</li>
 <li><strong>Unit</strong>: Micromoles of carbon dioxide per square meter per second (μmol CO₂/m2/s), Nanomoles of methane per square meter per second (nmol CH₄/m2/s)</li>
 <li><strong>Utility</strong>: Climate Research</li>
@@ -993,7 +993,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;MiCASA Land Carbon Flux - <code>item</code>: One granule in the dataset, e.g.&nbsp;one daily file of carbon fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
+<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;BlueFlux CO₂ and Methane Flux - <code>item</code>: One granule in the dataset, e.g.&nbsp;one daily file of carbon fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
 </section>
 <section id="install-the-required-libraries" class="level1">
 <h1>Install the Required Libraries</h1>
@@ -1022,7 +1022,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
-<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the MiCASA Land Carbon Flux dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/micasa-carbonflux-monthgrid-v1"><strong>micasa-carbonflux-monthgrid-v1</strong></a>.*</p>
+<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the BlueFlux CO₂ and Methane Flux dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/blueflux-ghgflux-daygrid-v1"><strong>blueflux-ghgflux-daygrid-v1</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
 <div id="cell-10" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
@@ -1866,7 +1866,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2001 to December 2023. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is monthly.</p>
+<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from February 25, 2000 - August 31, 2024. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is day.</p>
 <div id="cell-13" class="cell" data-scrolled="true" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#items = list(collection.get_items())  # Convert the iterator to a list</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(f"Found {len(items)} items")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4296,14 +4296,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020-05"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020-05-20"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="10">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll focus on net primary productivity, so our asset of interest is:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll focus on methane flux, so our asset of interest is:</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"fch4mean"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -4311,7 +4311,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="creating-maps-using-folium" class="level1">
 <h1>Creating Maps Using Folium</h1>
-<p>You will now explore changes in the land atmosphere Carbon flux <code>Net Primary Productivity</code> at a given location. You will visualize the outputs on a map using <code>folium</code>.</p>
+<p>You will now explore changes in the land atmosphere Carbon flux <code>Methane Flux</code> at a given location. You will visualize the outputs on a map using <code>folium</code>.</p>
 <section id="fetch-imagery-using-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
@@ -4325,7 +4325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Select relevant asset (CH4 Mean)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Select relevant asset (CH₄ Mean)</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print raster bands' information</span></span>
@@ -4426,7 +4426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="generate-map" class="level2">
 <h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<p>For this example, we’ll look at CH4 Mean over Southern Florida Wetlands.</p>
+<p>For this example, we’ll look at CH₄ Mean over Southern Florida Wetlands.</p>
 <p>First, let’s determine an area of interest (AOI) to visualize via GeoJSON.</p>
 <div id="cell-29" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a name for the AOI to use in plots later</span></span>
@@ -4450,11 +4450,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="22">
+<div id="cell-30" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Map is centered on the position specified by "location=(lat,lon)"</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="fl">26.68</span>,<span class="op">-</span><span class="fl">79.96</span>, ), zoom_start<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="fl">26.68</span>,<span class="op">-</span><span class="fl">79.96</span> ), zoom_start<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer using the tile fetched for the first date</span></span>
@@ -4488,7 +4488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>map_layer_observation_date_2.add_to(map_.m2)</span>
 <span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Display data marker on each map</span></span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>folium.Marker((<span class="op">-</span><span class="fl">79.96</span>, <span class="fl">26.68</span>), tooltip<span class="op">=</span>aoi_name).add_to(map_)</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>folium.Marker((<span class="fl">26.68</span>,<span class="op">-</span><span class="fl">79.96</span>), tooltip<span class="op">=</span>aoi_name).add_to(map_)</span>
 <span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Display AOI on each map</span></span>
 <span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(aoi, name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>aoi_name<span class="sc">}</span><span class="ss"> AOI"</span>,style_function<span class="op">=</span><span class="kw">lambda</span> feature: {<span class="st">"fillColor"</span>: <span class="st">"none"</span>}).add_to(map_)</span>
 <span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a layer control to switch between map layers</span></span>
@@ -4504,7 +4504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -4532,7 +4532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_e9a3c1fc3806e0a54266fdeac6f804cf {
+                #map_4f7c88866a406f3b2a9e74178adfa97a {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4546,7 +4546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_661747e881aef750e13aae65e2b22261 {
+                #map_08c2818f75f04514f174e7418daba90a {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4585,17 +4585,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_e9a3c1fc3806e0a54266fdeac6f804cf&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_4f7c88866a406f3b2a9e74178adfa97a&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_661747e881aef750e13aae65e2b22261&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_08c2818f75f04514f174e7418daba90a&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_e9a3c1fc3806e0a54266fdeac6f804cf = L.map(
-                &quot;map_e9a3c1fc3806e0a54266fdeac6f804cf&quot;,
+            var map_4f7c88866a406f3b2a9e74178adfa97a = L.map(
+                &quot;map_4f7c88866a406f3b2a9e74178adfa97a&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4609,31 +4609,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_f5159a4522fd1f6400c65fd45a001ac5 = L.tileLayer(
+            var tile_layer_4c59392cf00b2354090e704fb07e6e05 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_f5159a4522fd1f6400c65fd45a001ac5.addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            tile_layer_4c59392cf00b2354090e704fb07e6e05.addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            var tile_layer_06f990f2bc4f44ac968ee3529296303c = L.tileLayer(
+            var tile_layer_583d9bca259280a7c888ac5da97b1911 = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-01/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_06f990f2bc4f44ac968ee3529296303c.addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            tile_layer_583d9bca259280a7c888ac5da97b1911.addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            var marker_d4f19432eedd16aaabbc8fcfeaa18824 = L.marker(
-                [-79.96, 26.68],
+            var marker_25371a872bf7f14ff3f93bf6a5d73379 = L.marker(
+                [26.68, -79.96],
                 {}
-            ).addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            ).addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            marker_d4f19432eedd16aaabbc8fcfeaa18824.bindTooltip(
+            marker_25371a872bf7f14ff3f93bf6a5d73379.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4641,53 +4641,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_e88f006cac1674605af0338548947da2_styler(feature) {
+        function geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_e88f006cac1674605af0338548947da2_onEachFeature(feature, layer) {
+        function geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_e88f006cac1674605af0338548947da2 = L.geoJson(null, {
-                onEachFeature: geo_json_e88f006cac1674605af0338548947da2_onEachFeature,
+        var geo_json_5ff7bbe27e82f51497f0cdd7692ef0df = L.geoJson(null, {
+                onEachFeature: geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_onEachFeature,
             
-                style: geo_json_e88f006cac1674605af0338548947da2_styler,
+                style: geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_styler,
         });
 
-        function geo_json_e88f006cac1674605af0338548947da2_add (data) {
-            geo_json_e88f006cac1674605af0338548947da2
+        function geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_add (data) {
+            geo_json_5ff7bbe27e82f51497f0cdd7692ef0df
                 .addData(data);
         }
-            geo_json_e88f006cac1674605af0338548947da2_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_5ff7bbe27e82f51497f0cdd7692ef0df_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_e88f006cac1674605af0338548947da2.addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            geo_json_5ff7bbe27e82f51497f0cdd7692ef0df.addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            var layer_control_8549b230266a5bc2aa9e5d8dc96914a5_layers = {
+            var layer_control_b544969b16f85ca3c41f791a810605ba_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_f5159a4522fd1f6400c65fd45a001ac5,
+                    &quot;openstreetmap&quot; : tile_layer_4c59392cf00b2354090e704fb07e6e05,
                 },
                 overlays :  {
-                    &quot;2022-01-01 fch4mean&quot; : tile_layer_06f990f2bc4f44ac968ee3529296303c,
-                    &quot;South Florida AOI&quot; : geo_json_e88f006cac1674605af0338548947da2,
+                    &quot;2022-01-01 fch4mean&quot; : tile_layer_583d9bca259280a7c888ac5da97b1911,
+                    &quot;South Florida AOI&quot; : geo_json_5ff7bbe27e82f51497f0cdd7692ef0df,
                 },
             };
-            let layer_control_8549b230266a5bc2aa9e5d8dc96914a5 = L.control.layers(
-                layer_control_8549b230266a5bc2aa9e5d8dc96914a5_layers.base_layers,
-                layer_control_8549b230266a5bc2aa9e5d8dc96914a5_layers.overlays,
+            let layer_control_b544969b16f85ca3c41f791a810605ba = L.control.layers(
+                layer_control_b544969b16f85ca3c41f791a810605ba_layers.base_layers,
+                layer_control_b544969b16f85ca3c41f791a810605ba_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            ).addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
 
         
     
-            var map_661747e881aef750e13aae65e2b22261 = L.map(
-                &quot;map_661747e881aef750e13aae65e2b22261&quot;,
+            var map_08c2818f75f04514f174e7418daba90a = L.map(
+                &quot;map_08c2818f75f04514f174e7418daba90a&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4701,35 +4701,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_c28c9e5aacc569229a95a02bddabdf78 = L.tileLayer(
+            var tile_layer_ad396d5c4a528b2cd181cfa197e14dc2 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_c28c9e5aacc569229a95a02bddabdf78.addTo(map_661747e881aef750e13aae65e2b22261);
+            tile_layer_ad396d5c4a528b2cd181cfa197e14dc2.addTo(map_08c2818f75f04514f174e7418daba90a);
         
     
-            var tile_layer_257753ac5167279891e0431a0c87bfb7 = L.tileLayer(
+            var tile_layer_419ef718eac4080388c9635bf9ac3ebd = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-26/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_257753ac5167279891e0431a0c87bfb7.addTo(map_661747e881aef750e13aae65e2b22261);
+            tile_layer_419ef718eac4080388c9635bf9ac3ebd.addTo(map_08c2818f75f04514f174e7418daba90a);
         
     
-            map_e9a3c1fc3806e0a54266fdeac6f804cf.sync(map_661747e881aef750e13aae65e2b22261);
-            map_661747e881aef750e13aae65e2b22261.sync(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            map_4f7c88866a406f3b2a9e74178adfa97a.sync(map_08c2818f75f04514f174e7418daba90a);
+            map_08c2818f75f04514f174e7418daba90a.sync(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            var marker_ee7a9083a63c4ec4ac79d5588c81b847 = L.marker(
-                [-79.96, 26.68],
+            var marker_e294800b36604d56894bb6e1be760694 = L.marker(
+                [26.68, -79.96],
                 {}
-            ).addTo(map_661747e881aef750e13aae65e2b22261);
+            ).addTo(map_08c2818f75f04514f174e7418daba90a);
         
     
-            marker_ee7a9083a63c4ec4ac79d5588c81b847.bindTooltip(
+            marker_e294800b36604d56894bb6e1be760694.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4737,51 +4737,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_5d9e9039b95a40a9bdea57f3108c9670_styler(feature) {
+        function geo_json_266db613de98439c8535204b5389cdda_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_5d9e9039b95a40a9bdea57f3108c9670_onEachFeature(feature, layer) {
+        function geo_json_266db613de98439c8535204b5389cdda_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_5d9e9039b95a40a9bdea57f3108c9670 = L.geoJson(null, {
-                onEachFeature: geo_json_5d9e9039b95a40a9bdea57f3108c9670_onEachFeature,
+        var geo_json_266db613de98439c8535204b5389cdda = L.geoJson(null, {
+                onEachFeature: geo_json_266db613de98439c8535204b5389cdda_onEachFeature,
             
-                style: geo_json_5d9e9039b95a40a9bdea57f3108c9670_styler,
+                style: geo_json_266db613de98439c8535204b5389cdda_styler,
         });
 
-        function geo_json_5d9e9039b95a40a9bdea57f3108c9670_add (data) {
-            geo_json_5d9e9039b95a40a9bdea57f3108c9670
+        function geo_json_266db613de98439c8535204b5389cdda_add (data) {
+            geo_json_266db613de98439c8535204b5389cdda
                 .addData(data);
         }
-            geo_json_5d9e9039b95a40a9bdea57f3108c9670_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_266db613de98439c8535204b5389cdda_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_e88f006cac1674605af0338548947da2.addTo(map_e9a3c1fc3806e0a54266fdeac6f804cf);
+            geo_json_5ff7bbe27e82f51497f0cdd7692ef0df.addTo(map_4f7c88866a406f3b2a9e74178adfa97a);
         
     
-            geo_json_5d9e9039b95a40a9bdea57f3108c9670.addTo(map_661747e881aef750e13aae65e2b22261);
+            geo_json_266db613de98439c8535204b5389cdda.addTo(map_08c2818f75f04514f174e7418daba90a);
         
     
-            var layer_control_cd09c64a64934b84ba13f107915f7186_layers = {
+            var layer_control_da0f7b323543464f9981a2d9fd569955_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_c28c9e5aacc569229a95a02bddabdf78,
+                    &quot;openstreetmap&quot; : tile_layer_ad396d5c4a528b2cd181cfa197e14dc2,
                 },
                 overlays :  {
-                    &quot;2022-01-26 fch4mean&quot; : tile_layer_257753ac5167279891e0431a0c87bfb7,
-                    &quot;South Florida AOI&quot; : geo_json_5d9e9039b95a40a9bdea57f3108c9670,
+                    &quot;2022-01-26 fch4mean&quot; : tile_layer_419ef718eac4080388c9635bf9ac3ebd,
+                    &quot;South Florida AOI&quot; : geo_json_266db613de98439c8535204b5389cdda,
                 },
             };
-            let layer_control_cd09c64a64934b84ba13f107915f7186 = L.control.layers(
-                layer_control_cd09c64a64934b84ba13f107915f7186_layers.base_layers,
-                layer_control_cd09c64a64934b84ba13f107915f7186_layers.overlays,
+            let layer_control_da0f7b323543464f9981a2d9fd569955 = L.control.layers(
+                layer_control_da0f7b323543464f9981a2d9fd569955_layers.base_layers,
+                layer_control_da0f7b323543464f9981a2d9fd569955_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_661747e881aef750e13aae65e2b22261);
+            ).addTo(map_08c2818f75f04514f174e7418daba90a);
 
         
 </script>
@@ -4981,7 +4981,7 @@ Wall time: 30.1 s</code></pre>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change 'which_stat' below if you would rather look at a different statistic, like minimum or mean.</span></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>which_stat <span class="op">=</span> <span class="st">"mean"</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series analysis of the daily CH4 Mean Values for Southern Florida Wetlands</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series analysis of the daily CH₄ Mean Values for Southern Florida Wetlands</span></span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>], <span class="co"># X-axis: date</span></span>
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    df[which_stat], <span class="co"># Y-axis: CH4 Mean value</span></span>
@@ -5028,7 +5028,7 @@ Wall time: 30.1 s</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the MiCASA Land Carbon Flux dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Count the number of existing granules within the collection 4. Map and compare the Methane Flux (CH4 Mean) levels over the Southern Florida Wetlands area for two distinctive months/years 5. Create a table that displays the minimum, maximum, and sum of the Methane Flux (CH4 Mean) values for a specified region 6. Generate a time-series graph of the Methane Flux (CH4 Mean) values for a specified region</p>
+<p>In this notebook we have successfully completed the following steps for the STAC collection for the BlueFlux CO₂ and Methane Fluxes for Southern Florida Wetlands dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Count the number of existing granules within the collection 4. Map and compare the Methane Flux (CH₄ Mean) levels over the Southern Florida Wetlands area for two distinctive days 5. Create a table that displays the minimum, maximum, and sum of the Methane Flux (CH₄ Mean) values for a specified region 6. Generate a time-series graph of the Methane Flux (CH₄ Mean) values for a specified region</p>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
@@ -5450,13 +5450,13 @@ Wall time: 30.1 s</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../user_data_notebooks/ct-ch4-monthgrid-v2023_User_Notebook.html" class="pagination-link" aria-label="CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">CarbonTracker-CH₄ Isotopic Methane Inverse Fluxes</span>
+      <a href="../user_data_notebooks/noaa-insitu_User_Notebook.html" class="pagination-link" aria-label="Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../user_data_notebooks/emit-ch4plume-v1_User_Notebook.html" class="pagination-link" aria-label="EMIT Methane Point Source Plume Complexes">
-        <span class="nav-page-text">EMIT Methane Point Source Plume Complexes</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../user_data_notebooks/influx-testbed-ghg-concentrations_User_Notebook.html" class="pagination-link" aria-label="Carbon Dioxide and Methane Concentrations from the Indianapolis Flux Experiment (INFLUX)">
+        <span class="nav-page-text">Carbon Dioxide and Methane Concentrations from the Indianapolis Flux Experiment (INFLUX)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
