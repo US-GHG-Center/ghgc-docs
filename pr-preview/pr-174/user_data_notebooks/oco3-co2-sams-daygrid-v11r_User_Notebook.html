@@ -3563,8 +3563,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Note from the list of items that there can be multiple plumes detected at the same datetime:</p>
-<div id="cell-18" class="cell" data-execution_count="14">
+<div id="cell-17" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search_items:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item.properties[<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3613,7 +3612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>For this reason, we will use the item <code>id</code> to reference the items specifically. Let’s make a dictionary where we can do this more efficiently:</p>
-<div id="cell-20" class="cell" data-execution_count="15">
+<div id="cell-19" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {<span class="st">"_"</span>.join(item.<span class="bu">id</span>.split(<span class="st">"_"</span>)[<span class="dv">1</span>:<span class="dv">3</span>]): item <span class="cf">for</span> item <span class="kw">in</span> search_items}</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the keys of our dictionary, which we'll use to reference specific plumes</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items_dict.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3621,7 +3620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>dict_keys(['volcano0076_2024-08-26T170125Z', 'volcano0017_2024-08-26T165919Z', 'volcano0008_2024-08-26T184116Z', 'volcano0004_2024-08-26T043359Z', 'tccon124_2024-08-26T133046Z', 'tccon122_2024-08-26T071936Z', 'sif_atto', 'fossil0236_2024-08-26T072639Z', 'fossil0231_2024-08-26T150506Z', 'fossil0156_2024-08-26T055048Z', 'fossil0127_2024-08-26T072937Z', 'fossil0117_2024-08-26T055245Z', 'fossil0110_2024-08-26T164007Z', 'fossil0106_2024-08-26T151814Z', 'fossil0058_2024-08-26T072353Z', 'fossil0055_2024-08-26T011048Z', 'fossil0052_2024-08-26T024913Z', 'fossil0047_2024-08-26T085537Z', 'fossil0039_2024-08-26T164239Z', 'fossil0036_2024-08-26T164727Z', 'fossil0027_2024-08-26T133407Z', 'ecostress_us', 'coccon102_2024-08-26T105007Z', 'volcano0038_2024-08-25T081959Z', 'volcano0020_2024-08-25T095838Z', 'volcano0003_2024-08-25T081107Z', 'val007_Reims', 'tccon124_2024-08-25T141920Z', 'tccon107_2024-08-25T035017Z', 'fossil0232_2024-08-25T141629Z', 'fossil0222_2024-08-25T002926Z', 'fossil0166_2024-08-25T063500Z', 'fossil0162_2024-08-25T050026Z', 'fossil0116_2024-08-25T142120Z', 'fossil0114_2024-08-25T063321Z', 'fossil0109_2024-08-25T063953Z', 'fossil0092_2024-08-25T033009Z', 'fossil0091_2024-08-25T002436Z', 'fossil0012_2024-08-25T020237Z', 'fossil0011_2024-08-25T064317Z', 'cal007_2024-08-25T112417Z', 'C40_014'])</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="18">
+<div id="cell-20" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook. </span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset only has one asset to choose from:</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"cog_default"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3633,7 +3632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-24" class="cell" data-execution_count="19">
+<div id="cell-23" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the &lt;datetime_plumenumber&gt; key below to look at a different plume.</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[<span class="st">"volcano0076_2024-08-26T170125Z"</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3641,7 +3640,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="20">
+<div id="cell-24" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
@@ -3657,13 +3656,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-27" class="cell" data-execution_count="24">
+<div id="cell-26" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"jet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="25">
+<div id="cell-27" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -3688,7 +3687,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-67.18000030517578, -22.270000457763672, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-29" class="cell" data-execution_count="26">
+<div id="cell-28" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for plume Layer</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our loaded tile to set the center of the map</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
@@ -3717,7 +3716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
 <span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
 <span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'Methane Concentration (ppm-m)'</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'XCO2 (ppm-m)'</span></span>
 <span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
