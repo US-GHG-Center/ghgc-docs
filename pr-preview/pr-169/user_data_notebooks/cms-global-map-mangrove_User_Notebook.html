@@ -985,7 +985,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib ipywidgets –quiet</p>
-<div id="cell-9" class="cell" data-execution_count="207">
+<div id="cell-9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import required libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
@@ -1023,7 +1023,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>STAC API Collection Names</strong></p>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the CMS Global Map Mangrove Canopy dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/cms-global-map-mangrove-canopy-v6"><strong>cms-global-map-mangrove-canopy</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-11" class="cell" data-execution_count="208">
+<div id="cell-11" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
@@ -1032,9 +1032,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/raster"</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"cms-mangrove-biomass-height-v6"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"cms-mangrove-biomass-height-v12"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="209">
+<div id="cell-12" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to the STAC catalog</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1055,23 +1055,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> asset_name, asset <span class="kw">in</span> first_item.assets.items():</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>asset<span class="sc">.</span>title <span class="cf">if</span> <span class="bu">hasattr</span>(asset, <span class="st">'title'</span>) <span class="cf">else</span> <span class="st">'No title'</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Collection 'cms-mangrove-biomass-height-v6' found!
-Title: Global Mangrove Distribution, Aboveground Biomass, and Canopy Height
-Description: This dataset characterizes the global distribution, biomass, and canopy height of mangrove-forested wetlands based on remotely sensed and in situ field measurement data. Estimates of (1) mangrove abov...
+<pre><code>Collection 'cms-mangrove-biomass-height-v12' found!
+Title: Global Mangrove Aboveground Biomass and Canopy Height
+Description: test...
 
 Number of items in collection: 121
 
 Available assets in first item:
-  - mangrove-agb: Above Ground Biomass Mangrove Forests.
-  - mangrove-hba: Basal Area Weighted Height Mangrove Forests.
-  - mangrove-hmax95: Maximum Height Tallest Tree in Mangrove Forests.
-  - rendered_preview: Rendered preview</code></pre>
+  - agb: Above Ground Biomass Mangrove Forests.
+  - hba: Basal Area Weighted Height Mangrove Forests.
+  - hmax95: Maximum Height Tallest Tree in Mangrove Forests.</code></pre>
 </div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="210">
+<div id="cell-13" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print additional properties of the collection to the console</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="210">
+<div class="cell-output cell-output-display" data-execution_count="4">
 
 
 <style>
@@ -1121,7 +1120,7 @@ Available assets in first item:
                     
         <li class="pystac-row">
             <span class="pystac-k">id</span>
-            <span class="pystac-v">"cms-mangrove-biomass-height-v6"</span>
+            <span class="pystac-v">"cms-mangrove-biomass-height-v12"</span>
         </li>
     
                 
@@ -1139,7 +1138,7 @@ Available assets in first item:
                     
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"This dataset characterizes the global distribution, biomass, and canopy height of mangrove-forested wetlands based on remotely sensed and in situ field measurement data. Estimates of (1) mangrove aboveground biomass (AGB), (2) maximum canopy height (height of the tallest tree), and (3) basal-area weighted height (individual tree heights weighted in proportion to their basal area) for the nominal year 2000 were derived across a 30-meter resolution global mangrove ecotype extent map using remotely-sensed canopy height measurements and region-specific allometric models. Within designated plots, selected trees were identified to species and diameter at breast height (DBH) and tree height was measured using a laser rangefinder or clinometer. Tree density (the number of stems) can be estimated for each plot and expressed per unit area. These data were used to derive plot-level allometry among AGB, basal area weighted height (Hba), and maximum canopy height (Hmax) and to validate the remotely sensed estimates."</span>
+            <span class="pystac-v">"test"</span>
         </li>
     
                 
@@ -1169,7 +1168,7 @@ Available assets in first item:
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v6/items"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v12/items"</span>
         </li>
     
             
@@ -1304,7 +1303,7 @@ Available assets in first item:
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v6"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v12"</span>
         </li>
     
             
@@ -1346,7 +1345,7 @@ Available assets in first item:
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v6/queryables"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/cms-mangrove-biomass-height-v12/queryables"</span>
         </li>
     
             
@@ -1377,350 +1376,6 @@ Available assets in first item:
     </ul>
         
     </details></li>
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/render/v1.0.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/item-assets/v1.0.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">renders</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">dashboard</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"mangrove-hba"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">40</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">mangrove-agb</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"mangrove-agb"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">911</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">mangrove-hba</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"mangrove-hba"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">40</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">mangrove-hmax95</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"mangrove-hmax95"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">63</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
                 
             
                 
@@ -1808,26 +1463,8 @@ Available assets in first item:
                 
                     
         <li class="pystac-row">
-            <span class="pystac-k">dashboard:is_periodic</span>
-            <span class="pystac-v">False</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">dashboard:time_density</span>
-            <span class="pystac-v">"year"</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"Global Mangrove Distribution, Aboveground Biomass, and Canopy Height"</span>
+            <span class="pystac-v">"Global Mangrove Aboveground Biomass and Canopy Height"</span>
         </li>
     
                 
@@ -1954,7 +1591,7 @@ Available assets in first item:
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2000-01-01T00:00:00Z"</span>
+            <span class="pystac-v">"2000-12-31T00:00:00Z"</span>
         </li>
     
             
@@ -1983,69 +1620,9 @@ Available assets in first item:
                     
         <li class="pystac-row">
             <span class="pystac-k">license</span>
-            <span class="pystac-v">"CC0-1.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">providers</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"NASA VEDA"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"host"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">url</span>
-            <span class="pystac-v">"https://www.earthdata.nasa.gov/dashboard/"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
                 
             
                 
@@ -2088,14 +1665,14 @@ Available assets in first item:
 </section>
 <section id="explore-available-regions" class="level2">
 <h2 class="anchored" data-anchor-id="explore-available-regions">Explore Available Regions</h2>
-<div id="cell-16" class="cell" data-execution_count="211">
+<div id="cell-16" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Found 121 items</code></pre>
 </div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="212">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># There is only a single datetime for this collection for the nominal year 2000</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
@@ -2111,135 +1688,11 @@ Available assets in first item:
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    unique_regions.append(item.<span class="bu">id</span>.split(<span class="st">'-'</span>)[<span class="op">-</span><span class="dv">1</span>])</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>unique_regions <span class="op">=</span> np.unique(unique_regions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># items in date range: 121
-&lt;Item id=cms-mangrove-biomass-height-v6-Yemen&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-WallisAndFutuna&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-VirginIslandsUs&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Vietnam&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Venezuela&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Vanuatu&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-UnitedStates&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-UnitedArabEmirates&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Tuvalu&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-TurksAndCaicosIslands&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-TrinidadAndTobago&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Tonga&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Togo&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-TimorLeste&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Thailand&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Tanzania&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Taiwan&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Suriname&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Sudan&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SriLanka&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SouthAfrica&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Soudan&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Somalia2&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Somalia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SolomonIslands&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Singapore&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SierraLeone&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Seychelles&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Senegal&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SaudiArabia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Samoa&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SaintVincentAndTheGrenadines&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SaintLucia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-SaintKittsAndNevis&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-ReunionAndMauritius&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Qatar&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-PuertoRico&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Philipines&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Peru&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-PapuaNewGuinea&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Panama&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Palau&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Pakistan&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Oman&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-NorthernMarianaIslands&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Nigeria&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Nicaragua&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-NewZealand&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Newzealand&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-NewCaledonia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Myanmar&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Mozambique&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Micronesia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Mexico&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Mayotte&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Mauritania&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Martinique&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Malaysia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Madagascar&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Macau&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Liberia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Kenya&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Japan&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Jamaica&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Iran&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Indonesia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-India&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-HongKong&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Honduras&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Hawaii&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Haiti&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Guyana&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-GuineaBissau&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Guinea&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Guatemala&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Guam&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Guadeloupe&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Grenada&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Ghana&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Gambia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Gabon&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-FrenchPolynesia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-FrenchGuyana&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-FrenchGuiana&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Fiji2&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Fiji&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-EuropaIsland&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Eritrea&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-EquatorialGuinea&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-ElSalvador&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Egypt&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-EcuadorWithGalapagos&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-DominicanRepublic&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Djibouti&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-DemocraticRepublicOfCongo&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Cuba&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-CoteDivoire&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-CotedIvoire&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Cote&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-CostaRica&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Comoros&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Colombia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-China&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-CarribeanCaymanIslands&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Cameroon&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Cambodia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Brunei&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-BritishVirginIslands&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Brazil&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Benin&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Belize&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Barbados&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Bangladesh&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Bahrain&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Bahamas&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Australia&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Aruba&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-AntiguaAndBarbuda&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Anguilla&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-Angola&gt;
-&lt;Item id=cms-mangrove-biomass-height-v6-AndamanAndNicobar&gt;</code></pre>
 </div>
-</div>
-<div id="cell-18" class="cell" data-execution_count="213">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the first set of plots within the notebook. </span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset has three assets to choose from:</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"mangrove-agb"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the first set of plots within the notebook. </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset has three assets to choose from:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"agb"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualize-mangrove-data-on-a-map" class="level2">
@@ -2248,35 +1701,52 @@ Available assets in first item:
 <section id="fetch-imagery-from-raster-api" class="level3">
 <h3 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h3>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-21" class="cell" data-execution_count="214">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the plotting legend unit information</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> {<span class="st">'mangrove-agb'</span>:<span class="st">'Mg ha-1'</span>,<span class="st">'mangrove-hmax95'</span>:<span class="st">'meters'</span>,<span class="st">'mangrove-hba95'</span>:<span class="st">'meters'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the plotting legend unit information</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> {<span class="st">'agb'</span>:<span class="st">'Mg ha-1'</span>,<span class="st">'hmax95'</span>:<span class="st">'meters'</span>,<span class="st">'hba'</span>:<span class="st">'meters'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-22" class="cell" data-execution_count="215">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the information from the dropdown box above to grab the proper collection item</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>observation_1 <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> items <span class="cf">if</span> <span class="st">'Australia'</span> <span class="kw">in</span> i.<span class="bu">id</span>][<span class="dv">0</span>]</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_1.collection_id</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the information from the dropdown box above to grab the proper collection item</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>observation_1 <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> items <span class="cf">if</span> <span class="st">'Australia'</span> <span class="kw">in</span> i.<span class="bu">id</span>][<span class="dv">0</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_1.collection_id</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="216">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_1.assets[asset_name]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raster_bands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>{'max': 145.98110961914062, 'min': 0}
-[{'scale': 1.0, 'nodata': -9999.0, 'offset': 0.0, 'sampling': 'area', 'data_type': 'float32', 'histogram': {'max': 145.98110961914062, 'min': -8.919515609741211, 'count': 11, 'buckets': [739881, 1690, 500, 175, 84, 34, 17, 11, 6, 2]}, 'statistics': {'mean': 0.08236342857623923, 'stddev': 1.6322306092733863, 'maximum': 145.98110961914062, 'minimum': -8.919515609741211, 'valid_percent': 100.0}}]</code></pre>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_1.assets[asset_name]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="111">
+<pre><code>[{'scale': 1.0,
+  'nodata': -9999.0,
+  'offset': 0.0,
+  'sampling': 'area',
+  'data_type': 'float32',
+  'histogram': {'max': 145.98110961914062,
+   'min': -8.919515609741211,
+   'count': 11,
+   'buckets': [739881, 1690, 500, 175, 84, 34, 17, 11, 6, 2]},
+  'statistics': {'mean': 0.08236342857623923,
+   'stddev': 1.6322306092733863,
+   'maximum': 145.98110961914062,
+   'minimum': -8.919515609741211,
+   'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-25" class="cell" data-execution_count="220">
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"YlGn"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>observation_1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -2287,11 +1757,11 @@ Available assets in first item:
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>observation_1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="220">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v6/items/cms-mangrove-biomass-height-v6-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=mangrove-agb&amp;color_formula=gamma+r+1.05&amp;colormap_name=ylgn&amp;rescale=0%2C145.98110961914062'],
+ 'tiles': ['https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v12/items/cms-mangrove-biomass-height-v12-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb&amp;color_formula=gamma+r+1.05&amp;colormap_name=ylgn&amp;rescale=0%2C145.98110961914062'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [112.99986111111112,
@@ -2301,68 +1771,58 @@ Available assets in first item:
  'center': [133.5000000000164, -24.5000000000116, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="221">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"YlGn"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-</section>
-<section id="calculate-zonal-statistics" class="level2">
-<h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
-<div id="cell-28" class="cell" data-execution_count="222">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">''' PLOTTING NOTES</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">The mangrove data is tiled where each country has its own tile and the `center` coordinates are within the middle of the country tile area.</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">When plotting high-resolution mangrove forests (which can be on the coastlines of large countries such as Australia), plotting the center of the tile does not allow for easy visualization.</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">To alleviate this, we will manually change the location of the latitude and longitude values when plotting to better assist with visualization.</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">Location: Bathurst Island</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">latitude = -11.5</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">longitude = 130.8</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> <span class="op">-</span><span class="fl">11.5</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> <span class="fl">130.8</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(latitude, longitude), zoom_start<span class="op">=</span><span class="dv">10</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.4</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>units<span class="sc">.</span>get(asset_name)<span class="sc">}</span><span class="ss">)'</span></span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
-<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="222">
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">''' PLOTTING NOTES</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">The mangrove data is tiled where each country has its own tile and the `center` coordinates are within the middle of the country tile area.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">When plotting high-resolution mangrove forests (which can be on the coastlines of large countries such as Australia), plotting the center of the tile does not allow for easy visualization.</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">To alleviate this, we will manually change the location of the latitude and longitude values when plotting to better assist with visualization.</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">Location: Bathurst Island</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">latitude = -11.5</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">longitude = 130.8</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> <span class="op">-</span><span class="fl">11.5</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> <span class="fl">130.8</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(latitude, longitude), zoom_start<span class="op">=</span><span class="dv">10</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.4</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>units<span class="sc">.</span>get(asset_name)<span class="sc">}</span><span class="ss">)'</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="93">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2382,7 +1842,7 @@ Available assets in first item:
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_cf4d2d3fb77337dba59babf35050acb6 {
+                #map_15dd402b4aaf559fc76714634a96dee8 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2421,7 +1881,7 @@ Available assets in first item:
     
     <div style=&quot;position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: rgba(255, 255, 255, 0.8);
              border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: black;&quot;>
-        <b>mangrove-agb (Mg ha-1)</b><br>
+        <b>agb (Mg ha-1)</b><br>
         <div style=&quot;display: flex; justify-content: space-between;&quot;>
             <div>0.0</div> 
             <div>36.495277</div> 
@@ -2443,14 +1903,14 @@ Available assets in first item:
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_cf4d2d3fb77337dba59babf35050acb6&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_15dd402b4aaf559fc76714634a96dee8&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_cf4d2d3fb77337dba59babf35050acb6 = L.map(
-                &quot;map_cf4d2d3fb77337dba59babf35050acb6&quot;,
+            var map_15dd402b4aaf559fc76714634a96dee8 = L.map(
+                &quot;map_15dd402b4aaf559fc76714634a96dee8&quot;,
                 {
                     center: [-11.5, 130.8],
                     crs: L.CRS.EPSG3857,
@@ -2468,7 +1928,7 @@ Available assets in first item:
 
         
     
-            var tile_layer_1ad4ccf2c7069b5695acfde4294c6420 = L.tileLayer(
+            var tile_layer_8374c967ea93c5a959ba90676336e781 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2485,10 +1945,10 @@ Available assets in first item:
             );
         
     
-            tile_layer_1ad4ccf2c7069b5695acfde4294c6420.addTo(map_cf4d2d3fb77337dba59babf35050acb6);
+            tile_layer_8374c967ea93c5a959ba90676336e781.addTo(map_15dd402b4aaf559fc76714634a96dee8);
         
     
-            var tile_layer_50196001d8ee3936f2e041f0273758cc = L.tileLayer(
+            var tile_layer_b9d0d48b034601c47ed5ff5665f08512 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2505,11 +1965,11 @@ Available assets in first item:
             );
         
     
-            tile_layer_50196001d8ee3936f2e041f0273758cc.addTo(map_cf4d2d3fb77337dba59babf35050acb6);
+            tile_layer_b9d0d48b034601c47ed5ff5665f08512.addTo(map_15dd402b4aaf559fc76714634a96dee8);
         
     
-            var tile_layer_30444998b3bf858d7a42f5ffd1ed7e1b = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v6/items/cms-mangrove-biomass-height-v6-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=mangrove-agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
+            var tile_layer_12a872e45424bafce0a915485acd6da5 = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v12/items/cms-mangrove-biomass-height-v12-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -2525,153 +1985,87 @@ Available assets in first item:
             );
         
     
-            tile_layer_30444998b3bf858d7a42f5ffd1ed7e1b.addTo(map_cf4d2d3fb77337dba59babf35050acb6);
+            tile_layer_12a872e45424bafce0a915485acd6da5.addTo(map_15dd402b4aaf559fc76714634a96dee8);
         
     
-            var layer_control_5f7d3aff64ce22c0bd0d45a050f5329e_layers = {
+            var layer_control_b771f9537a53b56a18f72dcc0ab5604c_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_1ad4ccf2c7069b5695acfde4294c6420,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_50196001d8ee3936f2e041f0273758cc,
-                    &quot;Above Ground Biomass Mangrove Forests.&quot; : tile_layer_30444998b3bf858d7a42f5ffd1ed7e1b,
+                    &quot;ESRI World Imagery&quot; : tile_layer_8374c967ea93c5a959ba90676336e781,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_b9d0d48b034601c47ed5ff5665f08512,
+                    &quot;Above Ground Biomass Mangrove Forests.&quot; : tile_layer_12a872e45424bafce0a915485acd6da5,
                 },
             };
-            let layer_control_5f7d3aff64ce22c0bd0d45a050f5329e = L.control.layers(
-                layer_control_5f7d3aff64ce22c0bd0d45a050f5329e_layers.base_layers,
-                layer_control_5f7d3aff64ce22c0bd0d45a050f5329e_layers.overlays,
+            let layer_control_b771f9537a53b56a18f72dcc0ab5604c = L.control.layers(
+                layer_control_b771f9537a53b56a18f72dcc0ab5604c_layers.base_layers,
+                layer_control_b771f9537a53b56a18f72dcc0ab5604c_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_cf4d2d3fb77337dba59babf35050acb6);
+            ).addTo(map_15dd402b4aaf559fc76714634a96dee8);
 
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
+</section>
+</section>
+<section id="calculate-zonal-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon over Bathurst Island, Australia.</p>
+<p><strong>Note</strong> Selecting too large of an AOI will result in an error and no results will be returned. This is due to the large size of the files at a high resolution of 30 meters.</p>
 <div id="cell-30" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the AOI a name to use in plots later on</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Bathurst Island, Northern Australia"</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create AOI polygon as a GEOJSON</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {},</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: {</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Outer ring of the polygon (clockwise or counter-clockwise)</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [lon_min, lat_min] - Southwest corner</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">12.0</span>],</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [lon_min, lat_max] - Northwest corner</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">11.16</span>],</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [lon_max, lat_max] - Northeast corner</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>                [<span class="fl">131.55</span>, <span class="op">-</span><span class="fl">11.16</span>],</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [lon_max, lat_min] - Southeast corner</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>                [<span class="fl">131.55</span>, <span class="op">-</span><span class="fl">12.0</span>],</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [lon_min, lat_min] - Close the polygon</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">12.0</span>]</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span>,</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Updated AOI for Bathurst Island, Australia:"</span>)</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aoi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the AOI a name to use in plots later on</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Bathurst Island, Northern Australia"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This AOI is defined as a GEOJSON.</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"type"</span>: <span class="st">"FeatureCollection"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"features"</span>: [</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">"properties"</span>: {},</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">"geometry"</span>: {</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>          [</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>            <span class="co"># [longitude, latitude]</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">12.0</span>],  <span class="co"># Southwest Bounding Coordinate</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">11.16</span>], <span class="co"># Southeast Bounding Coordinate</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">131.0</span>, <span class="op">-</span><span class="fl">11.16</span>],   <span class="co"># Northeast Bounding Coordinate</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">131.0</span>, <span class="op">-</span><span class="fl">12.0</span>],    <span class="co"># Northwest Bounding Coordinate</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">130.0</span>, <span class="op">-</span><span class="fl">12.0</span>]   <span class="co"># Closing the polygon at the Southwest Bounding Coordinate</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>          ]</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Updated AOI for Bathurst Island, Australia:"</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aoi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Updated AOI for Bathurst Island, Australia:
-{'type': 'Feature', 'properties': {}, 'geometry': {'coordinates': [[[130.0, -12.0], [130.0, -11.16], [131.55, -11.16], [131.55, -12.0], [130.0, -12.0]]], 'type': 'Polygon'}}</code></pre>
+{'type': 'FeatureCollection', 'features': [{'type': 'Feature', 'properties': {}, 'geometry': {'coordinates': [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], 'type': 'Polygon'}}]}</code></pre>
 </div>
 </div>
 <div id="cell-31" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats([observation_1],aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first five rows of statistics from our DataFrame</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Generating stats...
-Done!
-CPU times: user 9.69 ms, sys: 19.7 ms, total: 29.4 ms
-Wall time: 23.1 s</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="89">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">min</th>
-<th data-quarto-table-cell-role="th">max</th>
-<th data-quarto-table-cell-role="th">mean</th>
-<th data-quarto-table-cell-role="th">count</th>
-<th data-quarto-table-cell-role="th">sum</th>
-<th data-quarto-table-cell-role="th">std</th>
-<th data-quarto-table-cell-role="th">median</th>
-<th data-quarto-table-cell-role="th">majority</th>
-<th data-quarto-table-cell-role="th">minority</th>
-<th data-quarto-table-cell-role="th">unique</th>
-<th data-quarto-table-cell-role="th">histogram</th>
-<th data-quarto-table-cell-role="th">valid_percent</th>
-<th data-quarto-table-cell-role="th">masked_pixels</th>
-<th data-quarto-table-cell-role="th">valid_pixels</th>
-<th data-quarto-table-cell-role="th">percentile_2</th>
-<th data-quarto-table-cell-role="th">percentile_98</th>
-<th data-quarto-table-cell-role="th">datetime</th>
-<th data-quarto-table-cell-role="th">date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>0.00000000000000000000</td>
-<td>212.61692810058593750000</td>
-<td>6.09743255879805534647</td>
-<td>16882525.00000000000000000000</td>
-<td>102940057.60972213745117187500</td>
-<td>27.22106386700386337907</td>
-<td>0.00000000000000000000</td>
-<td>0.00000000000000000000</td>
-<td>57.41016006469726562500</td>
-<td>17.00000000000000000000</td>
-<td>[[16021206, 0, 13314, 81242, 201749, 230507, 1...</td>
-<td>100.00000000000000000000</td>
-<td>0.00000000000000000000</td>
-<td>16882525.00000000000000000000</td>
-<td>0.00000000000000000000</td>
-<td>118.33956909179687500000</td>
-<td>2000-01-01T00:00:00Z</td>
-<td>2000-01-01 00:00:00+00:00</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<div id="cell-32" class="cell" data-execution_count="223">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> <span class="op">-</span><span class="fl">11.5</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> <span class="fl">130.8</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick Folium map to visualize this AOI</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(latitude, longitude), zoom_start<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add AOI to map</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(aoi, name<span class="op">=</span>aoi_name).add_to(map_)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data layer to map to visualize how many grid cells lie within our AOI</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>units<span class="sc">.</span>get(asset_name)<span class="sc">}</span><span class="ss">)'</span>)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="223">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick Folium map to visualize this AOI</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="op">-</span><span class="fl">11.5</span>, <span class="fl">130.8</span>), zoom_start<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add AOI to map</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(aoi, name<span class="op">=</span>aoi_name).add_to(map_)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data layer to map to visualize how many grid cells lie within our AOI</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss"> (ppm)'</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="99">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2691,7 +2085,7 @@ Wall time: 23.1 s</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_aa7f2f9af0e16b2d8b773af798486db0 {
+                #map_81b8c5f7f111043b8698b48c68fd0827 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2730,7 +2124,7 @@ Wall time: 23.1 s</code></pre>
     
     <div style=&quot;position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: rgba(255, 255, 255, 0.8);
              border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: black;&quot;>
-        <b>mangrove-agb (Mg ha-1)</b><br>
+        <b>Above Ground Biomass Mangrove Forests. (ppm)</b><br>
         <div style=&quot;display: flex; justify-content: space-between;&quot;>
             <div>0.0</div> 
             <div>36.495277</div> 
@@ -2752,19 +2146,19 @@ Wall time: 23.1 s</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_aa7f2f9af0e16b2d8b773af798486db0&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_81b8c5f7f111043b8698b48c68fd0827&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_aa7f2f9af0e16b2d8b773af798486db0 = L.map(
-                &quot;map_aa7f2f9af0e16b2d8b773af798486db0&quot;,
+            var map_81b8c5f7f111043b8698b48c68fd0827 = L.map(
+                &quot;map_81b8c5f7f111043b8698b48c68fd0827&quot;,
                 {
                     center: [-11.5, 130.8],
                     crs: L.CRS.EPSG3857,
                     ...{
-  &quot;zoom&quot;: 10,
+  &quot;zoom&quot;: 8,
   &quot;zoomControl&quot;: true,
   &quot;preferCanvas&quot;: false,
 }
@@ -2776,7 +2170,7 @@ Wall time: 23.1 s</code></pre>
 
         
     
-            var tile_layer_f38c1aec11f3d32b1a15c32c82a5071d = L.tileLayer(
+            var tile_layer_fbe727693e6b8bd7738740b878e6d72e = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2793,36 +2187,36 @@ Wall time: 23.1 s</code></pre>
             );
         
     
-            tile_layer_f38c1aec11f3d32b1a15c32c82a5071d.addTo(map_aa7f2f9af0e16b2d8b773af798486db0);
+            tile_layer_fbe727693e6b8bd7738740b878e6d72e.addTo(map_81b8c5f7f111043b8698b48c68fd0827);
         
     
 
-        function geo_json_9b10ef261edec573f6b8f55e3a360a38_onEachFeature(feature, layer) {
+        function geo_json_f092d0b3d73e6290a3175f00da2b153d_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_9b10ef261edec573f6b8f55e3a360a38 = L.geoJson(null, {
-                onEachFeature: geo_json_9b10ef261edec573f6b8f55e3a360a38_onEachFeature,
+        var geo_json_f092d0b3d73e6290a3175f00da2b153d = L.geoJson(null, {
+                onEachFeature: geo_json_f092d0b3d73e6290a3175f00da2b153d_onEachFeature,
             
             ...{
 }
         });
 
-        function geo_json_9b10ef261edec573f6b8f55e3a360a38_add (data) {
-            geo_json_9b10ef261edec573f6b8f55e3a360a38
+        function geo_json_f092d0b3d73e6290a3175f00da2b153d_add (data) {
+            geo_json_f092d0b3d73e6290a3175f00da2b153d
                 .addData(data);
         }
-            geo_json_9b10ef261edec573f6b8f55e3a360a38_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.55, -11.16], [131.55, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
-        geo_json_9b10ef261edec573f6b8f55e3a360a38.setStyle(function(feature) {return feature.properties.style;});
+            geo_json_f092d0b3d73e6290a3175f00da2b153d_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+        geo_json_f092d0b3d73e6290a3175f00da2b153d.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_9b10ef261edec573f6b8f55e3a360a38.addTo(map_aa7f2f9af0e16b2d8b773af798486db0);
+            geo_json_f092d0b3d73e6290a3175f00da2b153d.addTo(map_81b8c5f7f111043b8698b48c68fd0827);
         
     
-            var tile_layer_30444998b3bf858d7a42f5ffd1ed7e1b = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v6/items/cms-mangrove-biomass-height-v6-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=mangrove-agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
+            var tile_layer_12a872e45424bafce0a915485acd6da5 = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v12/items/cms-mangrove-biomass-height-v12-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -2838,105 +2232,173 @@ Wall time: 23.1 s</code></pre>
             );
         
     
-            tile_layer_30444998b3bf858d7a42f5ffd1ed7e1b.addTo(map_aa7f2f9af0e16b2d8b773af798486db0);
+            tile_layer_12a872e45424bafce0a915485acd6da5.addTo(map_81b8c5f7f111043b8698b48c68fd0827);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
+<div id="cell-32" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats([observation_1],aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name, nodata<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first five rows of statistics from our DataFrame</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating stats...
+Done!
+CPU times: user 4.24 ms, sys: 7.03 ms, total: 11.3 ms
+Wall time: 12.4 s</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="113">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">datetime</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">max</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">sum</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">median</th>
+<th data-quarto-table-cell-role="th">majority</th>
+<th data-quarto-table-cell-role="th">minority</th>
+<th data-quarto-table-cell-role="th">unique</th>
+<th data-quarto-table-cell-role="th">histogram</th>
+<th data-quarto-table-cell-role="th">valid_percent</th>
+<th data-quarto-table-cell-role="th">masked_pixels</th>
+<th data-quarto-table-cell-role="th">valid_pixels</th>
+<th data-quarto-table-cell-role="th">percentile_2</th>
+<th data-quarto-table-cell-role="th">percentile_98</th>
+<th data-quarto-table-cell-role="th">date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2000-01-01T00:00:00Z</td>
+<td>57.41016006469726562500</td>
+<td>212.61692810058593750000</td>
+<td>121.31508636474609375000</td>
+<td>618041.00000000000000000000</td>
+<td>74977696.00000000000000000000</td>
+<td>30.74701657592672177088</td>
+<td>118.33956909179687500000</td>
+<td>108.58424377441406250000</td>
+<td>57.41016006469726562500</td>
+<td>16.00000000000000000000</td>
+<td>[[19664, 35221, 140535, 169842, 71162, 98772, ...</td>
+<td>5.66999999999999992895</td>
+<td>10274941.00000000000000000000</td>
+<td>618084.00000000000000000000</td>
+<td>72.01988983154296875000</td>
+<td>198.97454833984375000000</td>
+<td>2000-01-01 00:00:00+00:00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
 </div>
 </div>
 </section>
 <section id="explore-additional-variables-and-regions" class="level2">
 <h2 class="anchored" data-anchor-id="explore-additional-variables-and-regions">Explore Additional Variables and Regions</h2>
 <p>Now we will create interactive widgets to explore different mangrove variables (biomass, height metrics) across different regions of the world. This allows for comparative analysis of mangrove characteristics globally.</p>
-<div id="cell-34" class="cell" data-execution_count="231">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Formatting settings for drop-down menus</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>style <span class="op">=</span> {<span class="st">'description_width'</span>:<span class="st">'140px'</span>}</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>layout <span class="op">=</span> widgets.Layout(width<span class="op">=</span><span class="st">'300px'</span>, height<span class="op">=</span><span class="st">'75px'</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dropdown widgets</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>variable <span class="op">=</span> widgets.Dropdown(</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>[<span class="st">'mangrove-agb'</span>, <span class="st">'mangrove-hmax95'</span>, <span class="st">'mangrove-hba95'</span>],</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="st">'mangrove-hmax95'</span>, </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Variable:'</span>, </span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    style<span class="op">=</span>style, </span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span>layout</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>region_select <span class="op">=</span> widgets.Dropdown(</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>unique_regions,</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="st">'CostaRica'</span>, </span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Region:'</span>, </span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    style<span class="op">=</span>style, </span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span>layout</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create horizontal box to arrange dropdowns side by side</span></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>dropdown_box <span class="op">=</span> widgets.HBox([variable, region_select])</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display drop-down menus</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'If you change menu selections (e.g., to run another search), do NOT re-run this block!</span><span class="ch">\n</span><span class="st">Re-running will re-set all menus to their defaults!'</span>)</span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>display(dropdown_box)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Formatting settings for drop-down menus</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>style <span class="op">=</span> {<span class="st">'description_width'</span>:<span class="st">'140px'</span>}</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>layout <span class="op">=</span> widgets.Layout(width<span class="op">=</span><span class="st">'300px'</span>, height<span class="op">=</span><span class="st">'75px'</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dropdown widgets</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>variable <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>[<span class="st">'agb'</span>, <span class="st">'hmax95'</span>, <span class="st">'hba'</span>],</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="st">'hmax95'</span>, </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Variable:'</span>, </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    style<span class="op">=</span>style, </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span>layout</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>region_select <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>unique_regions,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="st">'CostaRica'</span>, </span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Region:'</span>, </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    style<span class="op">=</span>style, </span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span>layout</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create horizontal box to arrange dropdowns side by side</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>dropdown_box <span class="op">=</span> widgets.HBox([variable, region_select])</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display drop-down menus</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'If you change menu selections (e.g., to run another search), do NOT re-run this block!</span><span class="ch">\n</span><span class="st">Re-running will re-set all menus to their defaults!'</span>)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>display(dropdown_box)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>If you change menu selections (e.g., to run another search), do NOT re-run this block!
 Re-running will re-set all menus to their defaults!</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"fa85e1d38de64788a7c4d84632a0a1e9","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"d8278863f6f24541b230642493b08611","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="225">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the information from the dropdown box above to grab the proper collection item</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>observation_2 <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> items <span class="cf">if</span> region_select.value <span class="kw">in</span> i.<span class="bu">id</span>][<span class="dv">0</span>]</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_2)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_2.collection_id</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_2.<span class="bu">id</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>variable_value <span class="op">=</span> variable.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the information from the dropdown box above to grab the proper collection item</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>observation_2 <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> items <span class="cf">if</span> region_select.value <span class="kw">in</span> i.<span class="bu">id</span>][<span class="dv">0</span>]</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_2)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_2.collection_id</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_2.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;Item id=cms-mangrove-biomass-height-v6-CostaRica&gt;</code></pre>
+<pre><code>&lt;Item id=cms-mangrove-biomass-height-v12-CostaRica&gt;</code></pre>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="226">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_2.assets[variable_value]</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raster_bands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_2.assets[variable.value]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raster_bands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'max': 48.81807327270508, 'min': 0}
 [{'scale': 1.0, 'nodata': -9999.0, 'offset': 0.0, 'sampling': 'area', 'data_type': 'float32', 'histogram': {'max': 48.81807327270508, 'min': -2.2742505073547363, 'count': 11, 'buckets': [993811, 862, 705, 637, 495, 347, 228, 149, 97, 45]}, 'statistics': {'mean': 0.059796311772089966, 'stddev': 1.1689403043113449, 'maximum': 48.81807327270508, 'minimum': -2.2742505073547363, 'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="227">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"YlGn"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"YlGn"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="228">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>observation_2_tile <span class="op">=</span> requests.get(</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>variable_value<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=0,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>observation_2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="228">
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>observation_2_tile <span class="op">=</span> requests.get(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>variable<span class="sc">.</span>value<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=0,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>observation_2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="129">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v6/items/cms-mangrove-biomass-height-v6-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=mangrove-hmax95&amp;color_formula=gamma+r+1.05&amp;colormap_name=ylgn&amp;rescale=0%2C48.81807327270508'],
+ 'tiles': ['https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v12/items/cms-mangrove-biomass-height-v12-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=hmax95&amp;color_formula=gamma+r+1.05&amp;colormap_name=ylgn&amp;rescale=0%2C48.81807327270508'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-86.09476906457506,
@@ -2946,46 +2408,46 @@ Re-running will re-set all menus to their defaults!</code></pre>
  'center': [-84.29907462012918, 9.508408455444004, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-39" class="cell" data-execution_count="230">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">1</span>]</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">0</span>]</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(latitude, longitude), zoom_start<span class="op">=</span><span class="dv">9</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>observation_2<span class="sc">.</span>assets[variable_value]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
-<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
-<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
-<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
-<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
-<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>variable_value<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>units<span class="sc">.</span>get(variable_value)<span class="sc">}</span><span class="ss">)'</span></span>
-<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
-<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
-<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="230">
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">1</span>]</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">0</span>]</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(latitude, longitude), zoom_start<span class="op">=</span><span class="dv">9</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>observation_2<span class="sc">.</span>assets[variable.value]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.5</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>variable<span class="sc">.</span>value<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>units<span class="sc">.</span>get(variable.value)<span class="sc">}</span><span class="ss">)'</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="130">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -3005,7 +2467,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_b751b72b7d6124fd98fadbee5b89b352 {
+                #map_e45a3085ac4d4ba8f5ed9297b97d85a6 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -3044,7 +2506,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
     
     <div style=&quot;position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: rgba(255, 255, 255, 0.8);
              border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: black;&quot;>
-        <b>mangrove-hmax95 (meters)</b><br>
+        <b>hmax95 (meters)</b><br>
         <div style=&quot;display: flex; justify-content: space-between;&quot;>
             <div>0.0</div> 
             <div>12.204518</div> 
@@ -3066,14 +2528,14 @@ Re-running will re-set all menus to their defaults!</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_b751b72b7d6124fd98fadbee5b89b352&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_e45a3085ac4d4ba8f5ed9297b97d85a6&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_b751b72b7d6124fd98fadbee5b89b352 = L.map(
-                &quot;map_b751b72b7d6124fd98fadbee5b89b352&quot;,
+            var map_e45a3085ac4d4ba8f5ed9297b97d85a6 = L.map(
+                &quot;map_e45a3085ac4d4ba8f5ed9297b97d85a6&quot;,
                 {
                     center: [9.508408455444004, -84.29907462012918],
                     crs: L.CRS.EPSG3857,
@@ -3091,7 +2553,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 
         
     
-            var tile_layer_8f5147d6861e4da7a65c8d015a4790bf = L.tileLayer(
+            var tile_layer_c339a0e19f4c4db2d9229f51aaea0037 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3108,10 +2570,10 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_8f5147d6861e4da7a65c8d015a4790bf.addTo(map_b751b72b7d6124fd98fadbee5b89b352);
+            tile_layer_c339a0e19f4c4db2d9229f51aaea0037.addTo(map_e45a3085ac4d4ba8f5ed9297b97d85a6);
         
     
-            var tile_layer_8f1d5ea7a392425368d5f7ffbee3352e = L.tileLayer(
+            var tile_layer_2cba221a7f70d7cdb51629373e6a7f62 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3128,11 +2590,11 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_8f1d5ea7a392425368d5f7ffbee3352e.addTo(map_b751b72b7d6124fd98fadbee5b89b352);
+            tile_layer_2cba221a7f70d7cdb51629373e6a7f62.addTo(map_e45a3085ac4d4ba8f5ed9297b97d85a6);
         
     
-            var tile_layer_6303a4d756d0b94c3a775283e330fe9f = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v6/items/cms-mangrove-biomass-height-v6-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=mangrove-hmax95\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C48.81807327270508&quot;,
+            var tile_layer_8a423c084e790218f2f6f9350d3bd7f4 = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/cms-mangrove-biomass-height-v12/items/cms-mangrove-biomass-height-v12-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=hmax95\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C48.81807327270508&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -3148,27 +2610,27 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_6303a4d756d0b94c3a775283e330fe9f.addTo(map_b751b72b7d6124fd98fadbee5b89b352);
+            tile_layer_8a423c084e790218f2f6f9350d3bd7f4.addTo(map_e45a3085ac4d4ba8f5ed9297b97d85a6);
         
     
-            var layer_control_b9f09884fe8908cd5f2b78c9ac0e0c2c_layers = {
+            var layer_control_5249f38955b395f045a943d55680062f_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_8f5147d6861e4da7a65c8d015a4790bf,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_8f1d5ea7a392425368d5f7ffbee3352e,
-                    &quot;Maximum Height Tallest Tree in Mangrove Forests.&quot; : tile_layer_6303a4d756d0b94c3a775283e330fe9f,
+                    &quot;ESRI World Imagery&quot; : tile_layer_c339a0e19f4c4db2d9229f51aaea0037,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_2cba221a7f70d7cdb51629373e6a7f62,
+                    &quot;Maximum Height Tallest Tree in Mangrove Forests.&quot; : tile_layer_8a423c084e790218f2f6f9350d3bd7f4,
                 },
             };
-            let layer_control_b9f09884fe8908cd5f2b78c9ac0e0c2c = L.control.layers(
-                layer_control_b9f09884fe8908cd5f2b78c9ac0e0c2c_layers.base_layers,
-                layer_control_b9f09884fe8908cd5f2b78c9ac0e0c2c_layers.overlays,
+            let layer_control_5249f38955b395f045a943d55680062f = L.control.layers(
+                layer_control_5249f38955b395f045a943d55680062f_layers.base_layers,
+                layer_control_5249f38955b395f045a943d55680062f_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_b751b72b7d6124fd98fadbee5b89b352);
+            ).addTo(map_e45a3085ac4d4ba8f5ed9297b97d85a6);
 
         
 </script>
