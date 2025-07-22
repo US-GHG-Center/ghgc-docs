@@ -10,7 +10,6 @@ def raster_stats(item, geojson,**kwargs):
     """
     Returns Raster API statistics for an item. Inputs: item, geojson, url = Raster API url, asset = asset name within item. Outputs: dictionary containing statistics over the bounding box and item's datetime information.
     """
-
     try:
         url = item["assets"][kwargs["asset"]]["href"]
     except TypeError as err:
@@ -19,6 +18,13 @@ def raster_stats(item, geojson,**kwargs):
         print('KeyError in raster_stats: Make sure you include \'url\' and \'asset\' as keyword arguments!')
         sys.exit()      
     
+    # Build parameters dictionary
+    params = {"url": url}
+    
+    # Add nodata parameter if provided
+    if "nodata" in kwargs:
+        params["nodata"] = kwargs["nodata"]
+    
     # A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics
     result = requests.post(
 
@@ -26,7 +32,7 @@ def raster_stats(item, geojson,**kwargs):
         f"{kwargs['url']}/cog/statistics",
 
         # Pass the URL to the item, asset name, and raster identifier as parameters
-        params={"url": url},
+        params=params,
 
         # Send the GeoJSON object (polygon) along with the request
         json=geojson,
@@ -34,9 +40,8 @@ def raster_stats(item, geojson,**kwargs):
     # Return the response in JSON format
     ).json()
 
-
     # Print the result
-    ##print(result)
+    # print(result)
 
     # Return a dictionary containing the computed statistics along with the item's datetime information.
     try:
