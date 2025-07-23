@@ -2678,8 +2678,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-zonal-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon over Bathurst Island, Australia.</p>
-<p><strong>Note</strong> Selecting too large of an AOI will result in an error and no results will be returned. This is due to the large size of the files at a high resolution of 30 meters.</p>
-<div id="cell-29" class="cell">
+<div class="alert alert-block alert-info">
+<b>NOTE</b> Selecting too large of an AOI will result in an error and no results will be returned from within the generate_stats function below. This is due to the large size of the files at a high resolution of 30 meters.
+</div>
+<div id="cell-29" class="cell" data-execution_count="52">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the AOI a name to use in plots later on</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Bathurst Island, Northern Australia"</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This AOI is defined as a GEOJSON.</span></span>
@@ -2714,7 +2716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 {'type': 'FeatureCollection', 'features': [{'type': 'Feature', 'properties': {}, 'geometry': {'coordinates': [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], 'type': 'Polygon'}}]}</code></pre>
 </div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="34">
+<div id="cell-30" class="cell" data-execution_count="54">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick Folium map to visualize this AOI</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="op">-</span><span class="fl">11.5</span>, <span class="fl">130.8</span>), zoom_start<span class="op">=</span><span class="dv">9</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2726,7 +2728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss"> (ppm)'</span>)</span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="cell-output cell-output-display" data-execution_count="54">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -2746,7 +2748,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_96a685bb62087012cc989f7a2d470def {
+                #map_c4df402bb66f936821824aa739b8ae52 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2788,10 +2790,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <b>Above Ground Biomass Mangrove Forests. (ppm)</b><br>
         <div style=&quot;display: flex; justify-content: space-between;&quot;>
             <div>0.0</div> 
-            <div>12.204518</div> 
-            <div>24.409037</div> 
-            <div>36.613555</div> 
-            <div>48.818073</div>
+            <div>36.495277</div> 
+            <div>72.990555</div> 
+            <div>109.485832</div> 
+            <div>145.98111</div>
         </div>
         <div style=&quot;background: linear-gradient(to right,
                 #ffffe5, #f9fdc2 10%,
@@ -2807,14 +2809,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_96a685bb62087012cc989f7a2d470def&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_c4df402bb66f936821824aa739b8ae52&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_96a685bb62087012cc989f7a2d470def = L.map(
-                &quot;map_96a685bb62087012cc989f7a2d470def&quot;,
+            var map_c4df402bb66f936821824aa739b8ae52 = L.map(
+                &quot;map_c4df402bb66f936821824aa739b8ae52&quot;,
                 {
                     center: [-11.5, 130.8],
                     crs: L.CRS.EPSG3857,
@@ -2831,7 +2833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_a78e79b6e6b475cc56fbafa5aa34bd21 = L.tileLayer(
+            var tile_layer_5c9a5a8894658962d5f8340bab274b27 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2848,36 +2850,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_a78e79b6e6b475cc56fbafa5aa34bd21.addTo(map_96a685bb62087012cc989f7a2d470def);
+            tile_layer_5c9a5a8894658962d5f8340bab274b27.addTo(map_c4df402bb66f936821824aa739b8ae52);
         
     
 
-        function geo_json_a2268648c68bc210bb300eb804b26313_onEachFeature(feature, layer) {
+        function geo_json_d7d287f38f27c8729e0ff51f0bcee82d_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_a2268648c68bc210bb300eb804b26313 = L.geoJson(null, {
-                onEachFeature: geo_json_a2268648c68bc210bb300eb804b26313_onEachFeature,
+        var geo_json_d7d287f38f27c8729e0ff51f0bcee82d = L.geoJson(null, {
+                onEachFeature: geo_json_d7d287f38f27c8729e0ff51f0bcee82d_onEachFeature,
             
             ...{
 }
         });
 
-        function geo_json_a2268648c68bc210bb300eb804b26313_add (data) {
-            geo_json_a2268648c68bc210bb300eb804b26313
+        function geo_json_d7d287f38f27c8729e0ff51f0bcee82d_add (data) {
+            geo_json_d7d287f38f27c8729e0ff51f0bcee82d
                 .addData(data);
         }
-            geo_json_a2268648c68bc210bb300eb804b26313_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
-        geo_json_a2268648c68bc210bb300eb804b26313.setStyle(function(feature) {return feature.properties.style;});
+            geo_json_d7d287f38f27c8729e0ff51f0bcee82d_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+        geo_json_d7d287f38f27c8729e0ff51f0bcee82d.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_a2268648c68bc210bb300eb804b26313.addTo(map_96a685bb62087012cc989f7a2d470def);
+            geo_json_d7d287f38f27c8729e0ff51f0bcee82d.addTo(map_c4df402bb66f936821824aa739b8ae52);
         
     
-            var tile_layer_7a6c9a99bdc8ff451c17f740434fe012 = L.tileLayer(
-                &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=hmax95\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C48.81807327270508&quot;,
+            var tile_layer_d3268332894ed2061335bf1abdb62c61 = L.tileLayer(
+                &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -2887,19 +2889,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   &quot;subdomains&quot;: &quot;abc&quot;,
   &quot;detectRetina&quot;: false,
   &quot;tms&quot;: false,
-  &quot;opacity&quot;: 0.5,
+  &quot;opacity&quot;: 0.4,
 }
 
             );
         
     
-            tile_layer_7a6c9a99bdc8ff451c17f740434fe012.addTo(map_96a685bb62087012cc989f7a2d470def);
+            tile_layer_d3268332894ed2061335bf1abdb62c61.addTo(map_c4df402bb66f936821824aa739b8ae52);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-<div id="cell-31" class="cell">
+<div id="cell-31" class="cell" data-execution_count="55">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats([observation_1],aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name, nodata<span class="op">=</span><span class="dv">0</span>)</span>
@@ -2909,10 +2911,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 9.74 ms, sys: 14.7 ms, total: 24.5 ms
-Wall time: 12.8 s</code></pre>
+CPU times: user 5.39 ms, sys: 11.1 ms, total: 16.4 ms
+Wall time: 12.6 s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="55">
 <div>
 
 
@@ -2972,7 +2974,7 @@ Wall time: 12.8 s</code></pre>
 <section id="explore-additional-variables-and-regions" class="level2">
 <h2 class="anchored" data-anchor-id="explore-additional-variables-and-regions">Explore Additional Variables and Regions</h2>
 <p>Now we will create interactive widgets to explore different mangrove variables (biomass, height metrics) across different regions of the world. This allows for comparative analysis of mangrove characteristics globally.</p>
-<div id="cell-33" class="cell" data-execution_count="24">
+<div id="cell-33" class="cell" data-execution_count="56">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Formatting settings for drop-down menus</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>style <span class="op">=</span> {<span class="st">'description_width'</span>:<span class="st">'140px'</span>}</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>layout <span class="op">=</span> widgets.Layout(width<span class="op">=</span><span class="st">'300px'</span>, height<span class="op">=</span><span class="st">'75px'</span>)</span>
@@ -3007,11 +3009,11 @@ Re-running will re-set all menus to their defaults!</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"96e7fb0df7eb43ddaf1bba542e9939b8","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"d5f370005eef4c03b99915c17e0f3922","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
-<div id="cell-34" class="cell" data-execution_count="25">
+<div id="cell-34" class="cell" data-execution_count="57">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the information from the dropdown box above to grab the proper collection item</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>observation_2 <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> items <span class="cf">if</span> region_select.value <span class="kw">in</span> i.<span class="bu">id</span>][<span class="dv">0</span>]</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_2)</span>
@@ -3023,7 +3025,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 <pre><code>&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-CostaRica&gt;</code></pre>
 </div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="26">
+<div id="cell-35" class="cell" data-execution_count="58">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_2.assets[variable.value]</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
@@ -3038,13 +3040,13 @@ Re-running will re-set all menus to their defaults!</code></pre>
 [{'scale': 1.0, 'nodata': -9999.0, 'offset': 0.0, 'sampling': 'area', 'data_type': 'float32', 'histogram': {'max': 48.81807327270508, 'min': -2.2742505073547363, 'count': 11, 'buckets': [993811, 862, 705, 637, 495, 347, 228, 149, 97, 45]}, 'statistics': {'mean': 0.059796311772089966, 'stddev': 1.1689403043113449, 'maximum': 48.81807327270508, 'minimum': -2.2742505073547363, 'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="27">
+<div id="cell-36" class="cell" data-execution_count="59">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"YlGn"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="28">
+<div id="cell-37" class="cell" data-execution_count="60">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>observation_2_tile <span class="op">=</span> requests.get(</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -3055,7 +3057,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>observation_2_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="60">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -3069,7 +3071,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
  'center': [-84.29907462012918, 9.508408455444004, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="29">
+<div id="cell-38" class="cell" data-execution_count="61">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">1</span>]</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> observation_2_tile[<span class="st">'center'</span>][<span class="dv">0</span>]</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3108,7 +3110,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 <span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
 <span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="61">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -3128,7 +3130,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_292f6d5c34c606e62269dd84c411a685 {
+                #map_d1eacba09c5e642116f452668a054f71 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -3189,14 +3191,14 @@ Re-running will re-set all menus to their defaults!</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_292f6d5c34c606e62269dd84c411a685&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d1eacba09c5e642116f452668a054f71&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_292f6d5c34c606e62269dd84c411a685 = L.map(
-                &quot;map_292f6d5c34c606e62269dd84c411a685&quot;,
+            var map_d1eacba09c5e642116f452668a054f71 = L.map(
+                &quot;map_d1eacba09c5e642116f452668a054f71&quot;,
                 {
                     center: [9.508408455444004, -84.29907462012918],
                     crs: L.CRS.EPSG3857,
@@ -3214,7 +3216,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 
         
     
-            var tile_layer_66c6515a495ab9c090eef91f985c0d0b = L.tileLayer(
+            var tile_layer_b9eb4b101112a0e46a5d76db1a75d2f9 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3231,10 +3233,10 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_66c6515a495ab9c090eef91f985c0d0b.addTo(map_292f6d5c34c606e62269dd84c411a685);
+            tile_layer_b9eb4b101112a0e46a5d76db1a75d2f9.addTo(map_d1eacba09c5e642116f452668a054f71);
         
     
-            var tile_layer_204341e76cbce6ef27c4dc6e3c69fdfe = L.tileLayer(
+            var tile_layer_bbdbcc911c994dd1eb245022fa6dd2dc = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3251,10 +3253,10 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_204341e76cbce6ef27c4dc6e3c69fdfe.addTo(map_292f6d5c34c606e62269dd84c411a685);
+            tile_layer_bbdbcc911c994dd1eb245022fa6dd2dc.addTo(map_d1eacba09c5e642116f452668a054f71);
         
     
-            var tile_layer_7a6c9a99bdc8ff451c17f740434fe012 = L.tileLayer(
+            var tile_layer_1c267e3114e956f7273ea82ad9e22c2c = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=hmax95\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C48.81807327270508&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3271,27 +3273,27 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_7a6c9a99bdc8ff451c17f740434fe012.addTo(map_292f6d5c34c606e62269dd84c411a685);
+            tile_layer_1c267e3114e956f7273ea82ad9e22c2c.addTo(map_d1eacba09c5e642116f452668a054f71);
         
     
-            var layer_control_a63cc4071fa5f3a8704ef80aa4ac3e2f_layers = {
+            var layer_control_cba8771c7b3dee9c345504095c277714_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_66c6515a495ab9c090eef91f985c0d0b,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_204341e76cbce6ef27c4dc6e3c69fdfe,
-                    &quot;Maximum Height Tallest Tree in Mangrove Forests.&quot; : tile_layer_7a6c9a99bdc8ff451c17f740434fe012,
+                    &quot;ESRI World Imagery&quot; : tile_layer_b9eb4b101112a0e46a5d76db1a75d2f9,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_bbdbcc911c994dd1eb245022fa6dd2dc,
+                    &quot;Maximum Height Tallest Tree in Mangrove Forests.&quot; : tile_layer_1c267e3114e956f7273ea82ad9e22c2c,
                 },
             };
-            let layer_control_a63cc4071fa5f3a8704ef80aa4ac3e2f = L.control.layers(
-                layer_control_a63cc4071fa5f3a8704ef80aa4ac3e2f_layers.base_layers,
-                layer_control_a63cc4071fa5f3a8704ef80aa4ac3e2f_layers.overlays,
+            let layer_control_cba8771c7b3dee9c345504095c277714 = L.control.layers(
+                layer_control_cba8771c7b3dee9c345504095c277714_layers.base_layers,
+                layer_control_cba8771c7b3dee9c345504095c277714_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_292f6d5c34c606e62269dd84c411a685);
+            ).addTo(map_d1eacba09c5e642116f452668a054f71);
 
         
 </script>
