@@ -111,6 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -955,20 +956,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a>
   <ul class="collapse">
   <li><a href="#black-marble-nighttime-light-emissions" id="toc-black-marble-nighttime-light-emissions" class="nav-link" data-scroll-target="#black-marble-nighttime-light-emissions">Black Marble Nighttime Light Emissions</a></li>
+  <li><a href="#viirs-fire-and-thermal-anomalies" id="toc-viirs-fire-and-thermal-anomalies" class="nav-link" data-scroll-target="#viirs-fire-and-thermal-anomalies">VIIRS Fire and Thermal Anomalies</a></li>
   </ul></li>
+  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
-  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
-  <ul class="collapse">
   <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
   <ul class="collapse">
   <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
-  </ul></li>
-  <li><a href="#tile-index-calculation" id="toc-tile-index-calculation" class="nav-link" data-scroll-target="#tile-index-calculation">Tile Index Calculation</a></li>
+  <li><a href="#helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile." id="toc-helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile." class="nav-link" data-scroll-target="#helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile.">Helper functions for converting spatial selection to tile numbers, requesting Black Marble data from server, and plotting the requested tile.</a></li>
   </ul></li>
   <li><a href="#creating-plot-side-by-side-images" id="toc-creating-plot-side-by-side-images" class="nav-link" data-scroll-target="#creating-plot-side-by-side-images">Creating Plot Side-by-Side Images</a>
   <ul class="collapse">
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#location-los-angeles-california" id="toc-location-los-angeles-california" class="nav-link" data-scroll-target="#location-los-angeles-california">Location: <strong>Los Angeles, California</strong></a></li>
   </ul></li>
+  <li><a href="#nightlights-across-florida-new-york-and-california" id="toc-nightlights-across-florida-new-york-and-california" class="nav-link" data-scroll-target="#nightlights-across-florida-new-york-and-california">Nightlights across Florida, New York, and California</a></li>
+  <li><a href="#fire-and-thermal-anomalies-analysis" id="toc-fire-and-thermal-anomalies-analysis" class="nav-link" data-scroll-target="#fire-and-thermal-anomalies-analysis">Fire and Thermal Anomalies Analysis</a>
+  <ul class="collapse">
+  <li><a href="#interactive-fire-overlay" id="toc-interactive-fire-overlay" class="nav-link" data-scroll-target="#interactive-fire-overlay">Interactive Fire Overlay</a></li>
+  <li><a href="#side-by-side-visualization" id="toc-side-by-side-visualization" class="nav-link" data-scroll-target="#side-by-side-visualization">Side-by-Side Visualization</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/user_data_notebooks/blackmarble-radiance-daygrid-v2nrt_User_Notebook.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -993,7 +1000,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Siddharth Chaudhary, Paridhi Parajuli </p>
+             <p>Siddharth Chaudhary, Paridhi Parajuli, Kyle Lesinger </p>
           </div>
   </div>
     
@@ -1018,11 +1025,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#approach">Approach</a></li>
 <li><a href="#about-the-data">About the Data</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
+<li><a href="#terminology">Terminology</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
-<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
-<li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
-<li><a href="#time-series-analysis">Time-Series Analysis</a></li>
+<li><a href="#helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile">Helper Functions</a></li>
+<li><a href="#creating-plot-side-by-side-images">Creating Plot Side-by-Side Images</a></li>
+<li><a href="#nightlights-across-florida-new-york-and-california">Nightlights Across Multiple Locations</a></li>
+<li><a href="#fire-and-thermal-anomalies-analysis">Fire and Thermal Anomalies Analysis</a>
+<ul>
+<li><a href="#interactive-fire-overlay">Interactive Fire Overlay</a></li>
+<li><a href="#side-by-side-visualization">Side-by-Side Visualization</a></li>
+<li><a href="#fire-overlay-analysis">Fire Overlay Analysis</a></li>
+</ul></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </section>
@@ -1031,7 +1044,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong>Spatial coverage</strong>: Global</li>
 <li><strong>Spatial resolution</strong>: 500m</li>
-<li><strong>Temporal extent</strong>: October 10, 2023 - Ongoing</li>
+<li><strong>Temporal extent</strong>: November 18, 2020 - Ongoing</li>
 <li><strong>Temporal resolution</strong>: Daily</li>
 <li><strong>Unit</strong>: Watts per square centimeter per steradian (W/cm²/sr)</li>
 <li><strong>Utility</strong>: Climate Research</li>
@@ -1040,112 +1053,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
-<p>This notebook demonstrates how to visualize changes in a satellite-derived data product over time using STAC metadata and pre-rendered WMTS imagery. The steps below outline the workflow:</p>
+<p>This notebook demonstrates how to visualize satellite-derived nighttime light emissions and overlay fire/thermal anomaly data:</p>
 <ol type="1">
-<li>Connect to the GHGC STAC API Use the <code>/stac</code> endpoint to access metadata for the collection of interest — in this case, <code>VIIRS_SNPP_DayNightBand_At_Sensor_Radiance</code>.</li>
-<li>Determine Available Dates Query the STAC collection to identify available temporal granularity and select two observation dates for comparison.</li>
-<li>Compute <code>WMTS Tile Indices</code> for Region of Interest Using a simple tile coordinate calculation (based on the EPSG:4326 tiling scheme), compute the TileMatrix, TileCol, and TileRow values that cover the bounding box for Cape Coral / Fort Myers.</li>
-<li>Construct <code>WMTS URLs and Fetch Tiles</code> Use the computed tile indices and selected timestamps to fetch image tiles from NASA GIBS via WMTS. Tiles are stitched into a single image per timestamp.</li>
-<li>Visualize <code>Side-by-Side</code> in Matplotlib Display the before/after imagery using matplotlib for visual comparison of the area of interest over time.</li>
+<li><strong>Connect to STAC API</strong> - Access the VIIRS Black Marble collection metadata.</li>
+<li><strong>Select Dates</strong> - Choose time periods for comparison.</li>
+<li><strong>Calculate Tile Coordinates</strong> - Convert geographic coordinates to WMTS tile indices.</li>
+<li><strong>Fetch Black Marble Imagery</strong> - Retrieve nighttime light tiles from NASA GIBS.</li>
+<li><strong>Retrieve Fire Data</strong> - Access VIIRS thermal anomalies using Mapbox Vector Tiles.</li>
+<li><strong>Interactive Selection</strong> - Choose from preset locations or enter custom coordinates.</li>
+<li><strong>Side-by-Side Visualization</strong> - Compare pure Black Marble with fire overlay.</li>
+<li><strong>Analyze Results</strong> - Distinguish urban lights from fires, volcanoes, and gas flares.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="black-marble-nighttime-light-emissions" class="level3">
 <h3 class="anchored" data-anchor-id="black-marble-nighttime-light-emissions">Black Marble Nighttime Light Emissions</h3>
-<p>This dataset presents a</p>
+<p>This dataset provides daily, Near Real Time (NRT) nighttime light emissions (at sensor radiance) observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This records indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002.</p>
+</section>
+<section id="viirs-fire-and-thermal-anomalies" class="level3">
+<h3 class="anchored" data-anchor-id="viirs-fire-and-thermal-anomalies">VIIRS Fire and Thermal Anomalies</h3>
+<p>The VIIRS 375m Active Fire product provides data on thermal anomalies and fires detected by the VIIRS sensor at 375-meter resolution, including wildfires, volcanoes, and gas flares. The product includes fire radiative power, brightness temperature, and detection confidence levels, enabling discrimination between different types of thermal sources. For more information and data access, visit the NASA FIRMS website at https://firms.modaps.eosdis.nasa.gov/active_fire/ and the VIIRS Active Fire User Guide.</p>
 <p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter">U.S. Greenhouse Gas Center</a>.</p>
 </section>
+</section>
+<section id="install-the-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
+<p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
+<p>%pip install requests pystac_client matplotlib ipywidgets mapbox-vector-tile pillow –quiet</p>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
 <p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;BlueFlux CO₂ and Methane Flux - <code>item</code>: One granule in the dataset, e.g.&nbsp;one daily file of carbon fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
-</section>
-<section id="install-the-required-libraries" class="level1">
-<h1>Install the Required Libraries</h1>
-<p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
-<p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
 <div id="86494e22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pystac_client <span class="im">import</span> Client</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> BytesIO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import required libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gzip</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Tuple, Dict</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> BytesIO</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For data visualization</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># For image processing</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># For vector tile processing</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mapbox_vector_tile</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># For accessing the STAC API</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pystac_client <span class="im">import</span> Client</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"All libraries imported successfully!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>All libraries imported successfully!</code></pre>
 </div>
+</div>
+</section>
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Black Marble Nighttime Light Emissions dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/blueflux-ghgflux-daygrid-v1"><strong>VIIRS_SNPP_DayNightBand_At_Sensor_Radiance</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="f025c63a" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>COLLECTION_NAME <span class="op">=</span> <span class="st">"VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>tilematrixset <span class="op">=</span> <span class="st">"500m"</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>tilematrix <span class="op">=</span> <span class="st">"2"</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>tilecol <span class="op">=</span> <span class="st">"1"</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>tilerow <span class="op">=</span> <span class="st">"1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-</section>
-<section id="tile-index-calculation" class="level2">
-<h2 class="anchored" data-anchor-id="tile-index-calculation">Tile Index Calculation</h2>
-<div id="65a7373d" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Input extent (lon_min, lon_max, lat_min, lat_max)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>extent <span class="op">=</span> [<span class="op">-</span><span class="fl">82.0</span>, <span class="op">-</span><span class="fl">81.8</span>, <span class="fl">26.0</span>, <span class="fl">26.8</span>]</span>
+<div id="f025c63a" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>tilematrixset <span class="op">=</span> <span class="st">"500m"</span>  <span class="co"># from your metadata</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>tilematrix <span class="op">=</span> <span class="dv">2</span>  <span class="co"># zoom level</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lonlat_to_tilexy(lon, lat, zoom):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Convert lon/lat to WMTS tile col/row for EPSG:4326 with tilematrixset 'GoogleMapsCompatible_Level8'</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">2</span> <span class="op">**</span> zoom</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> (lon <span class="op">+</span> <span class="dv">180</span>) <span class="op">/</span> <span class="dv">360</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (<span class="dv">90</span> <span class="op">-</span> lat) <span class="op">/</span> <span class="dv">180</span>  <span class="co"># flipped because tiles start from top-left (lat=90)</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    tile_x <span class="op">=</span> <span class="bu">int</span>(x <span class="op">*</span> n)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    tile_y <span class="op">=</span> <span class="bu">int</span>(y <span class="op">*</span> n)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tile_x, tile_y</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Lower-left corner tile indices (lon_min, lat_min)</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>min_tile_x, max_tile_y <span class="op">=</span> lonlat_to_tilexy(extent[<span class="dv">0</span>], extent[<span class="dv">2</span>], tilematrix)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Upper-right corner tile indices (lon_max, lat_max)</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>max_tile_x, min_tile_y <span class="op">=</span> lonlat_to_tilexy(extent[<span class="dv">1</span>], extent[<span class="dv">3</span>], tilematrix)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"tilematrixset = '</span><span class="sc">{</span>tilematrixset<span class="sc">}</span><span class="ss">'"</span>)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"tilematrix (zoom level) = </span><span class="sc">{</span>tilematrix<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"tilecol range = </span><span class="sc">{</span>min_tile_x<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>max_tile_x<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"tilerow range = </span><span class="sc">{</span>min_tile_y<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>max_tile_y<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tilematrixset = '500m'
-tilematrix (zoom level) = 2
-tilecol range = 1 to 1
-tilerow range = 1 to 1</code></pre>
-</div>
-</div>
-<div id="5cd7244b" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dates to compare</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2022-09-30T00:00:00Z"</span>, <span class="st">"2022-08-30T00:00:00Z"</span>]</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load collection</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(COLLECTION_NAME)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>display(collection)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># WMTS base URL</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>wmts_base <span class="op">=</span> <span class="st">"https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>COLLECTION_NAME <span class="op">=</span> <span class="st">"VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># NASA GIBS WMTS endpoint</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>WMTS_BASE_URL <span class="op">=</span> <span class="st">"https://gibs-c.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi"</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Load collection</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(COLLECTION_NAME)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>display(collection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 
@@ -1205,7 +1195,7 @@ tilerow range = 1 to 1</code></pre>
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -1946,56 +1936,671 @@ tilerow range = 1 to 1</code></pre>
 </div>
 </div>
 </div>
+<p>Each image is broken down into a differing number of tiles when requests for a specfic location are provided as inputs. To improve the understanding of which tiles are being plotted when a specfic location is requested, provided below are the dimensions for the entire image when a specific zoom level is requested. Each zoom level has a specific number of tiles which correpond wot different regions of the world based on latitude and longitude.</p>
+<p>For example, zoom level 0 image requests have 2 columns and 1 row worth of images over the globe. It has been identified through testing that zoom level 0 and zoom level 1 do not have tiles with the exact same latitude and longitude spacings (e.g, )</p>
+<div id="da461cce" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tilematrixset for 500m resolution</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>TILEMATRIXSET <span class="op">=</span> <span class="st">"500m"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tile matrix dimensions from NASA GIBS GetCapabilities. This assists with grabbing the correct tile based on location.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>GIBS_500M_TILE_MATRIX <span class="op">=</span> {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: {<span class="st">'width'</span>: <span class="dv">2</span>, <span class="st">'height'</span>: <span class="dv">1</span>, <span class="st">'tile_width'</span>: <span class="fl">180.0</span>, <span class="st">'tile_height'</span>: <span class="fl">180.0</span>},      <span class="co"># 360°/2 = 180°, 180°/1 = 180°</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: {<span class="st">'width'</span>: <span class="dv">3</span>, <span class="st">'height'</span>: <span class="dv">2</span>, <span class="st">'tile_width'</span>: <span class="fl">120.0</span>, <span class="st">'tile_height'</span>: <span class="fl">90.0</span>},       <span class="co"># 360°/3 = 120°, 180°/2 = 90°</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: {<span class="st">'width'</span>: <span class="dv">5</span>, <span class="st">'height'</span>: <span class="dv">3</span>, <span class="st">'tile_width'</span>: <span class="fl">72.0</span>, <span class="st">'tile_height'</span>: <span class="fl">60.0</span>},        <span class="co"># 360°/5 = 72°, 180°/3 = 60°</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span>: {<span class="st">'width'</span>: <span class="dv">10</span>, <span class="st">'height'</span>: <span class="dv">5</span>, <span class="st">'tile_width'</span>: <span class="fl">36.0</span>, <span class="st">'tile_height'</span>: <span class="fl">36.0</span>},       <span class="co"># 360°/10 = 36°, 180°/5 = 36°</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4</span>: {<span class="st">'width'</span>: <span class="dv">20</span>, <span class="st">'height'</span>: <span class="dv">10</span>, <span class="st">'tile_width'</span>: <span class="fl">18.0</span>, <span class="st">'tile_height'</span>: <span class="fl">18.0</span>},      <span class="co"># 360°/20 = 18°, 180°/10 = 18°</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span>: {<span class="st">'width'</span>: <span class="dv">40</span>, <span class="st">'height'</span>: <span class="dv">20</span>, <span class="st">'tile_width'</span>: <span class="fl">9.0</span>, <span class="st">'tile_height'</span>: <span class="fl">9.0</span>},        <span class="co"># 360°/40 = 9°, 180°/20 = 9°</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="dv">6</span>: {<span class="st">'width'</span>: <span class="dv">80</span>, <span class="st">'height'</span>: <span class="dv">40</span>, <span class="st">'tile_width'</span>: <span class="fl">4.5</span>, <span class="st">'tile_height'</span>: <span class="fl">4.5</span>},        <span class="co"># 360°/80 = 4.5°, 180°/40 = 4.5°</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="dv">7</span>: {<span class="st">'width'</span>: <span class="dv">160</span>, <span class="st">'height'</span>: <span class="dv">80</span>, <span class="st">'tile_width'</span>: <span class="fl">2.25</span>, <span class="st">'tile_height'</span>: <span class="fl">2.25</span>}      <span class="co"># 360°/160 = 2.25°, 180°/80 = 2.25°</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"NASA GIBS 500m Tile Matrix Dimensions:"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Zoom | Grid Size  | Tile Coverage (degrees)"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-----|------------|------------------------"</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zoom, params <span class="kw">in</span> GIBS_500M_TILE_MATRIX.items():</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>zoom<span class="sc">}</span><span class="ss">  | </span><span class="sc">{</span>params[<span class="st">'width'</span>]<span class="sc">:3d}</span><span class="ss">×</span><span class="sc">{</span>params[<span class="st">'height'</span>]<span class="sc">:2d}</span><span class="ss">    | </span><span class="sc">{</span>params[<span class="st">'tile_width'</span>]<span class="sc">:.2f}</span><span class="ss">° × </span><span class="sc">{</span>params[<span class="st">'tile_height'</span>]<span class="sc">:.2f}</span><span class="ss">°"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NASA GIBS 500m Tile Matrix Dimensions:
+Zoom | Grid Size  | Tile Coverage (degrees)
+-----|------------|------------------------
+  0  |   2× 1    | 180.00° × 180.00°
+  1  |   3× 2    | 120.00° × 90.00°
+  2  |   5× 3    | 72.00° × 60.00°
+  3  |  10× 5    | 36.00° × 36.00°
+  4  |  20×10    | 18.00° × 18.00°
+  5  |  40×20    | 9.00° × 9.00°
+  6  |  80×40    | 4.50° × 4.50°
+  7  | 160×80    | 2.25° × 2.25°</code></pre>
+</div>
+</div>
+</section>
+<section id="helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile." class="level3">
+<h3 class="anchored" data-anchor-id="helper-functions-for-converting-spatial-selection-to-tile-numbers-requesting-black-marble-data-from-server-and-plotting-the-requested-tile.">Helper functions for converting spatial selection to tile numbers, requesting Black Marble data from server, and plotting the requested tile.</h3>
+<ol type="1">
+<li>Convert longitude and latitude coordinates to tile coordinates (function <code>lonlat_to_tilexy</code>) <br></li>
+<li>Get the bounding box of each tile to ensure that the region of interest is within a specific tile (function <code>tile_to_bbox</code>) <br></li>
+<li>Fetch the tile via an API request (function <code>fetch_tile</code>) <br></li>
+<li>Formatting image to identify the latitude and longitude bounds (function <code>format_coordinate</code>) <br></li>
+<li>Plot the tile for the specified location of interest (function <code>display_tile_or_error</code>)</li>
+</ol>
+<div id="65a7373d" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lonlat_to_tilexy(lon: <span class="bu">float</span>, lat: <span class="bu">float</span>, zoom: <span class="bu">int</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Convert longitude/latitude to GIBS 500m tile indices.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zoom <span class="kw">not</span> <span class="kw">in</span> GIBS_500M_TILE_MATRIX:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Zoom level </span><span class="sc">{</span>zoom<span class="sc">}</span><span class="ss"> not supported. Use 0-7."</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    matrix <span class="op">=</span> GIBS_500M_TILE_MATRIX[zoom]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate tile indices (origin at -180, 90)</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> <span class="bu">int</span>((lon <span class="op">+</span> <span class="dv">180</span>) <span class="op">/</span> matrix[<span class="st">'tile_width'</span>])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> <span class="bu">int</span>((<span class="dv">90</span> <span class="op">-</span> lat) <span class="op">/</span> matrix[<span class="st">'tile_height'</span>])</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clamp to valid range</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="bu">min</span>(col, matrix[<span class="st">'width'</span>] <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="bu">min</span>(row, matrix[<span class="st">'height'</span>] <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> col, row</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tile_to_bbox(col: <span class="bu">int</span>, row: <span class="bu">int</span>, zoom: <span class="bu">int</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>, <span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">    Get the geographic bounding box for a tile based on the column and row tile request.</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    matrix <span class="op">=</span> GIBS_500M_TILE_MATRIX[zoom]</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate exact boundaries based on tile dimensions</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    min_lon <span class="op">=</span> <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> (col <span class="op">*</span> matrix[<span class="st">'tile_width'</span>])</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    max_lon <span class="op">=</span> min_lon <span class="op">+</span> matrix[<span class="st">'tile_width'</span>]</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    max_lat <span class="op">=</span> <span class="dv">90</span> <span class="op">-</span> (row <span class="op">*</span> matrix[<span class="st">'tile_height'</span>])</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    min_lat <span class="op">=</span> max_lat <span class="op">-</span> matrix[<span class="st">'tile_height'</span>]</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> min_lon, max_lon, min_lat, max_lat</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_tile(col: <span class="bu">int</span>, row: <span class="bu">int</span>, zoom: <span class="bu">int</span>, date: <span class="bu">str</span> <span class="op">=</span> <span class="st">"2022-09-30T00:00:00Z"</span>) <span class="op">-&gt;</span> Image:</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">    Fetch a single tile from NASA GIBS.</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TIME"</span>: date,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"layer"</span>: COLLECTION_NAME,</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"style"</span>: <span class="st">"default"</span>,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"tilematrixset"</span>: TILEMATRIXSET,</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Service"</span>: <span class="st">"WMTS"</span>,</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Request"</span>: <span class="st">"GetTile"</span>,</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Version"</span>: <span class="st">"1.0.0"</span>,</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Format"</span>: <span class="st">"image/png"</span>,</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileMatrix"</span>: zoom,</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileCol"</span>: col,</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileRow"</span>: row</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(WMTS_BASE_URL, params<span class="op">=</span>params)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> Image.<span class="bu">open</span>(BytesIO(response.content))</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"❌ Error: Failed to parse image data for tile (</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>row<span class="sc">}</span><span class="ss">) at zoom </span><span class="sc">{</span>zoom<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"❌ Error: Failed to fetch tile (</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>row<span class="sc">}</span><span class="ss">) at zoom </span><span class="sc">{</span>zoom<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pixel_position(img, lon, lat, bbox):</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate pixel position</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    img_width, img_height <span class="op">=</span> img.size</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    x_pos <span class="op">=</span> ((lon <span class="op">-</span> bbox[<span class="dv">0</span>]) <span class="op">/</span> (bbox[<span class="dv">1</span>] <span class="op">-</span> bbox[<span class="dv">0</span>])) <span class="op">*</span> img_width</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span> ((bbox[<span class="dv">3</span>] <span class="op">-</span> lat) <span class="op">/</span> (bbox[<span class="dv">3</span>] <span class="op">-</span> bbox[<span class="dv">2</span>])) <span class="op">*</span> img_height</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x_pos, y_pos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="qqaemwqor2" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_coordinate(value, is_longitude<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Format a coordinate value with appropriate direction indicator. Useful when plotting tiles.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_longitude:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="st">"E"</span> <span class="cf">if</span> value <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"W"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        abs_value <span class="op">=</span> <span class="bu">abs</span>(value)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="st">"N"</span> <span class="cf">if</span> value <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"S"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        abs_value <span class="op">=</span> <span class="bu">abs</span>(value)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>abs_value<span class="sc">:.1f}</span><span class="ss">°</span><span class="sc">{</span>direction<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_tile_or_error(ax, img, date_str, collection_name, bbox<span class="op">=</span><span class="va">None</span>, zoom_level<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Helper function to display a tile image or an error message if the image is None.</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Adds coordinate labels if bbox is provided (only for zoom levels 2 and above).</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    temporal_interval <span class="op">=</span> collection.extent.temporal.intervals[<span class="dv">0</span>]</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> img <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        ax.imshow(img)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add coordinate labels only for zoom levels 2 and above</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> bbox <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> zoom_level <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> zoom_level <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            min_lon, max_lon, min_lat, max_lat <span class="op">=</span> bbox</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Format corner coordinates </span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>            left_lon <span class="op">=</span> format_coordinate(min_lon, is_longitude<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            right_lon <span class="op">=</span> format_coordinate(max_lon, is_longitude<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For latitude (N/S)</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>            bottom_lat <span class="op">=</span> format_coordinate(min_lat, is_longitude<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>            top_lat <span class="op">=</span> format_coordinate(max_lat, is_longitude<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            ax.text(<span class="fl">1.02</span>, <span class="fl">0.0</span>, bottom_lat, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>                   rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            ax.text(<span class="fl">1.02</span>, <span class="fl">1.0</span>, top_lat, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>                   rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Left corner</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>            ax.text(<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">0.02</span>, left_lon, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                   ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Right corner</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>            ax.text(<span class="fl">0.98</span>, <span class="op">-</span><span class="fl">0.02</span>, right_lon, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>                   ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Add intermediate tick marks</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> x <span class="kw">in</span> [<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>]:</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>                lon_val <span class="op">=</span> min_lon <span class="op">+</span> (max_lon <span class="op">-</span> min_lon) <span class="op">*</span> x</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>                lon_label <span class="op">=</span> format_coordinate(lon_val, is_longitude<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Bottom</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>                ax.text(x, <span class="op">-</span><span class="fl">0.02</span>, lon_label, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>                       ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">7</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> y <span class="kw">in</span> [<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>]:</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Note: y=0 is bottom, y=1 is top in axes coordinates</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>                <span class="co"># But latitude increases from bottom to top</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>                lat_val <span class="op">=</span> min_lat <span class="op">+</span> (max_lat <span class="op">-</span> min_lat) <span class="op">*</span> y</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>                lat_label <span class="op">=</span> format_coordinate(lat_val, is_longitude<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Right side</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>                ax.text(<span class="fl">1.02</span>, y, lat_label, transform<span class="op">=</span>ax.transAxes, </span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>                       rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">7</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>date_str<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Convert date_str to datetime for comparison</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> datetime <span class="im">import</span> timezone</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>        date_obj <span class="op">=</span> datetime.strptime(date_str.split(<span class="st">'T'</span>)[<span class="dv">0</span>], <span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>).replace(tzinfo<span class="op">=</span>timezone.utc)</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (date_obj <span class="op">&lt;</span> temporal_interval[<span class="dv">0</span>]) <span class="kw">or</span> (date_obj <span class="op">&gt;</span> temporal_interval[<span class="dv">1</span>]):</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>            before_or_after <span class="op">=</span> (<span class="st">'before'</span>,<span class="st">'start'</span>) <span class="cf">if</span> date_obj <span class="op">&lt;</span> temporal_interval[<span class="dv">0</span>] <span class="cf">else</span> (<span class="st">'after'</span>,<span class="st">'end'</span>)</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>            reference_date <span class="op">=</span> temporal_interval[<span class="dv">0</span>] <span class="cf">if</span> before_or_after[<span class="dv">0</span>] <span class="op">==</span> <span class="st">'before'</span> <span class="cf">else</span> temporal_interval[<span class="dv">1</span>]</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>            ax.text(<span class="fl">0.5</span>, <span class="fl">0.5</span>, </span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"⚠️  Warning: Requested date </span><span class="sc">{</span>date_str<span class="sc">}</span><span class="ch">\n</span><span class="ss">is </span><span class="sc">{</span>before_or_after[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> the collection </span><span class="sc">{</span>before_or_after[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> date</span><span class="ch">\n</span><span class="sc">{</span>reference_date<span class="sc">.</span>strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)<span class="sc">}</span><span class="ss">"</span>, </span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>                    ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">11</span>, </span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>                    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round,pad=0.5"</span>, facecolor<span class="op">=</span><span class="st">"lightyellow"</span>, edgecolor<span class="op">=</span><span class="st">"orange"</span>, alpha<span class="op">=</span><span class="fl">0.9</span>))</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>        ax.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>        ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>collection_name<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>date_str<span class="sc">}</span><span class="ss"> - No Data"</span>, color<span class="op">=</span><span class="st">'darkorange'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
-<section id="creating-plot-side-by-side-images" class="level1">
-<h1>Creating Plot Side-by-Side Images</h1>
-<div id="9cf96c2d" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare subplots</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, date_str <span class="kw">in</span> <span class="bu">zip</span>(axs, dates):</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TIME"</span>: date_str,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"layer"</span>: COLLECTION_NAME,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"style"</span>: <span class="st">"default"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"tilematrixset"</span>: tilematrixset,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Service"</span>: <span class="st">"WMTS"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Request"</span>: <span class="st">"GetTile"</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Version"</span>: <span class="st">"1.0.0"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Format"</span>: <span class="st">"image/png"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileMatrix"</span>: tilematrix,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileCol"</span>: tilecol,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"TileRow"</span>: tilerow</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(wmts_base, params<span class="op">=</span>params)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> Image.<span class="bu">open</span>(BytesIO(response.content))</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        ax.imshow(img)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>COLLECTION_NAME<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>date_str<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        ax.text(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="ss">f"Failed to load</span><span class="ch">\n</span><span class="sc">{</span>date_str<span class="sc">}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'center'</span>)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="creating-plot-side-by-side-images" class="level2">
+<h2 class="anchored" data-anchor-id="creating-plot-side-by-side-images">Creating Plot Side-by-Side Images</h2>
+<section id="location-los-angeles-california" class="level3">
+<h3 class="anchored" data-anchor-id="location-los-angeles-california">Location: <strong>Los Angeles, California</strong></h3>
+<p>We can now select a specific location and datetime to compare Black Marble imagery between two different dates. This can allow us to determine how radiance has changed as a function of time.</p>
+<div id="b6fe59e1" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Arguments</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Dates to compare</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2022-01-12T00:00:00Z"</span>, <span class="st">"2021-01-12T00:00:00Z"</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>lon <span class="op">=</span> <span class="op">-</span><span class="fl">118.2437</span> <span class="co">#West</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>lat <span class="op">=</span> <span class="fl">34.0522</span> <span class="co">#North</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>zoom <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare subplots with extra space for coordinate labels</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="bu">len</span>(dates), figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>fig.subplots_adjust(left<span class="op">=</span><span class="fl">0.1</span>, right<span class="op">=</span><span class="fl">0.9</span>, top<span class="op">=</span><span class="fl">0.9</span>, bottom<span class="op">=</span><span class="fl">0.1</span>, wspace<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, date_str <span class="kw">in</span> <span class="bu">zip</span>(axs, dates):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    col, row <span class="op">=</span> lonlat_to_tilexy(lon, lat, zoom)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    bbox <span class="op">=</span> tile_to_bbox(col, row, zoom)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> fetch_tile(col, row, zoom, date_str)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    display_tile_or_error(ax, img, date_str, COLLECTION_NAME, bbox, zoom_level<span class="op">=</span>zoom)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    x_pos, y_pos <span class="op">=</span> pixel_position(img, lon, lat, bbox)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a red circle at the location</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    ax.scatter(x_pos, y_pos, facecolors<span class="op">=</span><span class="st">'none'</span>, edgecolors<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">900</span>, marker<span class="op">=</span><span class="st">'o'</span>, linewidths<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="blackmarble-radiance-daygrid-v2nrt_User_Notebook_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="blackmarble-radiance-daygrid-v2nrt_User_Notebook_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="nightlights-across-florida-new-york-and-california" class="level2">
+<h2 class="anchored" data-anchor-id="nightlights-across-florida-new-york-and-california">Nightlights across Florida, New York, and California</h2>
+<p>We further investigate nightlights across the United States to examine regional differences based on the same date. We will enhance the zoom level to 4 on each of these locations to grab tiles which move closer to Earth’s surface and show higher definition.</p>
+<div id="3cbbamfzv0u" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Multiple locations with coordinate labels</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>locations <span class="op">=</span> [</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Orlando, FL"</span>, <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">81.3789</span>, <span class="st">"lat"</span>: <span class="fl">28.5384</span>},</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"New York, NY"</span>, <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">74.0060</span>, <span class="st">"lat"</span>: <span class="fl">40.7128</span>},</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Los Angeles, CA"</span>, <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">118.2437</span>, <span class="st">"lat"</span>: <span class="fl">34.0522</span>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>date <span class="op">=</span> <span class="st">"2022-09-30T00:00:00Z"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>zoom <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">7</span>))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>fig.subplots_adjust(left<span class="op">=</span><span class="fl">0.08</span>, right<span class="op">=</span><span class="fl">0.92</span>, top<span class="op">=</span><span class="fl">0.92</span>, bottom<span class="op">=</span><span class="fl">0.08</span>, wspace<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, location <span class="kw">in</span> <span class="bu">zip</span>(axes, locations):</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    lon, lat <span class="op">=</span> location[<span class="st">"lon"</span>], location[<span class="st">"lat"</span>]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get tile coordinates</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    col, row <span class="op">=</span> lonlat_to_tilexy(lon, lat, zoom)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    bbox <span class="op">=</span> tile_to_bbox(col, row, zoom)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch and display tile</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> fetch_tile(col, row, zoom, date)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    display_tile_or_error(ax, img, date, location[<span class="st">'name'</span>], bbox, zoom_level<span class="op">=</span>zoom)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a marker for the specific location</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> img <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        x_pos, y_pos <span class="op">=</span> pixel_position(img, lon, lat, bbox)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add a red circle at the location</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        ax.scatter(x_pos, y_pos, facecolors<span class="op">=</span><span class="st">'none'</span>, edgecolors<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">900</span>, marker<span class="op">=</span><span class="st">'o'</span>, linewidths<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="blackmarble-radiance-daygrid-v2nrt_User_Notebook_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fire-and-thermal-anomalies-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="fire-and-thermal-anomalies-analysis">Fire and Thermal Anomalies Analysis</h2>
+<p>While higher radiance values indicate more light emissions, they are not always associated with city lights. For example, <strong>fires and thermal anomalies</strong> can have high radiance values and can be associated with volcanoes or gas flares. These events in particular can release large amounts of carbon dioxide (CO<sub>2</sub>), nitrogen dioxide (NO<sub>2</sub>), or methane (CH<sub>4</sub>) into the atmosphere which can be a public health hazard. Therefore, we further investigate these anomalies using VIIRS (Visible Infrared Imaging Radiometer Suite) fire and thermal anomaly data, available through the <a href="https://viirsland.gsfc.nasa.gov/Products/NASA/FireESDR.html#:~:text=The%20alternative%20375%20m%20fire,available%20starting%20in%20mid%2D2023">NASA FIRMS</a>.</p>
+<section id="we-provide-an-interactive-section-to-examine-3-different-regions-and-events-which-produce-notable-fire-and-thermal-anomalies." class="level4">
+<h4 class="anchored" data-anchor-id="we-provide-an-interactive-section-to-examine-3-different-regions-and-events-which-produce-notable-fire-and-thermal-anomalies.">We provide an interactive section to examine 3 different regions and events which produce notable fire and thermal anomalies.</h4>
+<ol type="1">
+<li><strong>Palisades Fire, Los Angeles</strong> - A devastating urban wildfire that burned through Pacific Palisades in January 2025, threatening homes and forcing mass evacuations.</li>
+<li><strong>Kilauea Volcano, Hawaii</strong> - One of the world’s most active volcanoes with persistent thermal anomalies from lava lakes and eruptions visible in satellite imagery.</li>
+<li><strong>Western Siberia, Russia</strong> - A region with extensive oil and gas operations producing continuous gas flares alongside seasonal boreal forest fires.</li>
+</ol>
+<div id="z8g9atsj29" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIIRS Fire and Thermal Anomalies Configuration</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>FIRE_LAYER <span class="op">=</span> <span class="st">"VIIRS_SNPP_Thermal_Anomalies_375m_All"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Preset points for fire overlay demonstration with recommended dates</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>PRESET_POINTS <span class="op">=</span> {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Los Angeles, CA"</span>: {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">118.526</span>, <span class="st">"lat"</span>: <span class="fl">34.048</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Palisades Fire - Urban fires and wildfire area"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_zoom"</span>: <span class="dv">5</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_date"</span>: <span class="st">"2025-01-10"</span>  <span class="co"># Fire season</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Kilauea Volcano, Hawaii"</span>: {</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">155.2834</span>, <span class="st">"lat"</span>: <span class="fl">19.4069</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Kilauea Volcano, Hawaii - Active Volcano"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_zoom"</span>: <span class="dv">6</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_date"</span>: <span class="st">"2022-01-12"</span>  <span class="co"># Active volcanic period</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Western Siberia, Russia"</span>: {</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lon"</span>: <span class="fl">69.35135</span>, <span class="st">"lat"</span>: <span class="fl">60.75285</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Western Siberia, Russia - Gas Flares and Boreal Fire Season"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_zoom"</span>: <span class="dv">6</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_date"</span>: <span class="st">"2024-09-20"</span>  <span class="co"># As requested</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Custom: Insert your coordinates and dates"</span>: {</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">100.0</span>, <span class="st">"lat"</span>: <span class="fl">40.0</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Custom location"</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_zoom"</span>: <span class="dv">5</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_date"</span>: <span class="st">"2022-01-12"</span>  <span class="co"># Default date</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="interactive-fire-overlay" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-fire-overlay">Interactive Fire Overlay</h3>
+<div id="xah0uj4xi9" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create minimal widgets</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>location_dropdown <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span><span class="bu">list</span>(PRESET_POINTS.keys()),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="st">'Kilauea Volcano, Hawaii'</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Location:'</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>zoom_dropdown <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>[</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 2 - Wide (72°×60°)'</span>, <span class="dv">2</span>), </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 3 - Regional (36°×36°)'</span>, <span class="dv">3</span>), </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 4 - Local (18°×18°)'</span>, <span class="dv">4</span>), </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 5 - Detailed (9°×9°)'</span>, <span class="dv">5</span>),</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 6 - High Detail (4.5°×4.5°)'</span>, <span class="dv">6</span>),</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Zoom 7 - Very High Detail (2.25°×2.25°)'</span>, <span class="dv">7</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="dv">6</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Zoom:'</span>,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    style<span class="op">=</span>{<span class="st">'description_width'</span>: <span class="st">'initial'</span>}</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Date picker with initial value from selected location</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>initial_location <span class="op">=</span> location_dropdown.value</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>initial_date <span class="op">=</span> PRESET_POINTS[initial_location].get(<span class="st">'recommended_date'</span>, <span class="st">'2022-01-12'</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>date_picker <span class="op">=</span> widgets.DatePicker(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Date:'</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span>datetime.strptime(initial_date, <span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>).date()</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom coordinates (hidden by default)</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>custom_lon <span class="op">=</span> widgets.FloatText(value<span class="op">=-</span><span class="fl">100.0</span>, description<span class="op">=</span><span class="st">'Longitude:'</span>, layout<span class="op">=</span>widgets.Layout(display<span class="op">=</span><span class="st">'none'</span>))</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>custom_lat <span class="op">=</span> widgets.FloatText(value<span class="op">=</span><span class="fl">40.0</span>, description<span class="op">=</span><span class="st">'Latitude:'</span>, layout<span class="op">=</span>widgets.Layout(display<span class="op">=</span><span class="st">'none'</span>))</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom location help message (hidden by default)</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>custom_help <span class="op">=</span> widgets.HTML(</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="st">"""&lt;div style='background-color: #e8f4f8; padding: 10px; border-radius: 5px; margin-top: 10px; display: none;'&gt;</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;b&gt;📍 Custom Location Instructions:&lt;/b&gt;&lt;br&gt;</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="st">    • Enter longitude (-180 to 180): negative = West, positive = East&lt;br&gt;</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="st">    • Enter latitude (-90 to 90): negative = South, positive = North&lt;br&gt;</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="st">    • Select your desired date and zoom level&lt;br&gt;</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="st">    • Example: Los Angeles is lon: -118.5, lat: 34.0</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;/div&gt;"""</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span>widgets.Layout(display<span class="op">=</span><span class="st">'none'</span>)</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_location_change(change):</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Update date and zoom when location changes."""</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    selected_location <span class="op">=</span> change[<span class="st">'new'</span>]</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    location_data <span class="op">=</span> PRESET_POINTS[selected_location]</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update date picker with recommended date</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'recommended_date'</span> <span class="kw">in</span> location_data:</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>        date_picker.value <span class="op">=</span> datetime.strptime(location_data[<span class="st">'recommended_date'</span>], <span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>).date()</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update zoom with recommended zoom</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'recommended_zoom'</span> <span class="kw">in</span> location_data:</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>        zoom_dropdown.value <span class="op">=</span> location_data[<span class="st">'recommended_zoom'</span>]</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show/hide custom coordinates and help message</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'Custom:'</span> <span class="kw">in</span> selected_location:</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>        custom_lon.layout.display <span class="op">=</span> <span class="st">'block'</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>        custom_lat.layout.display <span class="op">=</span> <span class="st">'block'</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>        custom_help.layout.display <span class="op">=</span> <span class="st">'block'</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update the help div visibility</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>        custom_help.value <span class="op">=</span> custom_help.value.replace(<span class="st">'display: none;'</span>, <span class="st">''</span>)</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>        custom_lon.layout.display <span class="op">=</span> <span class="st">'none'</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>        custom_lat.layout.display <span class="op">=</span> <span class="st">'none'</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>        custom_help.layout.display <span class="op">=</span> <span class="st">'none'</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>location_dropdown.observe(on_location_change, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Display widgets with location-specific date info</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>display(widgets.VBox([</span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>    widgets.HBox([location_dropdown, zoom_dropdown]),</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    widgets.HBox([custom_lon, custom_lat]),</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    custom_help,</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    date_picker,</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    widgets.HTML(<span class="st">"&lt;p&gt;&lt;i style='font-size: 1.0rem'&gt;Note: Each location has a recommended date with known fire/thermal activity:&lt;/i&gt;&lt;/p&gt;"</span>),</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    widgets.HTML(<span class="st">"&lt;ul style='font-size: 1.2rem; margin-top: 0;'&gt;"</span> <span class="op">+</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&lt;li&gt;&lt;b&gt;Palisades Fire, LA&lt;/b&gt;: Jan 10, 2025 (devastating urban wildfire)&lt;/li&gt;"</span> <span class="op">+</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&lt;li&gt;&lt;b&gt;Kilauea, Hawaii&lt;/b&gt;: Jan 12, 2022 (active volcanic eruption)&lt;/li&gt;"</span> <span class="op">+</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&lt;li&gt;&lt;b&gt;Western Siberia&lt;/b&gt;: Sep 20, 2024 (gas flares &amp; boreal fires)&lt;/li&gt;"</span> <span class="op">+</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"&lt;/ul&gt;"</span>),</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>    widgets.HTML(<span class="st">"&lt;p style='font-size: 0.95em; color: #666;'&gt;&lt;b&gt;Zoom levels:&lt;/b&gt; Higher numbers = more zoomed in. "</span> <span class="op">+</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Level 6-7 show very detailed local views.&lt;/p&gt;"</span>)</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"2a746b1af5754b7ea8b8c51b53ca9d10","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<div id="cciw9yzekfj" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define GIBS base URL for MVT tiles (same as working notebook)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>GIBS_MVT_BASE_URL <span class="op">=</span> <span class="st">"https://gibs.earthdata.nasa.gov/wmts/epsg4326/best"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_fire_mvt_data(col: <span class="bu">int</span>, row: <span class="bu">int</span>, zoom: <span class="bu">int</span>, date_time: <span class="bu">str</span>) <span class="op">-&gt;</span> List[Dict]:</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetch fire data from GIBS MVT tiles."""</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Using the GIBS base URL for fire MVT tiles (same pattern as working notebook)</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>GIBS_MVT_BASE_URL<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>FIRE_LAYER<span class="sc">}</span><span class="ss">/default/</span><span class="sc">{</span>date_time<span class="sc">}</span><span class="ss">/500m/</span><span class="sc">{</span>zoom<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>row<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">.mvt"</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span> <span class="kw">and</span> <span class="bu">len</span>(response.content) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Handle gzipped content</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            content <span class="op">=</span> response.content</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> content[:<span class="dv">2</span>] <span class="op">==</span> <span class="st">b'</span><span class="ch">\x1f\x8b</span><span class="st">'</span>:</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                content <span class="op">=</span> gzip.decompress(content)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Decode MVT</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            decoded <span class="op">=</span> mapbox_vector_tile.decode(content)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Extract fire features</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            fires <span class="op">=</span> []</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> layer_name, layer_data <span class="kw">in</span> decoded.items():</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="st">'features'</span> <span class="kw">in</span> layer_data:</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> feature <span class="kw">in</span> layer_data[<span class="st">'features'</span>]:</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>                        props <span class="op">=</span> feature.get(<span class="st">'properties'</span>, {})</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>                        geom <span class="op">=</span> feature.get(<span class="st">'geometry'</span>, {})</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># Extract coordinates - check both properties and geometry</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>                        lat <span class="op">=</span> lon <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">if</span> <span class="st">'LATITUDE'</span> <span class="kw">in</span> props <span class="kw">and</span> <span class="st">'LONGITUDE'</span> <span class="kw">in</span> props:</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>                            lat <span class="op">=</span> props[<span class="st">'LATITUDE'</span>]</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>                            lon <span class="op">=</span> props[<span class="st">'LONGITUDE'</span>]</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">elif</span> geom.get(<span class="st">'type'</span>) <span class="op">==</span> <span class="st">'Point'</span> <span class="kw">and</span> <span class="st">'coordinates'</span> <span class="kw">in</span> geom:</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>                            lon, lat <span class="op">=</span> geom[<span class="st">'coordinates'</span>]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">if</span> lat <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> lon <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>                            fires.append({</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'lat'</span>: <span class="bu">float</span>(lat),</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'lon'</span>: <span class="bu">float</span>(lon),</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'confidence'</span>: props.get(<span class="st">'CONFIDENCE'</span>, <span class="st">'unknown'</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>                            })</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fires</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> []</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Error fetching fire data: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data based on widget selections</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_selected_data():</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get data based on current widget selections."""</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>    location <span class="op">=</span> location_dropdown.value</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>    zoom <span class="op">=</span> zoom_dropdown.value</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    date_str <span class="op">=</span> date_picker.value.strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>) <span class="op">+</span> <span class="st">"T00:00:00Z"</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> location <span class="op">==</span> <span class="st">'Custom'</span>:</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>        lon, lat <span class="op">=</span> custom_lon.value, custom_lat.value</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>        point <span class="op">=</span> PRESET_POINTS[location]</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>        lon, lat <span class="op">=</span> point[<span class="st">'lon'</span>], point[<span class="st">'lat'</span>]</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get tile coordinates</span></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>    col, row <span class="op">=</span> lonlat_to_tilexy(lon, lat, zoom)</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>    bbox <span class="op">=</span> tile_to_bbox(col, row, zoom)</span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch Black Marble tile</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>    bm_img <span class="op">=</span> fetch_tile(col, row, zoom, date_str)</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store Black Marble in tiles dictionary format (like working notebook)</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>    black_marble_tiles <span class="op">=</span> {}</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bm_img:</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>        black_marble_tiles[(col, row)] <span class="op">=</span> bm_img</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch fire data</span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>    fires <span class="op">=</span> fetch_fire_mvt_data(col, row, zoom, date_str)</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✓ Black Marble: </span><span class="sc">{</span><span class="st">'Loaded'</span> <span class="cf">if</span> bm_img <span class="cf">else</span> <span class="st">'No data'</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show sample fires if any</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> fires:</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✓ Fires: </span><span class="sc">{</span><span class="bu">len</span>(fires)<span class="sc">}</span><span class="ss"> detected"</span>)</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>        <span class="st">'location'</span>: location,</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>        <span class="st">'lon'</span>: lon,</span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>        <span class="st">'lat'</span>: lat,</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>        <span class="st">'zoom'</span>: zoom,</span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>        <span class="st">'date'</span>: date_str,</span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>        <span class="st">'col'</span>: col,</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>        <span class="st">'row'</span>: row,</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>        <span class="st">'bbox'</span>: bbox,</span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>        <span class="st">'black_marble_tiles'</span>: black_marble_tiles,  <span class="co"># Use same structure as working notebook</span></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>        <span class="st">'fires'</span>: fires</span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute fetch</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> get_selected_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✓ Black Marble: Loaded
+✓ Fires: 28 detected</code></pre>
+</div>
+</div>
+</section>
+<section id="side-by-side-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="side-by-side-visualization">Side-by-Side Visualization</h3>
+<p>We will now present figures for Black Marble only (left) and overlay the VIIRS Fire and Thermal Anomalies on top of the Black Marble (right). This will allow us to directly compare where the satellite sensor picks up light caused by cities or features such as volcanoes, gas flares, or other thermal anomalies.</p>
+<div id="rsvigamy0t" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create side-by-side visualization with Black Marble and Fire overlay</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the visualization</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get data</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>bbox <span class="op">=</span> data[<span class="st">'bbox'</span>]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>fires <span class="op">=</span> data[<span class="st">'fires'</span>]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>black_marble_tiles <span class="op">=</span> data[<span class="st">'black_marble_tiles'</span>]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>location <span class="op">=</span> data[<span class="st">'location'</span>]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>lon <span class="op">=</span> data[<span class="st">'lon'</span>]</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>lat <span class="op">=</span> data[<span class="st">'lat'</span>]</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>date <span class="op">=</span> data[<span class="st">'date'</span>]</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>zoom <span class="op">=</span> data[<span class="st">'zoom'</span>]</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Left plot: Pure Black Marble</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>ax1.set_xlim(bbox[<span class="dv">0</span>], bbox[<span class="dv">1</span>])</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(bbox[<span class="dv">2</span>], bbox[<span class="dv">3</span>])</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> black_marble_tiles:</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col, row), tile_img <span class="kw">in</span> black_marble_tiles.items():</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        tile_bbox <span class="op">=</span> tile_to_bbox(col, row, zoom)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        ax1.imshow(tile_img, extent<span class="op">=</span>tile_bbox, zorder<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add large green circle at the location (using geographic coordinates)</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>ax1.scatter(lon, lat, facecolors<span class="op">=</span><span class="st">'none'</span>, edgecolors<span class="op">=</span><span class="st">'green'</span>, s<span class="op">=</span><span class="dv">5000</span>, marker<span class="op">=</span><span class="st">'o'</span>, linewidths<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.9</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="ss">f"</span><span class="sc">{</span>COLLECTION_NAME<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>location<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>date[:<span class="dv">10</span>]<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'Longitude'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Latitude'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Add coordinate labels for left plot</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> zoom <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    min_lon, max_lon, min_lat, max_lat <span class="op">=</span> bbox</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    ax1.text(<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">0.02</span>, format_coordinate(min_lon, <span class="va">True</span>), </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax1.transAxes, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    ax1.text(<span class="fl">0.98</span>, <span class="op">-</span><span class="fl">0.02</span>, format_coordinate(max_lon, <span class="va">True</span>), </span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax1.transAxes, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>    ax1.text(<span class="fl">1.02</span>, <span class="fl">0.0</span>, format_coordinate(min_lat, <span class="va">False</span>), </span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax1.transAxes, rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>    ax1.text(<span class="fl">1.02</span>, <span class="fl">1.0</span>, format_coordinate(max_lat, <span class="va">False</span>), </span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax1.transAxes, rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>ax1.axis(<span class="st">'off'</span>)</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Right plot: Black Marble with Fire overlay</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>ax2.set_xlim(bbox[<span class="dv">0</span>], bbox[<span class="dv">1</span>])</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(bbox[<span class="dv">2</span>], bbox[<span class="dv">3</span>])</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Show Black Marble as background (dimmed)</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> black_marble_tiles:</span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col, row), tile_img <span class="kw">in</span> black_marble_tiles.items():</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>        tile_bbox <span class="op">=</span> tile_to_bbox(col, row, zoom)</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>        ax2.imshow(tile_img, extent<span class="op">=</span>tile_bbox, alpha<span class="op">=</span><span class="fl">0.3</span>, zorder<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Add large green circle at the location (using geographic coordinates)</span></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>ax2.scatter(lon, lat, facecolors<span class="op">=</span><span class="st">'none'</span>, edgecolors<span class="op">=</span><span class="st">'green'</span>, s<span class="op">=</span><span class="dv">5000</span>, marker<span class="op">=</span><span class="st">'o'</span>, linewidths<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.9</span>, zorder<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay fire data</span></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> fires:</span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>    conf_colors <span class="op">=</span> {<span class="st">'high'</span>: <span class="st">'red'</span>, <span class="st">'nominal'</span>: <span class="st">'orange'</span>, <span class="st">'low'</span>: <span class="st">'yellow'</span>, <span class="st">'unknown'</span>: <span class="st">'gray'</span>}</span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Group fires by confidence for legend</span></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>    confidence_groups <span class="op">=</span> {}</span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> fire <span class="kw">in</span> fires:</span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>        conf <span class="op">=</span> fire[<span class="st">'confidence'</span>].lower()</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> conf <span class="kw">not</span> <span class="kw">in</span> confidence_groups:</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>            confidence_groups[conf] <span class="op">=</span> []</span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>        confidence_groups[conf].append(fire)</span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot fires by confidence level</span></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> conf, fire_list <span class="kw">in</span> confidence_groups.items():</span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>        lons <span class="op">=</span> [f[<span class="st">'lon'</span>] <span class="cf">for</span> f <span class="kw">in</span> fire_list]</span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a>        lats <span class="op">=</span> [f[<span class="st">'lat'</span>] <span class="cf">for</span> f <span class="kw">in</span> fire_list]</span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> conf_colors.get(conf, <span class="st">'gray'</span>)</span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a>        ax2.scatter(lons, lats, c<span class="op">=</span>color, s<span class="op">=</span><span class="dv">60</span>, alpha<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>                   edgecolors<span class="op">=</span><span class="st">'white'</span>, linewidths<span class="op">=</span><span class="fl">1.5</span>, zorder<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a>                   label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>conf<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss"> confidence (</span><span class="sc">{</span><span class="bu">len</span>(fire_list)<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add legend</span></span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a>    ax2.legend(loc<span class="op">=</span><span class="st">'upper right'</span>, framealpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="ss">f"VIIRS Fire &amp; Thermal Anomalies Overlay</span><span class="ch">\n</span><span class="sc">{</span>location<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>date[:<span class="dv">10</span>]<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="bu">len</span>(fires)<span class="sc">}</span><span class="ss"> fires detected"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="ss">f"VIIRS Fire &amp; Thermal Anomalies Overlay</span><span class="ch">\n</span><span class="sc">{</span>location<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>date[:<span class="dv">10</span>]<span class="sc">}</span><span class="ss"> - No fires detected"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'Longitude'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Latitude'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a><span class="co"># Add coordinate labels for right plot</span></span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> zoom <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
+<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>    ax2.text(<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">0.02</span>, format_coordinate(min_lon, <span class="va">True</span>), </span>
+<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax2.transAxes, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>    ax2.text(<span class="fl">0.98</span>, <span class="op">-</span><span class="fl">0.02</span>, format_coordinate(max_lon, <span class="va">True</span>), </span>
+<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax2.transAxes, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'top'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>    ax2.text(<span class="fl">1.02</span>, <span class="fl">0.0</span>, format_coordinate(min_lat, <span class="va">False</span>), </span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax2.transAxes, rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a>    ax2.text(<span class="fl">1.02</span>, <span class="fl">1.0</span>, format_coordinate(max_lat, <span class="va">False</span>), </span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>           transform<span class="op">=</span>ax2.transAxes, rotation<span class="op">=</span><span class="dv">90</span>, ha<span class="op">=</span><span class="st">'left'</span>, va<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>ax2.axis(<span class="st">'off'</span>)</span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="blackmarble-radiance-daygrid-v2nrt_User_Notebook_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the Black Marble Nighttime Light Emissions dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Two WMTS tiles stitched and shown side-by-side via matplotlib. 4. Map and compare nighttime light emissions for two distinctive days</p>
+<p>In this notebook we have successfully completed the following steps for the STAC collection for the Black Marble Nighttime Light Emissions dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Compute WMTS tile indices for geographic coordinates 4. Retrieve and visualize Black Marble nighttime light emissions for multiple dates and locations 5. Integrate VIIRS fire and thermal anomaly data using Mapbox Vector Tiles 6. Create interactive location selection widgets for exploring fire/thermal events 7. Generate side-by-side visualizations comparing pure Black Marble imagery with fire overlay 8. Distinguish between urban lights and various thermal sources (wildfires, volcanoes, gas flares)</p>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
