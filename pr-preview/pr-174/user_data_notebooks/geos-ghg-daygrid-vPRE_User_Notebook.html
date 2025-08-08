@@ -986,7 +986,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#fetch-imagery-from-raster-api" id="toc-fetch-imagery-from-raster-api" class="nav-link" data-scroll-target="#fetch-imagery-from-raster-api">Fetch Imagery from Raster API</a></li>
   <li><a href="#generate-map" id="toc-generate-map" class="nav-link" data-scroll-target="#generate-map">Generate Map</a></li>
-  <li><a href="#calculating-zonal-statistics" id="toc-calculating-zonal-statistics" class="nav-link" data-scroll-target="#calculating-zonal-statistics">Calculating Zonal Statistics</a></li>
+  <li><a href="#calculate-zonal-statistics" id="toc-calculate-zonal-statistics" class="nav-link" data-scroll-target="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
   <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time-Series Analysis</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
@@ -1046,8 +1046,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#about-the-data">About the Data</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
-<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
+<li><a href="#fetch-imagery-from-raster-api">Fetch Imagery from Raster API</a></li>
+<li><a href="#generate-map">Generate Map</a></li>
 <li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
 <li><a href="#time-series-analysis">Time-Series Analysis</a></li>
 <li><a href="#summary">Summary</a></li>
@@ -1115,7 +1115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>STAC API Collection Names</strong></p>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GEOS Assimilated CO₂, CH₄, and CO Column Concentrations dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/geos-ghg-daygrid-vPRE"><strong>geos-ghg-daygrid-vPRE</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell" data-execution_count="4">
+<div id="cell-10" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/raster"</span></span>
@@ -1125,7 +1125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"geos-ghg-daygrid-vPRE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2015 to February 2022. By looking at the <code>dashboard:time density</code>, we can see that these observations are collected daily.</p>
-<div id="cell-12" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using PySTAC client</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac' library allows a HTTP request possible</span></span>
@@ -1134,7 +1134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 
 <style>
@@ -1193,7 +1193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -1202,7 +1202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"This dataset provides global gridded, daily column-averaged carbon dioxide (XCO₂) concentrations from January 1, 2015 - February 28, 2022. The data are derived from OCO-2 observations that were input to the Goddard Earth Observing System (GEOS) Constituent Data Assimilation System (CoDAS), a modeling and data assimilation system maintained by NASA's Global Modeling and Assimilation Office (GMAO)."</span>
+            <span class="pystac-v">"This dataset provides global gridded, daily column-averaged carbon dioxide (XCO₂) ,methane (XCH₄), and XCO concentrations from January 1, 2015 - Ongoing. The data are derived from OCO-2 observations that were input to the Goddard Earth Observing System (GEOS) Constituent Data Assimilation System (CoDAS), a modeling and data assimilation system maintained by NASA's Global Modeling and Assimilation Office (GMAO)."</span>
         </li>
     
                 
@@ -1460,6 +1460,174 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
         <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">xco</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"xco"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">50</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">90</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">colormap_name</span>
+            <span class="pystac-v">"magma"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">xch4</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">assets</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"xch4"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">rescale</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">1750</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">1900</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">colormap_name</span>
+            <span class="pystac-v">"magma"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+            
+                
+        <li><details>
             <summary class="pystac-summary"><span class="pystac-k">xco2</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
@@ -1683,7 +1851,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2023-12-31T00:00:00Z"</span>
+            <span class="pystac-v">"2025-05-31T00:00:00Z"</span>
         </li>
     
             
@@ -1789,7 +1957,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"GEOS Assimilated CO2 Column Concentrations "</span>
+            <span class="pystac-v">"GEOS Assimilated XCO₂, XCH₄ and XCO Column Concentrations "</span>
         </li>
     
                 
@@ -1916,7 +2084,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2023-12-31T23:59:59Z"</span>
+            <span class="pystac-v">"2025-05-31T23:59:59Z"</span>
         </li>
     
             
@@ -1975,7 +2143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#items[0]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-15" class="cell" data-scrolled="true" data-execution_count="7">
+<div id="cell-15" class="cell" data-scrolled="true" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
@@ -1985,167 +2153,167 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160731&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160730&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160729&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160728&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160727&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160726&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160725&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160724&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160723&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160722&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160721&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160720&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160719&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160718&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160717&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160716&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160715&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160714&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160713&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160712&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160711&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160710&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160709&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160708&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160707&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160706&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160705&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160704&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160703&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160702&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160701&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160630&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160629&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160628&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160627&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160626&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160625&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160624&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160623&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160622&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160621&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160620&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160619&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160618&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160617&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160616&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160615&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160614&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160613&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160612&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160611&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160610&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160609&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160608&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160607&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160606&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160605&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160604&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160603&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160602&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160601&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160531&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160530&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160529&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160528&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160527&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160526&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160525&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160524&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160523&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160522&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160521&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160520&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160519&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160518&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160517&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160516&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160515&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160514&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160513&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160512&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160511&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160510&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160509&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160508&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160507&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160506&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160505&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160504&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160503&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160502&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160501&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160430&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160429&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160428&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160427&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160426&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160425&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160424&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160423&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160422&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160421&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160420&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160419&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160418&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160417&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160416&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160415&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160414&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160413&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160412&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160411&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160410&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160409&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160408&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160407&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160406&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160405&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160404&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160403&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160402&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160401&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160331&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160330&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160329&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160328&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160327&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160326&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160325&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160324&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160323&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160322&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160321&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160320&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160319&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160318&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160317&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160316&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160315&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160314&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160313&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160312&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160311&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160310&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160309&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160308&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160307&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160306&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160305&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160304&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160303&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160302&gt;
-&lt;Item id=geos_carbon_vPRE_XCO2_x1440_y721_daily_20160301&gt;</code></pre>
+<pre><code>&lt;Item id=geos-ghg-daygrid-vPRE-20160731&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160730&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160729&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160728&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160727&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160726&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160725&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160724&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160723&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160722&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160721&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160720&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160719&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160718&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160717&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160716&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160715&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160714&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160713&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160712&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160711&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160710&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160709&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160708&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160707&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160706&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160705&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160704&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160703&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160702&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160701&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160630&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160629&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160628&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160627&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160626&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160625&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160624&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160623&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160622&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160621&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160620&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160619&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160618&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160617&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160616&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160615&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160614&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160613&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160612&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160611&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160610&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160609&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160608&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160607&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160606&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160605&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160604&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160603&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160602&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160601&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160531&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160530&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160529&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160528&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160527&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160526&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160525&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160524&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160523&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160522&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160521&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160520&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160519&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160518&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160517&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160516&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160515&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160514&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160513&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160512&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160511&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160510&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160509&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160508&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160507&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160506&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160505&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160504&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160503&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160502&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160501&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160430&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160429&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160428&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160427&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160426&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160425&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160424&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160423&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160422&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160421&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160420&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160419&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160418&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160417&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160416&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160415&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160414&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160413&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160412&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160411&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160410&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160409&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160408&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160407&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160406&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160405&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160404&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160403&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160402&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160401&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160331&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160330&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160329&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160328&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160327&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160326&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160325&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160324&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160323&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160322&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160321&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160320&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160319&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160318&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160317&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160316&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160315&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160314&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160313&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160312&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160311&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160310&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160309&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160308&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160307&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160306&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160305&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160304&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160303&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160302&gt;
+&lt;Item id=geos-ghg-daygrid-vPRE-20160301&gt;</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> search.item_collection()</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="7">
 
 
 <style>
@@ -2195,55 +2363,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/projection/v2.0.0/schema.json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
                 
             
                 
                     
         <li class="pystac-row">
             <span class="pystac-k">id</span>
-            <span class="pystac-v">"geos_carbon_vPRE_XCO2_x1440_y721_daily_20160731"</span>
+            <span class="pystac-v">"geos-ghg-daygrid-vPRE-20160731"</span>
         </li>
-    
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">properties</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">end_datetime</span>
-            <span class="pystac-v">"2016-07-31T23:59:59Z"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">start_datetime</span>
-            <span class="pystac-v">"2016-07-31T00:00:00Z"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">datetime</span>
-            <span class="pystac-v">None</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
     
                 
             
@@ -2472,6 +2635,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">bbox</span><span class="pystac-l">[] 4 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">-180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">-90.125</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">2</span>
+            <span class="pystac-v">180.0</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">3</span>
+            <span class="pystac-v">90.125</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
+                
+                    
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">properties</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">end_datetime</span>
+            <span class="pystac-v">"2016-07-31T23:59:59Z"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">start_datetime</span>
+            <span class="pystac-v">"2016-07-31T00:00:00Z"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">datetime</span>
+            <span class="pystac-v">None</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+                
+            
+                
+                    <li><details>
         <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 5 items</span></summary>
         
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
@@ -2630,7 +2890,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160731"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160731"</span>
         </li>
     
             
@@ -2672,7 +2932,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160731/map?assets=xco2&amp;rescale=395%2C400&amp;resampling=bilinear&amp;colormap_name=magma"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160731/map?assets=xco2&amp;rescale=395%2C400&amp;resampling=bilinear&amp;colormap_name=magma"</span>
         </li>
     
             
@@ -2748,7 +3008,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"Daily, global assimilated CO2 average column concentrations derived from satellite data."</span>
+            <span class="pystac-v">"Daily, global assimilated CO₂ average column concentrations derived from satellite data."</span>
         </li>
     
             
@@ -2810,15 +3070,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
             
         
             
@@ -3509,6 +3760,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
+            
+        
+            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
         
@@ -3556,7 +3816,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160731/preview.png?assets=xco2&amp;rescale=395%2C400&amp;resampling=bilinear&amp;colormap_name=magma"</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160731/preview.png?assets=xco2&amp;rescale=395%2C400&amp;resampling=bilinear&amp;colormap_name=magma"</span>
         </li>
     
             
@@ -3619,98 +3879,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
             
                 
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">bbox</span><span class="pystac-l">[] 4 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-180.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-90.125</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">180.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">90.125</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
                     
         <li class="pystac-row">
             <span class="pystac-k">collection</span>
@@ -3724,13 +3892,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="10">
+<div id="cell-17" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020-03-10"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> search.item_collection()</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-18" class="cell" data-execution_count="11">
+<div id="cell-18" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll focus on XCO2 concentrations:</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"xco2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3742,11 +3910,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-21" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2016-03-01"</span>,<span class="st">"2016-07-25"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Below, we use some statistics of the raster data to set upper and lower limits for our color bar. These are saved as the <code>rescale_values</code>, and will be passed to the Raster API in the following step(s).</p>
-<div id="cell-23" class="cell" data-execution_count="13">
+<div id="cell-23" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID for the first date</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>first_date <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> first_date.collection_id</span>
@@ -3756,7 +3924,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Printer raster bands' information</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>[{'unit': 'ppm',
   'scale': 1.0,
   'nodata': 'nan',
@@ -3783,7 +3951,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="14">
+<div id="cell-24" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use statistics to generate an appropriate color bar range.</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
@@ -3796,13 +3964,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-26" class="cell" data-execution_count="15">
+<div id="cell-26" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure to capitalize per Matplotlib standard colormap names</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"magma"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="17">
+<div id="cell-27" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>tile1 <span class="op">=</span> requests.get(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -3813,18 +3981,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>tile1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="25">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160301/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=397.2987976074219%2C407.9268493652344'],
+ 'tiles': ['https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160301/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=397.2987976074219%2C407.9268493652344'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.125, 180.0, 90.125],
  'center': [0.0, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="18">
+<div id="cell-28" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the above for your second date/time</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we do not calculate new rescale_values for this tile</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We want date tiles 1 and 2 to have the same colorbar range for visual comparison</span></span>
@@ -3842,11 +4010,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>tile2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=397.2987976074219%2C407.9268493652344'],
+ 'tiles': ['https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=397.2987976074219%2C407.9268493652344'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.0, -90.125, 180.0, 90.125],
@@ -3856,13 +4024,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="generate-map" class="level2">
 <h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<div id="cell-30" class="cell" data-execution_count="19">
+<p>Now we will plot the selected tiles related to carbon compounds across the United States at the selected dates in 2016.</p>
+<div id="cell-30" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Map is centered on the position specified by "location=(lat,lon)"</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.plugins.DualMap(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">95</span>), zoom_start<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer (January 2020)</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer (March 2016)</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>map_layer_1 <span class="op">=</span> TileLayer(</span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile1[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
@@ -3874,7 +4043,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the first layer to the Dual Map</span></span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>map_layer_1.add_to(map_.m1)</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer (January 2000)</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer (July 2016)</span></span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>map_layer_2 <span class="op">=</span> TileLayer(</span>
 <span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>tile2[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
@@ -3899,27 +4068,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
     
     <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
     <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
     <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
@@ -3927,7 +4088,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_4b7abf2a94e82e087d5dd33254a94591 {
+                #map_578403571ebab10250889b03c210f737 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -3936,12 +4097,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
         
     
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_dab2bc8003a14b41f3ef45e8f6381670 {
+                #map_7dc4cb0f8f6a1af68f09772add0c211b {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -3950,6 +4134,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
         
     <script src=&quot;https://cdn.jsdelivr.net/gh/jieter/Leaflet.Sync/L.Map.Sync.min.js&quot;></script>
 </head>
@@ -3980,23 +4187,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_4b7abf2a94e82e087d5dd33254a94591&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_578403571ebab10250889b03c210f737&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_dab2bc8003a14b41f3ef45e8f6381670&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_7dc4cb0f8f6a1af68f09772add0c211b&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_4b7abf2a94e82e087d5dd33254a94591 = L.map(
-                &quot;map_4b7abf2a94e82e087d5dd33254a94591&quot;,
+            var map_578403571ebab10250889b03c210f737 = L.map(
+                &quot;map_578403571ebab10250889b03c210f737&quot;,
                 {
                     center: [34.0, -95.0],
                     crs: L.CRS.EPSG3857,
-                    zoom: 3,
-                    zoomControl: true,
-                    preferCanvas: false,
+                    ...{
+  &quot;zoom&quot;: 3,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
                 }
             );
 
@@ -4004,48 +4214,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_8ef3bb830e0bf291d50f0196db646f25 = L.tileLayer(
+            var tile_layer_72d7964baa1bcf6ab02737edf1112ee5 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_8ef3bb830e0bf291d50f0196db646f25.addTo(map_4b7abf2a94e82e087d5dd33254a94591);
+            tile_layer_72d7964baa1bcf6ab02737edf1112ee5.addTo(map_578403571ebab10250889b03c210f737);
         
     
-            var tile_layer_7148f43b890cf87ccac2b10d21813262 = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160301/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            var tile_layer_23619a61972c46628cc7900489f17124 = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160301/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 0.8,
+}
+
             );
         
     
-            tile_layer_7148f43b890cf87ccac2b10d21813262.addTo(map_4b7abf2a94e82e087d5dd33254a94591);
+            tile_layer_23619a61972c46628cc7900489f17124.addTo(map_578403571ebab10250889b03c210f737);
         
     
-            var layer_control_ce03402224a3a26ac32fdab20be7f7e8_layers = {
+            var layer_control_1130728b9866a5854a6c4f6b336d614a_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_8ef3bb830e0bf291d50f0196db646f25,
+                    &quot;openstreetmap&quot; : tile_layer_72d7964baa1bcf6ab02737edf1112ee5,
                 },
                 overlays :  {
-                    &quot;GEOS Assimilated CO2 Column Concentrations , 2016-03-01&quot; : tile_layer_7148f43b890cf87ccac2b10d21813262,
+                    &quot;GEOS Assimilated XCO\u2082, XCH\u2084 and XCO Column Concentrations , 2016-03-01&quot; : tile_layer_23619a61972c46628cc7900489f17124,
                 },
             };
-            let layer_control_ce03402224a3a26ac32fdab20be7f7e8 = L.control.layers(
-                layer_control_ce03402224a3a26ac32fdab20be7f7e8_layers.base_layers,
-                layer_control_ce03402224a3a26ac32fdab20be7f7e8_layers.overlays,
-                {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_4b7abf2a94e82e087d5dd33254a94591);
+            let layer_control_1130728b9866a5854a6c4f6b336d614a = L.control.layers(
+                layer_control_1130728b9866a5854a6c4f6b336d614a_layers.base_layers,
+                layer_control_1130728b9866a5854a6c4f6b336d614a_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_578403571ebab10250889b03c210f737);
 
         
     
-            var map_dab2bc8003a14b41f3ef45e8f6381670 = L.map(
-                &quot;map_dab2bc8003a14b41f3ef45e8f6381670&quot;,
+            var map_7dc4cb0f8f6a1af68f09772add0c211b = L.map(
+                &quot;map_7dc4cb0f8f6a1af68f09772add0c211b&quot;,
                 {
                     center: [34.0, -95.0],
                     crs: L.CRS.EPSG3857,
-                    zoom: 3,
-                    zoomControl: true,
-                    preferCanvas: false,
+                    ...{
+  &quot;zoom&quot;: 3,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
                 }
             );
 
@@ -4053,41 +4292,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_c6431eb0d62b9c42fb9baa236dfa1b33 = L.tileLayer(
+            var tile_layer_119012adbc959c72ae43d89a9606895f = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_c6431eb0d62b9c42fb9baa236dfa1b33.addTo(map_dab2bc8003a14b41f3ef45e8f6381670);
+            tile_layer_119012adbc959c72ae43d89a9606895f.addTo(map_7dc4cb0f8f6a1af68f09772add0c211b);
         
     
-            var tile_layer_089d2e3c745ca402181c3a977c6b62da = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            var tile_layer_8343586ba84ad5d60d879cf365f5007e = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 0.8,
+}
+
             );
         
     
-            tile_layer_089d2e3c745ca402181c3a977c6b62da.addTo(map_dab2bc8003a14b41f3ef45e8f6381670);
+            tile_layer_8343586ba84ad5d60d879cf365f5007e.addTo(map_7dc4cb0f8f6a1af68f09772add0c211b);
         
     
-            map_4b7abf2a94e82e087d5dd33254a94591.sync(map_dab2bc8003a14b41f3ef45e8f6381670);
-            map_dab2bc8003a14b41f3ef45e8f6381670.sync(map_4b7abf2a94e82e087d5dd33254a94591);
+            map_578403571ebab10250889b03c210f737.sync(map_7dc4cb0f8f6a1af68f09772add0c211b);
+            map_7dc4cb0f8f6a1af68f09772add0c211b.sync(map_578403571ebab10250889b03c210f737);
         
     
-            var layer_control_a778fbf1410f429b84997920d5affba3_layers = {
+            var layer_control_656c8ac3aacf40468dadcf35f46599d5_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_c6431eb0d62b9c42fb9baa236dfa1b33,
+                    &quot;openstreetmap&quot; : tile_layer_119012adbc959c72ae43d89a9606895f,
                 },
                 overlays :  {
-                    &quot;GEOS Assimilated CO2 Column Concentrations , 2016-07-25&quot; : tile_layer_089d2e3c745ca402181c3a977c6b62da,
+                    &quot;GEOS Assimilated XCO\u2082, XCH\u2084 and XCO Column Concentrations , 2016-07-25&quot; : tile_layer_8343586ba84ad5d60d879cf365f5007e,
                 },
             };
-            let layer_control_a778fbf1410f429b84997920d5affba3 = L.control.layers(
-                layer_control_a778fbf1410f429b84997920d5affba3_layers.base_layers,
-                layer_control_a778fbf1410f429b84997920d5affba3_layers.overlays,
-                {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_dab2bc8003a14b41f3ef45e8f6381670);
+            let layer_control_656c8ac3aacf40468dadcf35f46599d5 = L.control.layers(
+                layer_control_656c8ac3aacf40468dadcf35f46599d5_layers.base_layers,
+                layer_control_656c8ac3aacf40468dadcf35f46599d5_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_7dc4cb0f8f6a1af68f09772add0c211b);
 
         
 </script>
@@ -4095,10 +4360,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="calculating-zonal-statistics" class="level2">
-<h2 class="anchored" data-anchor-id="calculating-zonal-statistics">Calculating Zonal Statistics</h2>
+<section id="calculate-zonal-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in Los Angeles Area, California (USA).</p>
-<div id="cell-33" class="cell" data-execution_count="20">
+<div id="cell-33" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the AOI a name to use in plots later on</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Los Angeles Area, California"</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create AOI polygon as a GEOJSON</span></span>
@@ -4119,7 +4384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-34" class="cell" data-execution_count="21">
+<div id="cell-34" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick Folium map to visualize this AOI</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="dv">34</span>, <span class="op">-</span><span class="dv">118</span>), zoom_start<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Add AOI to map</span></span>
@@ -4130,27 +4395,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,rescale_values,label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss"> (ppm)'</span>)</span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
     
     <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
     <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
     <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
     <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
@@ -4158,7 +4415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_7af5e0f0712ccbbbe2c875e074976eb0 {
+                #map_a9b9c48e61e158cfb46a0268a4fee753 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -4167,6 +4424,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
         
 </head>
 <body>
@@ -4196,20 +4476,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_7af5e0f0712ccbbbe2c875e074976eb0&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_a9b9c48e61e158cfb46a0268a4fee753&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_7af5e0f0712ccbbbe2c875e074976eb0 = L.map(
-                &quot;map_7af5e0f0712ccbbbe2c875e074976eb0&quot;,
+            var map_a9b9c48e61e158cfb46a0268a4fee753 = L.map(
+                &quot;map_a9b9c48e61e158cfb46a0268a4fee753&quot;,
                 {
                     center: [34.0, -118.0],
                     crs: L.CRS.EPSG3857,
-                    zoom: 7,
-                    zoomControl: true,
-                    preferCanvas: false,
+                    ...{
+  &quot;zoom&quot;: 7,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
                 }
             );
 
@@ -4217,50 +4500,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_88bd7ccc97197e84eba860a52752a400 = L.tileLayer(
+            var tile_layer_d2d22a6738439aa305207c33595a1d07 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_88bd7ccc97197e84eba860a52752a400.addTo(map_7af5e0f0712ccbbbe2c875e074976eb0);
+            tile_layer_d2d22a6738439aa305207c33595a1d07.addTo(map_a9b9c48e61e158cfb46a0268a4fee753);
         
     
 
-        function geo_json_52dd7b64546c901066fd4d891f659261_onEachFeature(feature, layer) {
+        function geo_json_ab34cbbd889240370f62c5e0363d561b_onEachFeature(feature, layer) {
+
             layer.on({
             });
         };
-        var geo_json_52dd7b64546c901066fd4d891f659261 = L.geoJson(null, {
-                onEachFeature: geo_json_52dd7b64546c901066fd4d891f659261_onEachFeature,
+        var geo_json_ab34cbbd889240370f62c5e0363d561b = L.geoJson(null, {
+                onEachFeature: geo_json_ab34cbbd889240370f62c5e0363d561b_onEachFeature,
             
+            ...{
+}
         });
 
-        function geo_json_52dd7b64546c901066fd4d891f659261_add (data) {
-            geo_json_52dd7b64546c901066fd4d891f659261
+        function geo_json_ab34cbbd889240370f62c5e0363d561b_add (data) {
+            geo_json_ab34cbbd889240370f62c5e0363d561b
                 .addData(data);
         }
-            geo_json_52dd7b64546c901066fd4d891f659261_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-119.42, 34.43], [-119.42, 33.4], [-117, 33.4], [-117, 34.43], [-119.42, 34.43]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+            geo_json_ab34cbbd889240370f62c5e0363d561b_add({&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-119.42, 34.43], [-119.42, 33.4], [-117, 33.4], [-117, 34.43], [-119.42, 34.43]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;});
+        geo_json_ab34cbbd889240370f62c5e0363d561b.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_52dd7b64546c901066fd4d891f659261.addTo(map_7af5e0f0712ccbbbe2c875e074976eb0);
+            geo_json_ab34cbbd889240370f62c5e0363d561b.addTo(map_a9b9c48e61e158cfb46a0268a4fee753);
         
     
-            var tile_layer_089d2e3c745ca402181c3a977c6b62da = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos_carbon_vPRE_XCO2_x1440_y721_daily_20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            var tile_layer_8343586ba84ad5d60d879cf365f5007e = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/geos-ghg-daygrid-vPRE/items/geos-ghg-daygrid-vPRE-20160725/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=397.2987976074219%2C407.9268493652344&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 0.8,
+}
+
             );
         
     
-            tile_layer_089d2e3c745ca402181c3a977c6b62da.addTo(map_7af5e0f0712ccbbbe2c875e074976eb0);
+            tile_layer_8343586ba84ad5d60d879cf365f5007e.addTo(map_a9b9c48e61e158cfb46a0268a4fee753);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
 <p>We can generate the statistics for the AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the Raster API.</p>
-<div id="cell-36" class="cell" data-execution_count="22">
+<div id="cell-36" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
@@ -4270,10 +4579,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 1.86 s, sys: 278 ms, total: 2.14 s
-Wall time: 1min 56s</code></pre>
+CPU times: user 698 ms, sys: 348 ms, total: 1.05 s
+Wall time: 1min 28s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <div>
 
 
@@ -4417,7 +4726,7 @@ Wall time: 1min 56s</code></pre>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>We can now explore the XCO₂ concentrations time series (January 1, 2016 - July 31, 2016) available for the Los Angeles Area, California area of the U.S. We can plot the data set using the code below:</p>
-<div id="cell-38" class="cell" data-execution_count="23">
+<div id="cell-38" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">"datetime"</span>)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4443,11 +4752,11 @@ Wall time: 1min 56s</code></pre>
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
 <span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span>(df[<span class="st">"datetime"</span>]),           <span class="co"># X-coordinate of the text </span></span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    df[which_stat].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text </span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span>(df[<span class="st">"datetime"</span>]),                    <span class="co"># X-coordinate of the text </span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    df[which_stat].<span class="bu">min</span>(),                   <span class="co"># Y-coordinate of the text </span></span>
 <span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
 <span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Source: </span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">"</span>,                  </span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>,                             <span class="co"># Font size</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>,                              <span class="co"># Font size</span></span>
 <span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
 <span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
 <span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
