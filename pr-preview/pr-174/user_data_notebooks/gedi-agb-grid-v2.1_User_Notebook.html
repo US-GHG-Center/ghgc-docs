@@ -983,6 +983,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
   </ul></li>
+  <li><a href="#create-gedi-legend" id="toc-create-gedi-legend" class="nav-link" data-scroll-target="#create-gedi-legend">Create GEDI Legend</a></li>
+  <li><a href="#gedi-ecoregion-assessment" id="toc-gedi-ecoregion-assessment" class="nav-link" data-scroll-target="#gedi-ecoregion-assessment">GEDI Ecoregion Assessment</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -1035,10 +1037,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#terminology">Terminology</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#helper-functions-for-spatial-data-processing">Helper Functions</a></li>
-<li><a href="#visualizing-biomass-density">Visualizing Biomass Density</a></li>
-<li><a href="#comparing-biomass-across-regions">Comparing Biomass Across Regions</a></li>
-<li><a href="#interactive-spatial-comparison">Interactive Spatial Comparison</a></li>
+<li><a href="#create-gedi-legend">Create GEDI Legend</a></li>
+<li><a href="#gedi-ecoregion-assessment">GEDI Ecoregion Assessment</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </section>
@@ -1120,7 +1120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GEDI Aboveground Biomass Density dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/GEDI_ISS_L4B_Aboveground_Biomass_Density_Mean_201904-202303"><strong>GEDI_ISS_L4B_Aboveground_Biomass_Density_Mean_201904-202303</strong></a>.</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="628ec24e-997d-4688-b98a-1f53b0e4781a" class="cell" data-execution_count="4">
+<div id="628ec24e-997d-4688-b98a-1f53b0e4781a" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1130,7 +1130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>COLLECTION_NAME <span class="op">=</span> <span class="st">"GEDI_ISS_L4B_Aboveground_Biomass_Density_Mean_201904-202303"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="af9c6e4a-5769-44a0-8f56-9eab81accb98" class="cell" data-execution_count="5">
+<div id="af9c6e4a-5769-44a0-8f56-9eab81accb98" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load collection</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(COLLECTION_NAME)</span>
@@ -1951,18 +1951,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Under <code>links</code>, you can see the WMTS URL for accessing GEDI imagery from GIBS:</p>
-<div id="bb650cc7-46fc-42a8-ae18-ca073ff89b1c" class="cell" data-execution_count="6">
+<div id="bb650cc7-46fc-42a8-ae18-ca073ff89b1c" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>GIBS_WMTS_URL <span class="op">=</span> collection.links[<span class="dv">4</span>].href</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>GIBS_WMTS_URL</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/wmts.cgi'</code></pre>
 </div>
 </div>
-<div id="8d8c56c1-c62c-4ba4-a6d7-4ec61e5dccac" class="cell" data-execution_count="7">
+<div id="8d8c56c1-c62c-4ba4-a6d7-4ec61e5dccac" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use this URL to request WMTS capabilities</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(GIBS_WMTS_URL.replace(<span class="st">'wmts'</span>,<span class="st">'wms'</span>)<span class="op">+</span><span class="st">"?SERVICE=WMS&amp;REQUEST=GetCapabilities"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="339639fc-c4bd-4680-82dd-5ce5904eaa18" class="cell" data-execution_count="8">
+<div id="339639fc-c4bd-4680-82dd-5ce5904eaa18" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert capability response to XML tree.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>WmtsTree <span class="op">=</span> xmlet.fromstring(response.content)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1998,7 +1998,7 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Day
 VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 </div>
 </div>
-<div id="f7b3477c-2446-4367-b662-c6f8eb226b0a" class="cell" data-execution_count="9">
+<div id="f7b3477c-2446-4367-b662-c6f8eb226b0a" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>GEDI_L4B_LAYERS <span class="op">=</span> [l <span class="cf">for</span> l <span class="kw">in</span> alllayer <span class="cf">if</span> (<span class="st">'GEDI'</span> <span class="kw">in</span> l) <span class="kw">and</span> (<span class="st">'L4B'</span> <span class="kw">in</span> l)]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>GEDI_L4B_LAYERS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -2009,14 +2009,18 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 </div>
 </div>
 <p>We want to visualize the mean AGBD - and there it is, first in our list! Note that te layer name is identical to our STAC <code>COLLECTION_NAME</code>:</p>
-<div id="0b0cda36-f09f-493b-b315-ae0d356bd50e" class="cell" data-execution_count="10">
+<div id="0b0cda36-f09f-493b-b315-ae0d356bd50e" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>COLLECTION_NAME <span class="op">==</span> GEDI_L4B_LAYERS[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>True</code></pre>
 </div>
 </div>
+</section>
+</section>
+<section id="create-gedi-legend" class="level2">
+<h2 class="anchored" data-anchor-id="create-gedi-legend">Create GEDI Legend</h2>
 <p>Before we make our map, let’s retrieve a legend for our layer.</p>
-<div id="cc229c7f-9625-4e5d-8ff8-dcdf5b65a2c8" class="cell" data-execution_count="11">
+<div id="cc229c7f-9625-4e5d-8ff8-dcdf5b65a2c8" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retrieve_wms_legend(tree, layer_name):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    legendImg <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2040,7 +2044,7 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> legendURL,legendname</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d31f9ddd-a538-4175-b1e3-4cf0c94d23b1" class="cell" data-execution_count="12">
+<div id="d31f9ddd-a538-4175-b1e3-4cf0c94d23b1" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the prewritten retrieve_wms_legend function</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>legend_URL,legend_img <span class="op">=</span> retrieve_wms_legend(WmtsTree,COLLECTION_NAME)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2054,8 +2058,11 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 <img src="https://gibs.earthdata.nasa.gov/legends/GEDI_MU_Color_Index_H.png">
 </div>
 </div>
+</section>
+<section id="gedi-ecoregion-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="gedi-ecoregion-assessment">GEDI Ecoregion Assessment</h2>
 <p>Let’s look at AGBD over North America as it relates to <a href="https://www.epa.gov/eco-research/ecoregions-north-america"><strong>EPA-defined Level I Ecoregions</strong></a>! We’ll load a shapefile of these ecoregions, already provided but downloaded from the linked URL and, referring to maps from the EPA, we’ll focus on region 8, Eastern Temperate Forests.</p>
-<div id="808cccf4-ab51-4d5e-8b93-85654dc55985" class="cell" data-execution_count="39">
+<div id="808cccf4-ab51-4d5e-8b93-85654dc55985" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> gpd.read_file(<span class="st">'./shapefiles/NA_CEC_Eco_Level1.shp'</span>).to_crs(<span class="dv">4326</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the contents of the shapefile, check out what it contains</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>aoi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2182,7 +2189,7 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 </div>
 </div>
 </div>
-<div id="baed3cf6-77b8-4096-ba42-69aae11f62d9" class="cell" data-execution_count="44">
+<div id="baed3cf6-77b8-4096-ba42-69aae11f62d9" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to region of your choice - </span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># per the EPA website, Level 1 has 15 different ecoregions.</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2190,7 +2197,7 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>aoi_subset <span class="op">=</span> aoi[aoi[<span class="st">'NA_L1CODE'</span>] <span class="op">==</span> <span class="bu">str</span>(focus_region)]</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="ss">f'EPA North America </span><span class="sc">{</span>np<span class="sc">.</span>unique(aoi_subset[<span class="st">'NA_L1NAME'</span>])[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="842c63d4-e147-4a8b-90ff-9428cb451c9e" class="cell" data-execution_count="45">
+<div id="842c63d4-e147-4a8b-90ff-9428cb451c9e" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create our folium map, centered on the US</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> folium.Map([<span class="fl">39.5</span>,<span class="op">-</span><span class="dv">97</span>],zoom_start<span class="op">=</span><span class="dv">4</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2365,7 +2372,6 @@ VIIRS_SNPP_Thermal_Anomalies_375m_Night</code></pre>
 </div>
 </div>
 <p>Explore a few different ecoregions. What does the GEDI AGBD dataset tell you about the relative biodiversity of, for example, forests versus agricultural land?</p>
-</section>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
