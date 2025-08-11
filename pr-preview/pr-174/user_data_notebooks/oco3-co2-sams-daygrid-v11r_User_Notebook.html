@@ -981,6 +981,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps using Folium</a>
   <ul class="collapse">
   <li><a href="#fetch-imagery-from-raster-api" id="toc-fetch-imagery-from-raster-api" class="nav-link" data-scroll-target="#fetch-imagery-from-raster-api">Fetch Imagery from Raster API</a></li>
+  <li><a href="#generate-map" id="toc-generate-map" class="nav-link" data-scroll-target="#generate-map">Generate Map</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
   </ul>
@@ -1029,7 +1030,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="access-this-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
 <p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
-<p>Access the <a href="https://us-ghg-center.github.io/ghgc-docs/user_data_notebooks/oco3-co2-sams-daygrid-v11r_User_Notebook.html"><strong>OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</strong></a> notebook in the US GHG Center JupyterHub.</p>
+<p>Access the <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Foco3-co2-sams-daygrid-v11r_User_Notebook.ipynb&amp;branch=main"><strong>OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</strong></a> notebook in the US GHG Center JupyterHub (requires access).</p>
 </section>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
@@ -1039,8 +1040,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#about-the-data">About the Data</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
-<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
+<li><a href="#fetch-imagery-from-raster-api">Fetch Imagery From Raster API</a></li>
+<li><a href="#generate-map">Generate Map</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </section>
@@ -1073,7 +1074,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;OCO-3 Snapshot Area Maps of Column CO₂ Concentrations - <code>item</code>: One granule in the dataset - <code>asset</code>: A variable available within the granule, e.g.&nbsp;CH4 plume emissions - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
+<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<ul>
+<li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
+<li><code>collection</code>: A specific dataset, e.g.&nbsp;OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</li>
+<li><code>item</code>: One granule in the dataset</li>
+<li><code>asset</code>: A variable available within the granule, e.g.&nbsp;CH4 plume emissions</li>
+<li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
+<li><code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</li>
+</ul>
 </section>
 <section id="install-the-required-libraries" class="level1">
 <h1>Install the Required Libraries</h1>
@@ -1184,7 +1193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -1193,7 +1202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"NASA-JPL's OCO-3 is an instrument onboard the International Space Station that measures carbon dioxide in the Earth's atmosphere. OCO-3 data can also be processed to measure solar-induced florescence (SIF)."</span>
+            <span class="pystac-v">"The Orbiting Carbon Observatory-3, or OCO-3, is deployed on the International Space Station (ISS) and is designed to investigate important questions about the distribution of carbon dioxide (CO₂) on Earth. The OCO-3 instrument has an agile 2-D pointing mechanism, i.e., a Pointing Mirror Assembly (PMA) that allows for rapid transitions in pointing. The PMA is used to collect Snapshot Area Maps (SAMs) which are data collections over an ~80 km by 80 km area in 2 minutes. This results in higher resolution data over the selected target compared to OCO-3’s other data collection modes. This collection includes quality filtered (high-quality retrievals only) SAMs of column-averaged CO₂ in the atmosphere (XCO₂). SAMs are focused on areas of interest such as cities, emissions sources, areas where plants and crops are being studied, volcanos, and other local carbon sources that can be measured from space. The data are in units of parts per million (ppm). This data has been transformed to Cloud Optimized GeoTIFF (COG) format. The source data and accompanying documentation can be found at https://doi.org/10.5067/8U0VGVQC7HZG"</span>
         </li>
     
                 
@@ -1435,6 +1444,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     
+        <li class="pystac-row">
+            <span class="pystac-k">units</span>
+            <span class="pystac-v">"Parts per million (ppm)"</span>
+        </li>
+    
+                
+            
+                
+                    
         <li><details>
             <summary class="pystac-summary"><span class="pystac-k">renders</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
@@ -1592,7 +1610,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">0</span>
-            <span class="pystac-v">400</span>
+            <span class="pystac-v">412</span>
         </li>
     
             
@@ -1605,7 +1623,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">420</span>
+            <span class="pystac-v">422</span>
         </li>
     
             
@@ -1670,7 +1688,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">0</span>
-            <span class="pystac-v">"2015-01-01T00:00:00Z"</span>
+            <span class="pystac-v">"2019-08-06T00:00:00Z"</span>
         </li>
     
             
@@ -1789,7 +1807,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"Orbiting Carbon Observatory 3 (OCO-3) Solar-Induced Florescence (SIF) Snapshot Area Mapping (SAM) COGs"</span>
+            <span class="pystac-v">"OCO-3 Snapshot Area Maps of Column CO₂ Concentrations "</span>
         </li>
     
                 
@@ -1861,7 +1879,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">3</span>
-            <span class="pystac-v">53.73747686450562</span>
+            <span class="pystac-v">80.5506288339856</span>
         </li>
     
             
@@ -1903,7 +1921,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">0</span>
-            <span class="pystac-v">"2019-08-06T00:00:00Z"</span>
+            <span class="pystac-v">"2014-09-07T00:00:00Z"</span>
         </li>
     
             
@@ -1916,7 +1934,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2025-03-30T23:59:59Z"</span>
+            <span class="pystac-v">"2025-05-30T23:59:59Z"</span>
         </li>
     
             
@@ -1968,24 +1986,277 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we note that data is available from Jan 2015 to August 2025.</p>
 <div id="cell-14" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Found 18379 items</code></pre>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: searching for all items takes greater than 5 minutes. Therefore, this block can be commented out.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This block is to show the total number of items and isn't integral for the remaining notebook.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[4]</span><span class="ansi-green-fg">, line 1</span>
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">1</span> items = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">list</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">collection</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_items</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>  <span style="font-style:italic;color:rgb(95,135,135)"># Convert the iterator to a list</span>
+<span class="ansi-green-fg">      2</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Found </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">len</span>(items)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> items</span><span class="ansi-yellow-fg">"</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/collection_client.py:147</span>, in <span class="ansi-cyan-fg">CollectionClient.get_items</span><span class="ansi-blue-fg">(self, recursive, *ids)</span>
+<span class="ansi-green-fg">    137</span>     url = root._search_href() <span style="font-weight:bold;color:rgb(0,135,0)">if</span> ids <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span style="color:rgb(0,135,0)">self</span>._items_href()
+<span class="ansi-green-fg">    139</span>     search = ItemSearch(
+<span class="ansi-green-fg">    140</span>         url=url,
+<span class="ansi-green-fg">    141</span>         method=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">GET</span><span class="ansi-yellow-fg">"</span>,
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    145</span>         modifier=<span style="color:rgb(0,135,0)">self</span>.modifier,
+<span class="ansi-green-fg">    146</span>     )
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">147</span>     <span style="font-weight:bold;color:rgb(0,135,0)">yield from</span> search.items()
+<span class="ansi-green-fg">    148</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    149</span>     root._warn_about_fallback(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">ITEM_SEARCH</span><span class="ansi-yellow-fg">"</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:741</span>, in <span class="ansi-cyan-fg">ItemSearch.items</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    734</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">items</span>(<span style="color:rgb(0,135,0)">self</span>) -&gt; Iterator[Item]:
+<span class="ansi-green-fg">    735</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Iterator that yields :class:`pystac.Item` instances for each item matching</span>
+<span class="ansi-green-fg">    736</span> <span style="font-style:italic" class="ansi-yellow-fg">    the given search parameters.</span>
+<span class="ansi-green-fg">    737</span> 
+<span class="ansi-green-fg">    738</span> <span style="font-style:italic" class="ansi-yellow-fg">    Yields:</span>
+<span class="ansi-green-fg">    739</span> <span style="font-style:italic" class="ansi-yellow-fg">        Item : each Item matching the search criteria</span>
+<span class="ansi-green-fg">    740</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">741</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">items_as_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
+<span class="ansi-green-fg">    742</span> <span class="ansi-yellow-bg">        </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># already signed in items_as_dicts</span>
+<span class="ansi-green-fg">    743</span> <span class="ansi-yellow-bg">        </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">yield</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">Item</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">from_dict</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">root</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">client</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">preserve_dict</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:752</span>, in <span class="ansi-cyan-fg">ItemSearch.items_as_dicts</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    745</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">items_as_dicts</span>(<span style="color:rgb(0,135,0)">self</span>) -&gt; Iterator[<span style="color:rgb(0,135,0)">dict</span>[<span style="color:rgb(0,135,0)">str</span>, Any]]:
+<span class="ansi-green-fg">    746</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Iterator that yields :class:`dict` instances for each item matching</span>
+<span class="ansi-green-fg">    747</span> <span style="font-style:italic" class="ansi-yellow-fg">    the given search parameters.</span>
+<span class="ansi-green-fg">    748</span> 
+<span class="ansi-green-fg">    749</span> <span style="font-style:italic" class="ansi-yellow-fg">    Yields:</span>
+<span class="ansi-green-fg">    750</span> <span style="font-style:italic" class="ansi-yellow-fg">        Item : each Item matching the search criteria</span>
+<span class="ansi-green-fg">    751</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">752</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">pages_as_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
+<span class="ansi-green-fg">    753</span> <span class="ansi-yellow-bg">        </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">yield from</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">features</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:782</span>, in <span class="ansi-cyan-fg">ItemSearch.pages_as_dicts</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    780</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">isinstance</span>(<span style="color:rgb(0,135,0)">self</span>._stac_io, StacApiIO):
+<span class="ansi-green-fg">    781</span>     num_items = <span class="ansi-green-fg">0</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">782</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_stac_io</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_pages</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    783</span> <span class="ansi-yellow-bg">        </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_parameters</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    784</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
+<span class="ansi-green-fg">    785</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">call_modifier</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">modifier</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    786</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">features</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">features</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:314</span>, in <span class="ansi-cyan-fg">StacApiIO.get_pages</span><span class="ansi-blue-fg">(self, url, method, parameters)</span>
+<span class="ansi-green-fg">    312</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> next_link:
+<span class="ansi-green-fg">    313</span>     link = Link.from_dict(next_link)
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">314</span>     page = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read_json</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">link</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    315</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> (page.get(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">features</span><span class="ansi-yellow-fg">"</span>) <span style="font-weight:bold;color:rgb(175,0,255)">or</span> page.get(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">collections</span><span class="ansi-yellow-fg">"</span>)):
+<span class="ansi-green-fg">    316</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac/stac_io.py:206</span>, in <span class="ansi-cyan-fg">StacIO.read_json</span><span class="ansi-blue-fg">(self, source, *args, **kwargs)</span>
+<span class="ansi-green-fg">    189</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">read_json</span>(<span style="color:rgb(0,135,0)">self</span>, source: HREF, *args: Any, **kwargs: Any) -&gt; <span style="color:rgb(0,135,0)">dict</span>[<span style="color:rgb(0,135,0)">str</span>, Any]:
+<span class="ansi-green-fg">    190</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Read a dict from the given source.</span>
+<span class="ansi-green-fg">    191</span> 
+<span class="ansi-green-fg">    192</span> <span style="font-style:italic" class="ansi-yellow-fg">    See :func:`StacIO.read_text &lt;pystac.StacIO.read_text&gt;` for usage of</span>
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    204</span> <span style="font-style:italic" class="ansi-yellow-fg">        given source.</span>
+<span class="ansi-green-fg">    205</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">206</span>     txt = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read_text</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">source</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    207</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">self</span>.json_loads(txt)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:161</span>, in <span class="ansi-cyan-fg">StacApiIO.read_text</span><span class="ansi-blue-fg">(self, source, *args, **kwargs)</span>
+<span class="ansi-green-fg">    157</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    158</span>         <span style="font-style:italic;color:rgb(95,135,135)"># parameters are already in the link href</span>
+<span class="ansi-green-fg">    159</span>         parameters = {}
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">161</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    162</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">href</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">parameters</span>
+<span class="ansi-green-fg">    163</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    164</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:  <span style="font-style:italic;color:rgb(95,135,135)"># str or something that can be str'ed</span>
+<span class="ansi-green-fg">    165</span>     href = <span style="color:rgb(0,135,0)">str</span>(source)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:214</span>, in <span class="ansi-cyan-fg">StacApiIO.request</span><span class="ansi-blue-fg">(self, href, method, headers, parameters)</span>
+<span class="ansi-green-fg">    210</span>     logger.debug(msg)
+<span class="ansi-green-fg">    211</span>     send_kwargs = <span style="color:rgb(0,135,0)">self</span>.session.merge_environment_settings(
+<span class="ansi-green-fg">    212</span>         prepped.url, proxies={}, stream=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>, verify=<span style="font-weight:bold;color:rgb(0,135,0)">True</span>, cert=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">    213</span>     )
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">214</span>     resp = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">session</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">send</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">prepped</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">send_kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    215</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> <span style="font-weight:bold;color:rgb(215,95,95)">Exception</span> <span style="font-weight:bold;color:rgb(0,135,0)">as</span> err:
+<span class="ansi-green-fg">    216</span>     logger.debug(err)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/requests/sessions.py:703</span>, in <span class="ansi-cyan-fg">Session.send</span><span class="ansi-blue-fg">(self, request, **kwargs)</span>
+<span class="ansi-green-fg">    700</span> start = preferred_clock()
+<span class="ansi-green-fg">    702</span> <span style="font-style:italic;color:rgb(95,135,135)"># Send the request</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">703</span> r = <span class="ansi-yellow-bg">adapter</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">send</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    705</span> <span style="font-style:italic;color:rgb(95,135,135)"># Total elapsed time of the request (approximately)</span>
+<span class="ansi-green-fg">    706</span> elapsed = preferred_clock() - start
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/requests/adapters.py:667</span>, in <span class="ansi-cyan-fg">HTTPAdapter.send</span><span class="ansi-blue-fg">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="ansi-green-fg">    664</span>     timeout = TimeoutSauce(connect=timeout, read=timeout)
+<span class="ansi-green-fg">    666</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">667</span>     resp = <span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">urlopen</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    668</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    669</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    670</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    671</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    672</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">redirect</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    673</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">assert_same_host</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    674</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    675</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    676</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">max_retries</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    677</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    678</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    679</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    681</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> (ProtocolError, <span style="font-weight:bold;color:rgb(215,95,95)">OSError</span>) <span style="font-weight:bold;color:rgb(0,135,0)">as</span> err:
+<span class="ansi-green-fg">    682</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ConnectionError</span>(err, request=request)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:871</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
+<span class="ansi-green-fg">    866</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> conn:
+<span class="ansi-green-fg">    867</span>     <span style="font-style:italic;color:rgb(95,135,135)"># Try again</span>
+<span class="ansi-green-fg">    868</span>     log.warning(
+<span class="ansi-green-fg">    869</span>         <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Retrying (</span><span style="font-weight:bold;color:rgb(175,95,135)">%r</span><span class="ansi-yellow-fg">) after connection broken by </span><span class="ansi-yellow-fg">'</span><span style="font-weight:bold;color:rgb(175,95,135)">%r</span><span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">: </span><span style="font-weight:bold;color:rgb(175,95,135)">%s</span><span class="ansi-yellow-fg">"</span>, retries, err, url
+<span class="ansi-green-fg">    870</span>     )
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">871</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">urlopen</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    872</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    873</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    874</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    875</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    876</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    877</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">redirect</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    878</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">assert_same_host</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    879</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    880</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">pool_timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">pool_timeout</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    881</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">release_conn</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">release_conn</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    882</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    883</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body_pos</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">body_pos</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    884</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    885</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    886</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">response_kw</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    887</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    889</span> <span style="font-style:italic;color:rgb(95,135,135)"># Handle redirect?</span>
+<span class="ansi-green-fg">    890</span> redirect_location = redirect <span style="font-weight:bold;color:rgb(175,0,255)">and</span> response.get_redirect_location()
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:787</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
+<span class="ansi-green-fg">    784</span> response_conn = conn <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> release_conn <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">    786</span> <span style="font-style:italic;color:rgb(95,135,135)"># Make the request on the HTTPConnection object</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">787</span> response = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_make_request</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    788</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    789</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    790</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    791</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout_obj</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    792</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    793</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    794</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    795</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    796</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">response_conn</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">response_conn</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    797</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    798</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    799</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">response_kw</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    800</span> <span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    802</span> <span style="font-style:italic;color:rgb(95,135,135)"># Everything went great!</span>
+<span class="ansi-green-fg">    803</span> clean_exit = <span style="font-weight:bold;color:rgb(0,135,0)">True</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:534</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool._make_request</span><span class="ansi-blue-fg">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
+<span class="ansi-green-fg">    532</span> <span style="font-style:italic;color:rgb(95,135,135)"># Receive the response from the server</span>
+<span class="ansi-green-fg">    533</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">534</span>     response = <span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">getresponse</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    535</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> (BaseSSLError, <span style="font-weight:bold;color:rgb(215,95,95)">OSError</span>) <span style="font-weight:bold;color:rgb(0,135,0)">as</span> e:
+<span class="ansi-green-fg">    536</span>     <span style="color:rgb(0,135,0)">self</span>._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connection.py:516</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    513</span> _shutdown = <span style="color:rgb(0,135,0)">getattr</span>(<span style="color:rgb(0,135,0)">self</span>.sock, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">shutdown</span><span class="ansi-yellow-fg">"</span>, <span style="font-weight:bold;color:rgb(0,135,0)">None</span>)
+<span class="ansi-green-fg">    515</span> <span style="font-style:italic;color:rgb(95,135,135)"># Get the response from http.client.HTTPConnection</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">516</span> httplib_response = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">super</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">getresponse</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    518</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">    519</span>     assert_header_parsing(httplib_response.msg)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:1430</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">   1428</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">   1429</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1430</span>         <span class="ansi-yellow-bg">response</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">begin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">   1431</span>     <span style="font-weight:bold;color:rgb(0,135,0)">except</span> <span style="font-weight:bold;color:rgb(215,95,95)">ConnectionError</span>:
+<span class="ansi-green-fg">   1432</span>         <span style="color:rgb(0,135,0)">self</span>.close()
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:331</span>, in <span class="ansi-cyan-fg">HTTPResponse.begin</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    329</span> <span style="font-style:italic;color:rgb(95,135,135)"># read until we get a non-100 response</span>
+<span class="ansi-green-fg">    330</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> <span style="font-weight:bold;color:rgb(0,135,0)">True</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">331</span>     version, status, reason = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_read_status</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    332</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> status != CONTINUE:
+<span class="ansi-green-fg">    333</span>         <span style="font-weight:bold;color:rgb(0,135,0)">break</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:292</span>, in <span class="ansi-cyan-fg">HTTPResponse._read_status</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">    291</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">_read_status</span>(<span style="color:rgb(0,135,0)">self</span>):
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">292</span>     line = <span style="color:rgb(0,135,0)">str</span>(<span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">fp</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">readline</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">_MAXLINE</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">+</span><span class="ansi-yellow-bg"> </span><span class="ansi-green-fg ansi-yellow-bg">1</span><span class="ansi-yellow-bg">)</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">iso-8859-1</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">    293</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">len</span>(line) &gt; _MAXLINE:
+<span class="ansi-green-fg">    294</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> LineTooLong(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">status line</span><span class="ansi-yellow-fg">"</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/socket.py:720</span>, in <span class="ansi-cyan-fg">SocketIO.readinto</span><span class="ansi-blue-fg">(self, b)</span>
+<span class="ansi-green-fg">    718</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> <span style="font-weight:bold;color:rgb(0,135,0)">True</span>:
+<span class="ansi-green-fg">    719</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">720</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_sock</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">recv_into</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    721</span>     <span style="font-weight:bold;color:rgb(0,135,0)">except</span> timeout:
+<span class="ansi-green-fg">    722</span>         <span style="color:rgb(0,135,0)">self</span>._timeout_occurred = <span style="font-weight:bold;color:rgb(0,135,0)">True</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/ssl.py:1251</span>, in <span class="ansi-cyan-fg">SSLSocket.recv_into</span><span class="ansi-blue-fg">(self, buffer, nbytes, flags)</span>
+<span class="ansi-green-fg">   1247</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> flags != <span class="ansi-green-fg">0</span>:
+<span class="ansi-green-fg">   1248</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
+<span class="ansi-green-fg">   1249</span>           <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">non-zero flags not allowed in calls to recv_into() on </span><span style="font-weight:bold;color:rgb(175,95,135)">%s</span><span class="ansi-yellow-fg">"</span> %
+<span class="ansi-green-fg">   1250</span>           <span style="color:rgb(0,135,0)">self</span>.<span class="ansi-blue-fg">__class__</span>)
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1251</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">nbytes</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">buffer</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">   1252</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">   1253</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">super</span>().recv_into(buffer, nbytes, flags)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/ssl.py:1103</span>, in <span class="ansi-cyan-fg">SSLSocket.read</span><span class="ansi-blue-fg">(self, len, buffer)</span>
+<span class="ansi-green-fg">   1101</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">   1102</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> buffer <span style="font-weight:bold;color:rgb(175,0,255)">is</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>:
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1103</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_sslobj</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">len</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">buffer</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">   1104</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">   1105</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">self</span>._sslobj.read(<span style="color:rgb(0,135,0)">len</span>)
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-scrolled="true" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2024-08-25T00:00:00Z'</span>,<span class="st">'2024-08-26T00:00:00Z'</span>]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"# items in date range: </span><span class="sc">{</span><span class="bu">len</span>(search.item_collection())<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-15" class="cell" data-scrolled="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2024-08-25T00:00:00Z'</span>,<span class="st">'2024-08-26T00:00:00Z'</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"# items in date range: </span><span class="sc">{</span><span class="bu">len</span>(search.item_collection())<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># items in date range: 42
+<pre><code># items in date range: 100
+&lt;Item id=oco3-sif_volcano0076_2024-08-26T170140Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0039_2024-08-26T025829Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0017_2024-08-26T165929Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0008_2024-08-26T184058Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0004_2024-08-26T043408Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_tccon124_2024-08-26T133056Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_tccon122_2024-08-26T071911Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_sif_atto_2_2024-08-26T152206Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0242_2024-08-26T115828Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0236_2024-08-26T072649Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0231_2024-08-26T150531Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0156_2024-08-26T055058Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0133_2024-08-26T152856Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0127_2024-08-26T072947Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0117_2024-08-26T055300Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0110_2024-08-26T164017Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0106_2024-08-26T151820Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0078_2024-08-26T011321Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0058_2024-08-26T072400Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0055_2024-08-26T011058Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0052_2024-08-26T024825Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0048_2024-08-26T042436Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0047_2024-08-26T085547Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0039_2024-08-26T164248Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0036_2024-08-26T164736Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0027_2024-08-26T133416Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0020_2024-08-26T151238Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0007_2024-08-26T043059Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_ecostress_us_kon_2024-08-26T150738Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_ecostress_cz_bk1_2024-08-26T054528Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_coccon103_2024-08-26T090949Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_coccon102_2024-08-26T105016Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_C40_032_2024-08-26T031446Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_C40_008_2024-08-26T091216Z_filtered_Daily_SIF_757nm&gt;
 &lt;Item id=oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_volcano0017_2024-08-26T165919Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_volcano0008_2024-08-26T184116Z_filtered_xco2&gt;
@@ -2009,6 +2280,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=oco3-co2_fossil0027_2024-08-26T133407Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_ecostress_us_kon_2024-08-26T150731Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_coccon102_2024-08-26T105007Z_filtered_xco2&gt;
+&lt;Item id=oco2-co2_railroadValley_2024-08-26T204705Z_filtered_xco2&gt;
+&lt;Item id=oco3-sif_volcano0038_2024-08-25T082009Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0020_2024-08-25T095819Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_volcano0003_2024-08-25T081114Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_val007_Reims_2024-08-25T063116Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_tccon124_2024-08-25T141926Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_tccon115_2024-08-25T040300Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_tccon107_2024-08-25T035025Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0232_2024-08-25T141638Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0222_2024-08-25T002809Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0166_2024-08-25T063510Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0162_2024-08-25T050019Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0136_2024-08-25T033906Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0116_2024-08-25T142130Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0114_2024-08-25T063322Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0109_2024-08-25T064000Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0092_2024-08-25T033018Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0091_2024-08-25T002446Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0012_2024-08-25T020236Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_fossil0011_2024-08-25T064326Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_cal007_2024-08-25T112405Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_C40_029_2024-08-25T050939Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_C40_023_2024-08-25T112819Z_filtered_Daily_SIF_757nm&gt;
+&lt;Item id=oco3-sif_C40_014_2024-08-25T094355Z_filtered_Daily_SIF_757nm&gt;
 &lt;Item id=oco3-co2_volcano0038_2024-08-25T081959Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_volcano0020_2024-08-25T095838Z_filtered_xco2&gt;
 &lt;Item id=oco3-co2_volcano0003_2024-08-25T081107Z_filtered_xco2&gt;
@@ -2030,1584 +2325,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=oco3-co2_C40_014_2024-08-25T094345Z_filtered_xco2&gt;</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-scrolled="true" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>search_items <span class="op">=</span> search.item_collection()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>search_items[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-
-
-<style>
-.pystac-summary {
-    cursor: pointer;
-    display: list-item;
-    list-style: revert;
-    margin-bottom: 0 !important;
-
-    .pystac-l {
-        padding-left: 0.5em;
-        color: rgb(64, 128, 128);
-        font-style: italic;
-    }
-}
-.pystac-row {
-    overflow-wrap: break-word;
-    padding-left: .825em;
-
-    .pystac-k {
-        display: inline-block;
-        margin: 0px 0.5em 0px 0px;
-    }
-    .pystac-v {
-        color: rgb(186, 33, 33);
-    }
-}
-.pystac-k {
-    color: rgb(0, 128, 0);
-    font-weight: 700;
-}
-</style>
-<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output">
-    <div class="container" style="line-height: normal;">
-        <ul style="padding: 0px; margin: 0px; list-style: none; display: block;">
-            
-                
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"Feature"</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">id</span>
-            <span class="pystac-v">"oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2"</span>
-        </li>
-    
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">properties</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">end_datetime</span>
-            <span class="pystac-v">"2024-08-26T23:59:59Z"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">start_datetime</span>
-            <span class="pystac-v">"2024-08-26T00:00:00Z"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">datetime</span>
-            <span class="pystac-v">None</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">geometry</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"Polygon"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">coordinates</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 5 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">1</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">2</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">3</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">4</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 5 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"collection"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/oco3-co2-sams-daygrid-v11r"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"application/json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"parent"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/oco3-co2-sams-daygrid-v11r"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"application/json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">2</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"root"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"application/json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"VEDA (Visualization, Exploration, and Data Analysis) STAC API"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">3</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"self"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"application/geo+json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">4</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"preview"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/map?bidx=1&amp;assets=xco2&amp;rescale=400%2C420&amp;resampling=bilinear&amp;colormap_name=jet"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"text/html"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Map of Item"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">assets</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">cog_default</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"s3://ghgc-data-store-develop/oco3-co2-sams-daygrid-v11r/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2.tif"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Default COG Layer"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Cloud optimized default layer to display on map"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">proj:bbox</span><span class="pystac-l">[] 4 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">proj:shape</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">800</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">800</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">raster:bands</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">scale</span>
-            <span class="pystac-v">1.0</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">nodata</span>
-            <span class="pystac-v">"nan"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">offset</span>
-            <span class="pystac-v">0.0</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">sampling</span>
-            <span class="pystac-v">"area"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">data_type</span>
-            <span class="pystac-v">"float32"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">histogram</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">max</span>
-            <span class="pystac-v">425.2371826171875</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">min</span>
-            <span class="pystac-v">417.9154968261719</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">count</span>
-            <span class="pystac-v">11</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">buckets</span><span class="pystac-l">[] 10 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">99</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">401</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">1356</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">3659</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">4</span>
-            <span class="pystac-v">6331</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">5</span>
-            <span class="pystac-v">8974</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">6</span>
-            <span class="pystac-v">8968</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">7</span>
-            <span class="pystac-v">3969</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">8</span>
-            <span class="pystac-v">1005</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">9</span>
-            <span class="pystac-v">206</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">statistics</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">mean</span>
-            <span class="pystac-v">421.9550732097918</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">stddev</span>
-            <span class="pystac-v">1.074915516618739</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">maximum</span>
-            <span class="pystac-v">425.2371826171875</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">minimum</span>
-            <span class="pystac-v">417.9154968261719</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">valid_percent</span>
-            <span class="pystac-v">5.46375</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:geometry</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"Polygon"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">coordinates</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 5 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">0</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">1</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">2</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">3</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">4</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">0.0037546933667083854</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">0.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">0.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">4</span>
-            <span class="pystac-v">-0.0037546933667083854</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">5</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">6</span>
-            <span class="pystac-v">0.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">7</span>
-            <span class="pystac-v">0.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">8</span>
-            <span class="pystac-v">1.0</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">rendered_preview</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/preview.png?bidx=1&amp;assets=xco2&amp;rescale=400%2C420&amp;resampling=bilinear&amp;colormap_name=jet"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/png"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Rendered preview"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"preview"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 1 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"overview"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">bbox</span><span class="pystac-l">[] 4 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">-68.68187765185914</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">-23.771877804447026</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">2</span>
-            <span class="pystac-v">-65.67812295849244</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">3</span>
-            <span class="pystac-v">-20.768123111080317</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">stac_extensions</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/raster/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-                
-            
-                
-                    
-        <li class="pystac-row">
-            <span class="pystac-k">collection</span>
-            <span class="pystac-v">"oco3-co2-sams-daygrid-v11r"</span>
-        </li>
-    
-                
-            
-        </ul>
-    </div>
-</div>
-</div>
-</div>
-<div id="cell-17" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search_items:</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item.properties[<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search_items:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item.properties[<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2024-08-26T00:00:00Z
 2024-08-26T00:00:00Z
@@ -3654,18 +2374,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>For this reason, we will use the item <code>id</code> to reference the items specifically. Let’s make a dictionary where we can do this more efficiently:</p>
-<div id="cell-19" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {<span class="st">"_"</span>.join(item.<span class="bu">id</span>.split(<span class="st">"_"</span>)[<span class="dv">1</span>:<span class="dv">3</span>]): item <span class="cf">for</span> item <span class="kw">in</span> search_items}</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the keys of our dictionary, which we'll use to reference specific plumes</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items_dict.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {<span class="st">"_"</span>.join(item.<span class="bu">id</span>.split(<span class="st">"_"</span>)[<span class="dv">1</span>:<span class="dv">3</span>]): item <span class="cf">for</span> item <span class="kw">in</span> search_items}</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the keys of our dictionary, which we'll use to reference specific plumes</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items_dict.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>dict_keys(['volcano0076_2024-08-26T170125Z', 'volcano0017_2024-08-26T165919Z', 'volcano0008_2024-08-26T184116Z', 'volcano0004_2024-08-26T043359Z', 'tccon124_2024-08-26T133046Z', 'tccon122_2024-08-26T071936Z', 'sif_atto', 'fossil0236_2024-08-26T072639Z', 'fossil0231_2024-08-26T150506Z', 'fossil0156_2024-08-26T055048Z', 'fossil0127_2024-08-26T072937Z', 'fossil0117_2024-08-26T055245Z', 'fossil0110_2024-08-26T164007Z', 'fossil0106_2024-08-26T151814Z', 'fossil0058_2024-08-26T072353Z', 'fossil0055_2024-08-26T011048Z', 'fossil0052_2024-08-26T024913Z', 'fossil0047_2024-08-26T085537Z', 'fossil0039_2024-08-26T164239Z', 'fossil0036_2024-08-26T164727Z', 'fossil0027_2024-08-26T133407Z', 'ecostress_us', 'coccon102_2024-08-26T105007Z', 'volcano0038_2024-08-25T081959Z', 'volcano0020_2024-08-25T095838Z', 'volcano0003_2024-08-25T081107Z', 'val007_Reims', 'tccon124_2024-08-25T141920Z', 'tccon107_2024-08-25T035017Z', 'fossil0232_2024-08-25T141629Z', 'fossil0222_2024-08-25T002926Z', 'fossil0166_2024-08-25T063500Z', 'fossil0162_2024-08-25T050026Z', 'fossil0116_2024-08-25T142120Z', 'fossil0114_2024-08-25T063321Z', 'fossil0109_2024-08-25T063953Z', 'fossil0092_2024-08-25T033009Z', 'fossil0091_2024-08-25T002436Z', 'fossil0012_2024-08-25T020237Z', 'fossil0011_2024-08-25T064317Z', 'cal007_2024-08-25T112417Z', 'C40_014'])</code></pre>
 </div>
 </div>
-<div id="cell-20" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook. </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset only has one asset to choose from:</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"cog_default"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook. </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset only has one asset to choose from:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"cog_default"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-maps-using-folium" class="level1">
@@ -3674,47 +2394,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-23" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the &lt;datetime_plumenumber&gt; key below to look at a different plume.</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[<span class="st">"volcano0076_2024-08-26T170125Z"</span>]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the &lt;datetime_plumenumber&gt; key below to look at a different plume.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[<span class="st">"volcano0076_2024-08-26T170125Z"</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raster_bands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: <span class="dv">0</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rescale_values)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raster_bands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'max': 425.2371826171875, 'min': 0}
 [{'scale': 1.0, 'nodata': 'nan', 'offset': 0.0, 'sampling': 'area', 'data_type': 'float32', 'histogram': {'max': 425.2371826171875, 'min': 417.9154968261719, 'count': 11, 'buckets': [99, 401, 1356, 3659, 6331, 8974, 8968, 3969, 1005, 206]}, 'statistics': {'mean': 421.9550732097918, 'stddev': 1.074915516618739, 'maximum': 425.2371826171875, 'minimum': 417.9154968261719, 'valid_percent': 5.46375}}]</code></pre>
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-26" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"jet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"jet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=400,420"</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=400,420"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
@@ -3729,44 +2449,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-67.18000030517578, -22.270000457763672, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for plume Layer</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our loaded tile to set the center of the map</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(observation_date_1_tile[<span class="st">"center"</span>][<span class="dv">1</span>], observation_date_1_tile[<span class="st">"center"</span>][<span class="dv">0</span>]), zoom_start<span class="op">=</span><span class="dv">12</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_date_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'XCO2 (ppm-m)'</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="generate-map" class="level2">
+<h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
+<div id="cell-28" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for plume Layer</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our loaded tile to set the center of the map</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(observation_date_1_tile[<span class="st">"center"</span>][<span class="dv">1</span>], observation_date_1_tile[<span class="st">"center"</span>][<span class="dv">0</span>]), zoom_start<span class="op">=</span><span class="dv">12</span>, tiles<span class="op">=</span><span class="va">None</span>, tooltip <span class="op">=</span> <span class="st">'test tool tip'</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_date_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust map elements </span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use one of 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'XCO2 (ppm-m)'</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
@@ -3945,7 +2668,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the OCO-3 Snapshot Area Maps of Column CO₂ Concentrations dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Count the number of existing granules within the collection 4. Map the Carbon Dioxide emissions</p>
+<p>In this notebook we have successfully completed the following steps for the STAC collection for the OCO-3 Snapshot Area Maps of Column CO₂ Concentrations dataset:</p>
+<ol type="1">
+<li>Install and import the necessary libraries</li>
+<li>Fetch the collection from STAC collections using the appropriate endpoints</li>
+<li>Count the number of existing granules within the collection</li>
+<li>Map the Carbon Dioxide emissions</li>
+</ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
