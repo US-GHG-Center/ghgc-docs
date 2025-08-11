@@ -1989,227 +1989,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: searching for all items takes greater than 5 minutes. Therefore, this block can be commented out.</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This block is to show the total number of items and isn't integral for the remaining notebook.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
-<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[4]</span><span class="ansi-green-fg">, line 1</span>
-<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">1</span> items = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">list</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">collection</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_items</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>  <span style="font-style:italic;color:rgb(95,135,135)"># Convert the iterator to a list</span>
-<span class="ansi-green-fg">      2</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Found </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">len</span>(items)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> items</span><span class="ansi-yellow-fg">"</span>)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/collection_client.py:147</span>, in <span class="ansi-cyan-fg">CollectionClient.get_items</span><span class="ansi-blue-fg">(self, recursive, *ids)</span>
-<span class="ansi-green-fg">    137</span>     url = root._search_href() <span style="font-weight:bold;color:rgb(0,135,0)">if</span> ids <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span style="color:rgb(0,135,0)">self</span>._items_href()
-<span class="ansi-green-fg">    139</span>     search = ItemSearch(
-<span class="ansi-green-fg">    140</span>         url=url,
-<span class="ansi-green-fg">    141</span>         method=<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">GET</span><span class="ansi-yellow-fg">"</span>,
-<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    145</span>         modifier=<span style="color:rgb(0,135,0)">self</span>.modifier,
-<span class="ansi-green-fg">    146</span>     )
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">147</span>     <span style="font-weight:bold;color:rgb(0,135,0)">yield from</span> search.items()
-<span class="ansi-green-fg">    148</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">    149</span>     root._warn_about_fallback(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">ITEM_SEARCH</span><span class="ansi-yellow-fg">"</span>)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:741</span>, in <span class="ansi-cyan-fg">ItemSearch.items</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    734</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">items</span>(<span style="color:rgb(0,135,0)">self</span>) -&gt; Iterator[Item]:
-<span class="ansi-green-fg">    735</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Iterator that yields :class:`pystac.Item` instances for each item matching</span>
-<span class="ansi-green-fg">    736</span> <span style="font-style:italic" class="ansi-yellow-fg">    the given search parameters.</span>
-<span class="ansi-green-fg">    737</span> 
-<span class="ansi-green-fg">    738</span> <span style="font-style:italic" class="ansi-yellow-fg">    Yields:</span>
-<span class="ansi-green-fg">    739</span> <span style="font-style:italic" class="ansi-yellow-fg">        Item : each Item matching the search criteria</span>
-<span class="ansi-green-fg">    740</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">741</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">items_as_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
-<span class="ansi-green-fg">    742</span> <span class="ansi-yellow-bg">        </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># already signed in items_as_dicts</span>
-<span class="ansi-green-fg">    743</span> <span class="ansi-yellow-bg">        </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">yield</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">Item</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">from_dict</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">root</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">client</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">preserve_dict</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">)</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:752</span>, in <span class="ansi-cyan-fg">ItemSearch.items_as_dicts</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    745</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">items_as_dicts</span>(<span style="color:rgb(0,135,0)">self</span>) -&gt; Iterator[<span style="color:rgb(0,135,0)">dict</span>[<span style="color:rgb(0,135,0)">str</span>, Any]]:
-<span class="ansi-green-fg">    746</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Iterator that yields :class:`dict` instances for each item matching</span>
-<span class="ansi-green-fg">    747</span> <span style="font-style:italic" class="ansi-yellow-fg">    the given search parameters.</span>
-<span class="ansi-green-fg">    748</span> 
-<span class="ansi-green-fg">    749</span> <span style="font-style:italic" class="ansi-yellow-fg">    Yields:</span>
-<span class="ansi-green-fg">    750</span> <span style="font-style:italic" class="ansi-yellow-fg">        Item : each Item matching the search criteria</span>
-<span class="ansi-green-fg">    751</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">752</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">pages_as_dicts</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
-<span class="ansi-green-fg">    753</span> <span class="ansi-yellow-bg">        </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">yield from</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">features</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/item_search.py:782</span>, in <span class="ansi-cyan-fg">ItemSearch.pages_as_dicts</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    780</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">isinstance</span>(<span style="color:rgb(0,135,0)">self</span>._stac_io, StacApiIO):
-<span class="ansi-green-fg">    781</span>     num_items = <span class="ansi-green-fg">0</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">782</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">for</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg"> </span><span style="font-weight:bold;color:rgb(175,0,255)" class="ansi-yellow-bg">in</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_stac_io</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_pages</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    783</span> <span class="ansi-yellow-bg">        </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_parameters</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    784</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
-<span class="ansi-green-fg">    785</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">call_modifier</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">modifier</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    786</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">features</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">page</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">features</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:314</span>, in <span class="ansi-cyan-fg">StacApiIO.get_pages</span><span class="ansi-blue-fg">(self, url, method, parameters)</span>
-<span class="ansi-green-fg">    312</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> next_link:
-<span class="ansi-green-fg">    313</span>     link = Link.from_dict(next_link)
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">314</span>     page = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read_json</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">link</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    315</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> (page.get(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">features</span><span class="ansi-yellow-fg">"</span>) <span style="font-weight:bold;color:rgb(175,0,255)">or</span> page.get(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">collections</span><span class="ansi-yellow-fg">"</span>)):
-<span class="ansi-green-fg">    316</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac/stac_io.py:206</span>, in <span class="ansi-cyan-fg">StacIO.read_json</span><span class="ansi-blue-fg">(self, source, *args, **kwargs)</span>
-<span class="ansi-green-fg">    189</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">read_json</span>(<span style="color:rgb(0,135,0)">self</span>, source: HREF, *args: Any, **kwargs: Any) -&gt; <span style="color:rgb(0,135,0)">dict</span>[<span style="color:rgb(0,135,0)">str</span>, Any]:
-<span class="ansi-green-fg">    190</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""Read a dict from the given source.</span>
-<span class="ansi-green-fg">    191</span> 
-<span class="ansi-green-fg">    192</span> <span style="font-style:italic" class="ansi-yellow-fg">    See :func:`StacIO.read_text &lt;pystac.StacIO.read_text&gt;` for usage of</span>
-<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    204</span> <span style="font-style:italic" class="ansi-yellow-fg">        given source.</span>
-<span class="ansi-green-fg">    205</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">206</span>     txt = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read_text</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">source</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    207</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">self</span>.json_loads(txt)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:161</span>, in <span class="ansi-cyan-fg">StacApiIO.read_text</span><span class="ansi-blue-fg">(self, source, *args, **kwargs)</span>
-<span class="ansi-green-fg">    157</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">    158</span>         <span style="font-style:italic;color:rgb(95,135,135)"># parameters are already in the link href</span>
-<span class="ansi-green-fg">    159</span>         parameters = {}
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">161</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    162</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">href</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">parameters</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">parameters</span>
-<span class="ansi-green-fg">    163</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    164</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:  <span style="font-style:italic;color:rgb(95,135,135)"># str or something that can be str'ed</span>
-<span class="ansi-green-fg">    165</span>     href = <span style="color:rgb(0,135,0)">str</span>(source)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/pystac_client/stac_api_io.py:214</span>, in <span class="ansi-cyan-fg">StacApiIO.request</span><span class="ansi-blue-fg">(self, href, method, headers, parameters)</span>
-<span class="ansi-green-fg">    210</span>     logger.debug(msg)
-<span class="ansi-green-fg">    211</span>     send_kwargs = <span style="color:rgb(0,135,0)">self</span>.session.merge_environment_settings(
-<span class="ansi-green-fg">    212</span>         prepped.url, proxies={}, stream=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>, verify=<span style="font-weight:bold;color:rgb(0,135,0)">True</span>, cert=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>
-<span class="ansi-green-fg">    213</span>     )
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">214</span>     resp = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">session</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">send</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">prepped</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">send_kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    215</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> <span style="font-weight:bold;color:rgb(215,95,95)">Exception</span> <span style="font-weight:bold;color:rgb(0,135,0)">as</span> err:
-<span class="ansi-green-fg">    216</span>     logger.debug(err)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/requests/sessions.py:703</span>, in <span class="ansi-cyan-fg">Session.send</span><span class="ansi-blue-fg">(self, request, **kwargs)</span>
-<span class="ansi-green-fg">    700</span> start = preferred_clock()
-<span class="ansi-green-fg">    702</span> <span style="font-style:italic;color:rgb(95,135,135)"># Send the request</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">703</span> r = <span class="ansi-yellow-bg">adapter</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">send</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    705</span> <span style="font-style:italic;color:rgb(95,135,135)"># Total elapsed time of the request (approximately)</span>
-<span class="ansi-green-fg">    706</span> elapsed = preferred_clock() - start
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/requests/adapters.py:667</span>, in <span class="ansi-cyan-fg">HTTPAdapter.send</span><span class="ansi-blue-fg">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="ansi-green-fg">    664</span>     timeout = TimeoutSauce(connect=timeout, read=timeout)
-<span class="ansi-green-fg">    666</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">667</span>     resp = <span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">urlopen</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    668</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    669</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    670</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    671</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    672</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">redirect</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    673</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">assert_same_host</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    674</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    675</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">False</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    676</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">max_retries</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    677</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    678</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    679</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    681</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> (ProtocolError, <span style="font-weight:bold;color:rgb(215,95,95)">OSError</span>) <span style="font-weight:bold;color:rgb(0,135,0)">as</span> err:
-<span class="ansi-green-fg">    682</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ConnectionError</span>(err, request=request)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:871</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="ansi-green-fg">    866</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> conn:
-<span class="ansi-green-fg">    867</span>     <span style="font-style:italic;color:rgb(95,135,135)"># Try again</span>
-<span class="ansi-green-fg">    868</span>     log.warning(
-<span class="ansi-green-fg">    869</span>         <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Retrying (</span><span style="font-weight:bold;color:rgb(175,95,135)">%r</span><span class="ansi-yellow-fg">) after connection broken by </span><span class="ansi-yellow-fg">'</span><span style="font-weight:bold;color:rgb(175,95,135)">%r</span><span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">: </span><span style="font-weight:bold;color:rgb(175,95,135)">%s</span><span class="ansi-yellow-fg">"</span>, retries, err, url
-<span class="ansi-green-fg">    870</span>     )
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">871</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">urlopen</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    872</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    873</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    874</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    875</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    876</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    877</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">redirect</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    878</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">assert_same_host</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    879</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    880</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">pool_timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">pool_timeout</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    881</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">release_conn</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">release_conn</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    882</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    883</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">body_pos</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">body_pos</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    884</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    885</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    886</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">response_kw</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    887</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    889</span> <span style="font-style:italic;color:rgb(95,135,135)"># Handle redirect?</span>
-<span class="ansi-green-fg">    890</span> redirect_location = redirect <span style="font-weight:bold;color:rgb(175,0,255)">and</span> response.get_redirect_location()
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:787</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="ansi-green-fg">    784</span> response_conn = conn <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> release_conn <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>
-<span class="ansi-green-fg">    786</span> <span style="font-style:italic;color:rgb(95,135,135)"># Make the request on the HTTPConnection object</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">787</span> response = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_make_request</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    788</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    789</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    790</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">url</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    791</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">timeout</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">timeout_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    792</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">body</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    793</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">headers</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    794</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">chunked</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    795</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">retries</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    796</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">response_conn</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">response_conn</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    797</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">preload_content</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    798</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">decode_content</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    799</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">response_kw</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg">    800</span> <span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    802</span> <span style="font-style:italic;color:rgb(95,135,135)"># Everything went great!</span>
-<span class="ansi-green-fg">    803</span> clean_exit = <span style="font-weight:bold;color:rgb(0,135,0)">True</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connectionpool.py:534</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool._make_request</span><span class="ansi-blue-fg">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
-<span class="ansi-green-fg">    532</span> <span style="font-style:italic;color:rgb(95,135,135)"># Receive the response from the server</span>
-<span class="ansi-green-fg">    533</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">534</span>     response = <span class="ansi-yellow-bg">conn</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">getresponse</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    535</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> (BaseSSLError, <span style="font-weight:bold;color:rgb(215,95,95)">OSError</span>) <span style="font-weight:bold;color:rgb(0,135,0)">as</span> e:
-<span class="ansi-green-fg">    536</span>     <span style="color:rgb(0,135,0)">self</span>._raise_timeout(err=e, url=url, timeout_value=read_timeout)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/site-packages/urllib3/connection.py:516</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    513</span> _shutdown = <span style="color:rgb(0,135,0)">getattr</span>(<span style="color:rgb(0,135,0)">self</span>.sock, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">shutdown</span><span class="ansi-yellow-fg">"</span>, <span style="font-weight:bold;color:rgb(0,135,0)">None</span>)
-<span class="ansi-green-fg">    515</span> <span style="font-style:italic;color:rgb(95,135,135)"># Get the response from http.client.HTTPConnection</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">516</span> httplib_response = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">super</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">getresponse</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    518</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">    519</span>     assert_header_parsing(httplib_response.msg)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:1430</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">   1428</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">   1429</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1430</span>         <span class="ansi-yellow-bg">response</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">begin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   1431</span>     <span style="font-weight:bold;color:rgb(0,135,0)">except</span> <span style="font-weight:bold;color:rgb(215,95,95)">ConnectionError</span>:
-<span class="ansi-green-fg">   1432</span>         <span style="color:rgb(0,135,0)">self</span>.close()
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:331</span>, in <span class="ansi-cyan-fg">HTTPResponse.begin</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    329</span> <span style="font-style:italic;color:rgb(95,135,135)"># read until we get a non-100 response</span>
-<span class="ansi-green-fg">    330</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> <span style="font-weight:bold;color:rgb(0,135,0)">True</span>:
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">331</span>     version, status, reason = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_read_status</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    332</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> status != CONTINUE:
-<span class="ansi-green-fg">    333</span>         <span style="font-weight:bold;color:rgb(0,135,0)">break</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/http/client.py:292</span>, in <span class="ansi-cyan-fg">HTTPResponse._read_status</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg">    291</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">_read_status</span>(<span style="color:rgb(0,135,0)">self</span>):
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">292</span>     line = <span style="color:rgb(0,135,0)">str</span>(<span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">fp</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">readline</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">_MAXLINE</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">+</span><span class="ansi-yellow-bg"> </span><span class="ansi-green-fg ansi-yellow-bg">1</span><span class="ansi-yellow-bg">)</span>, <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">iso-8859-1</span><span class="ansi-yellow-fg">"</span>)
-<span class="ansi-green-fg">    293</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">len</span>(line) &gt; _MAXLINE:
-<span class="ansi-green-fg">    294</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> LineTooLong(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">status line</span><span class="ansi-yellow-fg">"</span>)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/socket.py:720</span>, in <span class="ansi-cyan-fg">SocketIO.readinto</span><span class="ansi-blue-fg">(self, b)</span>
-<span class="ansi-green-fg">    718</span> <span style="font-weight:bold;color:rgb(0,135,0)">while</span> <span style="font-weight:bold;color:rgb(0,135,0)">True</span>:
-<span class="ansi-green-fg">    719</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">720</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_sock</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">recv_into</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    721</span>     <span style="font-weight:bold;color:rgb(0,135,0)">except</span> timeout:
-<span class="ansi-green-fg">    722</span>         <span style="color:rgb(0,135,0)">self</span>._timeout_occurred = <span style="font-weight:bold;color:rgb(0,135,0)">True</span>
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/ssl.py:1251</span>, in <span class="ansi-cyan-fg">SSLSocket.recv_into</span><span class="ansi-blue-fg">(self, buffer, nbytes, flags)</span>
-<span class="ansi-green-fg">   1247</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> flags != <span class="ansi-green-fg">0</span>:
-<span class="ansi-green-fg">   1248</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg">   1249</span>           <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">non-zero flags not allowed in calls to recv_into() on </span><span style="font-weight:bold;color:rgb(175,95,135)">%s</span><span class="ansi-yellow-fg">"</span> %
-<span class="ansi-green-fg">   1250</span>           <span style="color:rgb(0,135,0)">self</span>.<span class="ansi-blue-fg">__class__</span>)
-<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1251</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">nbytes</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">buffer</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   1252</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">   1253</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">super</span>().recv_into(buffer, nbytes, flags)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/anaconda3/envs/gdal/lib/python3.12/ssl.py:1103</span>, in <span class="ansi-cyan-fg">SSLSocket.read</span><span class="ansi-blue-fg">(self, len, buffer)</span>
-<span class="ansi-green-fg">   1101</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">   1102</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> buffer <span style="font-weight:bold;color:rgb(175,0,255)">is</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>:
-<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1103</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_sslobj</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">read</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">len</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">buffer</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   1104</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">   1105</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)">self</span>._sslobj.read(<span style="color:rgb(0,135,0)">len</span>)
-
-<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
-</div>
-</div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># items = list(collection.get_items())  # Convert the iterator to a list</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f"Found {len(items)} items")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-15" class="cell" data-scrolled="true" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
@@ -2325,8 +2106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=oco3-co2_C40_014_2024-08-25T094345Z_filtered_xco2&gt;</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search_items:</span>
+<div id="cell-16" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item.properties[<span class="st">"start_datetime"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2024-08-26T00:00:00Z
@@ -2352,6 +2133,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2024-08-26T00:00:00Z
 2024-08-26T00:00:00Z
 2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-26T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
+2024-08-25T00:00:00Z
 2024-08-25T00:00:00Z
 2024-08-25T00:00:00Z
 2024-08-25T00:00:00Z
@@ -2374,18 +2213,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>For this reason, we will use the item <code>id</code> to reference the items specifically. Let’s make a dictionary where we can do this more efficiently:</p>
-<div id="cell-18" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {<span class="st">"_"</span>.join(item.<span class="bu">id</span>.split(<span class="st">"_"</span>)[<span class="dv">1</span>:<span class="dv">3</span>]): item <span class="cf">for</span> item <span class="kw">in</span> search_items}</span>
+<div id="cell-18" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {<span class="st">"_"</span>.join(item.<span class="bu">id</span>.split(<span class="st">"_"</span>)[<span class="dv">1</span>:<span class="dv">3</span>]): item <span class="cf">for</span> item <span class="kw">in</span> search.item_collection()}</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the keys of our dictionary, which we'll use to reference specific plumes</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(items_dict.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>dict_keys(['volcano0076_2024-08-26T170125Z', 'volcano0017_2024-08-26T165919Z', 'volcano0008_2024-08-26T184116Z', 'volcano0004_2024-08-26T043359Z', 'tccon124_2024-08-26T133046Z', 'tccon122_2024-08-26T071936Z', 'sif_atto', 'fossil0236_2024-08-26T072639Z', 'fossil0231_2024-08-26T150506Z', 'fossil0156_2024-08-26T055048Z', 'fossil0127_2024-08-26T072937Z', 'fossil0117_2024-08-26T055245Z', 'fossil0110_2024-08-26T164007Z', 'fossil0106_2024-08-26T151814Z', 'fossil0058_2024-08-26T072353Z', 'fossil0055_2024-08-26T011048Z', 'fossil0052_2024-08-26T024913Z', 'fossil0047_2024-08-26T085537Z', 'fossil0039_2024-08-26T164239Z', 'fossil0036_2024-08-26T164727Z', 'fossil0027_2024-08-26T133407Z', 'ecostress_us', 'coccon102_2024-08-26T105007Z', 'volcano0038_2024-08-25T081959Z', 'volcano0020_2024-08-25T095838Z', 'volcano0003_2024-08-25T081107Z', 'val007_Reims', 'tccon124_2024-08-25T141920Z', 'tccon107_2024-08-25T035017Z', 'fossil0232_2024-08-25T141629Z', 'fossil0222_2024-08-25T002926Z', 'fossil0166_2024-08-25T063500Z', 'fossil0162_2024-08-25T050026Z', 'fossil0116_2024-08-25T142120Z', 'fossil0114_2024-08-25T063321Z', 'fossil0109_2024-08-25T063953Z', 'fossil0092_2024-08-25T033009Z', 'fossil0091_2024-08-25T002436Z', 'fossil0012_2024-08-25T020237Z', 'fossil0011_2024-08-25T064317Z', 'cal007_2024-08-25T112417Z', 'C40_014'])</code></pre>
+<pre><code>dict_keys(['volcano0076_2024-08-26T170140Z', 'volcano0039_2024-08-26T025829Z', 'volcano0017_2024-08-26T165929Z', 'volcano0008_2024-08-26T184058Z', 'volcano0004_2024-08-26T043408Z', 'tccon124_2024-08-26T133056Z', 'tccon122_2024-08-26T071911Z', 'sif_atto', 'fossil0242_2024-08-26T115828Z', 'fossil0236_2024-08-26T072649Z', 'fossil0231_2024-08-26T150531Z', 'fossil0156_2024-08-26T055058Z', 'fossil0133_2024-08-26T152856Z', 'fossil0127_2024-08-26T072947Z', 'fossil0117_2024-08-26T055300Z', 'fossil0110_2024-08-26T164017Z', 'fossil0106_2024-08-26T151820Z', 'fossil0078_2024-08-26T011321Z', 'fossil0058_2024-08-26T072400Z', 'fossil0055_2024-08-26T011058Z', 'fossil0052_2024-08-26T024825Z', 'fossil0048_2024-08-26T042436Z', 'fossil0047_2024-08-26T085547Z', 'fossil0039_2024-08-26T164248Z', 'fossil0036_2024-08-26T164736Z', 'fossil0027_2024-08-26T133416Z', 'fossil0020_2024-08-26T151238Z', 'fossil0007_2024-08-26T043059Z', 'ecostress_us', 'ecostress_cz', 'coccon103_2024-08-26T090949Z', 'coccon102_2024-08-26T105016Z', 'C40_032', 'C40_008', 'volcano0076_2024-08-26T170125Z', 'volcano0017_2024-08-26T165919Z', 'volcano0008_2024-08-26T184116Z', 'volcano0004_2024-08-26T043359Z', 'tccon124_2024-08-26T133046Z', 'tccon122_2024-08-26T071936Z', 'fossil0236_2024-08-26T072639Z', 'fossil0231_2024-08-26T150506Z', 'fossil0156_2024-08-26T055048Z', 'fossil0127_2024-08-26T072937Z', 'fossil0117_2024-08-26T055245Z', 'fossil0110_2024-08-26T164007Z', 'fossil0106_2024-08-26T151814Z', 'fossil0058_2024-08-26T072353Z', 'fossil0055_2024-08-26T011048Z', 'fossil0052_2024-08-26T024913Z', 'fossil0047_2024-08-26T085537Z', 'fossil0039_2024-08-26T164239Z', 'fossil0036_2024-08-26T164727Z', 'fossil0027_2024-08-26T133407Z', 'coccon102_2024-08-26T105007Z', 'railroadValley_2024-08-26T204705Z', 'volcano0038_2024-08-25T082009Z', 'volcano0020_2024-08-25T095819Z', 'volcano0003_2024-08-25T081114Z', 'val007_Reims', 'tccon124_2024-08-25T141926Z', 'tccon115_2024-08-25T040300Z', 'tccon107_2024-08-25T035025Z', 'fossil0232_2024-08-25T141638Z', 'fossil0222_2024-08-25T002809Z', 'fossil0166_2024-08-25T063510Z', 'fossil0162_2024-08-25T050019Z', 'fossil0136_2024-08-25T033906Z', 'fossil0116_2024-08-25T142130Z', 'fossil0114_2024-08-25T063322Z', 'fossil0109_2024-08-25T064000Z', 'fossil0092_2024-08-25T033018Z', 'fossil0091_2024-08-25T002446Z', 'fossil0012_2024-08-25T020236Z', 'fossil0011_2024-08-25T064326Z', 'cal007_2024-08-25T112405Z', 'C40_029', 'C40_023', 'C40_014', 'volcano0038_2024-08-25T081959Z', 'volcano0020_2024-08-25T095838Z', 'volcano0003_2024-08-25T081107Z', 'tccon124_2024-08-25T141920Z', 'tccon107_2024-08-25T035017Z', 'fossil0232_2024-08-25T141629Z', 'fossil0222_2024-08-25T002926Z', 'fossil0166_2024-08-25T063500Z', 'fossil0162_2024-08-25T050026Z', 'fossil0116_2024-08-25T142120Z', 'fossil0114_2024-08-25T063321Z', 'fossil0109_2024-08-25T063953Z', 'fossil0092_2024-08-25T033009Z', 'fossil0091_2024-08-25T002436Z', 'fossil0012_2024-08-25T020237Z', 'fossil0011_2024-08-25T064317Z', 'cal007_2024-08-25T112417Z'])</code></pre>
 </div>
 </div>
-<div id="cell-19" class="cell">
+<div id="cell-19" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook. </span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset only has one asset to choose from:</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"cog_default"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"xco2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-maps-using-folium" class="level1">
@@ -2394,7 +2233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-22" class="cell">
+<div id="cell-22" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can change the &lt;datetime_plumenumber&gt; key below to look at a different plume.</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[<span class="st">"volcano0076_2024-08-26T170125Z"</span>]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2402,7 +2241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-23" class="cell">
+<div id="cell-23" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
@@ -2418,13 +2257,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-25" class="cell">
+<div id="cell-25" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the tiles</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure that the capitalization matches Matplotlib standards</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"jet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-26" class="cell">
+<div id="cell-26" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date specified</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -2435,11 +2274,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=cog_default&amp;color_formula=gamma+r+1.05&amp;colormap_name=jet&amp;rescale=400%2C420'],
+ 'tiles': ['https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2&amp;color_formula=gamma+r+1.05&amp;colormap_name=jet&amp;rescale=400%2C420'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-68.68187765185914,
@@ -2452,7 +2291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="generate-map" class="level2">
 <h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<div id="cell-28" class="cell">
+<div id="cell-28" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for plume Layer</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our loaded tile to set the center of the map</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
@@ -2465,7 +2304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_date_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>search<span class="sc">.</span>item_collection()[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
@@ -2490,20 +2329,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
 <span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>map_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
     
     <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
     <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
@@ -2518,7 +2349,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_8329817393fead1c775c412272ae7a09 {
+                #map_4c7a583c99940ffdecf49b8f3cb419d1 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2527,6 +2358,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
         
 </head>
 <body>
@@ -2534,7 +2388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
     <div style=&quot;position: fixed; bottom: 50px; left: 175px; z-index: 1000; width: 400px; height: auto; background-color: rgba(255, 255, 255, 0.8);
              border-radius: 5px; border: 1px solid grey; padding: 10px; font-size: 12px; color: black;&quot;>
-        <b>Methane Concentration (ppm-m)</b><br>
+        <b>XCO2 (ppm-m)</b><br>
         <div style=&quot;display: flex; justify-content: space-between;&quot;>
             <div>0.0</div> 
             <div>106.309296</div> 
@@ -2556,14 +2410,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_8329817393fead1c775c412272ae7a09&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_4c7a583c99940ffdecf49b8f3cb419d1&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_8329817393fead1c775c412272ae7a09 = L.map(
-                &quot;map_8329817393fead1c775c412272ae7a09&quot;,
+            var map_4c7a583c99940ffdecf49b8f3cb419d1 = L.map(
+                &quot;map_4c7a583c99940ffdecf49b8f3cb419d1&quot;,
                 {
                     center: [-22.270000457763672, -67.18000030517578],
                     crs: L.CRS.EPSG3857,
@@ -2581,7 +2435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_2cffe012b0fcf900709c351eb6307230 = L.tileLayer(
+            var tile_layer_2d33d9d758e535d13f0b3a479ce7392b = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2598,10 +2452,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_2cffe012b0fcf900709c351eb6307230.addTo(map_8329817393fead1c775c412272ae7a09);
+            tile_layer_2d33d9d758e535d13f0b3a479ce7392b.addTo(map_4c7a583c99940ffdecf49b8f3cb419d1);
         
     
-            var tile_layer_21297beef418197e92e5ff1aba4028ef = L.tileLayer(
+            var tile_layer_9b809ee95a9eb4ccd726493f46bbe53c = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2618,11 +2472,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_21297beef418197e92e5ff1aba4028ef.addTo(map_8329817393fead1c775c412272ae7a09);
+            tile_layer_9b809ee95a9eb4ccd726493f46bbe53c.addTo(map_4c7a583c99940ffdecf49b8f3cb419d1);
         
     
-            var tile_layer_b80e721691fabe11bc57579328cc4098 = L.tileLayer(
-                &quot;https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=cog_default\u0026color_formula=gamma+r+1.05\u0026colormap_name=jet\u0026rescale=400%2C420&quot;,
+            var tile_layer_16eba67fb38724300d7940ee98f3ed24 = L.tileLayer(
+                &quot;https://dev.ghg.center/api/raster/collections/oco3-co2-sams-daygrid-v11r/items/oco3-co2_volcano0076_2024-08-26T170125Z_filtered_xco2/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=xco2\u0026color_formula=gamma+r+1.05\u0026colormap_name=jet\u0026rescale=400%2C420&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -2638,27 +2492,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_b80e721691fabe11bc57579328cc4098.addTo(map_8329817393fead1c775c412272ae7a09);
+            tile_layer_16eba67fb38724300d7940ee98f3ed24.addTo(map_4c7a583c99940ffdecf49b8f3cb419d1);
         
     
-            var layer_control_71005a46f1237b054c7ac2b2f7c82d00_layers = {
+            var layer_control_30bc77965e86b992d14e7a53a8429ba3_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_2cffe012b0fcf900709c351eb6307230,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_21297beef418197e92e5ff1aba4028ef,
-                    &quot;Default COG Layer&quot; : tile_layer_b80e721691fabe11bc57579328cc4098,
+                    &quot;ESRI World Imagery&quot; : tile_layer_2d33d9d758e535d13f0b3a479ce7392b,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_9b809ee95a9eb4ccd726493f46bbe53c,
+                    &quot;Carbon Dioxide (Total Column Average)&quot; : tile_layer_16eba67fb38724300d7940ee98f3ed24,
                 },
             };
-            let layer_control_71005a46f1237b054c7ac2b2f7c82d00 = L.control.layers(
-                layer_control_71005a46f1237b054c7ac2b2f7c82d00_layers.base_layers,
-                layer_control_71005a46f1237b054c7ac2b2f7c82d00_layers.overlays,
+            let layer_control_30bc77965e86b992d14e7a53a8429ba3 = L.control.layers(
+                layer_control_30bc77965e86b992d14e7a53a8429ba3_layers.base_layers,
+                layer_control_30bc77965e86b992d14e7a53a8429ba3_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_8329817393fead1c775c412272ae7a09);
+            ).addTo(map_4c7a583c99940ffdecf49b8f3cb419d1);
 
         
 </script>
