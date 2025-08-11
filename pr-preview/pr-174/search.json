@@ -3882,7 +3882,7 @@
     "href": "user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.html",
     "title": "GEDI Aboveground Biomass Density",
     "section": "",
-    "text": "You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this request form and providing the required information.\nAccess the GEDI Aboveground Biomass Density notebook in the US GHG Center JupyterHub.",
+    "text": "You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this request form and providing the required information.\nAccess the GEDI Aboveground Biomass Density notebook in the US GHG Center JupyterHub (requires access).",
     "crumbs": [
       "Data Usage Notebooks",
       "GHG Center Dataset Tutorials",
@@ -3894,7 +3894,7 @@
     "href": "user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.html#access-this-notebook",
     "title": "GEDI Aboveground Biomass Density",
     "section": "",
-    "text": "You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this request form and providing the required information.\nAccess the GEDI Aboveground Biomass Density notebook in the US GHG Center JupyterHub.",
+    "text": "You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this request form and providing the required information.\nAccess the GEDI Aboveground Biomass Density notebook in the US GHG Center JupyterHub (requires access).",
     "crumbs": [
       "Data Usage Notebooks",
       "GHG Center Dataset Tutorials",
@@ -3918,7 +3918,7 @@
     "href": "user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.html#data-summary-and-application",
     "title": "GEDI Aboveground Biomass Density",
     "section": "Data Summary and Application",
-    "text": "Data Summary and Application\n\nSpatial coverage: Global (51.6°N to 51.6°S) and (-180.0°W to 180.0°E)\nSpatial resolution: 1 km × 1 km\nTemporal extent: April 2019 - March 2023\nUnit: Megagrams of biomass per hectare (Mg/ha)\nUtility: Forest Carbon Monitoring and Climate Research\n\nFor more information, visit the GEDI Aboveground Biomass Density data overview page.",
+    "text": "Data Summary and Application\n\nSpatial coverage: Global between (51.6°N to 51.6°S) and (-180.0°W to 180.0°E)\nSpatial resolution: 1 km × 1 km\nTemporal extent: April 2019 - March 2023\nUnit: Megagrams of aboveground biomass density per hectare (Mg/ha)\nUtility: Forest Carbon Monitoring and Climate Research\n\nFor more information, visit the GEDI Aboveground Biomass Density user guide.",
     "crumbs": [
       "Data Usage Notebooks",
       "GHG Center Dataset Tutorials",
@@ -3954,7 +3954,7 @@
     "href": "user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.html#terminology",
     "title": "GEDI Aboveground Biomass Density",
     "section": "Terminology",
-    "text": "Terminology\nNavigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - catalog: All datasets available at the /stac endpoint - collection: A specific dataset, e.g. GEDI Aboveground Biomass Density - item: One granule in the dataset, e.g. one annual mean file - asset: A variable available within the granule, e.g. biomass density - STAC API: SpatioTemporal Asset Catalogs - Endpoint for fetching metadata about available datasets",
+    "text": "Terminology\nNavigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.\n\ncatalog: All datasets available at the /stac endpoint\ncollection: A specific dataset, e.g. GEDI Aboveground Biomass Density\nitem: One granule in the dataset, e.g. one annual mean file\nasset: A variable available within the granule, e.g. biomass density\nSTAC API: SpatioTemporal Asset Catalogs - Endpoint for fetching metadata about available datasets",
     "crumbs": [
       "Data Usage Notebooks",
       "GHG Center Dataset Tutorials",
@@ -3966,7 +3966,7 @@
     "href": "user_data_notebooks/gedi-agb-grid-v2.1_User_Notebook.html#install-the-required-libraries",
     "title": "GEDI Aboveground Biomass Density",
     "section": "Install the Required Libraries",
-    "text": "Install the Required Libraries\nRequired libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:\n%pip install requests pystac_client matplotlib numpy ipywidgets pillow --quiet\n\n# Import required libraries\nimport requests\nfrom datetime import datetime\nfrom typing import List, Tuple, Dict\nfrom io import BytesIO\nimport numpy as np\nimport xml.etree.ElementTree as xmlet\nimport lxml.etree as xmltree\nfrom owslib.wms import WebMapService\n\n# For data visualization\nimport matplotlib.pyplot as plt\nimport ipywidgets as widgets\nfrom IPython.display import display\nfrom matplotlib.gridspec import GridSpec\nimport geopandas as gpd\n\n# For image processing\nfrom PIL import Image as plimg\nfrom PIL import ImageDraw\nfrom IPython.display import Image, display\n\n# For accessing the STAC API\nfrom pystac_client import Client\n\n# For interactive mapping\nimport folium\nfrom folium.plugins import FloatImage",
+    "text": "Install the Required Libraries\nRequired libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:\n%pip install requests pystac_client matplotlib numpy ipywidgets pillow lxml owslib geopandas folium --quiet\n\n# Import required libraries\nimport requests\nfrom datetime import datetime\nfrom typing import List, Tuple, Dict\nfrom io import BytesIO\nimport numpy as np\nimport xml.etree.ElementTree as xmlet\nimport lxml.etree as xmltree\nfrom owslib.wms import WebMapService\n\n# For data visualization\nimport matplotlib.pyplot as plt\nimport ipywidgets as widgets\nfrom IPython.display import display\nfrom matplotlib.gridspec import GridSpec\nimport geopandas as gpd\n\n# For image processing\nfrom PIL import Image as plimg\nfrom PIL import ImageDraw\nfrom IPython.display import Image, display\n\n# For accessing the STAC API\nfrom pystac_client import Client\n\n# For interactive mapping\nimport folium\nfrom folium.plugins import FloatImage",
     "crumbs": [
       "Data Usage Notebooks",
       "GHG Center Dataset Tutorials",
