@@ -1079,7 +1079,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="blueflux-co₂-and-methane-fluxes">BlueFlux CO₂ and Methane Fluxes</h3>
 <p>The BlueFlux dataset provides gridded estimates of carbon dioxide (CO₂) and methane (CH₄). This dataset is a product of NASA’s BlueFlux campaign by NASA’s Carbon Monitoring System that aims to develop a comprehensive database of greenhouse gas fluxes for mangrove and wetland ecosystems in Florida and the Caribbean. The dataset combines ground-based and airborne measurements to create daily flux estimates at 500-meter spatial resolution from February 2000 to August 2024. The data was generated using a machine learning approach that integrates eddy covariance (EC) measurements from both flux towers and NASA’s Carbon Airborne Flux Experiment (CARAFE) platform.</p>
 <p>BlueFlux is particularly valuable for understanding the complex role of wetlands in the global carbon cycle. While mangroves and wetlands are highly efficient at sequestering atmospheric CO₂, they also produce significant amounts of methane through natural microbial processes in flooded soils. The BlueFlux data helps quantify this balance, showing that despite methane emissions, these ecosystems provide a net climate benefit by removing more greenhouse gases than they produce.</p>
-<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter">U.S. Greenhouse Gas Center</a> and the <a href="https://daac.ornl.gov/CMS/guides/BlueFlux_Gridded_CO2_CH4.html">ORNL DAAC BlueFlux dataset page</a>.</p>
+<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/blueflux-ghgflux-daygrid-v1">BlueFlux CO₂ and Methane Fluxes for Southern Florida Wetlands</a> data overview page and the <a href="https://daac.ornl.gov/CMS/guides/BlueFlux_Gridded_CO2_CH4.html">ORNL DAAC BlueFlux user guide</a>.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
@@ -1138,7 +1138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="cell-11" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library allows a HTTP request possible</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library maks an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -1967,19 +1967,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from February 25, 2000 - August 31, 2024. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is daily.</p>
 <div id="cell-13" class="cell" data-scrolled="true" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#items = list(collection.get_items())  # Convert the iterator to a list</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(f"Found {len(items)} items")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: searching for all items can take several minutes. Therefore, this block can be commented out.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This block is to show the total number of items and isn't integral for the remaining notebook.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># items = list(collection.get_items())  # Convert the iterator to a list</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f"Found {len(items)} items")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-14" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function can be used to find data within a specific time frame, e.g. January 2022.</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2022-01-01T00:00:00Z'</span>,<span class="st">'2022-01-31T00:00:00Z'</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2022-01-01T00:00:00Z'</span>,<span class="st">'2022-01-31T00:00:00Z'</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Item id=blueflux-ghgflux-daygrid-v1-2022-01-31&gt;
 &lt;Item id=blueflux-ghgflux-daygrid-v1-2022-01-30&gt;
@@ -4625,7 +4627,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_6a4f4640a719243a1e1b23c78c592c5a {
+                #map_6568e6851136a7d85963a00834c639b4 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4662,7 +4664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_26002118973b79853bb4ecd71d0539bd {
+                #map_d6f5a47c847812fa4216e85749a7e80e {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4724,17 +4726,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_6a4f4640a719243a1e1b23c78c592c5a&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_6568e6851136a7d85963a00834c639b4&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_26002118973b79853bb4ecd71d0539bd&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d6f5a47c847812fa4216e85749a7e80e&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_6a4f4640a719243a1e1b23c78c592c5a = L.map(
-                &quot;map_6a4f4640a719243a1e1b23c78c592c5a&quot;,
+            var map_6568e6851136a7d85963a00834c639b4 = L.map(
+                &quot;map_6568e6851136a7d85963a00834c639b4&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4751,7 +4753,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_8e08298a41657b89325d0e060523f8b0 = L.tileLayer(
+            var tile_layer_a643fa650ca908f3939a7e093ae8f930 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4768,10 +4770,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_8e08298a41657b89325d0e060523f8b0.addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            tile_layer_a643fa650ca908f3939a7e093ae8f930.addTo(map_6568e6851136a7d85963a00834c639b4);
         
     
-            var tile_layer_bcb0d820658efc2fb011a3cb626a2f1e = L.tileLayer(
+            var tile_layer_13e4aba25e3347680730144c86fb9023 = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-01/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4789,17 +4791,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_bcb0d820658efc2fb011a3cb626a2f1e.addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            tile_layer_13e4aba25e3347680730144c86fb9023.addTo(map_6568e6851136a7d85963a00834c639b4);
         
     
-            var marker_57473138e7ba5a1b0a7d909eb716ad54 = L.marker(
+            var marker_624f537c0b154b8b7c7a665d86402b08 = L.marker(
                 [26.68, -79.96],
                 {
 }
-            ).addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            ).addTo(map_6568e6851136a7d85963a00834c639b4);
         
     
-            marker_57473138e7ba5a1b0a7d909eb716ad54.bindTooltip(
+            marker_624f537c0b154b8b7c7a665d86402b08.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4809,60 +4811,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_62b65449f51b35994ac01f4cc7261a49_styler(feature) {
+        function geo_json_2daaeb309ef24171f349ae4d2ce976a6_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_62b65449f51b35994ac01f4cc7261a49_onEachFeature(feature, layer) {
+        function geo_json_2daaeb309ef24171f349ae4d2ce976a6_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_62b65449f51b35994ac01f4cc7261a49 = L.geoJson(null, {
-                onEachFeature: geo_json_62b65449f51b35994ac01f4cc7261a49_onEachFeature,
+        var geo_json_2daaeb309ef24171f349ae4d2ce976a6 = L.geoJson(null, {
+                onEachFeature: geo_json_2daaeb309ef24171f349ae4d2ce976a6_onEachFeature,
             
-                style: geo_json_62b65449f51b35994ac01f4cc7261a49_styler,
+                style: geo_json_2daaeb309ef24171f349ae4d2ce976a6_styler,
             ...{
 }
         });
 
-        function geo_json_62b65449f51b35994ac01f4cc7261a49_add (data) {
-            geo_json_62b65449f51b35994ac01f4cc7261a49
+        function geo_json_2daaeb309ef24171f349ae4d2ce976a6_add (data) {
+            geo_json_2daaeb309ef24171f349ae4d2ce976a6
                 .addData(data);
         }
-            geo_json_62b65449f51b35994ac01f4cc7261a49_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_2daaeb309ef24171f349ae4d2ce976a6_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_62b65449f51b35994ac01f4cc7261a49.addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            geo_json_2daaeb309ef24171f349ae4d2ce976a6.addTo(map_6568e6851136a7d85963a00834c639b4);
         
     
-            var layer_control_d83bff32450f27998ffa777508e45f77_layers = {
+            var layer_control_921540768ffdc6b5d9756dc1ab610888_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_8e08298a41657b89325d0e060523f8b0,
+                    &quot;openstreetmap&quot; : tile_layer_a643fa650ca908f3939a7e093ae8f930,
                 },
                 overlays :  {
-                    &quot;2022-01-01 fch4mean&quot; : tile_layer_bcb0d820658efc2fb011a3cb626a2f1e,
-                    &quot;South Florida AOI&quot; : geo_json_62b65449f51b35994ac01f4cc7261a49,
+                    &quot;2022-01-01 fch4mean&quot; : tile_layer_13e4aba25e3347680730144c86fb9023,
+                    &quot;South Florida AOI&quot; : geo_json_2daaeb309ef24171f349ae4d2ce976a6,
                 },
             };
-            let layer_control_d83bff32450f27998ffa777508e45f77 = L.control.layers(
-                layer_control_d83bff32450f27998ffa777508e45f77_layers.base_layers,
-                layer_control_d83bff32450f27998ffa777508e45f77_layers.overlays,
+            let layer_control_921540768ffdc6b5d9756dc1ab610888 = L.control.layers(
+                layer_control_921540768ffdc6b5d9756dc1ab610888_layers.base_layers,
+                layer_control_921540768ffdc6b5d9756dc1ab610888_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            ).addTo(map_6568e6851136a7d85963a00834c639b4);
 
         
     
-            var map_26002118973b79853bb4ecd71d0539bd = L.map(
-                &quot;map_26002118973b79853bb4ecd71d0539bd&quot;,
+            var map_d6f5a47c847812fa4216e85749a7e80e = L.map(
+                &quot;map_d6f5a47c847812fa4216e85749a7e80e&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4879,7 +4881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_93fe1b092a6b2bbf92c6941fd26e376b = L.tileLayer(
+            var tile_layer_312983249f6ec06eb955273947419263 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4896,10 +4898,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_93fe1b092a6b2bbf92c6941fd26e376b.addTo(map_26002118973b79853bb4ecd71d0539bd);
+            tile_layer_312983249f6ec06eb955273947419263.addTo(map_d6f5a47c847812fa4216e85749a7e80e);
         
     
-            var tile_layer_9ac79fbd259de0ef01730b322598d3a4 = L.tileLayer(
+            var tile_layer_c43ae0b90d5300e88e55de801bebf77d = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-26/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4917,21 +4919,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_9ac79fbd259de0ef01730b322598d3a4.addTo(map_26002118973b79853bb4ecd71d0539bd);
+            tile_layer_c43ae0b90d5300e88e55de801bebf77d.addTo(map_d6f5a47c847812fa4216e85749a7e80e);
         
     
-            map_6a4f4640a719243a1e1b23c78c592c5a.sync(map_26002118973b79853bb4ecd71d0539bd);
-            map_26002118973b79853bb4ecd71d0539bd.sync(map_6a4f4640a719243a1e1b23c78c592c5a);
+            map_6568e6851136a7d85963a00834c639b4.sync(map_d6f5a47c847812fa4216e85749a7e80e);
+            map_d6f5a47c847812fa4216e85749a7e80e.sync(map_6568e6851136a7d85963a00834c639b4);
         
     
-            var marker_50b0627cdb5a473f80dda04294f5595c = L.marker(
+            var marker_a72f0a37669f43e49dcc4fe748e42310 = L.marker(
                 [26.68, -79.96],
                 {
 }
-            ).addTo(map_26002118973b79853bb4ecd71d0539bd);
+            ).addTo(map_d6f5a47c847812fa4216e85749a7e80e);
         
     
-            marker_50b0627cdb5a473f80dda04294f5595c.bindTooltip(
+            marker_a72f0a37669f43e49dcc4fe748e42310.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4941,58 +4943,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_bb7aed79486447b9b11d7669a1af0b8f_styler(feature) {
+        function geo_json_9697c412734a4191afbbf7b564a2e4b5_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_bb7aed79486447b9b11d7669a1af0b8f_onEachFeature(feature, layer) {
+        function geo_json_9697c412734a4191afbbf7b564a2e4b5_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_bb7aed79486447b9b11d7669a1af0b8f = L.geoJson(null, {
-                onEachFeature: geo_json_bb7aed79486447b9b11d7669a1af0b8f_onEachFeature,
+        var geo_json_9697c412734a4191afbbf7b564a2e4b5 = L.geoJson(null, {
+                onEachFeature: geo_json_9697c412734a4191afbbf7b564a2e4b5_onEachFeature,
             
-                style: geo_json_bb7aed79486447b9b11d7669a1af0b8f_styler,
+                style: geo_json_9697c412734a4191afbbf7b564a2e4b5_styler,
             ...{
 }
         });
 
-        function geo_json_bb7aed79486447b9b11d7669a1af0b8f_add (data) {
-            geo_json_bb7aed79486447b9b11d7669a1af0b8f
+        function geo_json_9697c412734a4191afbbf7b564a2e4b5_add (data) {
+            geo_json_9697c412734a4191afbbf7b564a2e4b5
                 .addData(data);
         }
-            geo_json_bb7aed79486447b9b11d7669a1af0b8f_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_9697c412734a4191afbbf7b564a2e4b5_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_62b65449f51b35994ac01f4cc7261a49.addTo(map_6a4f4640a719243a1e1b23c78c592c5a);
+            geo_json_2daaeb309ef24171f349ae4d2ce976a6.addTo(map_6568e6851136a7d85963a00834c639b4);
         
     
-            geo_json_bb7aed79486447b9b11d7669a1af0b8f.addTo(map_26002118973b79853bb4ecd71d0539bd);
+            geo_json_9697c412734a4191afbbf7b564a2e4b5.addTo(map_d6f5a47c847812fa4216e85749a7e80e);
         
     
-            var layer_control_da7afe474c114c12b55f91cc2944ed66_layers = {
+            var layer_control_a83680ea0d9b4754897501771dafd4a0_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_93fe1b092a6b2bbf92c6941fd26e376b,
+                    &quot;openstreetmap&quot; : tile_layer_312983249f6ec06eb955273947419263,
                 },
                 overlays :  {
-                    &quot;2022-01-26 fch4mean&quot; : tile_layer_9ac79fbd259de0ef01730b322598d3a4,
-                    &quot;South Florida AOI&quot; : geo_json_bb7aed79486447b9b11d7669a1af0b8f,
+                    &quot;2022-01-26 fch4mean&quot; : tile_layer_c43ae0b90d5300e88e55de801bebf77d,
+                    &quot;South Florida AOI&quot; : geo_json_9697c412734a4191afbbf7b564a2e4b5,
                 },
             };
-            let layer_control_da7afe474c114c12b55f91cc2944ed66 = L.control.layers(
-                layer_control_da7afe474c114c12b55f91cc2944ed66_layers.base_layers,
-                layer_control_da7afe474c114c12b55f91cc2944ed66_layers.overlays,
+            let layer_control_a83680ea0d9b4754897501771dafd4a0 = L.control.layers(
+                layer_control_a83680ea0d9b4754897501771dafd4a0_layers.base_layers,
+                layer_control_a83680ea0d9b4754897501771dafd4a0_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_26002118973b79853bb4ecd71d0539bd);
+            ).addTo(map_d6f5a47c847812fa4216e85749a7e80e);
 
         
 </script>
@@ -5016,8 +5018,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 113 ms, sys: 43.1 ms, total: 156 ms
-Wall time: 29.5 s</code></pre>
+CPU times: user 121 ms, sys: 48.9 ms, total: 170 ms
+Wall time: 32.2 s</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
@@ -5161,7 +5163,7 @@ Wall time: 29.5 s</code></pre>
 </div>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
-<p>You can now explore the Methane Flux values using this data collection (January 2021 -December 2023) for the Southern Florida Wetlands region. You can plot the data set using the code below:</p>
+<p>You can now explore the Methane Flux values using this data collection (January 2021 - December 2023) for the Southern Florida Wetlands region. You can plot the data set using the code below:</p>
 <div id="cell-34" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
