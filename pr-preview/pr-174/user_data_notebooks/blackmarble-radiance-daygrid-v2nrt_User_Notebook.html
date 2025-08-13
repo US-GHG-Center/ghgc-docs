@@ -990,7 +990,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#location-los-angeles-california" id="toc-location-los-angeles-california" class="nav-link" data-scroll-target="#location-los-angeles-california">Location: <strong>Los Angeles, California</strong></a></li>
   </ul></li>
-  <li><a href="#nighttime-at-sensor-radiance-across-florida-new-york-and-california" id="toc-nighttime-at-sensor-radiance-across-florida-new-york-and-california" class="nav-link" data-scroll-target="#nighttime-at-sensor-radiance-across-florida-new-york-and-california">Nighttime at sensor radiance across Florida, New York, and California</a></li>
+  <li><a href="#nighttime-at-sensor-radiance-across-florida-new-york-and-california" id="toc-nighttime-at-sensor-radiance-across-florida-new-york-and-california" class="nav-link" data-scroll-target="#nighttime-at-sensor-radiance-across-florida-new-york-and-california">Nighttime at Sensor Radiance across Florida, New York, and California</a></li>
   <li><a href="#fire-and-thermal-anomalies-analysis" id="toc-fire-and-thermal-anomalies-analysis" class="nav-link" data-scroll-target="#fire-and-thermal-anomalies-analysis">Fire and Thermal Anomalies Analysis</a>
   <ul class="collapse">
   <li><a href="#interactive-fire-overlay" id="toc-interactive-fire-overlay" class="nav-link" data-scroll-target="#interactive-fire-overlay">Interactive Fire Overlay</a></li>
@@ -1081,7 +1081,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Fetch Black Marble Imagery</strong> - Retrieve nighttime at sensor radiance tiles from NASA GIBS.</li>
 <li><strong>Retrieve Fire Data</strong> - Access VIIRS thermal anomalies using Mapbox Vector Tiles.</li>
 <li><strong>Interactive Selection</strong> - Choose from preset locations or enter custom coordinates.</li>
-<li><strong>Side-by-Side Visualization</strong> - Compare pure Black Marble with fire overlay.</li>
+<li><strong>Side-by-Side Visualization</strong> - Compare Black Marble nighttime at sensor radiance with fire overlay.</li>
 <li><strong>Analyze Results</strong> - Distinguish urban lights from fires, volcanoes, and gas flares.</li>
 </ol>
 </section>
@@ -1089,7 +1089,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="black-marble-nighttime-at-sensor-radiance" class="level3">
 <h3 class="anchored" data-anchor-id="black-marble-nighttime-at-sensor-radiance">Black Marble Nighttime at Sensor Radiance</h3>
-<p>This dataset provides daily, Near Real Time (NRT) nighttime at sensor radiance observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This record indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002.</p>
+<p>This dataset provides daily, Near Real Time (NRT) nighttime at sensor radiance observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar-orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This record indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002.</p>
 </section>
 <section id="viirs-fire-and-thermal-anomalies" class="level3">
 <h3 class="anchored" data-anchor-id="viirs-fire-and-thermal-anomalies">VIIRS Fire and Thermal Anomalies</h3>
@@ -2169,13 +2169,13 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <section id="location-los-angeles-california" class="level3">
 <h3 class="anchored" data-anchor-id="location-los-angeles-california">Location: <strong>Los Angeles, California</strong></h3>
 <p>We can now select a specific location and datetime to compare Black Marble imagery between two different dates. This can allow us to determine how radiance has changed as a function of time.</p>
-<div id="b6fe59e1" class="cell" data-execution_count="39">
+<div id="b6fe59e1" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Arguments</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Dates to compare</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2022-01-12T00:00:00Z"</span>, <span class="st">"2021-01-12T00:00:00Z"</span>]</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lon <span class="op">=</span> <span class="op">-</span><span class="fl">118.2437</span> <span class="co">#West</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>lat <span class="op">=</span> <span class="fl">34.0522</span> <span class="co">#North</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lon <span class="op">=</span> <span class="op">-</span><span class="fl">118.2437</span> <span class="co"># West</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>lat <span class="op">=</span> <span class="fl">34.0522</span> <span class="co"># North</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>zoom <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare subplots with extra space for coordinate labels</span></span>
@@ -2205,8 +2205,8 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 </section>
 </section>
 <section id="nighttime-at-sensor-radiance-across-florida-new-york-and-california" class="level2">
-<h2 class="anchored" data-anchor-id="nighttime-at-sensor-radiance-across-florida-new-york-and-california">Nighttime at sensor radiance across Florida, New York, and California</h2>
-<p>We further investigate sensor radiance across the United States to examine regional differences based on the same date. We will enhance the zoom level to 4 on each of these locations to grab tiles which move closer to Earth’s surface and show higher definition.</p>
+<h2 class="anchored" data-anchor-id="nighttime-at-sensor-radiance-across-florida-new-york-and-california">Nighttime at Sensor Radiance across Florida, New York, and California</h2>
+<p>We further investigate sensor radiance across the United States to examine regional differences based on the same date. We will enhance the zoom level to 4 on each of these locations to grab tiles that look closer at Earth’s surface and show higher definition.</p>
 <div id="3cbbamfzv0u" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Multiple locations with coordinate labels</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>locations <span class="op">=</span> [</span>
@@ -2259,7 +2259,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <li><strong>Kilauea Volcano, Hawaii</strong> - One of the world’s most active volcanoes with persistent thermal anomalies from lava lakes and eruptions visible in satellite imagery.</li>
 <li><strong>Western Siberia, Russia</strong> - A region with extensive oil and gas operations producing continuous gas flares alongside seasonal boreal forest fires.</li>
 </ol>
-<div id="z8g9atsj29" class="cell" data-execution_count="41">
+<div id="z8g9atsj29" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIIRS Fire and Thermal Anomalies Configuration</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>FIRE_LAYER <span class="op">=</span> <span class="st">"VIIRS_SNPP_Thermal_Anomalies_375m_All"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2267,7 +2267,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>PRESET_POINTS <span class="op">=</span> {</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Los Angeles, CA"</span>: {</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">118.526</span>, <span class="st">"lat"</span>: <span class="fl">34.048</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Palisades Fire - Urban fires and wildfire area"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"description"</span>: <span class="st">"Palisades Fire - Urban Fires and Wildfire Area"</span>,</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_zoom"</span>: <span class="dv">5</span>,</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"recommended_date"</span>: <span class="st">"2025-01-10"</span>  <span class="co"># Fire season</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    },</span>
@@ -2497,8 +2497,8 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 </section>
 <section id="side-by-side-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="side-by-side-visualization">Side-by-Side Visualization</h3>
-<p>We will now present figures for Black Marble only (left) and overlay the VIIRS Fire and Thermal Anomalies on top of the Black Marble (right). This will allow us to directly compare where the satellite sensor picks up light caused by cities or features such as volcanoes, gas flares, or other thermal anomalies.</p>
-<div id="rsvigamy0t" class="cell" data-execution_count="44">
+<p>We will now present figures for Black Marble only (left) and overlay the VIIRS Fire and Thermal Anomalies on top of the Black Marble (right). This will allow us to directly compare where the satellite sensor picks up light emitted by cities or features such as volcanoes, gas flares, or other thermal anomalies.</p>
+<div id="rsvigamy0t" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create side-by-side visualization with Black Marble and Fire overlay</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2515,7 +2515,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>date <span class="op">=</span> data[<span class="st">'date'</span>]</span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>zoom <span class="op">=</span> data[<span class="st">'zoom'</span>]</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Left plot: Pure Black Marble</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Left plot: Black Marble</span></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>ax1.set_xlim(bbox[<span class="dv">0</span>], bbox[<span class="dv">1</span>])</span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(bbox[<span class="dv">2</span>], bbox[<span class="dv">3</span>])</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
