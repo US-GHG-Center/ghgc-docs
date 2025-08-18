@@ -977,7 +977,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
-  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
+  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
+  <ul class="collapse">
+  <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
+  </ul></li>
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps using Folium</a>
   <ul class="collapse">
   <li><a href="#fetch-imagery-from-raster-api" id="toc-fetch-imagery-from-raster-api" class="nav-link" data-scroll-target="#fetch-imagery-from-raster-api">Fetch Imagery from Raster API</a></li>
@@ -1048,9 +1051,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-summary-and-application" class="level2">
 <h2 class="anchored" data-anchor-id="data-summary-and-application">Data Summary and Application</h2>
 <ul>
-<li><strong>Spatial coverage</strong>: Global, 52°N to 52°S latitude</li>
+<li><strong>Spatial coverage</strong>: Global between 52°N to 52°S latitude</li>
 <li><strong>Spatial resolution</strong>: 2.25 km x 1.29 km</li>
-<li><strong>Temporal extent</strong>: August 06, 2019 - Ongoing</li>
+<li><strong>Temporal extent</strong>: August 6, 2019 - Ongoing</li>
 <li><strong>Temporal resolution</strong>: Daily</li>
 <li><strong>Unit</strong>: Parts per million</li>
 </ul>
@@ -1061,15 +1064,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint.</li>
 <li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint.</li>
-<li>Using <code>folium.Map</code>, visualize the plumes.</li>
-<li>After the visualization, perform zonal statistics for a given polygon.</li>
+<li>Using <code>folium.Map</code>, visualize column CO₂ concentrations.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="oco-3-snapshot-area-maps-of-column-co₂-concentrations" class="level4">
 <h4 class="anchored" data-anchor-id="oco-3-snapshot-area-maps-of-column-co₂-concentrations">OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</h4>
-<p>OCO-3, mounted on the ISS, measures CO₂ to study carbon dynamics across Earth. Its unique Snapshot Area Mapping (SAM) mode enables high-resolution scans of localized targets like cities and volcanoes, with over 22,000 SAMs collected from Aug 2019 to present. After a brief storage period, it resumed operations on July 16, 2024. For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/oco3-co2-sams-daygrid-v11r">OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</a> data overview page.</p>
+<p>OCO-3, mounted on the ISS, measures CO₂ to study carbon dynamics across Earth. Its unique Snapshot Area Mapping (SAM) mode enables high-resolution scans of localized targets like cities and volcanoes, with over 22,000 SAMs collected from August 2019 to present. OCO-3 underwent a brief storage period from November 2023 to July 2024. For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/oco3-co2-sams-daygrid-v11r">OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</a> data overview page.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
@@ -1079,7 +1081,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
 <li><code>collection</code>: A specific dataset, e.g.&nbsp;OCO-3 Snapshot Area Maps of Column CO₂ Concentrations</li>
 <li><code>item</code>: One granule in the dataset</li>
-<li><code>asset</code>: A variable available within the granule, e.g.&nbsp;CH4 plume emissions</li>
+<li><code>asset</code>: A variable available within the granule</li>
 <li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
 <li><code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</li>
 </ul>
@@ -1110,7 +1112,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-stac-api" class="level1">
 <h1>Query the STAC API</h1>
-<p><strong>STAC API Collection Names</strong></p>
+<section id="stac-api-collection-names" class="level3">
+<h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the OCO-3 Snapshot Area Maps of Column CO₂ Concentrations dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/oco3-co2-sams-daygrid-v11r"><strong>oco3-co2-sams-daygrid-v11r</strong></a>*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
 <div id="cell-11" class="cell" data-execution_count="16">
@@ -1126,9 +1129,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"oco3-co2-sams-daygrid-v11r"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="17">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes a HTTP request</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -3720,9 +3723,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"xco2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+</section>
 <section id="creating-maps-using-folium" class="level1">
 <h1>Creating Maps using Folium</h1>
-<p>You will now explore global carbon dioxide emissions and visualize the results on a map using <code>folium</code>.</p>
+<p>You will now explore global CO₂ concentrations and visualize the results on a map using <code>folium</code>.</p>
 <section id="fetch-imagery-from-raster-api" class="level2">
 <h2 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h2>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
@@ -4020,7 +4024,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Install and import the necessary libraries</li>
 <li>Fetch the collection from STAC collections using the appropriate endpoints</li>
 <li>Count the number of existing granules within the collection</li>
-<li>Map the Carbon Dioxide emissions</li>
+<li>Map column CO₂ concentrations</li>
 </ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
