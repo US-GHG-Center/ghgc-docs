@@ -980,7 +980,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
   <ul class="collapse">
-  <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names"><strong>STAC API Collection Names</strong></a></li>
+  <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
   </ul></li>
   <li><a href="#visualize-mangrove-data-on-a-map" id="toc-visualize-mangrove-data-on-a-map" class="nav-link" data-scroll-target="#visualize-mangrove-data-on-a-map">Visualize Mangrove Data on a Map</a>
   <ul class="collapse">
@@ -1044,9 +1044,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#about-the-data">About the Data</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#explore-available-regions">Explore Available Regions</a></li>
 <li><a href="#visualize-mangrove-data-on-a-map">Visualize Mangrove Data on a Map</a></li>
-<li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
 <li><a href="#explore-additional-variables-and-regions">Explore Additional Variables and Regions</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
@@ -1054,7 +1052,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-summary-and-application" class="level2">
 <h2 class="anchored" data-anchor-id="data-summary-and-application">Data Summary and Application</h2>
 <ul>
-<li><strong>Spatial coverage</strong>: Global mangrove extent</li>
+<li><strong>Spatial coverage</strong>: Global</li>
 <li><strong>Spatial resolution</strong>: 30 meters<br>
 </li>
 <li><strong>Temporal extent</strong>: Nominal year 2000</li>
@@ -1065,7 +1063,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Maximum height 95th percentile (hmax95): meters (m)</li>
 <li>Basal area height 95th percentile (hba): meters (m)</li>
 </ul></li>
-<li><strong>Utility</strong>: Blue carbon accounting, coastal ecosystem management, climate change mitigation</li>
+<li><strong>Utility</strong>: Blue carbon accounting, coastal ecosystem management</li>
 </ul>
 <p>For more information, visit the <a href="https://earth.gov/ghgcenter/data-catalog/cms-mangrove-agb-canopyheight-grid-v1_3">Global Mangrove Distribution, Aboveground Biomass, and Canopy Height</a> data overview page.</p>
 </section>
@@ -1138,12 +1136,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <section id="stac-api-collection-names" class="level3">
-<h3 class="anchored" data-anchor-id="stac-api-collection-names"><strong>STAC API Collection Names</strong></h3>
+<h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Global Mangrove Distribution, Aboveground Biomass, and Canopy Height dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/cms-mangrove-agb-canopyheight-grid-v1.3"><strong>cms-mangrove-agb-canopyheight-grid-v1.3</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell" data-execution_count="2">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The RASTER API is used to fetch collections for visualization</span></span>
@@ -1152,9 +1150,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"cms-mangrove-agb-canopyheight-grid-v1.3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="3">
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes a HTTP request</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -2580,7 +2578,7 @@ Number of unique regions is 121</code></pre>
  'center': [133.5000000000164, -24.5000000000116, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="11">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">''' PLOTTING NOTES</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">The mangrove data is tiled where each country has its own tile and the `center` coordinates are within the middle of the country tile area.</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">When plotting high-resolution mangrove forests (which can be on the coastlines of large countries such as Australia), plotting the center of the tile does not allow for easy visualization.</span></span>
@@ -2603,7 +2601,7 @@ Number of unique regions is 121</code></pre>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library display the raster layer</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library to display the raster layer</span></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items[<span class="dv">0</span>]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
@@ -2822,7 +2820,7 @@ Number of unique regions is 121</code></pre>
 </div>
 </div>
 <p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon over Bathurst Island, Australia.</p>
-<p><strong>Note</strong> Selecting too large of an AOI will result in an error and no results will be returned. This is due to the large size of the files at a high resolution of 30 meters.</p>
+<p><strong>Note:</strong> Selecting too large of an AOI will result in an error and no results will be returned. This is due to the large size of the files at a high resolution of 30 meters.</p>
 <div id="cell-25" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the AOI a name to use in plots later on</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Bathurst Island, Northern Australia"</span></span>
@@ -3464,10 +3462,8 @@ Re-running will re-set all menus to their defaults!</code></pre>
 <li>Basal area weighted height (m) - reflects forest structure</li>
 </ul></li>
 <li><strong>Interactive Visualization</strong>: Created interactive maps showing mangrove distribution in Australia and other regions</li>
-<li><strong>Zonal Statistics</strong>: Calculated detailed statistics for Bathurst Island, Australia, showing mean biomass of ~6.1 Mg/ha</li>
 <li><strong>Global Comparison</strong>: Built interactive widgets to compare mangrove characteristics across different regions</li>
 </ol>
-<p>This dataset provides essential information for: - Coastal ecosystem management and conservation planning - Understanding global mangrove distribution and health</p>
 <p>For questions or feedback about this notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
