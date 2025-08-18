@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Siddharth Chaudhary">
-<meta name="dcterms.date" content="2023-07-30">
+<meta name="dcterms.date" content="2025-07-30">
 <meta name="description" content="Daily, global assimilated CO₂, CH₄, and CO average column concentrations derived from satellite data.">
 
 <title>GEOS Assimilated CO₂, CH₄, and CO Column Concentrations – U.S. Greenhouse Gas Center Documentation</title>
@@ -1024,7 +1024,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 30, 2023</p>
+      <p class="date">July 30, 2025</p>
     </div>
   </div>
   
@@ -1075,6 +1075,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint.</li>
 <li>Using <code>folium.plugins.DualMap</code>, visualize two tiles (side-by-side), allowing time point comparison.</li>
 <li>After the visualization, perform zonal statistics for a given polygon.</li>
+<li>Create a time-series analysis.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
@@ -1082,8 +1083,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="geos-assimilated-co₂-ch₄-and-co-column-concentrations" class="level3">
 <h3 class="anchored" data-anchor-id="geos-assimilated-co₂-ch₄-and-co-column-concentrations">GEOS Assimilated CO₂, CH₄, and CO Column Concentrations</h3>
 <p>The GEOS Assimilated CO₂, CH₄, and CO Column Concentrations dataset provides global, daily atmospheric column concentrations of three major greenhouse gases and air pollutants derived from NASA’s Goddard Earth Observing System (GEOS) Constituent Data Assimilation System (CoDAS). This comprehensive dataset combines satellite observations with atmospheric modeling to produce accurate, spatially continuous estimates of atmospheric trace gas concentrations.</p>
-<p><strong>Key Features:</strong> - <strong>Carbon Dioxide (CO₂)</strong>: Column-averaged CO₂ concentrations (XCO₂) derived from OCO-2 satellite observations, providing critical data for understanding the global carbon cycle and anthropogenic emissions - <strong>Methane (CH₄)</strong>: Column-averaged CH₄ concentrations (XCH₄) assimilated from multiple satellite sources, essential for tracking this potent greenhouse gas from both natural and human sources - <strong>Carbon Monoxide (CO)</strong>: Column-averaged CO concentrations (XCO) important for air quality monitoring and as a tracer for combustion processes</p>
-<p>The GEOS-CoDAS system ingests observations from multiple satellite instruments including OCO-2 for CO₂, TROPOMI and GOSAT for CH₄, and MOPITT for CO, among others. All concentrations are provided in parts per million (ppm) as column-averaged dry air mole fractions, making them directly comparable across gases and suitable for climate research, emissions monitoring, and policy applications.</p>
+<p><strong>Key Features:</strong> - <strong>Carbon Dioxide (CO₂)</strong>: Column-averaged CO₂ concentrations (XCO₂) derived from OCO-2 satellite observations, providing critical data for understanding the global carbon cycle - <strong>Methane (CH₄)</strong>: Column-averaged CH₄ concentrations (XCH₄) assimilated from multiple satellite sources, essential for tracking this potent greenhouse gas - <strong>Carbon Monoxide (CO)</strong>: Column-averaged CO concentrations (XCO) important for air quality monitoring and as a tracer for combustion processes</p>
+<p>The GEOS-CoDAS system ingests observations from multiple satellite instruments including OCO-2 for CO₂, TROPOMI and GOSAT for CH₄, and MOPITT for CO, among others. CO₂ concentrations are provided in parts per million (ppm), and CH₄ and CO concentrations are provided in parts per billion (ppb).</p>
 <p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/geos-ghg-daygrid-vPRE">GEOS Assimilated CO2, CH4, and CO Column Concentrations</a> data overview page.</p>
 </section>
 </section>
@@ -1129,23 +1130,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="stac-api-collection-names"><strong>STAC API Collection Names</strong></h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GEOS Assimilated CO₂, CH₄, and CO Column Concentrations dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/geos-ghg-daygrid-vPRE"><strong>geos-ghg-daygrid-vPRE</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell" data-execution_count="6">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/raster"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for GEOS Assimilated CO₂, CH₄, and CO Column Concentrations. </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"geos-ghg-daygrid-vPRE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The RASTER API is used to fetch collections for visualization.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/raster"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"geos-ghg-daygrid-vPRE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-11" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using PySTAC client</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac' library makes a HTTP request</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 
 
@@ -2146,7 +2151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Examining the contents of our collection under the temporal variable (see STAC collection above), we can see that the data is available beginning January 2015. By looking at the <code>dashboard:time density</code>, we can see that these observations are collected daily.</p>
+<p>Examining the contents of our collection under the <code>temporal</code> variable (see STAC collection above), we can see that the data is available beginning January 2015. By looking at the <code>dashboard:time density</code>, we can see that these observations are collected daily.</p>
 <div id="cell-13" class="cell" data-scrolled="true" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: searching for all items takes greater than 5 minutes. Therefore, this block can be commented out.</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This block is to show the total number of items and isn't integral for the remaining notebook.</span></span>
@@ -4036,7 +4041,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="generate-map" class="level2">
 <h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<p>Now we will plot the selected tiles related to average carbon dioxide concentrations across the United States at the selected dates in 2016.</p>
+<p>Now we will plot the selected tiles related to average CO₂ concentrations across the United States for the selected dates in 2016.</p>
 <div id="cell-29" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
@@ -4737,7 +4742,7 @@ Wall time: 2min 1s</code></pre>
 </section>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
-<p>We can now explore the XCO₂ concentrations time series (January 1, 2016 - July 31, 2016) available for the Los Angeles area of California, U.S. We can plot the data set using the code below:</p>
+<p>We can now explore the CO₂ concentrations time series (January 1, 2016 - July 31, 2016) available for the Los Angeles area of California, U.S. We can plot the data set using the code below:</p>
 <div id="cell-37" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">"datetime"</span>)</span>
@@ -4792,9 +4797,9 @@ Wall time: 2min 1s</code></pre>
 <li>Install and import the necessary libraries</li>
 <li>Fetch the collection from STAC collections using the appropriate endpoints</li>
 <li>Count the number of existing granules within the collection</li>
-<li>Map and compare the Column-Averaged XCO₂ Concentrations Levels for two distinctive months</li>
+<li>Map and compare the Column-Averaged XCO₂ Concentration Levels for two distinctive months</li>
 <li>Generate zonal statistics for the area of interest (AOI)</li>
-<li>Visualizing the Data as a Time Series</li>
+<li>Visualize data as a time series</li>
 </ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
