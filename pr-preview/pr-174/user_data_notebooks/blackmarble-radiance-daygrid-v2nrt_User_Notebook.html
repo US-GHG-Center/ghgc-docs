@@ -1119,7 +1119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests pystac_client matplotlib ipywidgets mapbox-vector-tile pillow –quiet</p>
-<div id="86494e22" class="cell" data-execution_count="34">
+<div id="86494e22" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import required libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gzip</span>
@@ -1148,12 +1148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Black Marble Nighttime at Sensor Radiance dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"><strong>VIIRS_SNPP_DayNightBand_At_Sensor_Radiance</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="f025c63a" class="cell" data-execution_count="35">
+<div id="f025c63a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://dev.ghg.center/api/stac"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>COLLECTION_NAME <span class="op">=</span> <span class="st">"VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"</span></span>
@@ -1233,7 +1233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"This dataset provides daily, Near Real Time (NRT) nighttime light emissions (at sensor radiance) observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This records indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002"</span>
+            <span class="pystac-v">"This dataset provides daily, Near Real Time (NRT) nighttime at sensor radiance observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This records indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002"</span>
         </li>
     
                 
@@ -1263,7 +1263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance/items"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance/items"</span>
         </li>
     
             
@@ -1305,7 +1305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/"</span>
         </li>
     
             
@@ -1347,7 +1347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac"</span>
         </li>
     
             
@@ -1365,7 +1365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"VEDA (Visualization, Exploration, and Data Analysis) STAC API"</span>
+            <span class="pystac-v">"US GHG Center STAC API"</span>
         </li>
     
             
@@ -1398,7 +1398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"</span>
         </li>
     
             
@@ -1564,7 +1564,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance/queryables"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance/queryables"</span>
         </li>
     
             
@@ -1634,7 +1634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">units</span>
-            <span class="pystac-v">"nW/(cm²sr)"</span>
+            <span class="pystac-v">"nW/cm²/sr"</span>
         </li>
     
                 
@@ -1647,6 +1647,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </ul>
         </details></li>
+    
+                
+            
+                
+                    
+        <li class="pystac-row">
+            <span class="pystac-k">data_type</span>
+            <span class="pystac-v">"cog"</span>
+        </li>
+    
+                
+            
+                
+                    
+        <li class="pystac-row">
+            <span class="pystac-k">is_periodic</span>
+            <span class="pystac-v">True</span>
+        </li>
     
                 
             
@@ -1708,7 +1726,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"Default COG Layer"</span>
+            <span class="pystac-v">"Black Marble Nighttime at Sensor Radiance"</span>
         </li>
     
             
@@ -1717,7 +1735,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"Cloud optimized default layer to display on map"</span>
+            <span class="pystac-v">"At sensor nighttime radiance observed by the Suomi NPP VIIRS Day/Night band."</span>
         </li>
     
             
@@ -1729,6 +1747,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </ul>
         </details></li>
+    
+                
+            
+                
+                    
+        <li class="pystac-row">
+            <span class="pystac-k">time_density</span>
+            <span class="pystac-v">"day"</span>
+        </li>
     
                 
             
@@ -1799,7 +1826,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"Black Marble Nighttime Light Emissions v2 NRT"</span>
+            <span class="pystac-v">"Black Marble Nighttime at Sensor Radiance v2 NRT"</span>
         </li>
     
                 
@@ -1926,7 +1953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2025-06-27T00:00:00Z"</span>
+            <span class="pystac-v">"2025-08-18T00:00:00Z"</span>
         </li>
     
             
@@ -1960,13 +1987,192 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
                 
             
+                
+                    <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">providers</span><span class="pystac-l">[] 3 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">name</span>
+            <span class="pystac-v">"NASA Global Imagery Browse Services (GIBS)"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"host"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">url</span>
+            <span class="pystac-v">"https://nasa-gibs.github.io/gibs-api-docs/gis-usage/"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">name</span>
+            <span class="pystac-v">"NASA Goddard Earth Sciences Data and Information Services Center (GES DISC)"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"producer"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">1</span>
+            <span class="pystac-v">"processor"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">url</span>
+            <span class="pystac-v">"https://disc.gsfc.nasa.gov/"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">2</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">name</span>
+            <span class="pystac-v">"NASA's Earth Science Data and Information System (ESDIS)"</span>
+        </li>
+    
+            
+        
+            
+                <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">"licensor"</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">url</span>
+            <span class="pystac-v">"https://www.earthdata.nasa.gov/about/esdis"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
+                
+            
         </ul>
     </div>
 </div>
 </div>
 </div>
 <p>Each image is broken down into a differing number of tiles when requests for a specific location are provided as inputs. To improve the understanding of which tiles are being plotted when a specfic location is requested, provided below are the dimensions for the entire image when a specific zoom level is requested. Each zoom level has a specific number of tiles which correspond with different regions of the world based on latitude and longitude.</p>
-<div id="da461cce" class="cell" data-execution_count="36">
+<div id="da461cce" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tilematrixset for 500m resolution</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>TILEMATRIXSET <span class="op">=</span> <span class="st">"500m"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2013,7 +2219,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <li>Formatting image to identify the latitude and longitude bounds (function <code>format_coordinate</code>) <br></li>
 <li>Plot the tile for the specified location of interest (function <code>display_tile_or_error</code>)</li>
 </ol>
-<div id="65a7373d" class="cell" data-execution_count="37">
+<div id="65a7373d" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lonlat_to_tilexy(lon: <span class="bu">float</span>, lat: <span class="bu">float</span>, zoom: <span class="bu">int</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Convert longitude/latitude to GIBS 500m tile indices.</span></span>
@@ -2085,7 +2291,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span> ((bbox[<span class="dv">3</span>] <span class="op">-</span> lat) <span class="op">/</span> (bbox[<span class="dv">3</span>] <span class="op">-</span> bbox[<span class="dv">2</span>])) <span class="op">*</span> img_height</span>
 <span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x_pos, y_pos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="qqaemwqor2" class="cell" data-execution_count="38">
+<div id="qqaemwqor2" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_coordinate(value, is_longitude<span class="op">=</span><span class="va">True</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Format a coordinate value with appropriate direction indicator. Useful when plotting tiles.</span></span>
@@ -2176,7 +2382,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <section id="location-los-angeles-california" class="level3">
 <h3 class="anchored" data-anchor-id="location-los-angeles-california">Location: <strong>Los Angeles, California</strong></h3>
 <p>We can now select a specific location and datetime to compare Black Marble imagery between two different dates. This can allow us to determine how radiance has changed as a function of time.</p>
-<div id="b6fe59e1" class="cell">
+<div id="b6fe59e1" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Arguments</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Dates to compare</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2022-01-12T00:00:00Z"</span>, <span class="st">"2021-01-12T00:00:00Z"</span>]</span>
@@ -2214,7 +2420,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <section id="nighttime-at-sensor-radiance-across-florida-new-york-and-california" class="level2">
 <h2 class="anchored" data-anchor-id="nighttime-at-sensor-radiance-across-florida-new-york-and-california">Nighttime at Sensor Radiance across Florida, New York, and California</h2>
 <p>We further investigate sensor radiance across the United States to examine regional differences based on the same date. We will enhance the zoom level to 4 on each of these locations to grab tiles that look closer at Earth’s surface and show higher definition.</p>
-<div id="3cbbamfzv0u" class="cell" data-execution_count="40">
+<div id="3cbbamfzv0u" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Multiple locations with coordinate labels</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>locations <span class="op">=</span> [</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Orlando, FL"</span>, <span class="st">"lon"</span>: <span class="op">-</span><span class="fl">81.3789</span>, <span class="st">"lat"</span>: <span class="fl">28.5384</span>},</span>
@@ -2266,7 +2472,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <li><strong>Kilauea Volcano, Hawaii</strong> - One of the world’s most active volcanoes with persistent thermal anomalies from lava lakes and eruptions visible in satellite imagery.</li>
 <li><strong>Western Siberia, Russia</strong> - A region with extensive oil and gas operations producing continuous gas flares alongside seasonal boreal forest fires.</li>
 </ol>
-<div id="z8g9atsj29" class="cell">
+<div id="z8g9atsj29" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIIRS Fire and Thermal Anomalies Configuration</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>FIRE_LAYER <span class="op">=</span> <span class="st">"VIIRS_SNPP_Thermal_Anomalies_375m_All"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2301,7 +2507,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 </section>
 <section id="interactive-fire-overlay" class="level3">
 <h3 class="anchored" data-anchor-id="interactive-fire-overlay">Interactive Fire Overlay</h3>
-<div id="xah0uj4xi9" class="cell" data-execution_count="42">
+<div id="xah0uj4xi9" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create minimal widgets</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>location_dropdown <span class="op">=</span> widgets.Dropdown(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span><span class="bu">list</span>(PRESET_POINTS.keys()),</span>
@@ -2391,11 +2597,11 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"26732f5a52f54d29b181f14bec5a8baa","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"3d8345cf82cd4431a02210595f5de904","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
-<div id="cciw9yzekfj" class="cell" data-execution_count="43">
+<div id="cciw9yzekfj" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define GIBS base URL for MVT tiles (same as working notebook)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>GIBS_MVT_BASE_URL <span class="op">=</span> <span class="st">"https://gibs.earthdata.nasa.gov/wmts/epsg4326/best"</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2505,7 +2711,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 <section id="side-by-side-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="side-by-side-visualization">Side-by-Side Visualization</h3>
 <p>We will now present figures for Black Marble only (left) and overlay the VIIRS Fire and Thermal Anomalies on top of the Black Marble (right). This will allow us to directly compare where the satellite sensor picks up light emitted by cities or features such as volcanoes, gas flares, or other thermal anomalies.</p>
-<div id="rsvigamy0t" class="cell">
+<div id="rsvigamy0t" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create side-by-side visualization with Black Marble and Fire overlay</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
