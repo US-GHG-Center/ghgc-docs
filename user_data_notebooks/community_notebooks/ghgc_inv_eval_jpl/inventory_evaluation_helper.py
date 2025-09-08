@@ -25,7 +25,7 @@ def get_country_geometry(countryname = "United States"):
             geometry = country.geometry
             return geometry
         else:
-            print(f"Country {countryname} not found in the shapefile.")
+            print(f"Country '{countryname}' not found in the shapefile.")
 
 
 
