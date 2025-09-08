@@ -971,7 +971,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Global Mangrove Aboveground Biomass and Canopy Height dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/cms-mangrove-agb-canopyheight-grid-v1.3"><strong>cms-mangrove-agb-canopyheight-grid-v1.3</strong></a>.*</p>
 <p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell">
+<div id="cell-10" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The STAC API is a catalog of all the existing data collections that are stored in the GHG Center</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
@@ -982,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch the dataset from the STAC API. First, we define the collection name as a variable</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"cms-mangrove-agb-canopyheight-grid-v1.3"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-11" class="cell">
+<div id="cell-11" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
@@ -1677,6 +1677,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     
+        <li class="pystac-row">
+            <span class="pystac-k">data_type</span>
+            <span class="pystac-v">"cog"</span>
+        </li>
+    
+                
+            
+                
+                    
         <li><details>
             <summary class="pystac-summary"><span class="pystac-k">item_assets</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
@@ -1897,6 +1906,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         </details></li>
     
+                
+            
+                
+                    <li><details>
+        <summary class="pystac-summary"><span class="pystac-k">sample_files</span><span class="pystac-l">[] 1 items</span></summary>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">0</span>
+            <span class="pystac-v">""</span>
+        </li>
+    
+            
+        
+    </ul>
+        
+    </details></li>
                 
             
                 
@@ -2200,7 +2229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>unique_regions <span class="op">=</span> np.unique(unique_regions)</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="ch">\n</span><span class="ss">Number of unique regions is </span><span class="sc">{</span><span class="bu">len</span>(unique_regions)<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># items in date range: 121
+<pre><code># items in date range: 115
 
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Yemen&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-WallisAndFutuna&gt;
@@ -2223,8 +2252,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Sudan&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-SriLanka&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-SouthAfrica&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Soudan&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Somalia2&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Somalia&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-SolomonIslands&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Singapore&gt;
@@ -2250,7 +2277,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Nigeria&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Nicaragua&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-NewZealand&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Newzealand&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-NewCaledonia&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Myanmar&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Mozambique&gt;
@@ -2284,7 +2310,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Gambia&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Gabon&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-FrenchPolynesia&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-FrenchGuyana&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-FrenchGuiana&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Fiji2&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Fiji&gt;
@@ -2299,8 +2324,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-DemocraticRepublicOfCongo&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Cuba&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-CoteDivoire&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-CotedIvoire&gt;
-&lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Cote&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-CostaRica&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Comoros&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Colombia&gt;
@@ -2324,7 +2347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-Angola&gt;
 &lt;Item id=cms-mangrove-agb-canopyheight-grid-v1.3-AndamanAndNicobar&gt;
 
-Number of unique regions is 121</code></pre>
+Number of unique regions is 115</code></pre>
 </div>
 </div>
 <div id="cell-17" class="cell" data-execution_count="5">
@@ -2410,7 +2433,7 @@ Number of unique regions is 121</code></pre>
  'center': [133.5000000000164, -24.5000000000116, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell">
+<div id="cell-26" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">''' PLOTTING NOTES</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">The mangrove data is tiled where each country has its own tile and the `center` coordinates are within the middle of the country tile area.</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">When plotting high-resolution mangrove forests (which can be on the coastlines of large countries such as Australia), plotting the center of the tile does not allow for easy visualization.</span></span>
@@ -2481,7 +2504,7 @@ Number of unique regions is 121</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_2e519cef3a4ed64e2fbd47e537ea832c {
+                #map_26b8defe6d0ef2518f8a7d26462ec03f {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2542,14 +2565,14 @@ Number of unique regions is 121</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_2e519cef3a4ed64e2fbd47e537ea832c&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_26b8defe6d0ef2518f8a7d26462ec03f&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_2e519cef3a4ed64e2fbd47e537ea832c = L.map(
-                &quot;map_2e519cef3a4ed64e2fbd47e537ea832c&quot;,
+            var map_26b8defe6d0ef2518f8a7d26462ec03f = L.map(
+                &quot;map_26b8defe6d0ef2518f8a7d26462ec03f&quot;,
                 {
                     center: [-11.5, 130.8],
                     crs: L.CRS.EPSG3857,
@@ -2567,7 +2590,7 @@ Number of unique regions is 121</code></pre>
 
         
     
-            var tile_layer_81b1c9c49a4940bd5af4df0500c7d64d = L.tileLayer(
+            var tile_layer_3491ec8f94cca700407ccf74fc67d1f0 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2584,10 +2607,10 @@ Number of unique regions is 121</code></pre>
             );
         
     
-            tile_layer_81b1c9c49a4940bd5af4df0500c7d64d.addTo(map_2e519cef3a4ed64e2fbd47e537ea832c);
+            tile_layer_3491ec8f94cca700407ccf74fc67d1f0.addTo(map_26b8defe6d0ef2518f8a7d26462ec03f);
         
     
-            var tile_layer_4a278e97351b69fa38c1ee366e7e7988 = L.tileLayer(
+            var tile_layer_eb9207f89ef7201e4f5837358857f1ae = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2604,10 +2627,10 @@ Number of unique regions is 121</code></pre>
             );
         
     
-            tile_layer_4a278e97351b69fa38c1ee366e7e7988.addTo(map_2e519cef3a4ed64e2fbd47e537ea832c);
+            tile_layer_eb9207f89ef7201e4f5837358857f1ae.addTo(map_26b8defe6d0ef2518f8a7d26462ec03f);
         
     
-            var tile_layer_4a6b0423251b002f58eaca42aba9fd34 = L.tileLayer(
+            var tile_layer_833a164ae2aa9f51a8b25aa4d657bd9c = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2624,27 +2647,27 @@ Number of unique regions is 121</code></pre>
             );
         
     
-            tile_layer_4a6b0423251b002f58eaca42aba9fd34.addTo(map_2e519cef3a4ed64e2fbd47e537ea832c);
+            tile_layer_833a164ae2aa9f51a8b25aa4d657bd9c.addTo(map_26b8defe6d0ef2518f8a7d26462ec03f);
         
     
-            var layer_control_94b959877df6babf702740d1e7bc52f8_layers = {
+            var layer_control_17dd281a0ffdc411178a60bcd1a95974_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_81b1c9c49a4940bd5af4df0500c7d64d,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_4a278e97351b69fa38c1ee366e7e7988,
-                    &quot;Mangrove Aboveground Biomass&quot; : tile_layer_4a6b0423251b002f58eaca42aba9fd34,
+                    &quot;ESRI World Imagery&quot; : tile_layer_3491ec8f94cca700407ccf74fc67d1f0,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_eb9207f89ef7201e4f5837358857f1ae,
+                    &quot;Mangrove Aboveground Biomass&quot; : tile_layer_833a164ae2aa9f51a8b25aa4d657bd9c,
                 },
             };
-            let layer_control_94b959877df6babf702740d1e7bc52f8 = L.control.layers(
-                layer_control_94b959877df6babf702740d1e7bc52f8_layers.base_layers,
-                layer_control_94b959877df6babf702740d1e7bc52f8_layers.overlays,
+            let layer_control_17dd281a0ffdc411178a60bcd1a95974 = L.control.layers(
+                layer_control_17dd281a0ffdc411178a60bcd1a95974_layers.base_layers,
+                layer_control_17dd281a0ffdc411178a60bcd1a95974_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_2e519cef3a4ed64e2fbd47e537ea832c);
+            ).addTo(map_26b8defe6d0ef2518f8a7d26462ec03f);
 
         
 </script>
@@ -2720,7 +2743,7 @@ Number of unique regions is 121</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_61508baf4c7bce3c26e94dabce5d9643 {
+                #map_9e4b454c981783ec99645a0531d4a764 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -2781,14 +2804,14 @@ Number of unique regions is 121</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_61508baf4c7bce3c26e94dabce5d9643&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_9e4b454c981783ec99645a0531d4a764&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_61508baf4c7bce3c26e94dabce5d9643 = L.map(
-                &quot;map_61508baf4c7bce3c26e94dabce5d9643&quot;,
+            var map_9e4b454c981783ec99645a0531d4a764 = L.map(
+                &quot;map_9e4b454c981783ec99645a0531d4a764&quot;,
                 {
                     center: [-11.5, 130.8],
                     crs: L.CRS.EPSG3857,
@@ -2805,7 +2828,7 @@ Number of unique regions is 121</code></pre>
 
         
     
-            var tile_layer_dfa8ee5533a601799ff8dabdd727749e = L.tileLayer(
+            var tile_layer_1e593ab04edfae3323ccd16237b6104d = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2822,35 +2845,35 @@ Number of unique regions is 121</code></pre>
             );
         
     
-            tile_layer_dfa8ee5533a601799ff8dabdd727749e.addTo(map_61508baf4c7bce3c26e94dabce5d9643);
+            tile_layer_1e593ab04edfae3323ccd16237b6104d.addTo(map_9e4b454c981783ec99645a0531d4a764);
         
     
 
-        function geo_json_796031a8e542608b321674e0ccafdfe5_onEachFeature(feature, layer) {
+        function geo_json_99de5a20609129c74532374e00a8abf8_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_796031a8e542608b321674e0ccafdfe5 = L.geoJson(null, {
-                onEachFeature: geo_json_796031a8e542608b321674e0ccafdfe5_onEachFeature,
+        var geo_json_99de5a20609129c74532374e00a8abf8 = L.geoJson(null, {
+                onEachFeature: geo_json_99de5a20609129c74532374e00a8abf8_onEachFeature,
             
             ...{
 }
         });
 
-        function geo_json_796031a8e542608b321674e0ccafdfe5_add (data) {
-            geo_json_796031a8e542608b321674e0ccafdfe5
+        function geo_json_99de5a20609129c74532374e00a8abf8_add (data) {
+            geo_json_99de5a20609129c74532374e00a8abf8
                 .addData(data);
         }
-            geo_json_796031a8e542608b321674e0ccafdfe5_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
-        geo_json_796031a8e542608b321674e0ccafdfe5.setStyle(function(feature) {return feature.properties.style;});
+            geo_json_99de5a20609129c74532374e00a8abf8_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[130.0, -12.0], [130.0, -11.16], [131.0, -11.16], [131.0, -12.0], [130.0, -12.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+        geo_json_99de5a20609129c74532374e00a8abf8.setStyle(function(feature) {return feature.properties.style;});
 
         
     
-            geo_json_796031a8e542608b321674e0ccafdfe5.addTo(map_61508baf4c7bce3c26e94dabce5d9643);
+            geo_json_99de5a20609129c74532374e00a8abf8.addTo(map_9e4b454c981783ec99645a0531d4a764);
         
     
-            var tile_layer_4a6b0423251b002f58eaca42aba9fd34 = L.tileLayer(
+            var tile_layer_833a164ae2aa9f51a8b25aa4d657bd9c = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-Australia/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=agb\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C145.98110961914062&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -2867,13 +2890,13 @@ Number of unique regions is 121</code></pre>
             );
         
     
-            tile_layer_4a6b0423251b002f58eaca42aba9fd34.addTo(map_61508baf4c7bce3c26e94dabce5d9643);
+            tile_layer_833a164ae2aa9f51a8b25aa4d657bd9c.addTo(map_9e4b454c981783ec99645a0531d4a764);
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
-<div id="cell-29" class="cell" data-execution_count="21">
+<div id="cell-29" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The mangrove dataset uses 'datetime' instead of 'start_datetime'</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to add the datetime property to make it compatible with ghgc_utils</span></span>
@@ -2889,10 +2912,10 @@ Number of unique regions is 121</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 9.24 ms, sys: 3.12 ms, total: 12.4 ms
-Wall time: 16.9 s</code></pre>
+CPU times: total: 31.2 ms
+Wall time: 18.5 s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
 
@@ -2989,7 +3012,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"de9ec09c2da14ce7a7d79a5ab85857d4","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"7f4a3566c8d2464e9735f1015a692ea9","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -3110,7 +3133,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_33968c49a392ae6a92d64d0a5d955453 {
+                #map_1ada4e9053a6fd41bc7fa930d0d6e9a2 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -3171,14 +3194,14 @@ Re-running will re-set all menus to their defaults!</code></pre>
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_33968c49a392ae6a92d64d0a5d955453&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_1ada4e9053a6fd41bc7fa930d0d6e9a2&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_33968c49a392ae6a92d64d0a5d955453 = L.map(
-                &quot;map_33968c49a392ae6a92d64d0a5d955453&quot;,
+            var map_1ada4e9053a6fd41bc7fa930d0d6e9a2 = L.map(
+                &quot;map_1ada4e9053a6fd41bc7fa930d0d6e9a2&quot;,
                 {
                     center: [9.508408455444004, -84.29907462012918],
                     crs: L.CRS.EPSG3857,
@@ -3196,7 +3219,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 
         
     
-            var tile_layer_4d509a2d68627cd0d641cad4264b21e1 = L.tileLayer(
+            var tile_layer_e52068ea75b6f45737634d6b927341ec = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3213,10 +3236,10 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_4d509a2d68627cd0d641cad4264b21e1.addTo(map_33968c49a392ae6a92d64d0a5d955453);
+            tile_layer_e52068ea75b6f45737634d6b927341ec.addTo(map_1ada4e9053a6fd41bc7fa930d0d6e9a2);
         
     
-            var tile_layer_7d0751c8fa2d916a506c820c3960be82 = L.tileLayer(
+            var tile_layer_81204b5c7dc5bad7f1fea85701fc009e = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3233,10 +3256,10 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_7d0751c8fa2d916a506c820c3960be82.addTo(map_33968c49a392ae6a92d64d0a5d955453);
+            tile_layer_81204b5c7dc5bad7f1fea85701fc009e.addTo(map_1ada4e9053a6fd41bc7fa930d0d6e9a2);
         
     
-            var tile_layer_684965bc1adbe8d28838584492a62b89 = L.tileLayer(
+            var tile_layer_655979fd74a03a95d6aa78bf7805b61c = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/cms-mangrove-agb-canopyheight-grid-v1.3/items/cms-mangrove-agb-canopyheight-grid-v1.3-CostaRica/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=hmax95\u0026color_formula=gamma+r+1.05\u0026colormap_name=ylgn\u0026rescale=0%2C48.81807327270508&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -3253,27 +3276,27 @@ Re-running will re-set all menus to their defaults!</code></pre>
             );
         
     
-            tile_layer_684965bc1adbe8d28838584492a62b89.addTo(map_33968c49a392ae6a92d64d0a5d955453);
+            tile_layer_655979fd74a03a95d6aa78bf7805b61c.addTo(map_1ada4e9053a6fd41bc7fa930d0d6e9a2);
         
     
-            var layer_control_bb7797f46444c42a6b51c2cddcec8397_layers = {
+            var layer_control_47b369b9eb460b462733685105ac3fe4_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_4d509a2d68627cd0d641cad4264b21e1,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_7d0751c8fa2d916a506c820c3960be82,
-                    &quot;Canopy Maximum Height&quot; : tile_layer_684965bc1adbe8d28838584492a62b89,
+                    &quot;ESRI World Imagery&quot; : tile_layer_e52068ea75b6f45737634d6b927341ec,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_81204b5c7dc5bad7f1fea85701fc009e,
+                    &quot;Canopy Maximum Height&quot; : tile_layer_655979fd74a03a95d6aa78bf7805b61c,
                 },
             };
-            let layer_control_bb7797f46444c42a6b51c2cddcec8397 = L.control.layers(
-                layer_control_bb7797f46444c42a6b51c2cddcec8397_layers.base_layers,
-                layer_control_bb7797f46444c42a6b51c2cddcec8397_layers.overlays,
+            let layer_control_47b369b9eb460b462733685105ac3fe4 = L.control.layers(
+                layer_control_47b369b9eb460b462733685105ac3fe4_layers.base_layers,
+                layer_control_47b369b9eb460b462733685105ac3fe4_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_33968c49a392ae6a92d64d0a5d955453);
+            ).addTo(map_1ada4e9053a6fd41bc7fa930d0d6e9a2);
 
         
 </script>
@@ -3286,7 +3309,7 @@ Re-running will re-set all menus to their defaults!</code></pre>
 <p>In this notebook, we have successfully explored and visualized the Global Mangrove Aboveground Biomass and Canopy Height dataset. The notebook demonstrated:</p>
 <ol type="1">
 <li><strong>Data Access</strong>: Connected to the US GHG Center STAC API to access the global mangrove dataset</li>
-<li><strong>Data Exploration</strong>: Discovered 121 regional items covering mangrove forests worldwide</li>
+<li><strong>Data Exploration</strong>: Discovered 115 regional items covering mangrove forests worldwide</li>
 <li><strong>Variable Analysis</strong>: Explored three key mangrove variables:
 <ul>
 <li>Aboveground biomass (Mg/ha) - critical for carbon storage assessment</li>
