@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kyle Lesinger">
+<meta name="dcterms.date" content="2025-07-15">
+<meta name="description" content="Documentation of data transformation">
 
-<title>cms-mangrove-agb-canopyheight-grid-v1.3 – U.S. Greenhouse Gas Center Documentation</title>
+<title>Global Mangrove Aboveground Biomass and Canopy Height – U.S. Greenhouse Gas Center Documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -120,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../datatransformationcode.html">Data Transformation Notebooks</a></li><li class="breadcrumb-item"><a href="../cog_transformation/cms-mangrove-agb-canopyheight-grid-v1.3.html">cms-mangrove-agb-canopyheight-grid-v1.3.html</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../datatransformationcode.html">Data Transformation Notebooks</a></li><li class="breadcrumb-item"><a href="../cog_transformation/cms-mangrove-agb-canopyheight-grid-v1.3.html">Global Mangrove Aboveground Biomass and Canopy Height</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -425,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../cog_transformation/cms-mangrove-agb-canopyheight-grid-v1.3.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">cms-mangrove-agb-canopyheight-grid-v1.3.html</span></a>
+ <span class="menu-text">Global Mangrove Aboveground Biomass and Canopy Height</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -800,14 +803,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../datatransformationcode.html">Data Transformation Notebooks</a></li><li class="breadcrumb-item"><a href="../cog_transformation/cms-mangrove-agb-canopyheight-grid-v1.3.html">cms-mangrove-agb-canopyheight-grid-v1.3.html</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../datatransformationcode.html">Data Transformation Notebooks</a></li><li class="breadcrumb-item"><a href="../cog_transformation/cms-mangrove-agb-canopyheight-grid-v1.3.html">Global Mangrove Aboveground Biomass and Canopy Height</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Global Mangrove Aboveground Biomass and Canopy Height</h1>
+</div>
+
+<div>
+  <div class="description">
+    Documentation of data transformation
+  </div>
+</div>
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kyle Lesinger </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 15, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
-<p>Code used to transform <a href="https://daac.ornl.gov/CMS/guides/CMS_Global_Map_Mangrove_Canopy.html">Global Mangrove Distribution, Aboveground Biomass, and Canopy Height</a> from .tif to Cloud Optimized Geotiff.</p>
-<p>-Author: Kyle Lesinger</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+</header>
+
+
+<p>This script was used to transform the Global Mangrove Aboveground Biomass and Canopy Height dataset from GeoTIFF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.</p>
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
@@ -821,7 +856,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-2" class="cell" data-execution_count="6">
+<div id="cell-3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data_acquisition_method"</span>: <span class="st">"s3"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw_data_bucket"</span> : <span class="st">"ghgc-data-store-dev"</span>,</span>
@@ -832,7 +867,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"transformation"</span>: {}</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-3" class="cell" data-execution_count="7">
+<div id="cell-4" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load environment variables from .env file</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -843,7 +878,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Approach</p>
 <p>1.) Read .tif files from S3 bucket 2.) Convert to COGs on local drive 3.) Move converted COGs to their final S3 location</p>
-<div id="cell-5" class="cell" data-execution_count="8">
+<div id="cell-6" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>session <span class="op">=</span> boto3.session.Session()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s3_client <span class="op">=</span> boto3.client(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'s3'</span>,</span>
@@ -862,7 +897,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> s3fs.S3FileSystem()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="9">
+<div id="cell-7" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_s3_keys(bucket, model_name, ext):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get a list of all keys in an S3 bucket."""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> []</span>
@@ -1234,7 +1269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'coastal-observatory/data/Mangrove_hmax95_Yemen.tif']</code></pre>
 </div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="10">
+<div id="cell-8" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_cog_filename(f):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> Path(f).stem</span>
@@ -1245,14 +1280,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    cog_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>f<span class="sc">}</span><span class="ss">_2000year.tif"</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cog_filename</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-8" class="cell" data-execution_count="11">
+<div id="cell-9" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define COG profile for rasterio</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>COG_PROFILE <span class="op">=</span> {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driver"</span>: <span class="st">"COG"</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>,</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="32">
+<div id="cell-10" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert_to_proper_CRS_and_cogify(name, cog_filename, cog_data_bucket, cog_data_prefix, local_output_dir<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    s3_key <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>cog_data_prefix<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    reproject_filename <span class="op">=</span> <span class="ss">f"reproj/</span><span class="sc">{</span>cog_filename<span class="sc">}</span><span class="ss">"</span></span>
@@ -1336,7 +1371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>            os.remove(reproject_filename)</span>
 <span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"[CLEANUP] removed intermediate </span><span class="sc">{</span>reproject_filename<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell">
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize DataFrame to track processed files</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>files_processed <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>[<span class="st">"file_name"</span>, <span class="st">"COGs_created"</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1377,7 +1412,7 @@ Output filename: Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
 [COGIFY] reproj/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif → s3://ghgc-data-store-dev/transformed_cogs/CMS_Global_Map_Mangrove_Canopy/Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif</code></pre>
 </div>
 </div>
-<div id="cell-11" class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save metadata if there are processed files</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(files_processed) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get metadata from one of the processed files</span></span>
@@ -1431,7 +1466,7 @@ Output filename: Mangrove_agb_AndamanAndNicobar_2000-01-01day_2009-12-31.tif
 <span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Saved processing log to s3://</span><span class="sc">{</span>bucket_name<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>cog_data_prefix<span class="sc">}</span><span class="ss">/files_converted.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-12" class="cell">
+<div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display summary</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Processing Summary:"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total files found: </span><span class="sc">{</span><span class="bu">len</span>(keys)<span class="sc">}</span><span class="ss">"</span>)</span>
