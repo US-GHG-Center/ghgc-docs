@@ -907,7 +907,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for a given collection using the GHGC Application Programming Interface (API) <code>/stac</code> endpoint. The collection processed in this notebook is the BlueFlux CO₂ and CH₄ Fluxes for Southern Florida Wetlands data product.</li>
+<li>Identify available dates and temporal frequency of observations for a given collection using the Greenhouse Gas Center (GHGC) Application Programming Interface (API) <code>/stac</code> endpoint. The collection processed in this notebook is the BlueFlux CO₂ and CH₄ Fluxes for Southern Florida Wetlands data product.</li>
 <li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint.</li>
 <li>Using <code>folium.plugins.DualMap</code>, visualize two tiles (side-by-side), allowing time point comparison.</li>
 <li>After the visualization, perform zonal statistics for a given polygon.</li>
@@ -939,7 +939,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Install the Required Libraries</h1>
 <p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="1">
+<div id="cell-8" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For fetching from the Raster API</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -963,7 +963,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the BlueFlux CO₂ and CH₄ Fluxes for Southern Florida Wetlands dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/blueflux-ghgflux-daygrid-v1"><strong>blueflux-ghgflux-daygrid-v1</strong></a>.</p>
-<div id="cell-10" class="cell" data-execution_count="2">
+<div id="cell-10" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -976,7 +976,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"blueflux-ghgflux-daygrid-v1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="3">
+<div id="cell-11" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
@@ -984,7 +984,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="39">
 
 
 <style>
@@ -1806,14 +1806,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from February 25, 2000 - August 31, 2024. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is daily.</p>
-<div id="cell-13" class="cell" data-scrolled="true" data-execution_count="4">
+<div id="cell-13" class="cell" data-scrolled="true" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: searching for all items can take several minutes. Therefore, this block can be commented out.</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This block is to show the total number of items and isn't integral for the remaining notebook.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># items = list(collection.get_items())  # Convert the iterator to a list</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f"Found {len(items)} items")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="5">
+<div id="cell-14" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function can be used to find data within a specific time frame, e.g. January 2022.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
@@ -1856,12 +1856,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=blueflux-ghgflux-daygrid-v1-2022-01-01&gt;</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="6">
+<div id="cell-15" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the search results</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> search.item_collection()</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="42">
 
 
 <style>
@@ -4239,12 +4239,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="7">
+<div id="cell-16" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020-05-20"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>][:<span class="dv">10</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="8">
+<div id="cell-17" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll focus on methane flux, so our asset of interest is:</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"fch4mean"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4257,12 +4257,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="fetch-imagery-using-raster-api" class="level3">
 <h3 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h3>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-20" class="cell" data-execution_count="9">
+<div id="cell-20" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify two date/times that you would like to visualize, using the format of items_dict.keys()</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2022-01-01"</span>,<span class="st">"2022-01-26"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Below, we use some statistics of the raster data to set upper and lower limits for our color bar. These are saved as <code>rescale_values</code>, and will be passed to the Raster API in the following step(s).</p>
-<div id="cell-22" class="cell" data-execution_count="10">
+<div id="cell-22" class="cell" data-execution_count="46">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID for the first date</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
@@ -4272,7 +4272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print raster bands' information</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>[{'scale': 1.0,
   'nodata': -9999.0,
   'offset': 0.0,
@@ -4289,7 +4289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 35.49578502212513}}]</code></pre>
 </div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="11">
+<div id="cell-23" class="cell" data-execution_count="47">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use raster band statistics to generate an appropriate color bar range.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
@@ -4302,13 +4302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-25" class="cell" data-execution_count="12">
+<div id="cell-25" class="cell" data-execution_count="48">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure to capitalize per Matplotlib standard colormap names</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"viridis"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="13">
+<div id="cell-26" class="cell" data-execution_count="49">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for your first date/time</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
@@ -4319,7 +4319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="49">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -4333,7 +4333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-81.09375, 25.579166412353516, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-27" class="cell" data-execution_count="50">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the above for your second date/time</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we do not calculate new rescale_values for this tile - </span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We want date tiles 1 and 2 to have the same colorbar range for visual comparison.</span></span>
@@ -4351,7 +4351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>observation_date_2_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="50">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -4371,7 +4371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="map-out-selected-tiles">Map Out Selected Tiles</h2>
 <p>For this example, we’ll look at CH₄ Mean over Southern Florida Wetlands.</p>
 <p>First, let’s determine an area of interest (AOI) to visualize via GeoJSON.</p>
-<div id="cell-29" class="cell" data-execution_count="15">
+<div id="cell-29" class="cell" data-execution_count="51">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a name for the AOI to use in plots later</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"South Florida"</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to Southern Florida Wetlands</span></span>
@@ -4393,7 +4393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="16">
+<div id="cell-30" class="cell" data-execution_count="52">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Map is centered on the position specified by "location=(lat,lon)"</span></span>
@@ -4447,7 +4447,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="52">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -4467,7 +4467,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_ec8431cfd1466fa7766ad000ec022a08 {
+                #map_2410e906b14461bff66a6fea9b2ab656 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4504,7 +4504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_7e22fa64cdc36b5c303dac9469abd9da {
+                #map_d0a058e0de40c8984f7318ed82ccad96 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4566,17 +4566,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_ec8431cfd1466fa7766ad000ec022a08&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_2410e906b14461bff66a6fea9b2ab656&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_7e22fa64cdc36b5c303dac9469abd9da&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d0a058e0de40c8984f7318ed82ccad96&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_ec8431cfd1466fa7766ad000ec022a08 = L.map(
-                &quot;map_ec8431cfd1466fa7766ad000ec022a08&quot;,
+            var map_2410e906b14461bff66a6fea9b2ab656 = L.map(
+                &quot;map_2410e906b14461bff66a6fea9b2ab656&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4593,7 +4593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_26b1b88779af4b3372436511ecc8735f = L.tileLayer(
+            var tile_layer_6a603ace980f3395510145a5c7b3e267 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4610,10 +4610,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_26b1b88779af4b3372436511ecc8735f.addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            tile_layer_6a603ace980f3395510145a5c7b3e267.addTo(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            var tile_layer_d2b5a7aea7ee28ef73b1ed645dd4e563 = L.tileLayer(
+            var tile_layer_15d521863bc2c0ea4d4255373f1bbe1b = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-01/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4631,17 +4631,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_d2b5a7aea7ee28ef73b1ed645dd4e563.addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            tile_layer_15d521863bc2c0ea4d4255373f1bbe1b.addTo(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            var marker_33770444e7e9f65ca122e177655720b3 = L.marker(
+            var marker_19d9036e26db188edc3fd5483121c491 = L.marker(
                 [26.68, -79.96],
                 {
 }
-            ).addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            ).addTo(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            marker_33770444e7e9f65ca122e177655720b3.bindTooltip(
+            marker_19d9036e26db188edc3fd5483121c491.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4651,60 +4651,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_0a49e188c9a809c434afdf5b8e4429d4_styler(feature) {
+        function geo_json_f8cbbc04cecba0475d6fb66d35435a94_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_0a49e188c9a809c434afdf5b8e4429d4_onEachFeature(feature, layer) {
+        function geo_json_f8cbbc04cecba0475d6fb66d35435a94_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_0a49e188c9a809c434afdf5b8e4429d4 = L.geoJson(null, {
-                onEachFeature: geo_json_0a49e188c9a809c434afdf5b8e4429d4_onEachFeature,
+        var geo_json_f8cbbc04cecba0475d6fb66d35435a94 = L.geoJson(null, {
+                onEachFeature: geo_json_f8cbbc04cecba0475d6fb66d35435a94_onEachFeature,
             
-                style: geo_json_0a49e188c9a809c434afdf5b8e4429d4_styler,
+                style: geo_json_f8cbbc04cecba0475d6fb66d35435a94_styler,
             ...{
 }
         });
 
-        function geo_json_0a49e188c9a809c434afdf5b8e4429d4_add (data) {
-            geo_json_0a49e188c9a809c434afdf5b8e4429d4
+        function geo_json_f8cbbc04cecba0475d6fb66d35435a94_add (data) {
+            geo_json_f8cbbc04cecba0475d6fb66d35435a94
                 .addData(data);
         }
-            geo_json_0a49e188c9a809c434afdf5b8e4429d4_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_f8cbbc04cecba0475d6fb66d35435a94_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_0a49e188c9a809c434afdf5b8e4429d4.addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            geo_json_f8cbbc04cecba0475d6fb66d35435a94.addTo(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            var layer_control_b6dd4d3ffe017bae846ed2b3c5c4c898_layers = {
+            var layer_control_a2266dc607c3ed944bda7728a17678d4_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_26b1b88779af4b3372436511ecc8735f,
+                    &quot;openstreetmap&quot; : tile_layer_6a603ace980f3395510145a5c7b3e267,
                 },
                 overlays :  {
-                    &quot;2022-01-01 fch4mean&quot; : tile_layer_d2b5a7aea7ee28ef73b1ed645dd4e563,
-                    &quot;South Florida AOI&quot; : geo_json_0a49e188c9a809c434afdf5b8e4429d4,
+                    &quot;2022-01-01 fch4mean&quot; : tile_layer_15d521863bc2c0ea4d4255373f1bbe1b,
+                    &quot;South Florida AOI&quot; : geo_json_f8cbbc04cecba0475d6fb66d35435a94,
                 },
             };
-            let layer_control_b6dd4d3ffe017bae846ed2b3c5c4c898 = L.control.layers(
-                layer_control_b6dd4d3ffe017bae846ed2b3c5c4c898_layers.base_layers,
-                layer_control_b6dd4d3ffe017bae846ed2b3c5c4c898_layers.overlays,
+            let layer_control_a2266dc607c3ed944bda7728a17678d4 = L.control.layers(
+                layer_control_a2266dc607c3ed944bda7728a17678d4_layers.base_layers,
+                layer_control_a2266dc607c3ed944bda7728a17678d4_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            ).addTo(map_2410e906b14461bff66a6fea9b2ab656);
 
         
     
-            var map_7e22fa64cdc36b5c303dac9469abd9da = L.map(
-                &quot;map_7e22fa64cdc36b5c303dac9469abd9da&quot;,
+            var map_d0a058e0de40c8984f7318ed82ccad96 = L.map(
+                &quot;map_d0a058e0de40c8984f7318ed82ccad96&quot;,
                 {
                     center: [26.68, -79.96],
                     crs: L.CRS.EPSG3857,
@@ -4721,7 +4721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_0681531aa0c9a7e98afaa9b1e3b433a9 = L.tileLayer(
+            var tile_layer_e5d325653395a8327780e39141f71a0b = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4738,10 +4738,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_0681531aa0c9a7e98afaa9b1e3b433a9.addTo(map_7e22fa64cdc36b5c303dac9469abd9da);
+            tile_layer_e5d325653395a8327780e39141f71a0b.addTo(map_d0a058e0de40c8984f7318ed82ccad96);
         
     
-            var tile_layer_49408e07bd715e7611d68e2526ad333c = L.tileLayer(
+            var tile_layer_edd2748660d2916ac16af0fa9e535ce4 = L.tileLayer(
                 &quot;https://dev.ghg.center/api/raster/collections/blueflux-ghgflux-daygrid-v1/items/blueflux-ghgflux-daygrid-v1-2022-01-26/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=fch4mean\u0026color_formula=gamma+r+1.05\u0026colormap_name=viridis\u0026rescale=-37.5793342590332%2C142.18939208984375&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4759,21 +4759,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_49408e07bd715e7611d68e2526ad333c.addTo(map_7e22fa64cdc36b5c303dac9469abd9da);
+            tile_layer_edd2748660d2916ac16af0fa9e535ce4.addTo(map_d0a058e0de40c8984f7318ed82ccad96);
         
     
-            map_ec8431cfd1466fa7766ad000ec022a08.sync(map_7e22fa64cdc36b5c303dac9469abd9da);
-            map_7e22fa64cdc36b5c303dac9469abd9da.sync(map_ec8431cfd1466fa7766ad000ec022a08);
+            map_2410e906b14461bff66a6fea9b2ab656.sync(map_d0a058e0de40c8984f7318ed82ccad96);
+            map_d0a058e0de40c8984f7318ed82ccad96.sync(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            var marker_fb3d7971bddf45b99877d829c345c728 = L.marker(
+            var marker_042014d4c9fa44c5be263483f29af126 = L.marker(
                 [26.68, -79.96],
                 {
 }
-            ).addTo(map_7e22fa64cdc36b5c303dac9469abd9da);
+            ).addTo(map_d0a058e0de40c8984f7318ed82ccad96);
         
     
-            marker_fb3d7971bddf45b99877d829c345c728.bindTooltip(
+            marker_042014d4c9fa44c5be263483f29af126.bindTooltip(
                 `<div>
                      South Florida
                  </div>`,
@@ -4783,58 +4783,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_f8f138657f9545adb62d85addb98e6db_styler(feature) {
+        function geo_json_c4648c684c884ff5bae40287e616da56_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_f8f138657f9545adb62d85addb98e6db_onEachFeature(feature, layer) {
+        function geo_json_c4648c684c884ff5bae40287e616da56_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_f8f138657f9545adb62d85addb98e6db = L.geoJson(null, {
-                onEachFeature: geo_json_f8f138657f9545adb62d85addb98e6db_onEachFeature,
+        var geo_json_c4648c684c884ff5bae40287e616da56 = L.geoJson(null, {
+                onEachFeature: geo_json_c4648c684c884ff5bae40287e616da56_onEachFeature,
             
-                style: geo_json_f8f138657f9545adb62d85addb98e6db_styler,
+                style: geo_json_c4648c684c884ff5bae40287e616da56_styler,
             ...{
 }
         });
 
-        function geo_json_f8f138657f9545adb62d85addb98e6db_add (data) {
-            geo_json_f8f138657f9545adb62d85addb98e6db
+        function geo_json_c4648c684c884ff5bae40287e616da56_add (data) {
+            geo_json_c4648c684c884ff5bae40287e616da56
                 .addData(data);
         }
-            geo_json_f8f138657f9545adb62d85addb98e6db_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_c4648c684c884ff5bae40287e616da56_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-82.22, 24.48], [-82.22, 26.68], [-79.96, 26.68], [-79.96, 24.48], [-82.22, 24.48]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_0a49e188c9a809c434afdf5b8e4429d4.addTo(map_ec8431cfd1466fa7766ad000ec022a08);
+            geo_json_f8cbbc04cecba0475d6fb66d35435a94.addTo(map_2410e906b14461bff66a6fea9b2ab656);
         
     
-            geo_json_f8f138657f9545adb62d85addb98e6db.addTo(map_7e22fa64cdc36b5c303dac9469abd9da);
+            geo_json_c4648c684c884ff5bae40287e616da56.addTo(map_d0a058e0de40c8984f7318ed82ccad96);
         
     
-            var layer_control_5f4c7a05dbc34260aa4529864b1c0c4b_layers = {
+            var layer_control_f019ef902ff5469a8afa900cf3fcdc9a_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_0681531aa0c9a7e98afaa9b1e3b433a9,
+                    &quot;openstreetmap&quot; : tile_layer_e5d325653395a8327780e39141f71a0b,
                 },
                 overlays :  {
-                    &quot;2022-01-26 fch4mean&quot; : tile_layer_49408e07bd715e7611d68e2526ad333c,
-                    &quot;South Florida AOI&quot; : geo_json_f8f138657f9545adb62d85addb98e6db,
+                    &quot;2022-01-26 fch4mean&quot; : tile_layer_edd2748660d2916ac16af0fa9e535ce4,
+                    &quot;South Florida AOI&quot; : geo_json_c4648c684c884ff5bae40287e616da56,
                 },
             };
-            let layer_control_5f4c7a05dbc34260aa4529864b1c0c4b = L.control.layers(
-                layer_control_5f4c7a05dbc34260aa4529864b1c0c4b_layers.base_layers,
-                layer_control_5f4c7a05dbc34260aa4529864b1c0c4b_layers.overlays,
+            let layer_control_f019ef902ff5469a8afa900cf3fcdc9a = L.control.layers(
+                layer_control_f019ef902ff5469a8afa900cf3fcdc9a_layers.base_layers,
+                layer_control_f019ef902ff5469a8afa900cf3fcdc9a_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_7e22fa64cdc36b5c303dac9469abd9da);
+            ).addTo(map_d0a058e0de40c8984f7318ed82ccad96);
 
         
 </script>
@@ -4846,7 +4846,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
 <p>We will perform zonal statistics and create a dataframe using our previously defined AOI for Southern Florida, the items from our initial catalog search spanning from January 1, 2022 through January 31, 2022, and the “fch4mean” asset.</p>
 <p>We’ll generate statistics for the data in our AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the <code>Raster API</code>.</p>
-<div id="cell-32" class="cell" data-execution_count="17">
+<div id="cell-32" class="cell" data-execution_count="53">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4857,10 +4857,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: total: 344 ms
+CPU times: total: 188 ms
 Wall time: 21.9 s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="53">
 <div>
 
 
@@ -5004,7 +5004,7 @@ Wall time: 21.9 s</code></pre>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>Let’s explore the Methane Flux values in this data collection for January 2022. You can plot the data set using the code below:</p>
-<div id="cell-34" class="cell" data-execution_count="18">
+<div id="cell-34" class="cell" data-execution_count="54">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>)) </span>
@@ -5059,7 +5059,7 @@ Wall time: 21.9 s</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the BlueFlux CO₂ and CH₄ Fluxes for Southern Florida Wetlands dataset:</p>
+<p>In this notebook we have successfully completed the following steps for the BlueFlux CO₂ and CH₄ Fluxes for Southern Florida Wetlands dataset:</p>
 <ol type="1">
 <li>Install and import the necessary libraries</li>
 <li>Fetch the collection from STAC using the appropriate endpoints</li>
