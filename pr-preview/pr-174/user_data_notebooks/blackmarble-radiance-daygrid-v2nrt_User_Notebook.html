@@ -916,10 +916,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <p>This notebook demonstrates how to visualize satellite-derived nighttime at sensor radiance and overlay fire/thermal anomaly data:</p>
 <ol type="1">
-<li><strong>Connect to STAC API</strong> - Access the VIIRS Black Marble collection metadata.</li>
+<li><strong>Connect to STAC API</strong> - Access the Black Marble collection metadata.</li>
 <li><strong>Select Dates</strong> - Choose time periods for comparison.</li>
 <li><strong>Calculate Tile Coordinates</strong> - Convert geographic coordinates to WMTS tile indices.</li>
-<li><strong>Fetch Black Marble Imagery</strong> - Retrieve nighttime at sensor radiance tiles from NASA GIBS.</li>
+<li><strong>Fetch Black Marble Imagery</strong> - Retrieve nighttime at sensor radiance tiles from NASA Global Imagery Browse Services (GIBS).</li>
 <li><strong>Retrieve Fire Data</strong> - Access VIIRS thermal anomalies using Mapbox Vector Tiles.</li>
 <li><strong>Interactive Selection</strong> - Choose from preset locations or enter custom coordinates.</li>
 <li><strong>Side-by-Side Visualization</strong> - Compare Black Marble nighttime at sensor radiance with fire overlay.</li>
@@ -931,20 +931,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="black-marble-nighttime-at-sensor-radiance" class="level3">
 <h3 class="anchored" data-anchor-id="black-marble-nighttime-at-sensor-radiance">Black Marble Nighttime at Sensor Radiance</h3>
 <p>This dataset provides daily, Near Real Time (NRT) nighttime at sensor radiance observed by the Visible Infrared Imaging Radiometer Suite (VIIRS) Day/Night band on board the Suomi National Polar-orbiting Partnership (NPP) satellite. Data are in units of nanoWatts per square centimeter per steradian (nW/cm²/sr) and gridded at 500 meter resolution. This record indexes the layers of this dataset from NASA’s WorldView Web Map Tile Service (WMTS) for visualization purposes. The source data and accompanying documentation can be found at https://doi.org/10.5067/VIIRS/VNP46A1_NRT.002.</p>
+<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/blackmarble-radiance-daygrid-v2nrt">Black Marble Nighttime at Sensor Radiance</a> data overview page.</p>
 </section>
 <section id="viirs-fire-and-thermal-anomalies" class="level3">
 <h3 class="anchored" data-anchor-id="viirs-fire-and-thermal-anomalies">VIIRS Fire and Thermal Anomalies</h3>
 <p>The VIIRS 375m Active Fire product provides data on thermal anomalies and fires detected by the VIIRS sensor at 375-meter resolution, including wildfires, volcanoes, and gas flares. The product includes fire radiative power, brightness temperature, and detection confidence levels, enabling discrimination between different types of thermal sources. For more information and data access, visit the NASA FIRMS website at https://firms.modaps.eosdis.nasa.gov/active_fire/ and the VIIRS Active Fire User Guide.</p>
-<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/blackmarble-radiance-daygrid-v2nrt">Black Marble Nighttime at Sensor Radiance</a> data overview page.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<p>Navigating data via the Greenhouse Gas Center (GHGC) Application Programming Interface (API), you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
 <ol type="1">
 <li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
-<li><code>collection</code>: A specific dataset, e.g.&nbsp;BlueFlux CO₂ and Methane Flux</li>
-<li><code>item</code>: One data file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one daily file of carbon fluxes</li>
+<li><code>collection</code>: A specific dataset, e.g.&nbsp;Black Marble Nighttime at Sensor Radiance</li>
+<li><code>item</code>: One data file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one file containing sensor radiance</li>
 <li><code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange</li>
 <li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
 </ol>
@@ -980,8 +980,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
-<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Black Marble Nighttime at Sensor Radiance dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"><strong>VIIRS_SNPP_DayNightBand_At_Sensor_Radiance</strong></a>.*</p>
-<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
+<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Black Marble Nighttime at Sensor Radiance dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/VIIRS_SNPP_DayNightBand_At_Sensor_Radiance"><strong>VIIRS_SNPP_DayNightBand_At_Sensor_Radiance</strong></a>.</p>
 <div id="f025c63a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
@@ -2298,7 +2297,7 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 </section>
 <section id="fire-and-thermal-anomalies-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="fire-and-thermal-anomalies-analysis">Fire and Thermal Anomalies Analysis</h2>
-<p>While higher radiance values indicate more light emissions, they are not always associated with city lights. For example, <strong>fires and thermal anomalies</strong> can have high radiance values and can be associated with volcanoes or gas flares. These events in particular can release large amounts of carbon dioxide (CO<sub>2</sub>), nitrogen dioxide (NO<sub>2</sub>), or methane (CH<sub>4</sub>) into the atmosphere which can be a public health hazard. Therefore, we further investigate these anomalies using VIIRS (Visible Infrared Imaging Radiometer Suite) fire and thermal anomaly data, available through the <a href="https://viirsland.gsfc.nasa.gov/Products/NASA/FireESDR.html#:~:text=The%20alternative%20375%20m%20fire,available%20starting%20in%20mid%2D2023">NASA FIRMS</a>.</p>
+<p>While higher radiance values may correspond with nighttime lights from human infrastructure (e.g.&nbsp;street lights, cars, buildings, etc.), they are not always associated with city lights. For example, <strong>fires and thermal anomalies</strong> can have high radiance values and can be associated with volcanoes or gas flares. These events in particular can release large amounts of carbon dioxide (CO<sub>2</sub>), nitrogen dioxide (NO<sub>2</sub>), or methane (CH<sub>4</sub>) into the atmosphere which can be a public health hazard. Therefore, we further investigate these anomalies using VIIRS (Visible Infrared Imaging Radiometer Suite) fire and thermal anomaly data, available through the <a href="https://viirsland.gsfc.nasa.gov/Products/NASA/FireESDR.html#:~:text=The%20alternative%20375%20m%20fire,available%20starting%20in%20mid%2D2023">NASA FIRMS</a>.</p>
 <section id="we-provide-an-interactive-section-to-examine-3-different-regions-and-events-which-produce-notable-fire-and-thermal-anomalies." class="level4">
 <h4 class="anchored" data-anchor-id="we-provide-an-interactive-section-to-examine-3-different-regions-and-events-which-produce-notable-fire-and-thermal-anomalies.">We provide an interactive section to examine 3 different regions and events which produce notable fire and thermal anomalies.</h4>
 <ol type="1">
@@ -2666,16 +2665,16 @@ Zoom | Grid Size  | Tile Coverage (degrees)
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the Black Marble Nighttime at Sensor Radiance dataset:</p>
+<p>In this notebook we have successfully completed the following steps for the Black Marble Nighttime at Sensor Radiance dataset:</p>
 <ol type="1">
 <li>Install and import the necessary libraries.</li>
-<li>Fetch the collection from STAC collections.</li>
+<li>Fetch the collection from STAC.</li>
 <li>Compute WMTS tile indices.</li>
 <li>Retrieve and visualize Black Marble nighttime at sensor radiance.</li>
 <li>Integrate VIIRS fire and thermal anomaly data.</li>
 <li>Create interactive location selection widgets.</li>
 <li>Generate side-by-side visualizations.</li>
-<li>Distinguish between lights and thermal sources.</li>
+<li>Distinguish between different sources of increased radiance.</li>
 </ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
