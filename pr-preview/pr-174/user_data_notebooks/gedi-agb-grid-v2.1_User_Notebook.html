@@ -892,15 +892,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Unit</strong>: Megagrams of aboveground biomass density per hectare (Mg/ha)</li>
 <li><strong>Utility</strong>: Forest Carbon Monitoring and Climate Research</li>
 </ul>
-<p>For more information, see the <a href="https://daac.ornl.gov/GEDI/guides/GEDI_L4B_Gridded_Biomass_V2_1.html">GEDI Level-4B (L4B) Gridded Aboveground Biomass Density user guide</a>.</p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
-<p>This notebook demonstrates how to visualize and compare GEDI aboveground biomass density data across different forest regions using STAC metadata and pre-rendered WMTS imagery:</p>
+<p>This notebook demonstrates how to visualize and compare GEDI aboveground biomass density (AGBD) data across different forest regions using SpatioTemporal Asset Catalog (STAC) metadata and pre-rendered Web Map Tile Service (WMTS) imagery:</p>
 <ol type="1">
 <li><strong>Connect to STAC API</strong> - Access the GEDI biomass collection metadata from the US GHG Center.</li>
 <li><strong>Define Tile Matrix</strong> - Use the 1km tile matrix in EPSG:4326 projection for global coverage.</li>
-<li><strong>Fetch GEDI Imagery</strong> - Retrieve pre-rendered biomass density tiles from NASA GIBS WMTS service.</li>
+<li><strong>Fetch GEDI Imagery</strong> - Retrieve pre-rendered biomass density tiles from NASA Global Imagery Browse Services (GIBS) WMTS service.</li>
 <li><strong>Visualize Biomass Patterns</strong> - Display biomass density using the gist_earth colormap with values up to 250 Mg/ha.</li>
 <li><strong>Compare Forest Regions</strong> - Analyze biomass differences between major forest ecosystems worldwide.</li>
 <li><strong>Interactive Region Selection</strong> - Input and compare high-biomass forest regions.</li>
@@ -912,13 +911,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="gedi-aboveground-biomass-density" class="level3">
 <h3 class="anchored" data-anchor-id="gedi-aboveground-biomass-density">GEDI Aboveground Biomass Density</h3>
-<p>The Global Ecosystem Dynamics Investigation (GEDI) mission provides high-resolution laser ranging observations of Earth’s 3D structure from the International Space Station (ISS). GEDI’s L4B product delivers 1 km × 1 km mean aboveground biomass density (AGBD) estimates derived from GEDI’s lidar waveform measurements. These estimates are crucial for understanding global carbon stocks and monitoring deforestation. The data covers global tropical and temperate forests between 51.6°N and 51.6°S latitude, providing unprecedented detail on forest structure and biomass distribution.</p>
-<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/gedi-agb-grid-v2.1">Global Ecosystem Dynamics Investigation (GEDI) Aboveground Biomass Density</a> data overview page.</p>
+<p>The Global Ecosystem Dynamics Investigation (GEDI) mission provides high-resolution laser ranging observations of Earth’s 3D structure from the International Space Station (ISS). GEDI’s L4B product delivers 1 km × 1 km mean AGBD estimates derived from GEDI’s lidar waveform measurements. These estimates are crucial for understanding global carbon stocks and monitoring deforestation. The data covers global tropical and temperate forests between 51.6°N and 51.6°S latitude, providing unprecedented detail on forest structure and biomass distribution.</p>
+<p>For more information regarding this dataset, please visit the <a href="(https://earth.gov/ghgcenter/data-catalog/gedi-agb-grid-v2.1)">Global Ecosystem Dynamics Investigation (GEDI) Aboveground Biomass Density data overview page</a> and the <a href="https://daac.ornl.gov/GEDI/guides/GEDI_L4B_Gridded_Biomass_V2_1.html">GEDI Level-4B (L4B) Gridded Aboveground Biomass Density user guide</a>.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<p>Navigating data via the Greenhouse Gas Center (GHGC) Application Programming Interface (API), you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
 <ul>
 <li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
 <li><code>collection</code>: A specific dataset, e.g.&nbsp;GEDI Aboveground Biomass Density</li>
@@ -976,7 +975,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GEDI Aboveground Biomass Density dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/GEDI_ISS_L4B_Aboveground_Biomass_Density_Mean_201904-202303"><strong>GEDI_ISS_L4B_Aboveground_Biomass_Density_Mean_201904-202303</strong></a>.</p>
-<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
 <div id="628ec24e-997d-4688-b98a-1f53b0e4781a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
