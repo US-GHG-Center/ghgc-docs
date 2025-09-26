@@ -8,7 +8,7 @@
 
 <meta name="author" content="Siddharth Chaudhary">
 <meta name="dcterms.date" content="2024-11-15">
-<meta name="description" content="A sample of methane (CH₄) plumes from point sources observed since 2019 by the U.S. Geostationary Operational Environmental Satellites (GOES) over North and South America.">
+<meta name="description" content="Observations of extreme and transient CH₄ emissions from oil and gas infrastructure.">
 
 <title>GOES Geostationary Satellite CH₄ Emission Observations</title>
 <style>
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-9c2c51e1b5c4c556f7e73676b297f3a9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fc7e32677b899982d6f19720a32746af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
   .custom-header {
     background-color: #FCFAF8;
@@ -130,7 +130,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
   .site-title {
     margin: 10px;
-    font-size: 2.0rem;
     display: flex;
     align-items: center;     
     justify-content: flex-start; 
@@ -139,7 +138,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   .site-title a {
     color: #1B1B1B;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600 !important;
+    font-style: normal !important;
+    font-size: 1.74rem;
 }
 
   /* Apply font to entire header area */
@@ -837,16 +838,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a></li>
   <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the Data</a></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
-  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
+  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
+  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
   <ul class="collapse">
-  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
+  <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
   </ul></li>
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps Using Folium</a>
   <ul class="collapse">
   <li><a href="#fetch-imagery-using-raster-api" id="toc-fetch-imagery-using-raster-api" class="nav-link" data-scroll-target="#fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</a></li>
   <li><a href="#generate-map" id="toc-generate-map" class="nav-link" data-scroll-target="#generate-map">Generate Map</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/user_data_notebooks/goes-ch4plume-v1_User_Notebook.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -862,7 +864,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
   .custom-header {
     background-color: #FCFAF8;
@@ -875,7 +877,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
   .site-title {
     margin: 10px;
-    font-size: 2.0rem;
     display: flex;
     align-items: center;     
     justify-content: flex-start; 
@@ -884,7 +885,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   .site-title a {
     color: #1B1B1B;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600 !important;
+    font-style: normal !important;
+    font-size: 1.74rem;
 }
 
   /* Apply font to entire header area */
@@ -903,7 +906,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    A sample of methane (CH₄) plumes from point sources observed since 2019 by the U.S. Geostationary Operational Environmental Satellites (GOES) over North and South America.
+    Observations of extreme and transient CH₄ emissions from oil and gas infrastructure.
   </div>
 </div>
 
@@ -934,8 +937,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="access-this-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
-<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
-<p>Access the <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fgoes-ch4plume-v1_User_Notebook.ipynb&amp;branch=main"><strong>GOES Geostationary Satellite CH₄ Emission Observations</strong></a> notebook in the US GHG Center JupyterHub (requires access).</p>
+<p>You can launch this notebook in the US GHG Center JupyterHub (requires access) by clicking the following link: <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fgoes-ch4plume-v1_User_Notebook.ipynb&amp;branch=main"><strong>GOES Geostationary Satellite CH₄ Emission Observations</strong></a>. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
+<p>If you <strong>do not</strong> have a US GHG Center Jupyterhub account, you can access this notebook through MyBinder by clicking the button below.</p>
+<p><a href="https://binder.ghg.2i2c.cloud/v2/gh/US-GHG-Center/ghgc-docs/HEAD?labpath=user_data_notebooks/goes-ch4plume-v1_User_Notebook.ipynb"> <img src="https://binder.openveda.cloud/badge_logo.svg" alt="Binder" title="Binder" width="150"> </a></p>
 </section>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
@@ -957,7 +961,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Spatial resolution</strong>: 1 km x 1 km (nadir)</li>
 <li><strong>Temporal extent</strong>: April 7, 2019 - July 26, 2023</li>
 <li><strong>Temporal resolution</strong>: 5 minutes</li>
-<li><strong>Unit</strong>: Total column methane enhancement above background, moles of methane per square meter</li>
+<li><strong>Unit</strong>: Total column methane enhancement above background, moles of methane per square meter (mol CH₄/m²)</li>
 <li><strong>Utility</strong>: Climate Research</li>
 </ul>
 <p>For more information, visit the <a href="https://earth.gov/ghgcenter/data-catalog/goes-ch4plume-v1">GOES Geostationary Satellite CH₄ Emission Observations</a> data overview page.</p>
@@ -965,9 +969,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. The collection processed in this notebook is the GOES Geostationary Satellite CH₄ Emission Observations data product.</li>
-<li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code>endpoint.</li>
-<li>Using <code>folium.plugins.DualMap</code>, we will visualize two tiles (side-by-side), allowing us to compare time points.</li>
+<li>Identify available dates and temporal frequency of observations for the given collection using the US Greenhouse Gas Center (GHGC) Application Programming Interface (API) <code>/stac</code> endpoint. The collection processed in this notebook is the GOES Geostationary Satellite CH₄ Emission Observations data product.</li>
+<li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint.</li>
+<li>Using <code>folium.plugins.DualMap</code>, visualize two tiles (side-by-side), allowing time point comparison.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
@@ -980,21 +984,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<p>Navigating data via the US GHG Center API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
 <ul>
 <li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
 <li><code>collection</code>: A specific dataset, e.g.&nbsp;GOES Geostationary Satellite CH₄ Emission Observations</li>
-<li><code>item</code>: One granule in the dataset, e.g.&nbsp;one file of GOES observations</li>
+<li><code>item</code>: One data file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one file of GOES observations</li>
 <li><code>asset</code>: A variable available within the granule, e.g.&nbsp;CO₂ fluxes</li>
 <li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
 <li><code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</li>
 </ul>
 </section>
-<section id="install-the-required-libraries" class="level1">
-<h1>Install the Required Libraries</h1>
-<p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
+<section id="install-the-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
+<p>Required libraries are pre-installed on the US GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="3">
+<div id="cell-8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For fetching from the Raster API</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -1013,12 +1017,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom functions for working with GHGC data via the API</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ghgc_utils</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
-<p><strong>STAC API Collection Names</strong></p>
-<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GOES Geostationary Satellite CH₄ Emission Observations dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/goes-ch4plume-v1"><strong>goes-ch4plume-v1</strong></a>.*</p>
-<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell" data-execution_count="4">
+<section id="stac-api-collection-names" class="level3">
+<h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
+<p>Now, you must fetch the dataset from the US GHG Center <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the GOES Geostationary Satellite CH₄ Emission Observations dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/goes-ch4plume-v1"><strong>goes-ch4plume-v1</strong></a>.</p>
+<div id="cell-10" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>STAC_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/stac"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RASTER_API_URL <span class="op">=</span> <span class="st">"https://earth.gov/ghgcenter/api/raster"</span></span>
@@ -1028,7 +1033,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for gosat budget methane. </span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"goes-ch4plume-v1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-11" class="cell" data-scrolled="true" data-execution_count="5">
+<div id="cell-11" class="cell" data-scrolled="true" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library enables an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
@@ -1036,7 +1041,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 
 <style>
@@ -1095,7 +1100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -1870,8 +1875,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available starting April 7, 2019 . By looking at the <code>dashboard:time density</code>, we observe that the data is available for multiple days.</p>
-<div id="cell-13" class="cell" data-execution_count="6">
+<p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available starting April 7, 2019. By looking at the <code>dashboard:time density</code>, we observe that the data is available for multiple days.</p>
+<div id="cell-13" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function lets you search for items within a specific date/time range</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
@@ -1884,7 +1889,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># items found: 52</code></pre>
 </div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="7">
+<div id="cell-14" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> items:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item.properties[<span class="st">"datetime"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1942,10 +1947,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2019-05-11T15:01:00+00:00</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the collection</span></span>
+<div id="cell-15" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examining the first item in the search results</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="6">
 
 
 <style>
@@ -1995,7 +2000,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -2023,7 +2028,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/projection/v2.0.0/schema.json"</span>
         </li>
     
             
@@ -3497,28 +3502,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="9">
+<div id="cell-16" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items} </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="10">
+<div id="cell-17" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This dataset only has one variable, so our asset is:</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"rad"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="creating-maps-using-folium" class="level1">
-<h1>Creating Maps Using Folium</h1>
+<section id="creating-maps-using-folium" class="level2">
+<h2 class="anchored" data-anchor-id="creating-maps-using-folium">Creating Maps Using Folium</h2>
 <p>You will now visualize the evolution of a methane plume across for three different time steps using <code>folium</code>.</p>
-<section id="fetch-imagery-using-raster-api" class="level2">
-<h2 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h2>
-<p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-20" class="cell" data-scrolled="true" data-execution_count="11">
+<section id="fetch-imagery-using-raster-api" class="level3">
+<h3 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h3>
+<p>Here we get information from the <code>Raster API</code>, which we will add to our map in the next section.</p>
+<div id="cell-20" class="cell" data-scrolled="true" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the datetime options we have to choose from based on our search</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">list</span>(items_dict.keys())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>['2019-05-12T19:41:00Z',
  '2019-05-12T19:36:00+00:00',
  '2019-05-12T19:31:00+00:00',
@@ -3573,12 +3578,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  '2019-05-11T15:01:00+00:00']</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="12">
+<div id="cell-21" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify dates/times to visualize</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll select three observations, each 15 minutes apart</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>datetimes <span class="op">=</span> [<span class="st">"2019-05-12T17:21:00+00:00"</span>,<span class="st">"2019-05-12T17:36:00+00:00"</span>,<span class="st">"2019-05-12T17:51:00+00:00"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-22" class="cell" data-execution_count="13">
+<div id="cell-22" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID for the first date</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[datetimes[<span class="dv">0</span>]]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
@@ -3588,7 +3593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the raster bands' information</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>[{'scale': 1.0,
   'nodata': 0.0,
   'offset': 0.0,
@@ -3605,7 +3610,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 51.75438596491229}}]</code></pre>
 </div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="14">
+<div id="cell-23" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use min and max to define desired colorbar range</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>][<span class="st">'statistics'</span>][<span class="st">'maximum'</span>],</span>
@@ -3618,26 +3623,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step is required for every date/time you want to visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-25" class="cell" data-execution_count="15">
+<div id="cell-25" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure capitilization follows Matplotlib standard practice</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"plasma"</span> <span class="co"># please select the color ramp from matplotlib library.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-26" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>items.keys()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="cell-27" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for your first date/time</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>observation_1_tile <span class="op">=</span> requests.get(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the resulting JSON</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>observation_1_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
+<div id="cell-26" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for your first date/time</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>observation_1_tile <span class="op">=</span> requests.get(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>).json()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the resulting JSON</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>observation_1_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -3651,118 +3653,110 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-104.25450580507419, 26.15898773569887, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the previous step, fetching the tiles for the second and third datetimes of interest</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>observation_date_2 <span class="op">=</span> items_dict[datetimes[<span class="dv">1</span>]]</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_2.collection_id</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_2.<span class="bu">id</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>observation_2_tile <span class="op">=</span> requests.get(</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-27" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the previous step, fetching the tiles for the second and third datetimes of interest</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>observation_date_2 <span class="op">=</span> items_dict[datetimes[<span class="dv">1</span>]]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_2.collection_id</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_2.<span class="bu">id</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>observation_2_tile <span class="op">=</span> requests.get(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-29" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>observation_date_3 <span class="op">=</span> items_dict[datetimes[<span class="dv">2</span>]]</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_3.collection_id</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_3.<span class="bu">id</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>observation_3_tile <span class="op">=</span> requests.get(</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-28" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>observation_date_3 <span class="op">=</span> items_dict[datetimes[<span class="dv">2</span>]]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_3.collection_id</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_3.<span class="bu">id</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>observation_3_tile <span class="op">=</span> requests.get(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span>, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>).json()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="generate-map" class="level2">
-<h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<div id="cell-31" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our first methane plume tile to set the center of the map</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>(observation_1_tile[<span class="st">"center"</span>][<span class="dv">1</span>], observation_1_tile[<span class="st">"center"</span>][<span class="dv">0</span>]), </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">9</span>, </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="va">None</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, </span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, </span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>                 name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>                 attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>                 overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library to create the map layer for your first date/time tile</span></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">0</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">0</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Add layer to the map</span></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat for second date/time tile</span></span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">1</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">1</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="co"># And finally for the third date/time tile</span></span>
-<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
-<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_3_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">2</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">2</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
-<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
-<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
-<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
-<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
-<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Add controls to switch elements of the map on/off</span></span>
-<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
-<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
-<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
-<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
-<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
-<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
-<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
-<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'Methane Column Enhancement (mol/m2)'</span></span>
-<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
-<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
-<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<section id="generate-map" class="level3">
+<h3 class="anchored" data-anchor-id="generate-map">Generate Map</h3>
+<div id="cell-30" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll use the "center" variable from our first methane plume tile to set the center of the map</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we specify "tiles=None" because in the next step we're going to set a custom tile to serve as our underlying world map.</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>(observation_1_tile[<span class="st">"center"</span>][<span class="dv">1</span>], observation_1_tile[<span class="st">"center"</span>][<span class="dv">0</span>]), </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    zoom_start<span class="op">=</span><span class="dv">9</span>, </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="va">None</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a custom imagery source for the underlying map</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>, </span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'ESRI World Imagery'</span>, </span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Add place labels on top</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>folium.TileLayer(tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">.png'</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>                 name<span class="op">=</span><span class="st">'ESRI World Boundaries and Places'</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>                 attr<span class="op">=</span><span class="st">'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>                 overlay<span class="op">=</span><span class="st">'True'</span>).add_to(map_)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the 'TileLayer' library to create the map layer for your first date/time tile</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">0</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">0</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Add layer to the map</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat for second date/time tile</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">1</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">1</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a><span class="co"># And finally for the third date/time tile</span></span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>map_layer <span class="op">=</span> TileLayer(</span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_3_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>items_dict[datetimes[<span class="dv">2</span>]]<span class="sc">.</span>assets[asset_name]<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>items_dict[datetimes[<span class="dv">2</span>]]<span class="sc">.</span>properties[<span class="st">"datetime"</span>]<span class="sc">}</span><span class="ss">'</span>, <span class="co"># Give this layer a title</span></span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="st">'True'</span>, <span class="co"># The layer can be overlaid on the map</span></span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="dv">1</span>, <span class="co"># Adjust the transparency of the layer</span></span>
+<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>map_layer.add_to(map_)</span>
+<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Add controls to switch elements of the map on/off</span></span>
+<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>, position<span class="op">=</span><span class="st">'topright'</span>).add_to(map_)</span>
+<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar</span></span>
+<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use 'generate_html_colorbar' from the 'ghgc_utils' module </span></span>
+<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a><span class="co"># to create an HTML colorbar representation.</span></span>
+<span id="cb23-60"><a href="#cb23-60" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(</span>
+<span id="cb23-61"><a href="#cb23-61" aria-hidden="true" tabindex="-1"></a>                color_map,</span>
+<span id="cb23-62"><a href="#cb23-62" aria-hidden="true" tabindex="-1"></a>                rescale_values,</span>
+<span id="cb23-63"><a href="#cb23-63" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'Methane Column Enhancement (mol/m2)'</span></span>
+<span id="cb23-64"><a href="#cb23-64" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-65"><a href="#cb23-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-66"><a href="#cb23-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Add colorbar to the map</span></span>
+<span id="cb23-67"><a href="#cb23-67" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb23-68"><a href="#cb23-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-69"><a href="#cb23-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-70"><a href="#cb23-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizing the map</span></span>
+<span id="cb23-71"><a href="#cb23-71" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
     
     <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
     <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
     <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
     <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
@@ -3777,7 +3771,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_0604b48cea90fb771f4a84b563d2daea {
+                #map_a5170a85532d69ea95c906b87468592d {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -3786,6 +3780,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 }
                 .leaflet-container { font-size: 1rem; }
             </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
         
 </head>
 <body>
@@ -3815,20 +3832,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_0604b48cea90fb771f4a84b563d2daea&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_a5170a85532d69ea95c906b87468592d&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_0604b48cea90fb771f4a84b563d2daea = L.map(
-                &quot;map_0604b48cea90fb771f4a84b563d2daea&quot;,
+            var map_a5170a85532d69ea95c906b87468592d = L.map(
+                &quot;map_a5170a85532d69ea95c906b87468592d&quot;,
                 {
                     center: [26.15898773569887, -104.25450580507419],
                     crs: L.CRS.EPSG3857,
-                    zoom: 9,
-                    zoomControl: true,
-                    preferCanvas: false,
+                    ...{
+  &quot;zoom&quot;: 9,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
                 }
             );
 
@@ -3836,67 +3856,126 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_b5affbadae0bfa36e823d8d3a957ee98 = L.tileLayer(
+            var tile_layer_b3fd6e15fac5520e120ab952e2d510a9 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png&quot;,
-                {&quot;attribution&quot;: &quot;Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_b5affbadae0bfa36e823d8d3a957ee98.addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            tile_layer_b3fd6e15fac5520e120ab952e2d510a9.addTo(map_a5170a85532d69ea95c906b87468592d);
         
     
-            var tile_layer_eabf17d953654ce3bee97e95e05bbcad = L.tileLayer(
+            var tile_layer_5f0f864906e86895d92367254ded1793 = L.tileLayer(
                 &quot;https://server.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png&quot;,
-                {&quot;attribution&quot;: &quot;Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_eabf17d953654ce3bee97e95e05bbcad.addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            tile_layer_5f0f864906e86895d92367254ded1793.addTo(map_a5170a85532d69ea95c906b87468592d);
         
     
-            var tile_layer_914d3ea91b3f65df3574a5b780818373 = L.tileLayer(
+            var tile_layer_d64eeb2f087785a2d30ba78285d238e0 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/goes-ch4plume-v1/items/goes-ch4plume-v1-GOES-CH4_Mexico_Durango_BV2_BV2-5_2019-05-12T17:21:00Z/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rad\u0026color_formula=gamma+r+1.05\u0026colormap_name=plasma\u0026rescale=-0.10735534384080142%2C0.27649252674814284&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_914d3ea91b3f65df3574a5b780818373.addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            tile_layer_d64eeb2f087785a2d30ba78285d238e0.addTo(map_a5170a85532d69ea95c906b87468592d);
         
     
-            var tile_layer_6cb2bcb157841fad7de2b8189c8fe9f2 = L.tileLayer(
+            var tile_layer_5e87fc3424a80b619d3cf429fc0c6719 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/goes-ch4plume-v1/items/goes-ch4plume-v1-GOES-CH4_Mexico_Durango_BV2_BV2-5_2019-05-12T17:36:00Z/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rad\u0026color_formula=gamma+r+1.05\u0026colormap_name=plasma\u0026rescale=-0.10735534384080142%2C0.27649252674814284&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_6cb2bcb157841fad7de2b8189c8fe9f2.addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            tile_layer_5e87fc3424a80b619d3cf429fc0c6719.addTo(map_a5170a85532d69ea95c906b87468592d);
         
     
-            var tile_layer_ac545ea59e89d8df7de8cdb4d8c9c8ee = L.tileLayer(
+            var tile_layer_61d20ac30f9609b2cf7f66d399b19f53 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/goes-ch4plume-v1/items/goes-ch4plume-v1-GOES-CH4_Mexico_Durango_BV2_BV2-5_2019-05-12T17:51:00Z/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rad\u0026color_formula=gamma+r+1.05\u0026colormap_name=plasma\u0026rescale=-0.10735534384080142%2C0.27649252674814284&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
             );
         
     
-            tile_layer_ac545ea59e89d8df7de8cdb4d8c9c8ee.addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            tile_layer_61d20ac30f9609b2cf7f66d399b19f53.addTo(map_a5170a85532d69ea95c906b87468592d);
         
     
-            var layer_control_5c40a1500a9ebbdd1bad06f0fbe00b5a_layers = {
+            var layer_control_265c7358e98b3705e1bab5350270f391_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    &quot;ESRI World Imagery&quot; : tile_layer_b5affbadae0bfa36e823d8d3a957ee98,
-                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_eabf17d953654ce3bee97e95e05bbcad,
-                    &quot;Methane Column Enhancement, 2019-05-12T17:21:00+00:00&quot; : tile_layer_914d3ea91b3f65df3574a5b780818373,
-                    &quot;Methane Column Enhancement, 2019-05-12T17:36:00+00:00&quot; : tile_layer_6cb2bcb157841fad7de2b8189c8fe9f2,
-                    &quot;Methane Column Enhancement, 2019-05-12T17:51:00+00:00&quot; : tile_layer_ac545ea59e89d8df7de8cdb4d8c9c8ee,
+                    &quot;ESRI World Imagery&quot; : tile_layer_b3fd6e15fac5520e120ab952e2d510a9,
+                    &quot;ESRI World Boundaries and Places&quot; : tile_layer_5f0f864906e86895d92367254ded1793,
+                    &quot;Methane Column Enhancement, 2019-05-12T17:21:00+00:00&quot; : tile_layer_d64eeb2f087785a2d30ba78285d238e0,
+                    &quot;Methane Column Enhancement, 2019-05-12T17:36:00+00:00&quot; : tile_layer_5e87fc3424a80b619d3cf429fc0c6719,
+                    &quot;Methane Column Enhancement, 2019-05-12T17:51:00+00:00&quot; : tile_layer_61d20ac30f9609b2cf7f66d399b19f53,
                 },
             };
-            let layer_control_5c40a1500a9ebbdd1bad06f0fbe00b5a = L.control.layers(
-                layer_control_5c40a1500a9ebbdd1bad06f0fbe00b5a_layers.base_layers,
-                layer_control_5c40a1500a9ebbdd1bad06f0fbe00b5a_layers.overlays,
-                {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_0604b48cea90fb771f4a84b563d2daea);
+            let layer_control_265c7358e98b3705e1bab5350270f391 = L.control.layers(
+                layer_control_265c7358e98b3705e1bab5350270f391_layers.base_layers,
+                layer_control_265c7358e98b3705e1bab5350270f391_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_a5170a85532d69ea95c906b87468592d);
 
         
 </script>
@@ -3904,117 +3983,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Click through the three methane layers to see the evolution of this plume over time!</p>
-<div id="cell-33" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set initial zoom and center of map for CH₄ Layer</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Centre of map [latitude,longitude]</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>map_ <span class="op">=</span> folium.Map(location<span class="op">=</span>(<span class="fl">26.29</span>, <span class="op">-</span><span class="fl">104.53</span>), zoom_start<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># April 2019</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>map_layer_2019 <span class="op">=</span> TileLayer(</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>april_2019_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>],</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>,</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>map_layer_2019.add_to(map_)</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
-<html>
-<head>
-    
-    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
-    
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
-    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
-    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
-    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
-    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
-    
-            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
-            <style>
-                #map_4972087e70fd047819c837130b5f2dbc {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-        
-</head>
-<body>
-    
-    
-            <div class=&quot;folium-map&quot; id=&quot;map_4972087e70fd047819c837130b5f2dbc&quot; ></div>
-        
-</body>
-<script>
-    
-    
-            var map_4972087e70fd047819c837130b5f2dbc = L.map(
-                &quot;map_4972087e70fd047819c837130b5f2dbc&quot;,
-                {
-                    center: [26.29, -104.53],
-                    crs: L.CRS.EPSG3857,
-                    zoom: 10,
-                    zoomControl: true,
-                    preferCanvas: false,
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_b0142b3c274083079d776954f1701f8c = L.tileLayer(
-                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            );
-        
-    
-            tile_layer_b0142b3c274083079d776954f1701f8c.addTo(map_4972087e70fd047819c837130b5f2dbc);
-        
-    
-            var tile_layer_1d232c146268f420dad0bab676a9a3a8 = L.tileLayer(
-                &quot;https://earth.gov/ghgcenter/api/raster/collections/goes-ch4plume-v1/items/goes-ch4plume-v1-GOES-CH4_Mexico_Durango_BV1_BV1-1_2019-04-07T16:16:00Z/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=rad\u0026color_formula=gamma+r+1.05\u0026colormap_name=plasma\u0026rescale=0.026619306576566443%2C0.07300545309991482&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.7, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            );
-        
-    
-            tile_layer_1d232c146268f420dad0bab676a9a3a8.addTo(map_4972087e70fd047819c837130b5f2dbc);
-        
-</script>
-</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
-</div>
-</div>
+</section>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the GOES Geostationary Satellite CH₄ Emission Observations dataset.</p>
+<p>In this notebook, we have successfully completed the following steps for the GOES Geostationary Satellite CH₄ Emission Observations dataset:</p>
 <ol type="1">
 <li>Install and import the necessary libraries</li>
-<li>Fetch the collection from STAC collections using the appropriate endpoints</li>
-<li>Count the number of existing granules within the collection</li>
-<li>Map the methane emission levels</li>
+<li>Fetch the collection from STAC using the appropriate endpoints</li>
+<li>Count the number of existing files (granules) within the collection</li>
+<li>Map the methane emission levels across three different times</li>
 </ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -4436,7 +4418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
- U.S. Greenhouse Gas Center
+ <a href="https://earth.gov/ghgcenter/">U.S. Greenhouse Gas Center</a>
   </li>  
 </ul>
     </div>   
