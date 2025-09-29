@@ -332,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/noaa-insitu_User_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">NOAA Global Monitoring Laboratory Atmospheric CO₂ Concentrations</span></a>
+ <span class="menu-text">NOAA Global Monitoring Laboratory Atmospheric CO₂ and CH₄ Concentrations</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -837,7 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#querying-the-feature-vector-api" id="toc-querying-the-feature-vector-api" class="nav-link" data-scroll-target="#querying-the-feature-vector-api">Querying the Feature Vector API</a></li>
-  <li><a href="#visualizing-the-ch₄-data-for-two-influx-stations" id="toc-visualizing-the-ch₄-data-for-two-influx-stations" class="nav-link" data-scroll-target="#visualizing-the-ch₄-data-for-two-influx-stations">Visualizing the CH₄ Data for Two INFLUX Stations</a></li>
+  <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time-Series Analysis</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/user_data_notebooks/influx-testbed-ghg-concentrations_User_Notebook.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -940,7 +940,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#terminology">Terminology</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#querying-the-feature-vector-api">Querying the Feature Vector API</a></li>
-<li><a href="#visualizing-the-ch-data-for-two-influx-stations">Visualizing the CH₄ Data for Two INFLUX Stations</a></li>
+<li><a href="#time-series-analysis">Time-Series Analysis</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </section>
@@ -972,29 +972,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
 <p>Navigating data via the US Greenhouse Gas Center (GHGC) Application Programming Interface (API), you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
 <ul>
-<li><code>collection</code>: A specific dataset, e.g.&nbsp;GRA²PES Greenhouse Gas and Air Quality Species</li>
-<li><code>item</code>: One file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one monthly file of greenhouse gas emissions</li>
+<li><code>collection</code>: A specific dataset, e.g.&nbsp;Indianapolis Flux Experiment CO₂ and CH₄ Concentrations</li>
+<li><code>item</code>: One file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;a file containing hourly CO₂ concentrations for a specific site</li>
 </ul>
 </section>
 <section id="install-the-required-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
 <p>Required libraries are pre-installed on the US GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="4">
+<div id="cell-8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objs <span class="im">as</span> go</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="querying-the-feature-vector-api" class="level2">
 <h2 class="anchored" data-anchor-id="querying-the-feature-vector-api">Querying the Feature Vector API</h2>
-<p>First, we are going to import the required libraries. Once imported, they allow for better execution of a query in the US GHG Center Feature Vector Application Programming Interface (API) where the items for this collection are stored.</p>
-<div id="cell-10" class="cell" data-execution_count="5">
+<p>First, we are going to fetch the data using the US GHG Center Feature Vector Application Programming Interface (API). The provided endpoints refer to a location within the API that execute a request on a data files nesting on the server.</p>
+<div id="cell-10" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>FEATURE_API_URL<span class="op">=</span><span class="st">"https://earth.gov/ghgcenter/api/features"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="19">
+<div id="cell-11" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to fetch CSV data for a station with a limit parameter</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_station_data_csv(station_code, gas_type, frequency, elevation_m, limit<span class="op">=</span><span class="dv">100000</span>):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the ?f=csv and limit query to get more rows</span></span>
@@ -1024,10 +1023,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.DataFrame()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="visualizing-the-ch₄-data-for-two-influx-stations" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-the-ch₄-data-for-two-influx-stations">Visualizing the CH₄ Data for Two INFLUX Stations</h2>
-<p>In the next cell, we’ll plot hourly CH₄ concentrations for two INFLUX sites from 2015 through 2022.</p>
-<div id="cell-13" class="cell" data-execution_count="21">
+<section id="time-series-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
+<p>In the next cell, we’ll plot hourly CH₄ concentrations for two INFLUX sites from 2015 through 2022. “site01” is the “Background Southwest1” station in Mooresville, IN and “site09” is the “Background East” station in Maxwell, IN.</p>
+<div id="cell-13" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get station name and elevation from metdata dataframe</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch data for site01 (elevation 256) and site09 (elevation 277), using limit=10000</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4/co2 select the ghg </span></span>
@@ -1048,7 +1047,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    plt.plot(site01_data[<span class="st">'datetime'</span>], site01_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'site01 (256m)'</span>, color<span class="op">=</span><span class="st">'blue'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(site09_data[<span class="st">'datetime'</span>], site09_data[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'site09 (277m)'</span>, color<span class="op">=</span><span class="st">'green'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Methane (CH₄) Hourly Concentrations Over Time for site01 and site09 Stations'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Methane (CH₄) Hourly Concentrations for site01 and site09 Stations'</span>)</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time'</span>)</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'CH₄ Concentration (ppb)'</span>)</span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
