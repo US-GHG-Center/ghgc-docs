@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Siddharth Chaudhary, Vishal Gaur">
 <meta name="dcterms.date" content="2023-06-29">
-<meta name="description" content="Global, 1 km resolution human population density estimates based on national censuses and population registers, version 4.11.">
+<meta name="description" content="Global population density estimates in five year intervals.">
 
 <title>SEDAC Gridded World Population Density</title>
 <style>
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-fc7e32677b899982d6f19720a32746af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -841,9 +841,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sedac-gridded-world-population-density" id="toc-sedac-gridded-world-population-density" class="nav-link" data-scroll-target="#sedac-gridded-world-population-density">SEDAC Gridded World Population Density</a></li>
   </ul></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
-  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
+  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
+  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
   <ul class="collapse">
-  <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a></li>
+  <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
   </ul></li>
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps Using Folium</a>
   <ul class="collapse">
@@ -912,7 +913,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Global, 1 km resolution human population density estimates based on national censuses and population registers, version 4.11.
+    Global population density estimates in five year intervals.
   </div>
 </div>
 
@@ -943,8 +944,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="access-this-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
-<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
-<p>Access the <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fsedac-popdensity-yeargrid5yr-v4.11_User_Notebook.ipynb&amp;branch=main"><strong>SEDAC Gridded World Population Density</strong></a> notebook in the US GHG Center JupyterHub (requires access).</p>
+<p>You can launch this notebook in the US GHG Center JupyterHub (requires access) by clicking the following link: <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fsedac-popdensity-yeargrid5yr-v4.11_User_Notebook.ipynb&amp;branch=main"><strong>SEDAC Gridded World Population Density</strong></a>. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
+<p>If you <strong>do not</strong> have a US GHG Center Jupyterhub account, you can access this notebook through MyBinder by clicking the button below.</p>
+<p><a href="https://binder.ghg.2i2c.cloud/v2/gh/US-GHG-Center/ghgc-docs/HEAD?labpath=user_data_notebooks/sedac-popdensity-yeargrid5yr-v4.11_User_Notebook.ipynb"> <img src="https://binder.openveda.cloud/badge_logo.svg" alt="Binder" title="Binder" width="150"> </a></p>
 </section>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
@@ -968,43 +970,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Spatial resolution</strong>: 30 arc-seconds (~1 km at equator)</li>
 <li><strong>Temporal extent</strong>: 2000 - 2020</li>
 <li><strong>Temporal resolution</strong>: Annual, every 5 years</li>
-<li><strong>Unit</strong>: Number of persons per square kilometer</li>
+<li><strong>Unit</strong>: Number of persons per square kilometer (persons/km²)</li>
 <li><strong>Utility</strong>: Climate Research</li>
 </ul>
-<p>For more, visit the <a href="https://earth.gov/ghgcenter/data-catalog/sedac-popdensity-yeargrid5yr-v4.11">SEDAC Gridded World Population Density</a> data overview page.</p>
+<p>For more information, visit the <a href="https://earth.gov/ghgcenter/data-catalog/sedac-popdensity-yeargrid5yr-v4.11">SEDAC Gridded World Population Density</a> data overview page.</p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for the given collection using the GHGC API <code>/stac</code> endpoint. Collection processed in this notebook is SEDAC gridded population density.</li>
+<li>Identify available dates and temporal frequency of observations for the given collection using the US Greenhouse Gas Center (GHGC) Application Programming Interface (API) <code>/stac</code> endpoint. The collection processed in this notebook is SEDAC Gridded World Population Density.</li>
 <li>Pass the STAC item into raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint</li>
-<li>We’ll visualize two tiles (side-by-side) allowing for comparison of each of the time points using <code>folium.plugins.DualMap</code></li>
+<li>Using <code>folium.plugins.DualMap</code>, visualize two tiles (side-by-side), allowing time point comparison.</li>
 <li>After the visualization, we’ll perform zonal statistics for a given polygon.</li>
+<li>Create a time-series analysis.</li>
 </ol>
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="sedac-gridded-world-population-density" class="level3">
 <h3 class="anchored" data-anchor-id="sedac-gridded-world-population-density">SEDAC Gridded World Population Density</h3>
-<p>The SEDAC Gridded Population of the World: Population Density, v4.11 dataset provides annual estimates of population density for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km) grid. These data can be used for assessing disaster impacts, risk mapping, and any other applications that include a human dimension. This population density dataset is provided by NASA’s Socioeconomic Data and Applications Center (SEDAC) hosted by the Center for International Earth Science Information Network (CIESIN) at Columbia University. The population estimates are provided as a continuous raster for the entire globe.</p>
+<p>The SEDAC Gridded Population of the World: Population Density, v4.11 dataset provides annual estimates of population density for the years 2000, 2005, 2010, 2015, and 2020 on a 30 arc-second (~1 km) grid. These data can be used to assess disaster impacts, risk mapping, and any other applications that include human dimension. This population density dataset is provided by NASA’s Socioeconomic Data and Applications Center (SEDAC), hosted by the Center for International Earth Science Information Network (CIESIN) at Columbia University. The population estimates are provided as a continuous raster for the entire globe.</p>
 <p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/sedac-popdensity-yeargrid5yr-v4.11">SEDAC Gridded World Population Density</a> data overview page.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<p>Navigating data via the US Greenhouse Gas Center (GHGC) Application Programming Interface (API), you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
 <ul>
 <li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
 <li><code>collection</code>: A specific dataset, e.g.&nbsp;SEDAC Gridded World Population Density</li>
-<li><code>item</code>: One granule in the dataset, e.g.&nbsp;one annual file of population density</li>
+<li><code>item</code>: One data file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one annual file of population density</li>
 <li><code>asset</code>: A variable available within the granule, e.g.&nbsp;population density</li>
 <li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
 <li><code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</li>
 </ul>
 </section>
-<section id="install-the-required-libraries" class="level1">
-<h1>Install the Required Libraries</h1>
-<p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
+<section id="install-the-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
+<p>Required libraries are pre-installed on the US GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
 <div id="cell-8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
@@ -1025,11 +1028,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom functions for working with GHGC data via the API</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ghgc_utils</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
-<p><strong>STAC API Collection Names</strong></p>
-<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the SEDAC Gridded World Population Density dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11"><strong>sedac-popdensity-yeargrid5yr-v4.11</strong></a>.*</p>
-<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
+<section id="stac-api-collection-names" class="level3">
+<h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
+<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the SEDAC Gridded World Population Density dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/sedac-popdensity-yeargrid5yr-v4.11"><strong>sedac-popdensity-yeargrid5yr-v4.11</strong></a>.</p>
 <div id="cell-10" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
@@ -1047,7 +1051,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="cell-11" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using PySTAC client</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac' library allows a HTTP request possible</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac' library makes an HTTP request </span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -3792,12 +3796,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="creating-maps-using-folium" class="level1">
-<h1>Creating Maps Using Folium</h1>
+<section id="creating-maps-using-folium" class="level2">
+<h2 class="anchored" data-anchor-id="creating-maps-using-folium">Creating Maps Using Folium</h2>
 <p>You will explore changes in population density in urban regions and visualize the outputs on a map using <code>folium</code>.</p>
-<section id="fetch-imagery-using-raster-api" class="level2">
-<h2 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h2>
-<p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
+<section id="fetch-imagery-using-raster-api" class="level3">
+<h3 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h3>
+<p>Here we get information from the <code>Raster API</code>, which we will add to our map in the next section.</p>
 <div id="cell-19" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify two date/times that you would like to visualize, using the format of items_dict.keys()</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2000-01"</span>,<span class="st">"2020-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3899,8 +3903,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="generate-map" class="level2">
-<h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
+<section id="generate-map" class="level3">
+<h3 class="anchored" data-anchor-id="generate-map">Generate Map</h3>
 <div id="cell-28" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
@@ -3910,7 +3914,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the first map layer</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>map_layer_1 <span class="op">=</span> TileLayer(</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.8</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>dates[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -3922,7 +3926,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer</span></span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>map_layer_2 <span class="op">=</span> TileLayer(</span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>month2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.8</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>dates[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -3969,7 +3973,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_f2450d2ac1cdeaab056f6452eb701577 {
+                #map_dd485c06759afac64ecda1f5a6b00429 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4006,7 +4010,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_e6db1a51ea8e11a743af424087e3da8c {
+                #map_efebaa8fc1a6f56adf674e4151874e9a {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4068,17 +4072,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_f2450d2ac1cdeaab056f6452eb701577&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_dd485c06759afac64ecda1f5a6b00429&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_e6db1a51ea8e11a743af424087e3da8c&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_efebaa8fc1a6f56adf674e4151874e9a&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_f2450d2ac1cdeaab056f6452eb701577 = L.map(
-                &quot;map_f2450d2ac1cdeaab056f6452eb701577&quot;,
+            var map_dd485c06759afac64ecda1f5a6b00429 = L.map(
+                &quot;map_dd485c06759afac64ecda1f5a6b00429&quot;,
                 {
                     center: [38.97, -77.0],
                     crs: L.CRS.EPSG3857,
@@ -4095,7 +4099,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_c0e71c8791484cdc8b6687844775eded = L.tileLayer(
+            var tile_layer_2540c3097c54a3b82734d992a09281fb = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4112,17 +4116,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_c0e71c8791484cdc8b6687844775eded.addTo(map_f2450d2ac1cdeaab056f6452eb701577);
+            tile_layer_2540c3097c54a3b82734d992a09281fb.addTo(map_dd485c06759afac64ecda1f5a6b00429);
         
     
-            var tile_layer_19997f2562cf95cd76827b5d40b7fb00 = L.tileLayer(
+            var tile_layer_190861c5a8972137451aa159e18f5553 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=0%2C20757.5234375&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
   &quot;maxNativeZoom&quot;: 18,
   &quot;noWrap&quot;: false,
-  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
   &quot;subdomains&quot;: &quot;abc&quot;,
   &quot;detectRetina&quot;: false,
   &quot;tms&quot;: false,
@@ -4132,31 +4136,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_19997f2562cf95cd76827b5d40b7fb00.addTo(map_f2450d2ac1cdeaab056f6452eb701577);
+            tile_layer_190861c5a8972137451aa159e18f5553.addTo(map_dd485c06759afac64ecda1f5a6b00429);
         
     
-            var layer_control_60ee96d35620a6d6e0ca3c4369f36cb1_layers = {
+            var layer_control_b063a71fa4461692701cfe18bd00c8d5_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_c0e71c8791484cdc8b6687844775eded,
+                    &quot;openstreetmap&quot; : tile_layer_2540c3097c54a3b82734d992a09281fb,
                 },
                 overlays :  {
-                    &quot;SEDAC Gridded World Population Density v4.11, 2000-01&quot; : tile_layer_19997f2562cf95cd76827b5d40b7fb00,
+                    &quot;SEDAC Gridded World Population Density v4.11, 2000-01&quot; : tile_layer_190861c5a8972137451aa159e18f5553,
                 },
             };
-            let layer_control_60ee96d35620a6d6e0ca3c4369f36cb1 = L.control.layers(
-                layer_control_60ee96d35620a6d6e0ca3c4369f36cb1_layers.base_layers,
-                layer_control_60ee96d35620a6d6e0ca3c4369f36cb1_layers.overlays,
+            let layer_control_b063a71fa4461692701cfe18bd00c8d5 = L.control.layers(
+                layer_control_b063a71fa4461692701cfe18bd00c8d5_layers.base_layers,
+                layer_control_b063a71fa4461692701cfe18bd00c8d5_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_f2450d2ac1cdeaab056f6452eb701577);
+            ).addTo(map_dd485c06759afac64ecda1f5a6b00429);
 
         
     
-            var map_e6db1a51ea8e11a743af424087e3da8c = L.map(
-                &quot;map_e6db1a51ea8e11a743af424087e3da8c&quot;,
+            var map_efebaa8fc1a6f56adf674e4151874e9a = L.map(
+                &quot;map_efebaa8fc1a6f56adf674e4151874e9a&quot;,
                 {
                     center: [38.97, -77.0],
                     crs: L.CRS.EPSG3857,
@@ -4173,7 +4177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_7761867d4d8735847f95f3369b4f9e6d = L.tileLayer(
+            var tile_layer_941b12cd054353f011cf3d65fcbbe3fe = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4190,17 +4194,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_7761867d4d8735847f95f3369b4f9e6d.addTo(map_e6db1a51ea8e11a743af424087e3da8c);
+            tile_layer_941b12cd054353f011cf3d65fcbbe3fe.addTo(map_efebaa8fc1a6f56adf674e4151874e9a);
         
     
-            var tile_layer_937e2fe65780566075e74959cc4714d9 = L.tileLayer(
+            var tile_layer_1e543178535b27e6298a88846caf1ac4 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2020_30_sec_2020/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=0%2C20757.5234375&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
   &quot;maxNativeZoom&quot;: 18,
   &quot;noWrap&quot;: false,
-  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
   &quot;subdomains&quot;: &quot;abc&quot;,
   &quot;detectRetina&quot;: false,
   &quot;tms&quot;: false,
@@ -4210,30 +4214,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_937e2fe65780566075e74959cc4714d9.addTo(map_e6db1a51ea8e11a743af424087e3da8c);
+            tile_layer_1e543178535b27e6298a88846caf1ac4.addTo(map_efebaa8fc1a6f56adf674e4151874e9a);
         
     
-            map_f2450d2ac1cdeaab056f6452eb701577.sync(map_e6db1a51ea8e11a743af424087e3da8c);
-            map_e6db1a51ea8e11a743af424087e3da8c.sync(map_f2450d2ac1cdeaab056f6452eb701577);
+            map_dd485c06759afac64ecda1f5a6b00429.sync(map_efebaa8fc1a6f56adf674e4151874e9a);
+            map_efebaa8fc1a6f56adf674e4151874e9a.sync(map_dd485c06759afac64ecda1f5a6b00429);
         
     
-            var layer_control_924dc52715074240b3faf22f7f3c8a4b_layers = {
+            var layer_control_5fac6b50cd9449c398da1afea24a702a_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_7761867d4d8735847f95f3369b4f9e6d,
+                    &quot;openstreetmap&quot; : tile_layer_941b12cd054353f011cf3d65fcbbe3fe,
                 },
                 overlays :  {
-                    &quot;SEDAC Gridded World Population Density v4.11, 2020-01&quot; : tile_layer_937e2fe65780566075e74959cc4714d9,
+                    &quot;SEDAC Gridded World Population Density v4.11, 2020-01&quot; : tile_layer_1e543178535b27e6298a88846caf1ac4,
                 },
             };
-            let layer_control_924dc52715074240b3faf22f7f3c8a4b = L.control.layers(
-                layer_control_924dc52715074240b3faf22f7f3c8a4b_layers.base_layers,
-                layer_control_924dc52715074240b3faf22f7f3c8a4b_layers.overlays,
+            let layer_control_5fac6b50cd9449c398da1afea24a702a = L.control.layers(
+                layer_control_5fac6b50cd9449c398da1afea24a702a_layers.base_layers,
+                layer_control_5fac6b50cd9449c398da1afea24a702a_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_e6db1a51ea8e11a743af424087e3da8c);
+            ).addTo(map_efebaa8fc1a6f56adf674e4151874e9a);
 
         
 </script>
@@ -4245,7 +4249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calculate-zonal-statistics" class="level1">
 <h1>Calculate Zonal Statistics</h1>
-<p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon around Los Angeles, USA.</p>
+<p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon around Washington D.C.</p>
 <div id="cell-31" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give the area of interest (AOI) a name, to be used in plotting later</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Washington, D.C."</span></span>
@@ -4256,11 +4260,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: { <span class="co"># Set the bounding coordinates for the polygon</span></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>, <span class="dv">39</span>],</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>,<span class="fl">38.8</span>],</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">76.8</span>,<span class="fl">38.8</span>],</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">76.8</span>,<span class="dv">39</span>],</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>,<span class="dv">39</span>]            </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>, <span class="dv">39</span>],    <span class="co"># Northwest bounding coordinate</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>, <span class="fl">38.8</span>],  <span class="co"># Southwest bounding coordinate</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">76.8</span>, <span class="fl">38.8</span>],   <span class="co"># Southeast bounding coordinate</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">76.8</span>, <span class="dv">39</span>],     <span class="co"># Northeast bounding coordinate</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">77.25</span>, <span class="dv">39</span>]     <span class="co"># Northwest bounding coordinate (closing the polygon)</span></span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>            ]</span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        ],</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span>,</span>
@@ -4274,10 +4278,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>folium.GeoJson(aoi, name<span class="op">=</span>aoi_name,style_function<span class="op">=</span><span class="kw">lambda</span> feature: {<span class="st">"fillColor"</span>:<span class="st">"none"</span>,<span class="st">"color"</span>:<span class="st">"#E467E8"</span>}).add_to(map_)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data layer (created in previous section) to visualize number of grid cells within AOI</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>map_layer_1.add_to(map_)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a quick colorbar</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,re_rescale_values,label<span class="op">=</span><span class="st">'10^3 persons/km2'</span>,dark<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a layer control to switch between map layers</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>folium.LayerControl(collapsed<span class="op">=</span><span class="va">False</span>).add_to(map_)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a quick colorbar</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>legend_html <span class="op">=</span> ghgc_utils.generate_html_colorbar(color_map,re_rescale_values,label<span class="op">=</span><span class="st">'10^3 persons/km2'</span>,dark<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>map_.get_root().html.add_child(folium.Element(legend_html))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
@@ -4298,7 +4304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_6d12e0a5b7373c648a7adc9e3faaa837 {
+                #map_14e7cbb9a19c6cc0461048b8b73f9e3a {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -4359,14 +4365,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_6d12e0a5b7373c648a7adc9e3faaa837&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_14e7cbb9a19c6cc0461048b8b73f9e3a&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_6d12e0a5b7373c648a7adc9e3faaa837 = L.map(
-                &quot;map_6d12e0a5b7373c648a7adc9e3faaa837&quot;,
+            var map_14e7cbb9a19c6cc0461048b8b73f9e3a = L.map(
+                &quot;map_14e7cbb9a19c6cc0461048b8b73f9e3a&quot;,
                 {
                     center: [38.9, -77.1],
                     crs: L.CRS.EPSG3857,
@@ -4383,7 +4389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_42f9f8b9ab22c639f1873c6f9b547369 = L.tileLayer(
+            var tile_layer_db669587258c5cdd2b6be30de31c9b94 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4400,48 +4406,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_42f9f8b9ab22c639f1873c6f9b547369.addTo(map_6d12e0a5b7373c648a7adc9e3faaa837);
+            tile_layer_db669587258c5cdd2b6be30de31c9b94.addTo(map_14e7cbb9a19c6cc0461048b8b73f9e3a);
         
     
-        function geo_json_423a579595a317669d2aaac7f74aa094_styler(feature) {
+        function geo_json_e7409fc164c778ea4670e1f7fbf746c1_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;color&quot;: &quot;#E467E8&quot;, &quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_423a579595a317669d2aaac7f74aa094_onEachFeature(feature, layer) {
+        function geo_json_e7409fc164c778ea4670e1f7fbf746c1_onEachFeature(feature, layer) {
 
             layer.on({
             });
         };
-        var geo_json_423a579595a317669d2aaac7f74aa094 = L.geoJson(null, {
-                onEachFeature: geo_json_423a579595a317669d2aaac7f74aa094_onEachFeature,
+        var geo_json_e7409fc164c778ea4670e1f7fbf746c1 = L.geoJson(null, {
+                onEachFeature: geo_json_e7409fc164c778ea4670e1f7fbf746c1_onEachFeature,
             
-                style: geo_json_423a579595a317669d2aaac7f74aa094_styler,
+                style: geo_json_e7409fc164c778ea4670e1f7fbf746c1_styler,
             ...{
 }
         });
 
-        function geo_json_423a579595a317669d2aaac7f74aa094_add (data) {
-            geo_json_423a579595a317669d2aaac7f74aa094
+        function geo_json_e7409fc164c778ea4670e1f7fbf746c1_add (data) {
+            geo_json_e7409fc164c778ea4670e1f7fbf746c1
                 .addData(data);
         }
-            geo_json_423a579595a317669d2aaac7f74aa094_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-77.25, 39], [-77.25, 38.8], [-76.8, 38.8], [-76.8, 39], [-77.25, 39]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_e7409fc164c778ea4670e1f7fbf746c1_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-77.25, 39], [-77.25, 38.8], [-76.8, 38.8], [-76.8, 39], [-77.25, 39]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_423a579595a317669d2aaac7f74aa094.addTo(map_6d12e0a5b7373c648a7adc9e3faaa837);
+            geo_json_e7409fc164c778ea4670e1f7fbf746c1.addTo(map_14e7cbb9a19c6cc0461048b8b73f9e3a);
         
     
-            var tile_layer_19997f2562cf95cd76827b5d40b7fb00 = L.tileLayer(
+            var tile_layer_190861c5a8972137451aa159e18f5553 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/sedac-popdensity-yeargrid5yr-v4.11/items/sedac-popdensity-yeargrid5yr-v4.11-gpw_v4_population_density_rev11_2000_30_sec_2000/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=population-density\u0026color_formula=gamma+r+1.05\u0026colormap_name=rainbow\u0026rescale=0%2C20757.5234375&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
   &quot;maxNativeZoom&quot;: 18,
   &quot;noWrap&quot;: false,
-  &quot;attribution&quot;: &quot;GHG&quot;,
+  &quot;attribution&quot;: &quot;US GHG Center&quot;,
   &quot;subdomains&quot;: &quot;abc&quot;,
   &quot;detectRetina&quot;: false,
   &quot;tms&quot;: false,
@@ -4451,12 +4457,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_19997f2562cf95cd76827b5d40b7fb00.addTo(map_6d12e0a5b7373c648a7adc9e3faaa837);
+            tile_layer_190861c5a8972137451aa159e18f5553.addTo(map_14e7cbb9a19c6cc0461048b8b73f9e3a);
+        
+    
+            var layer_control_a14f62dee36c29a1112738bd7a02f307_layers = {
+                base_layers : {
+                    &quot;openstreetmap&quot; : tile_layer_db669587258c5cdd2b6be30de31c9b94,
+                },
+                overlays :  {
+                    &quot;Washington, D.C.&quot; : geo_json_e7409fc164c778ea4670e1f7fbf746c1,
+                    &quot;SEDAC Gridded World Population Density v4.11, 2000-01&quot; : tile_layer_190861c5a8972137451aa159e18f5553,
+                },
+            };
+            let layer_control_a14f62dee36c29a1112738bd7a02f307 = L.control.layers(
+                layer_control_a14f62dee36c29a1112738bd7a02f307_layers.base_layers,
+                layer_control_a14f62dee36c29a1112738bd7a02f307_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_14e7cbb9a19c6cc0461048b8b73f9e3a);
+
         
 </script>
 </html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
 </div>
 </div>
+<p>We will perform zonal statistics and create a dataframe using our AOI for Washington, D.C., the items from our initial catalog search, and the “population-density” asset.</p>
 <p>We can generate the statistics for the AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the Raster API.</p>
 <div id="cell-34" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
@@ -4469,8 +4497,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 15.7 ms, sys: 6.42 ms, total: 22.1 ms
-Wall time: 3.36 s</code></pre>
+CPU times: total: 46.9 ms
+Wall time: 3.01 s</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
@@ -4614,7 +4642,7 @@ Wall time: 3.36 s</code></pre>
 </div>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
-<p>We can now explore the SEDAC population density dataset time series available for our AOI. We can plot the dataset using the code below:</p>
+<p>Let’s explore the population density values in this data collection from 2000 to 2020. We can plot the dataset using the code below:</p>
 <div id="cell-36" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 10 is width, 5 is height</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
@@ -4671,14 +4699,14 @@ Wall time: 3.36 s</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully explored, analyzed and visualized the STAC collection for the SEDAC Gridded World Population Density dataset.</p>
+<p>In this notebook, we have successfully completed the following steps for the SEDAC Gridded World Population Density dataset:</p>
 <ol type="1">
 <li>Install and import the necessary libraries</li>
-<li>Fetch the collection from STAC collections using the appropriate endpoints</li>
+<li>Fetch the collection from STAC using the appropriate endpoints</li>
 <li>Count the number of existing granules within the collection</li>
 <li>Map and compare population density for two distinctive months/years</li>
 <li>Generate zonal statistics for the area of interest (AOI)</li>
-<li>Visualizing the Data as a Time Series</li>
+<li>Plot a time series of mean population density values for a specified region</li>
 </ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
