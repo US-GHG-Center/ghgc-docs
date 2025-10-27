@@ -37,7 +37,7 @@ def giveGOSATdata(data_folder_path, analysis_year = 2015, TestFiles = False):
     data_path=  data_folder_path + f"/GOSAT/Emissions_USA_{analysis_year}.nc" 
 
     #data_path = f"{data_path}Emissions_USA_{analysis_year}.nc"
-    ds = xr.open_dataset(data_path)
+    ds = xr.open_dataset(data_path, engine = "netcdf4")
 
     # Process GOSAT inversion data
     lats = arange (90-0.5, -90, -1)
