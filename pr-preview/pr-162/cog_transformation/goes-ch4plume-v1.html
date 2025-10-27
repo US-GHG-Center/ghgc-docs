@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,18 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../cog_transformation/emit-ch4plume-v1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-9ebf503edbdbbd2e436360f6a6ebcc3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-3af17ae37acf89218c88e54a5e2f9352.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-9ebf503edbdbbd2e436360f6a6ebcc3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5f720f8b5243e8155c54f0422ae3d5f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -301,7 +302,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../logo/ghgc-logo-light.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../logo/ghgc-logo-light.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../logo/ghgc-logo-light.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
     <a href="https://earth.gov/ghgcenter" title="US GHG Center Website" class="quarto-navigation-tool px-1" aria-label="US GHG Center Website"><i class="bi bi-globe-americas"></i></a>
@@ -903,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This script was used to transform the GOES Methane Point Source Plume dataset from netCDF to Cloud Optimized GeoTIFF (COG) format for display in the Greenhouse Gas (GHG) Center.</p>
 <div id="91b2b0ea-e970-42b7-9b87-ef3931a1c60f" class="cell" data-execution_count="85">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rasterio</span>
@@ -915,13 +917,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.enums <span class="im">import</span> Resampling</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rio_cogeo.cogeo <span class="im">import</span> cog_translate</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rio_cogeo.profiles <span class="im">import</span> cog_profiles</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="a00a038c-c2ad-4048-bb3f-bcaf96ec00fd" class="cell" data-execution_count="86">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>all_files<span class="op">=</span> glob.glob(<span class="st">"labelled_plumes2/*/*/*.nc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>all_files<span class="op">=</span> glob.glob(<span class="st">"labelled_plumes2/*/*/*.nc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="5ac87306-4eec-4182-8ca4-18d1973ea207" class="cell" data-scrolled="true" data-execution_count="87">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plume_metadata <span class="op">=</span> {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plume_metadata <span class="op">=</span> {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BV1"</span>: {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"2019-04-07"</span>: {</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Plume_id"</span>: <span class="st">"BV1-1"</span>,</span>
@@ -1032,10 +1034,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>            <span class="st">"country"</span>: <span class="st">"USA"</span></span>
 <span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="f4e593b3-215d-498f-af6a-cbb4e956464e" class="cell" data-execution_count="93">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>src_crs <span class="op">=</span> CRS.from_wkt(<span class="st">'PROJCS[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,GEOGCS[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,DATUM[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,SPHEROID[</span><span class="ch">\"</span><span class="st">GRS 1980</span><span class="ch">\"</span><span class="st">,6378137,298.2572221]],PRIMEM[</span><span class="ch">\"</span><span class="st">Greenwich</span><span class="ch">\"</span><span class="st">,0,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">8901</span><span class="ch">\"</span><span class="st">]],UNIT[</span><span class="ch">\"</span><span class="st">degree</span><span class="ch">\"</span><span class="st">,0.0174532925199433,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">9122</span><span class="ch">\"</span><span class="st">]]],PROJECTION[</span><span class="ch">\"</span><span class="st">Geostationary_Satellite</span><span class="ch">\"</span><span class="st">],PARAMETER[</span><span class="ch">\"</span><span class="st">central_meridian</span><span class="ch">\"</span><span class="st">,-75],PARAMETER[</span><span class="ch">\"</span><span class="st">satellite_height</span><span class="ch">\"</span><span class="st">,35786023],PARAMETER[</span><span class="ch">\"</span><span class="st">false_easting</span><span class="ch">\"</span><span class="st">,0],PARAMETER[</span><span class="ch">\"</span><span class="st">false_northing</span><span class="ch">\"</span><span class="st">,0],UNIT[</span><span class="ch">\"</span><span class="st">metre</span><span class="ch">\"</span><span class="st">,1,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">9001</span><span class="ch">\"</span><span class="st">]],AXIS[</span><span class="ch">\"</span><span class="st">Easting</span><span class="ch">\"</span><span class="st">,EAST],AXIS[</span><span class="ch">\"</span><span class="st">Northing</span><span class="ch">\"</span><span class="st">,NORTH],EXTENSION[</span><span class="ch">\"</span><span class="st">PROJ4</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">+proj=geos +a=6378137.0 +rf=298.2572221 +lon_0=-75.0 +lat_0=0.0 +h=35786023.0 +x_0=0 +y_0=0 +units=m +sweep=x +no_defs</span><span class="ch">\"</span><span class="st">]]'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>src_crs <span class="op">=</span> CRS.from_wkt(<span class="st">'PROJCS[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,GEOGCS[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,DATUM[</span><span class="ch">\"</span><span class="st">unknown</span><span class="ch">\"</span><span class="st">,SPHEROID[</span><span class="ch">\"</span><span class="st">GRS 1980</span><span class="ch">\"</span><span class="st">,6378137,298.2572221]],PRIMEM[</span><span class="ch">\"</span><span class="st">Greenwich</span><span class="ch">\"</span><span class="st">,0,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">8901</span><span class="ch">\"</span><span class="st">]],UNIT[</span><span class="ch">\"</span><span class="st">degree</span><span class="ch">\"</span><span class="st">,0.0174532925199433,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">9122</span><span class="ch">\"</span><span class="st">]]],PROJECTION[</span><span class="ch">\"</span><span class="st">Geostationary_Satellite</span><span class="ch">\"</span><span class="st">],PARAMETER[</span><span class="ch">\"</span><span class="st">central_meridian</span><span class="ch">\"</span><span class="st">,-75],PARAMETER[</span><span class="ch">\"</span><span class="st">satellite_height</span><span class="ch">\"</span><span class="st">,35786023],PARAMETER[</span><span class="ch">\"</span><span class="st">false_easting</span><span class="ch">\"</span><span class="st">,0],PARAMETER[</span><span class="ch">\"</span><span class="st">false_northing</span><span class="ch">\"</span><span class="st">,0],UNIT[</span><span class="ch">\"</span><span class="st">metre</span><span class="ch">\"</span><span class="st">,1,AUTHORITY[</span><span class="ch">\"</span><span class="st">EPSG</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">9001</span><span class="ch">\"</span><span class="st">]],AXIS[</span><span class="ch">\"</span><span class="st">Easting</span><span class="ch">\"</span><span class="st">,EAST],AXIS[</span><span class="ch">\"</span><span class="st">Northing</span><span class="ch">\"</span><span class="st">,NORTH],EXTENSION[</span><span class="ch">\"</span><span class="st">PROJ4</span><span class="ch">\"</span><span class="st">,</span><span class="ch">\"</span><span class="st">+proj=geos +a=6378137.0 +rf=298.2572221 +lon_0=-75.0 +lat_0=0.0 +h=35786023.0 +x_0=0 +y_0=0 +units=m +sweep=x +no_defs</span><span class="ch">\"</span><span class="st">]]'</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dst_crs <span class="op">=</span> CRS.from_epsg(<span class="dv">4326</span>) </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> all_files:</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1095,7 +1097,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        filename <span class="op">=</span> <span class="ss">f"GOES-CH4_</span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>state<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>site_name<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>plume_id<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>formatted_time<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(filename)</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        output_file <span class="op">=</span> <span class="ss">f"output3/</span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">.tif"</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        reprojected_data.rio.to_raster(output_file,  compress<span class="op">=</span><span class="st">'deflate'</span>, nodata<span class="op">=</span><span class="dv">0</span>, driver<span class="op">=</span><span class="st">"COG"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        reprojected_data.rio.to_raster(output_file,  compress<span class="op">=</span><span class="st">'deflate'</span>, nodata<span class="op">=</span><span class="dv">0</span>, driver<span class="op">=</span><span class="st">"COG"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>GOES-CH4_USA_Texas_Permian_PB-1_2023-07-26T17:11:00Z
 GOES-CH4_USA_Texas_Permian_PB-1_2023-07-26T17:01:00Z
@@ -1557,7 +1559,7 @@ GOES-CH4_Mexico_Durango_BV2_BV2-5_2019-05-12T19:21:00Z</code></pre>
 </div>
 </div>
 <div id="7bf3500a-073e-42cb-9cfd-6120aa633298" class="cell" data-execution_count="94">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add overviews</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add overviews</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>COG_PROFILE <span class="op">=</span> {<span class="st">"driver"</span>: <span class="st">"COG"</span>, <span class="st">"compress"</span>: <span class="st">"DEFLATE"</span>}</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>OVERVIEW_LEVELS <span class="op">=</span> <span class="dv">3</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>OVERVIEW_RESAMPLING <span class="op">=</span> <span class="st">'average'</span></span>
@@ -1577,7 +1579,7 @@ GOES-CH4_Mexico_Durango_BV2_BV2-5_2019-05-12T19:21:00Z</code></pre>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            nodata<span class="op">=</span><span class="dv">0</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Move the temporary file to the desired local path</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        os.rename(temp_file.name, output_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        os.rename(temp_file.name, output_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Reading input: output3/GOES-CH4_Mexico_Durango_BV1_BV1-1_2019-04-07T18:26:00Z.tif
 
@@ -3934,13 +3936,14 @@ Writing output to: /var/folders/6f/r0g105hx7l5g3qw69th62h100000gp/T/tmp0chyrnfg.
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
