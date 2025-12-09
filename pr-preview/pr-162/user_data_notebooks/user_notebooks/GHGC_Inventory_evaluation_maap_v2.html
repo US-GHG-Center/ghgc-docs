@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,9 +73,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -1051,7 +1051,7 @@ S_{\text{inv-est}}
 </section>
 <section id="initialize" class="level1">
 <h1>Initialize</h1>
-<div id="cell-7" class="cell" data-execution_count="7">
+<div id="cell-7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries for data manipulation and visualization</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span>  </span>
@@ -1069,63 +1069,63 @@ S_{\text{inv-est}}
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zipfile <span class="co"># Interact with ZIP files</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io <span class="co"># To assist with downloading the data</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path <span class="co"># Create directories</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-8" class="cell" data-tags="[]" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the analysis year for the data extraction</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>analysis_year <span class="op">=</span> <span class="dv">2015</span>  <span class="co"># Currently, only the year 2015 data is available with the notebook.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Run the following cell to download the necessary data from Zenodo. This cell will only need to be run once. Note: running this cell could take upwards of a few minutes.</p>
+<div id="cell-10" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Define paths</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data_folder_path <span class="op">=</span> <span class="st">"./GOSAT_inventory_eval_data/"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>download_url <span class="op">=</span> <span class="st">"https://zenodo.org/records/16921536/files/Methane_inventory_benchmarking_v1.0.zip?download=1"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>subfolder_path <span class="op">=</span> <span class="st">"Methane_inventory_benchmarking/GOSAT_inventory_eval_data/"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>output_directory <span class="op">=</span> Path(data_folder_path)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for output directory, and create if it doesn't exist</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> Path(data_folder_path).exists():</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    output_directory.mkdir()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Directory '</span><span class="sc">{</span>data_folder_path<span class="sc">}</span><span class="ss">' created."</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Directory '</span><span class="sc">{</span>data_folder_path<span class="sc">}</span><span class="ss">' already exists."</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(download_url, stream<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract data from subfolder and export to the output directory</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Extracting data..."</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> zipfile.ZipFile(io.BytesIO(response.content)) <span class="im">as</span> z:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    files_to_extract <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> z.namelist() <span class="cf">if</span> f.startswith(subfolder_path)]</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f <span class="kw">in</span> files_to_extract:</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Filter files in the subfolder</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> f.endswith(<span class="st">'/'</span>):</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get the relative path inside the subfolder</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        relative_path <span class="op">=</span> Path(f).relative_to(subfolder_path)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        target_path <span class="op">=</span> output_directory <span class="op">/</span> relative_path</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ensure parent directories exist</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        target_path.parent.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract file contents</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> z.<span class="bu">open</span>(f) <span class="im">as</span> source, <span class="bu">open</span>(target_path, <span class="st">"wb"</span>) <span class="im">as</span> target:</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>            target.write(source.read())</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Done"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload</code></pre>
-</div>
-</div>
-<div id="cell-8" class="cell" data-tags="[]" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the analysis year for the data extraction</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>analysis_year <span class="op">=</span> <span class="dv">2015</span>  <span class="co"># Currently, only the year 2015 data is available with the notebook.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="cell-9" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data files from Zenodo</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>data_folder_path <span class="op">=</span> <span class="st">"./GOSAT_inventory_eval_data/"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>download_url <span class="op">=</span> <span class="st">"https://zenodo.org/records/16921536/files/Methane_inventory_benchmarking_v1.0.zip?download=1"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>subfolder_path <span class="op">=</span> <span class="st">"Methane_inventory_benchmarking/GOSAT_inventory_eval_data/"</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>output_directory <span class="op">=</span> Path(data_folder_path)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create output directory</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>output_directory.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Downloading ZIP file..."</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(download_url, stream<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract data from subfolder and export to the output directory</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Extracting data..."</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> zipfile.ZipFile(io.BytesIO(response.content)) <span class="im">as</span> z:</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    files_to_extract <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> z.namelist() <span class="cf">if</span> f.startswith(subfolder_path)]</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f <span class="kw">in</span> files_to_extract:</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Filter files in the subfolder</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> f.endswith(<span class="st">'/'</span>):</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get the relative path inside the subfolder</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        relative_path <span class="op">=</span> Path(f).relative_to(subfolder_path)</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        target_path <span class="op">=</span> output_directory <span class="op">/</span> relative_path</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ensure parent directories exist</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        target_path.parent.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract file contents</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> z.<span class="bu">open</span>(f) <span class="im">as</span> source, <span class="bu">open</span>(target_path, <span class="st">"wb"</span>) <span class="im">as</span> target:</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            target.write(source.read())</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Done"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Downloading ZIP file...
+<pre><code>Directory './GOSAT_inventory_eval_data/' created.
 Extracting data...
 Done
-CPU times: user 932 ms, sys: 609 ms, total: 1.54 s
-Wall time: 5min 9s</code></pre>
+CPU times: total: 2.98 s
+Wall time: 34.2 s</code></pre>
 </div>
 </div>
 <p>Here, GOSAT flux inversion results are loaded. These contain the sectorally-disaggregated posterior emissions, their covariances, and the averaging kernel of the flux inversion.</p>
-<div id="cell-11" class="cell" data-tags="[]" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the function to load GOSAT inversion data for the specified year</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The function `giveGOSATdata` returns a dictionary containing the GOSAT inversion data</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> giveGOSATdata(data_folder_path, analysis_year)  <span class="co"># Load GOSAT inversion data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-12" class="cell" data-tags="[]" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the function to load GOSAT inversion data for the specified year</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The function `giveGOSATdata` returns a dictionary containing the GOSAT inversion data</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> giveGOSATdata(data_folder_path, analysis_year)  <span class="co"># Load GOSAT inversion data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Loading GOSAT Data</code></pre>
 </div>
@@ -1134,27 +1134,27 @@ Wall time: 5min 9s</code></pre>
 <section id="epa-inventory" class="level1">
 <h1>EPA inventory</h1>
 <p>U.S. Inventory of Greenhouse Gas Emissions and Sinks (U.S. GHGI). This analysis uses 2015 U.S. GHGI, spatially allocated as described in Maasakkers et al.&nbsp;(2023). ### Reference Maasakkers, J. D., McDuffie, E. E., Sulprizio, M. P., Chen, C., Schultz, M., Brunelle, L., Thrush, R., Steller, J., Sherry, C., Jacob, D. J., Jeong, S., Irving, B., and Weitz, M.: A Gridded Inventory of Annual 2012-2018 U.S. Anthropogenic Methane Emissions, Environ. Sci. Technol., 57, 16276–16288, https://doi.org/10.1021/acs.est.3c05138, 2023.</p>
-<div id="cell-13" class="cell" data-tags="[]" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve EPA inventory data and store it in `epa_dict`</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>epa_data_path <span class="op">=</span> data_folder_path <span class="op">+</span> <span class="ss">f"/EPA/Gridded_GHGI_Methane_v2_</span><span class="sc">{</span>analysis_year<span class="sc">}</span><span class="ss">.nc"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>epa_dict <span class="op">=</span> getEPADict(epa_data_path)  <span class="co"># Retrieve EPA inventory data</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and retrieve error parameters for the EPA data based on `epa_dict`</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>epa_error_params <span class="op">=</span> getEPAErrorParams(epa_dict)  <span class="co"># Retrieve EPA error parameters</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster EPA data to GOSAT data using the retrieved EPA error parameters</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># This step aligns the EPA inventory data with the GOSAT inversion data based on spatial co-location.</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> clusterEPA2GOSAT(ana_dict, epa_dict, epa_error_params)  <span class="co"># Cluster EPA data to GOSAT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-14" class="cell" data-tags="[]" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve EPA inventory data and store it in `epa_dict`</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>epa_data_path <span class="op">=</span> data_folder_path <span class="op">+</span> <span class="ss">f"/EPA/Gridded_GHGI_Methane_v2_</span><span class="sc">{</span>analysis_year<span class="sc">}</span><span class="ss">.nc"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>epa_dict <span class="op">=</span> getEPADict(epa_data_path)  <span class="co"># Retrieve EPA inventory data</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and retrieve error parameters for the EPA data based on `epa_dict`</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>epa_error_params <span class="op">=</span> getEPAErrorParams(epa_dict)  <span class="co"># Retrieve EPA error parameters</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster EPA data to GOSAT data using the retrieved EPA error parameters</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># This step aligns the EPA inventory data with the GOSAT inversion data based on spatial co-location.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> clusterEPA2GOSAT(ana_dict, epa_dict, epa_error_params)  <span class="co"># Cluster EPA data to GOSAT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Loading EPA Data
 Loading EPA Error Parameters
 Clustering EPA data to GOSAT Grid Resolution</code></pre>
 </div>
 </div>
-<div id="cell-14" class="cell" data-tags="[]" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction as per Worden et al. 2023</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This step adjusts the ana_dict data using the AK correction method, focusing on the "x_epa" and "S_epa" variables.</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> performAKcorrection(ana_dict, x_var<span class="op">=</span><span class="st">"x_epa"</span>, S_var<span class="op">=</span><span class="st">"S_epa"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-15" class="cell" data-tags="[]" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction as per Worden et al. 2023</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This step adjusts the ana_dict data using the AK correction method, focusing on the "x_epa" and "S_epa" variables.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> performAKcorrection(ana_dict, x_var<span class="op">=</span><span class="st">"x_epa"</span>, S_var<span class="op">=</span><span class="st">"S_epa"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Performing GOSAT flux inversions AK Correction</code></pre>
 </div>
@@ -1239,9 +1239,9 @@ Clustering EPA data to GOSAT Grid Resolution</code></pre>
 </tbody>
 </table>
 <p>Here, “inv” denotes an inventory, EDGAR, EPA or FOG</p>
-<div id="cell-16" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a bar plot to compare the EPA inventory data with the GOSAT inversion data</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>makeBarPlot(ana_dict, epa_error_params, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-17" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a bar plot to compare the EPA inventory data with the GOSAT inversion data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>makeBarPlot(ana_dict, epa_error_params, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
@@ -1257,21 +1257,21 @@ Country 'United States' not found in the shapefile.</code></pre>
 </div>
 </div>
 <p>In the bar plot, the difference between the orange and green bars is due to the averaging kernel of the GOSAT flux inversion. The orange bar should be compared with the GOSAT estimates (blue bars).</p>
-<div id="cell-18" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GeoPandas DataFrame from the analysis dictionary for the "epa" inventory</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gdf_epa <span class="op">=</span> makeGeoPandasDataFrame(ana_dict, inventory<span class="op">=</span><span class="st">"epa"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (<span class="st">"****The output is a scrollable list of maps.***"</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> Output</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over each unique category in the 'cat' column of the GeoPandas DataFrame</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> Output(layout<span class="op">=</span>{<span class="st">'overflow_y'</span>: <span class="st">'scroll'</span>, <span class="st">'height'</span>: <span class="st">'500px'</span>}) </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>cats<span class="op">=</span> <span class="bu">list</span>(gdf_epa[<span class="st">'cat'</span>].unique())</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> cats:</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Generating maps for category: </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For each category, generate map plots using the MakeMaps function</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        MakeMaps(gdf_epa, cat, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>display(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-19" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GeoPandas DataFrame from the analysis dictionary for the "epa" inventory</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gdf_epa <span class="op">=</span> makeGeoPandasDataFrame(ana_dict, inventory<span class="op">=</span><span class="st">"epa"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (<span class="st">"****The output is a scrollable list of maps.***"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> Output</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over each unique category in the 'cat' column of the GeoPandas DataFrame</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> Output(layout<span class="op">=</span>{<span class="st">'overflow_y'</span>: <span class="st">'scroll'</span>, <span class="st">'height'</span>: <span class="st">'500px'</span>}) </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>cats<span class="op">=</span> <span class="bu">list</span>(gdf_epa[<span class="st">'cat'</span>].unique())</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat <span class="kw">in</span> cats:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Generating maps for category: </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For each category, generate map plots using the MakeMaps function</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        MakeMaps(gdf_epa, cat, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>display(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
@@ -1339,7 +1339,7 @@ Generating maps for category: livestock</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"c1e2ffcfae7e4a6295880e7a33bbd3c5","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"156e06435c58497faeed36fd8fd6827c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -1350,30 +1350,30 @@ Generating maps for category: livestock</code></pre>
 <h1>EDGAR inventory</h1>
 <p>Emissions Database for Global Atmospheric Research (EDGAR) Version 6</p>
 <p>Monforti Ferrario, Fabio; Crippa, Monica; Guizzardi, Diego; Muntean, Marilena; Schaaf, Edwin; Lo Vullo, Eleonora; Solazzo, Efisio; Olivier, Jos; Vignati, Elisabetta (2021): EDGAR v6.0 Greenhouse Gas Emissions. European Commission, Joint Research Centre (JRC) [Dataset].</p>
-<div id="cell-21" class="cell" data-tags="[]" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read and process EDGAR inventory data for the specified analysis year</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>edgar_data_folder <span class="op">=</span> data_folder_path <span class="op">+</span> <span class="st">"/EDGAR_v6_2015_only/"</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>edgar_dat <span class="op">=</span> readEdgarData(edgar_data_folder, analysis_year<span class="op">=</span>analysis_year)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Integrate EDGAR inventory data into the analysis dictionary (ana_dict) for the year 2015</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> addEdgar2AnaDict(ana_dict, edgar_dat, analysis_year<span class="op">=</span><span class="dv">2015</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ana_dict = FilterforCONUS(ana_dict)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-22" class="cell" data-tags="[]" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read and process EDGAR inventory data for the specified analysis year</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>edgar_data_folder <span class="op">=</span> data_folder_path <span class="op">+</span> <span class="st">"/EDGAR_v6_2015_only/"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>edgar_dat <span class="op">=</span> readEdgarData(edgar_data_folder, analysis_year<span class="op">=</span>analysis_year)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Integrate EDGAR inventory data into the analysis dictionary (ana_dict) for the year 2015</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>ana_dict <span class="op">=</span> addEdgar2AnaDict(ana_dict, edgar_dat, analysis_year<span class="op">=</span><span class="dv">2015</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ana_dict = FilterforCONUS(ana_dict)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading Edgar emission inventory Data for 2015
 Adding Edgar data to ana_dict</code></pre>
 </div>
 </div>
 <p>Note: We assume that EDGAR has the same sector-wise uncertainity as EPA.</p>
-<div id="cell-23" class="cell" data-tags="[]" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction on the analysis dictionary focusing on EDGAR data variables ("x_edgar" and "S_edgar")</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ana_dict_edgar <span class="op">=</span> performAKcorrection(ana_dict, x_var<span class="op">=</span><span class="st">"x_edgar"</span>, S_var<span class="op">=</span><span class="st">"S_edgar"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-24" class="cell" data-tags="[]" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction on the analysis dictionary focusing on EDGAR data variables ("x_edgar" and "S_edgar")</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ana_dict_edgar <span class="op">=</span> performAKcorrection(ana_dict, x_var<span class="op">=</span><span class="st">"x_edgar"</span>, S_var<span class="op">=</span><span class="st">"S_edgar"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Performing GOSAT flux inversions AK Correction</code></pre>
 </div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot comparison of EDGAR and GOSAT total emissions for each sector. </span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>makeBarPlot(ana_dict_edgar, epa_error_params, inventory<span class="op">=</span><span class="st">"edgar"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-25" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot comparison of EDGAR and GOSAT total emissions for each sector. </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>makeBarPlot(ana_dict_edgar, epa_error_params, inventory<span class="op">=</span><span class="st">"edgar"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
@@ -1388,19 +1388,19 @@ Country 'United States' not found in the shapefile.</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-25" class="cell" data-tags="[]" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GeoPandas DataFrame from the analysis dictionary for the "edgar" inventory</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> makeGeoPandasDataFrame(ana_dict, inventory<span class="op">=</span><span class="st">"edgar"</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (<span class="st">"***The output is a scrollable list of maps.***"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> Output(layout<span class="op">=</span>{<span class="st">'overflow_y'</span>: <span class="st">'scroll'</span>, <span class="st">'height'</span>: <span class="st">'500px'</span>})</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over each unique category in the 'cat' column of the GeoPandas DataFrame</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> out:</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> cat <span class="kw">in</span> gdf[<span class="st">'cat'</span>].unique():</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For each category, generate map plots using the MakeMaps function</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        MakeMaps(gdf, cat, inventory<span class="op">=</span><span class="st">"edgar"</span>, analysis_year<span class="op">=</span> analysis_year)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>display(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-26" class="cell" data-tags="[]" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GeoPandas DataFrame from the analysis dictionary for the "edgar" inventory</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> makeGeoPandasDataFrame(ana_dict, inventory<span class="op">=</span><span class="st">"edgar"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (<span class="st">"***The output is a scrollable list of maps.***"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> Output(layout<span class="op">=</span>{<span class="st">'overflow_y'</span>: <span class="st">'scroll'</span>, <span class="st">'height'</span>: <span class="st">'500px'</span>})</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over each unique category in the 'cat' column of the GeoPandas DataFrame</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> out:</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> cat <span class="kw">in</span> gdf[<span class="st">'cat'</span>].unique():</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For each category, generate map plots using the MakeMaps function</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        MakeMaps(gdf, cat, inventory<span class="op">=</span><span class="st">"edgar"</span>, analysis_year<span class="op">=</span> analysis_year)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>display(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
@@ -1410,7 +1410,7 @@ Country 'United States' not found in the shapefile.
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"42bfeccee95d42eda88de15aa76b13c3","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"b57e63cf97f446aa9eaf51be02e9b0ad","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -1419,45 +1419,45 @@ Country 'United States' not found in the shapefile.
 <h1>FOG Oil/Gas Fuel Inventory</h1>
 <p>Francoeur, C. B., McDonald, B. C., Gilman, J. B., Zarzana, K. J., Dix, B., Brown, S. S., de Gouw, J. A., Frost, G. J., Li, M., McKeen, S. A., Peischl, J., Pollack, I. B., Ryerson, T. B., Thompson, C., Warneke, C., and Trainer, M.: Quantifying Methane and Ozone Precursor Emissions from Oil and Gas Production Regions across the Contiguous US, Environ. Sci. Technol., 55, 9129–9139, https://doi.org/10.1021/acs.est.0c07352, 2021.</p>
 <p>Note: We assume that FOG emissions have the same uncertainty as EPA oil/gas emissions. The FOG inventory for the year 2015 is available at: https://csl.noaa.gov/groups/csl7/measurements/2015songnex/emissions/ (last accessed: 2025-04-10).</p>
-<div id="cell-27" class="cell" data-tags="[]" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a oil/Gas fuel category within the GOSAT data dictionary to accommodate FOG emissions data</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> createFossilCategory(ana_dict)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust the resolution of the FOG data to match the GOSAT data dictionary's resolution</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This involves clustering or aggregating the FOG data, which has a native resolution of 4x4 km^2</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>fog_data_path <span class="op">=</span> data_folder_path</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> clusterFOG2GOSAT(fog_data_path, ana_dict_fog, analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-28" class="cell" data-tags="[]" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a oil/Gas fuel category within the GOSAT data dictionary to accommodate FOG emissions data</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> createFossilCategory(ana_dict)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust the resolution of the FOG data to match the GOSAT data dictionary's resolution</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This involves clustering or aggregating the FOG data, which has a native resolution of 4x4 km^2</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>fog_data_path <span class="op">=</span> data_folder_path</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> clusterFOG2GOSAT(fog_data_path, ana_dict_fog, analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Creating Oil/Gas(= oil + gas) production Category
 Clustering FOG data to GOSAT Grid Resolution</code></pre>
 </div>
 </div>
-<div id="cell-28" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using EPA data</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"EPA fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_epa"</span>, S_var<span class="op">=</span><span class="st">"S_epa"</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using FOG data</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"FOG fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_fog"</span>, S_var<span class="op">=</span><span class="st">"S_fog"</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using EDGAR data</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"EDGAR fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_edgar"</span>, S_var<span class="op">=</span><span class="st">"S_edgar"</span>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify the error parameters for the oil/gas category to include contributions from gas and oil.</span></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># This step assumes that the "gas" key in the `epa_error_params` dictionary is a placeholder and needs to be updated.</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>epa_error_params[<span class="st">"fossil"</span>] <span class="op">=</span> epa_error_params[<span class="st">"gas"</span>]  <span class="co"># This line needs modification to accurately represent fossil sources.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-29" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using EPA data</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"EPA fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_epa"</span>, S_var<span class="op">=</span><span class="st">"S_epa"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using FOG data</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"FOG fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_fog"</span>, S_var<span class="op">=</span><span class="st">"S_fog"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform AK correction for the oil/gas category using EDGAR data</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"EDGAR fossil:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>ana_dict_fog <span class="op">=</span> performAKcorrection(ana_dict_fog, x_var<span class="op">=</span><span class="st">"x_edgar"</span>, S_var<span class="op">=</span><span class="st">"S_edgar"</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify the error parameters for the oil/gas category to include contributions from gas and oil.</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># This step assumes that the "gas" key in the `epa_error_params` dictionary is a placeholder and needs to be updated.</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>epa_error_params[<span class="st">"fossil"</span>] <span class="op">=</span> epa_error_params[<span class="st">"gas"</span>]  <span class="co"># This line needs modification to accurately represent fossil sources.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>EPA fossil: Performing GOSAT flux inversions AK Correction
 FOG fossil: Performing GOSAT flux inversions AK Correction
 EDGAR fossil: Performing GOSAT flux inversions AK Correction</code></pre>
 </div>
 </div>
-<div id="cell-29" class="cell" data-tags="[]" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar plot of oil/gas emissions from the three inventories and GOSAT flux inversion</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>makeBarPlotFossil(ana_dict_fog, epa_error_params, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-30" class="cell" data-tags="[]" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar plot of oil/gas emissions from the three inventories and GOSAT flux inversion</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>makeBarPlotFossil(ana_dict_fog, epa_error_params, inventory<span class="op">=</span><span class="st">"epa"</span>, analysis_year<span class="op">=</span>analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
@@ -1473,14 +1473,14 @@ Country 'United States' not found in the shapefile.</code></pre>
 </div>
 </div>
 <p>The FOG estimates are in good agreement with GOSAT inversion estimates after applying the GOSAT averaging kernel. EPA and EDGAR estimates agree with each other (after applying GOSAT averaging kernel) but underestimate the GOSAT inversion and FOG estimates.</p>
-<div id="cell-31" class="cell" data-tags="[]" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create map plots for fossil fuel emissions</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, convert the analysis data into a GeoPandas DataFrame suitable for mapping</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>gdf_fog <span class="op">=</span> makeGeoPandasDataFrameFOG(ana_dict_fog)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, use the GeoPandas DataFrame to create maps of fossil fuel emissions for the specified analysis year</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>MakeFossilMaps(gdf_fog, analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-32" class="cell" data-tags="[]" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create map plots for fossil fuel emissions</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, convert the analysis data into a GeoPandas DataFrame suitable for mapping</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>gdf_fog <span class="op">=</span> makeGeoPandasDataFrameFOG(ana_dict_fog)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, use the GeoPandas DataFrame to create maps of fossil fuel emissions for the specified analysis year</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>MakeFossilMaps(gdf_fog, analysis_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Country 'United States' not found in the shapefile.
 Country 'United States' not found in the shapefile.
