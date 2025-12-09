@@ -24,9 +24,8 @@ def get_country_geometry(countryname = "United States"):
         if country.attributes['NAME_LONG'] == countryname:            
             geometry = country.geometry
             return geometry
-        else:
-            print(f"Country '{countryname}' not found in the shapefile.")
-
+    
+    print(f"Country '{countryname}' not found in the shapefile.")
 
 
 def giveGOSATdata(data_folder_path, analysis_year = 2015, TestFiles = False):
