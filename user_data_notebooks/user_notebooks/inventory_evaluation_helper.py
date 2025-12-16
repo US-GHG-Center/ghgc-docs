@@ -62,7 +62,7 @@ def giveGOSATdata(data_folder_path, analysis_year = 2015, TestFiles = False):
         lon_list = lon_list + list(gosat_dict[dcat]["lon"]) 
         lat_list = lat_list + list(gosat_dict[dcat]["lat"]) 
         cat_list = cat_list + [dcat] * len(gosat_dict[dcat]["lon"])
-        emiss_values = ds.x_a[st_index:st_index + len(gosat_dict[dcat]["lon"])].values * 1000
+        #emiss_values = ds.x_a[st_index:st_index + len(gosat_dict[dcat]["lon"])].values * 1000
     dummy_x= zeros_like(len(lon_list))
     emis_category = ["livestock", "waste", "rice", "coal" , "oil", "gas"  ] 
     # Small test to check the orentation of the AK matrix
@@ -467,13 +467,9 @@ def makeGeoPandasDataFrame(ana_dict, inventory= "edgar"):
     gdf = gpd.GeoDataFrame(rows, crs=4326)
 #    USA_area_fraction 
 #    USA_area_fraction = 1- (gdf.intersection(get_country_geometry("Canada")).area + gdf.intersection(get_country_geometry("Mexico")).area)/gdf.area 
-    USA_area_fraction = gdf.intersection(get_country_geometry()).area/gdf.area # 1 minus the fraction of a grid cell that fall within the boundaries of Canada and Mexico. These are weights  will be used to filter USA emissions from the rectangular box over USA. 
+    USA_area_fraction = gdf.intersection(get_country_geometry()).area/gdf.area # the fraction of a grid cell that falls within the boundaries of Canada and Mexico. These are weights that will be used to filter USA emissions from the rectangular box over USA. 
 
-    
-    # 1 minus the fraction of a grid cell that fall within the boundaries of Canada and Mexico. These are weights  will be used to filter USA emissions from the rectangular box over USA. 
-
-    gdf["area_weights"]=  USA_area_fraction
-
+    gdf["area_weights"] =  USA_area_fraction
 
     return gdf 
 
@@ -1060,10 +1056,7 @@ def makeGeoPandasDataFrameFOG(ana_dict_fog):
             "geometry": polygon }
         rows.append(row)
     gdf = gpd.GeoDataFrame(rows, crs=4326)
-    USA_area_fraction = gdf.intersection(get_country_geometry()).area/gdf.area # 1 minus the fraction of a grid cell that fall within the boundaries of Canada and Mexico. These are weights  will be used to filter USA emissions from the rectangular box over USA. 
-
-    
-    # 1 minus the fraction of a grid cell that fall within the boundaries of Canada and Mexico. These are weights  will be used to filter USA emissions from the rectangular box over USA. 
+    USA_area_fraction = gdf.intersection(get_country_geometry()).area/gdf.area # the fraction of a grid cell that fall within the boundaries of Canada and Mexico. These are weights that will be used to filter USA emissions from the rectangular box over USA. 
 
     gdf["area_weights"]=  USA_area_fraction
 
