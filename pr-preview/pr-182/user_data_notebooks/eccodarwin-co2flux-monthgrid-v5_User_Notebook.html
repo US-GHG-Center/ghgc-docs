@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4ef7603f2e4f6d6a16851d02d0128618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-3c18f0c414f5159c2386461f75af5440.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-4ef7603f2e4f6d6a16851d02d0128618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5f720f8b5243e8155c54f0422ae3d5f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -1000,7 +1000,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Install the Required Libraries</h1>
 <p>Required libraries are pre-installed on the US GHG Center Hub, except the <code>tabulate</code> library. If you need to run this notebook elsewhere, please install the libraries by running the following command line:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib tabulate –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="1">
+<div id="cell-8" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For fetching from the Raster API</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -1025,7 +1025,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
 <p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the Air-Sea CO₂ Flux, ECCO-Darwin Model v5 dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/eccodarwin-co2flux-monthgrid-v5"><strong>eccodarwin-co2flux-monthgrid-v5</strong></a>.</p>
-<div id="cell-11" class="cell" data-execution_count="2">
+<div id="cell-11" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1039,7 +1039,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the collection for ECCO Darwin CO₂ flux monthly emissions</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"eccodarwin-co2flux-monthgrid-v5"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="3">
+<div id="cell-12" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
@@ -1047,7 +1047,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="22">
 
 
 <style>
@@ -1900,14 +1900,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2020 to December 2022. By looking at the <code>dashboard:time density</code>, we observe that the data is periodic with monthly time density.</p>
-<div id="cell-14" class="cell" data-execution_count="4">
+<div id="cell-14" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> <span class="bu">list</span>(collection.get_items())  <span class="co"># Convert the iterator to a list</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(items)<span class="sc">}</span><span class="ss"> items"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Found 36 items</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="5">
+<div id="cell-15" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function can be used to find data within a specific time frame, e.g. 2022.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
@@ -1943,11 +1943,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=eccodarwin-co2flux-monthgrid-v5-202101&gt;</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="6">
+<div id="cell-16" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the search results</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="25">
 
 
 <style>
@@ -3771,12 +3771,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="7">
+<div id="cell-17" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items; we can then query more easily by date/time, e.g. "2020-02"</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> collection.get_items()}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next, you will examine the contents of the <code>collection</code> under the <code>temporal</code> variable. You’ll see that the data is available from January 2020 to December 2022. Looking at the <code>dashboard:time density</code>, you can observe that the data is periodic with monthly time density.</p>
-<div id="cell-19" class="cell" data-execution_count="8">
+<div id="cell-19" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For this collection, there is only one asset to choose from: "co2".</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"co2"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3790,22 +3790,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="fetch-imagery-from-raster-api">Fetch Imagery from Raster API</h3>
 <p>Here we get information from the <code>Raster API</code>, which we will add to our map in the next section.</p>
 <p>Below, you will specify the upper and lower bounds of your desired colorbar for visualizing the data, which will be saved as <code>rescale_values</code>.</p>
-<div id="cell-23" class="cell" data-execution_count="9">
+<div id="cell-23" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify two dates/times to visualize.</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2020-01"</span>,<span class="st">"2020-07"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-24" class="cell" data-execution_count="10">
+<div id="cell-24" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="11">
+<div id="cell-25" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <pre><code>[{'scale': 1.0,
   'offset': 0.0,
   'sampling': 'area',
@@ -3821,7 +3821,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 0.0001903630604288499}}]</code></pre>
 </div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="12">
+<div id="cell-26" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>][<span class="st">'statistics'</span>][<span class="st">'mean'</span>] <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>raster_bands[<span class="dv">0</span>][<span class="st">'statistics'</span>][<span class="st">'stddev'</span>],</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"min"</span>),</span>
@@ -3833,13 +3833,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale_values</code> to the <code>Raster API</code> endpoint, along with a colormap. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-28" class="cell" data-execution_count="13">
+<div id="cell-28" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Making sure that capitalization follows Matplotlib standards</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"magma"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-29" class="cell" data-execution_count="17">
+<div id="cell-29" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>tile_matrix_set_id <span class="op">=</span> <span class="st">"WebMercatorQuad"</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3852,18 +3852,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
- 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/eccodarwin-co2flux-monthgrid-v5/items/eccodarwin-co2flux-monthgrid-v5-202007/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=co2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=-0.0007%2C0.0007'],
+ 'tiles': ['https://earth.gov/ghgcenter/api/raster/collections/eccodarwin-co2flux-monthgrid-v5/items/eccodarwin-co2flux-monthgrid-v5-202001/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=co2&amp;color_formula=gamma+r+1.05&amp;colormap_name=magma&amp;rescale=-0.0007%2C0.0007'],
  'minzoom': 0,
  'maxzoom': 24,
  'bounds': [-180.125, -90.124826629681, 179.875, 89.875173370319],
  'center': [-0.125, -0.1248266296809959, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="18">
+<div id="cell-30" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for the date mentioned below</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>observation_date_2 <span class="op">=</span> items_dict[dates[<span class="dv">1</span>]]</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID</span></span>
@@ -3879,7 +3879,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>observation_date_2_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -3894,7 +3894,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate-map" class="level3">
 <h3 class="anchored" data-anchor-id="generate-map">Generate Map</h3>
 <p>We’ll look at Air-Sea CO2 fluxes off the Northeast coast of the U.S. for two dates.</p>
-<div id="cell-32" class="cell" data-execution_count="19">
+<div id="cell-32" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Map is centered on the position specified by "location=(lat,lon)"</span></span>
@@ -3949,7 +3949,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -3969,7 +3969,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_302a45a908430de9a2257084bd7ae773 {
+                #map_d497597b1b2cad7e8b91567f5b3b92a5 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4006,7 +4006,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_ec4d6a35a5a27c5b0feb5d1b33c5ea79 {
+                #map_105260f5e4450b4e0c4f016e675e0026 {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -4068,17 +4068,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_302a45a908430de9a2257084bd7ae773&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_d497597b1b2cad7e8b91567f5b3b92a5&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_ec4d6a35a5a27c5b0feb5d1b33c5ea79&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_105260f5e4450b4e0c4f016e675e0026&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_302a45a908430de9a2257084bd7ae773 = L.map(
-                &quot;map_302a45a908430de9a2257084bd7ae773&quot;,
+            var map_d497597b1b2cad7e8b91567f5b3b92a5 = L.map(
+                &quot;map_d497597b1b2cad7e8b91567f5b3b92a5&quot;,
                 {
                     center: [41.0, -67.0],
                     crs: L.CRS.EPSG3857,
@@ -4095,7 +4095,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_2949c5c07d15aa45f9a4058996070711 = L.tileLayer(
+            var tile_layer_d09d3d72f2b30bf5798624881ca3af44 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4112,10 +4112,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_2949c5c07d15aa45f9a4058996070711.addTo(map_302a45a908430de9a2257084bd7ae773);
+            tile_layer_d09d3d72f2b30bf5798624881ca3af44.addTo(map_d497597b1b2cad7e8b91567f5b3b92a5);
         
     
-            var tile_layer_d9656396a914983f2ae17603ff202856 = L.tileLayer(
+            var tile_layer_9f5385e90bd669c15792ac915b7969b1 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/eccodarwin-co2flux-monthgrid-v5/items/eccodarwin-co2flux-monthgrid-v5-202007/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=co2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=-0.0007%2C0.0007&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4132,38 +4132,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_d9656396a914983f2ae17603ff202856.addTo(map_302a45a908430de9a2257084bd7ae773);
+            tile_layer_9f5385e90bd669c15792ac915b7969b1.addTo(map_d497597b1b2cad7e8b91567f5b3b92a5);
         
     
-            var marker_84e367354fa43759ec06dbe71aa48b7e = L.marker(
+            var marker_80ea87cf21de9435584b842e84221f42 = L.marker(
                 [41.0, -67.0],
                 {
 }
-            ).addTo(map_302a45a908430de9a2257084bd7ae773);
+            ).addTo(map_d497597b1b2cad7e8b91567f5b3b92a5);
         
     
-            var layer_control_95e330376a6a34a50e6198d519769450_layers = {
+            var layer_control_dec95a95e06b11d0a052d9a6913eabf2_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_2949c5c07d15aa45f9a4058996070711,
+                    &quot;openstreetmap&quot; : tile_layer_d09d3d72f2b30bf5798624881ca3af44,
                 },
                 overlays :  {
-                    &quot;2020-01 Air-Sea CO\u2082 Flux&quot; : tile_layer_d9656396a914983f2ae17603ff202856,
+                    &quot;2020-01 Air-Sea CO\u2082 Flux&quot; : tile_layer_9f5385e90bd669c15792ac915b7969b1,
                 },
             };
-            let layer_control_95e330376a6a34a50e6198d519769450 = L.control.layers(
-                layer_control_95e330376a6a34a50e6198d519769450_layers.base_layers,
-                layer_control_95e330376a6a34a50e6198d519769450_layers.overlays,
+            let layer_control_dec95a95e06b11d0a052d9a6913eabf2 = L.control.layers(
+                layer_control_dec95a95e06b11d0a052d9a6913eabf2_layers.base_layers,
+                layer_control_dec95a95e06b11d0a052d9a6913eabf2_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_302a45a908430de9a2257084bd7ae773);
+            ).addTo(map_d497597b1b2cad7e8b91567f5b3b92a5);
 
         
     
-            var map_ec4d6a35a5a27c5b0feb5d1b33c5ea79 = L.map(
-                &quot;map_ec4d6a35a5a27c5b0feb5d1b33c5ea79&quot;,
+            var map_105260f5e4450b4e0c4f016e675e0026 = L.map(
+                &quot;map_105260f5e4450b4e0c4f016e675e0026&quot;,
                 {
                     center: [41.0, -67.0],
                     crs: L.CRS.EPSG3857,
@@ -4180,7 +4180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_95eb156314b37f1954ca2210c09f4894 = L.tileLayer(
+            var tile_layer_a99193b18edea1094f6869b2983d08e1 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -4197,11 +4197,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_95eb156314b37f1954ca2210c09f4894.addTo(map_ec4d6a35a5a27c5b0feb5d1b33c5ea79);
+            tile_layer_a99193b18edea1094f6869b2983d08e1.addTo(map_105260f5e4450b4e0c4f016e675e0026);
         
     
-            var tile_layer_128fdb803ea2ce6f5f8e0764890bf5da = L.tileLayer(
-                &quot;https://earth.gov/ghgcenter/api/raster/collections/eccodarwin-co2flux-monthgrid-v5/items/eccodarwin-co2flux-monthgrid-v5-202007/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=co2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=-0.0007%2C0.0007&quot;,
+            var tile_layer_c16012d8e6bc12235b2684f13bec2c44 = L.tileLayer(
+                &quot;https://earth.gov/ghgcenter/api/raster/collections/eccodarwin-co2flux-monthgrid-v5/items/eccodarwin-co2flux-monthgrid-v5-202001/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=co2\u0026color_formula=gamma+r+1.05\u0026colormap_name=magma\u0026rescale=-0.0007%2C0.0007&quot;,
                 {
   &quot;minZoom&quot;: 0,
   &quot;maxZoom&quot;: 18,
@@ -4217,37 +4217,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-            tile_layer_128fdb803ea2ce6f5f8e0764890bf5da.addTo(map_ec4d6a35a5a27c5b0feb5d1b33c5ea79);
+            tile_layer_c16012d8e6bc12235b2684f13bec2c44.addTo(map_105260f5e4450b4e0c4f016e675e0026);
         
     
-            map_302a45a908430de9a2257084bd7ae773.sync(map_ec4d6a35a5a27c5b0feb5d1b33c5ea79);
-            map_ec4d6a35a5a27c5b0feb5d1b33c5ea79.sync(map_302a45a908430de9a2257084bd7ae773);
+            map_d497597b1b2cad7e8b91567f5b3b92a5.sync(map_105260f5e4450b4e0c4f016e675e0026);
+            map_105260f5e4450b4e0c4f016e675e0026.sync(map_d497597b1b2cad7e8b91567f5b3b92a5);
         
     
-            var marker_fe22e46f70d24d69a0b63cbdbbf2e865 = L.marker(
+            var marker_12bbfaeb387648f3bfb458a703ca3a11 = L.marker(
                 [41.0, -67.0],
                 {
 }
-            ).addTo(map_ec4d6a35a5a27c5b0feb5d1b33c5ea79);
+            ).addTo(map_105260f5e4450b4e0c4f016e675e0026);
         
     
-            var layer_control_442d1f2d9594423abe2df42fd60d1101_layers = {
+            var layer_control_de12d42840784f32aa50bf92473eda49_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_95eb156314b37f1954ca2210c09f4894,
+                    &quot;openstreetmap&quot; : tile_layer_a99193b18edea1094f6869b2983d08e1,
                 },
                 overlays :  {
-                    &quot;2020-07 Air-Sea CO\u2082 Flux&quot; : tile_layer_128fdb803ea2ce6f5f8e0764890bf5da,
+                    &quot;2020-07 Air-Sea CO\u2082 Flux&quot; : tile_layer_c16012d8e6bc12235b2684f13bec2c44,
                 },
             };
-            let layer_control_442d1f2d9594423abe2df42fd60d1101 = L.control.layers(
-                layer_control_442d1f2d9594423abe2df42fd60d1101_layers.base_layers,
-                layer_control_442d1f2d9594423abe2df42fd60d1101_layers.overlays,
+            let layer_control_de12d42840784f32aa50bf92473eda49 = L.control.layers(
+                layer_control_de12d42840784f32aa50bf92473eda49_layers.base_layers,
+                layer_control_de12d42840784f32aa50bf92473eda49_layers.overlays,
                 {
   &quot;position&quot;: &quot;topright&quot;,
   &quot;collapsed&quot;: false,
   &quot;autoZIndex&quot;: true,
 }
-            ).addTo(map_ec4d6a35a5a27c5b0feb5d1b33c5ea79);
+            ).addTo(map_105260f5e4450b4e0c4f016e675e0026);
 
         
 </script>
@@ -4259,7 +4259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="calculate-zonal-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
 <p>To perform zonal statistics, you first need to create a polygon. In this use case, you are creating a polygon along the coast of California, United States.</p>
-<div id="cell-34" class="cell">
+<div id="cell-34" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give your AOI a name for use in the plot later</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">'Coastal California'</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define AOI as a GeoJSON</span></span>
@@ -4282,7 +4282,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Now that you created the polygon for the area of interest, you need to develop a function that runs through the data collection and generates the statistics for a specific item (granule) within the boundaries of the AOI polygon.</p>
 <p>Before you run the generated function in the previous step on a specific item (observation), you need to check the total number of items available within the collection and retrieve the information regarding their start date-time.</p>
-<div id="cell-37" class="cell">
+<div id="cell-37" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the total number of items available within the collection</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#items = requests.get(</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    f"{STAC_API_URL}/collections/{collection_name}/items?limit=600"</span></span>
@@ -4291,12 +4291,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">## Print the total number of items (granules) found</span></span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print(f"Found {len(items)} items")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-38" class="cell" data-scrolled="true">
+<div id="cell-38" class="cell" data-scrolled="true" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">#items[0]['properties']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Generate the statistics for the AOI</p>
-<div id="cell-40" class="cell">
+<div id="cell-40" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use one of the custom 'ghgc_utils' functions to generate statistics over your AOI using the Raster API</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The result is output as a Pandas DataFrame</span></span>
@@ -4311,7 +4311,7 @@ Done!
 CPU times: total: 328 ms
 Wall time: 16.9 s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <div>
 
 
@@ -4354,7 +4354,7 @@ Wall time: 16.9 s</code></pre>
 <td>-0.00010515466364758998</td>
 <td>115.00000000000000000000</td>
 <td>[[9, 8, 9, 8, 22, 10, 18, 16, 8, 7], [-0.00010...</td>
-<td>31.94000000000000127898</td>
+<td>94.26000000000000511591</td>
 <td>245.00000000000000000000</td>
 <td>115.00000000000000000000</td>
 <td>-0.00010359588859230771</td>
@@ -4375,7 +4375,7 @@ Wall time: 16.9 s</code></pre>
 <td>-0.00005327701115205930</td>
 <td>115.00000000000000000000</td>
 <td>[[6, 21, 17, 16, 13, 15, 11, 9, 5, 2], [-5.327...</td>
-<td>31.94000000000000127898</td>
+<td>94.26000000000000511591</td>
 <td>245.00000000000000000000</td>
 <td>115.00000000000000000000</td>
 <td>-0.00005065607151994821</td>
@@ -4396,7 +4396,7 @@ Wall time: 16.9 s</code></pre>
 <td>-0.00003414260442530581</td>
 <td>115.00000000000000000000</td>
 <td>[[10, 15, 16, 13, 14, 15, 14, 12, 3, 3], [-3.4...</td>
-<td>31.94000000000000127898</td>
+<td>94.26000000000000511591</td>
 <td>245.00000000000000000000</td>
 <td>115.00000000000000000000</td>
 <td>-0.00003200012649207952</td>
@@ -4417,7 +4417,7 @@ Wall time: 16.9 s</code></pre>
 <td>-0.00004692151229820521</td>
 <td>115.00000000000000000000</td>
 <td>[[6, 13, 20, 14, 17, 12, 24, 5, 1, 3], [-4.692...</td>
-<td>31.94000000000000127898</td>
+<td>94.26000000000000511591</td>
 <td>245.00000000000000000000</td>
 <td>115.00000000000000000000</td>
 <td>-0.00004511987338653629</td>
@@ -4438,7 +4438,7 @@ Wall time: 16.9 s</code></pre>
 <td>-0.00009080547748822169</td>
 <td>115.00000000000000000000</td>
 <td>[[2, 10, 4, 8, 11, 15, 21, 20, 12, 12], [-9.08...</td>
-<td>31.94000000000000127898</td>
+<td>94.26000000000000511591</td>
 <td>245.00000000000000000000</td>
 <td>115.00000000000000000000</td>
 <td>-0.00008052887732505406</td>
@@ -4455,7 +4455,7 @@ Wall time: 16.9 s</code></pre>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>You can now explore the fossil fuel emissions using this data collection (January 2020 -December 2022) for the Coastal California region. You can plot the data set using the code below:</p>
-<div id="cell-42" class="cell">
+<div id="cell-42" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by the datetime column so the plot displays the values from left to right (2020 -&gt; 2022)</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df_sorted <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">"datetime"</span>)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
