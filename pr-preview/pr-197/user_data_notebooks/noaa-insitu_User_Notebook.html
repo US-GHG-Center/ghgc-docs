@@ -873,6 +873,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#atmospheric-carbon-dioxide-and-methane-concentrations-from-the-noaa-global-monitoring-laboratory" id="toc-atmospheric-carbon-dioxide-and-methane-concentrations-from-the-noaa-global-monitoring-laboratory" class="nav-link" data-scroll-target="#atmospheric-carbon-dioxide-and-methane-concentrations-from-the-noaa-global-monitoring-laboratory">Atmospheric Carbon Dioxide and Methane Concentrations from the NOAA Global Monitoring Laboratory</a></li>
   </ul></li>
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
   <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#reading-the-noaa-data-from-github-repository" id="toc-reading-the-noaa-data-from-github-repository" class="nav-link" data-scroll-target="#reading-the-noaa-data-from-github-repository">Reading the NOAA Data from GitHub Repository</a></li>
   <li><a href="#concatenating-the-data" id="toc-concatenating-the-data" class="nav-link" data-scroll-target="#concatenating-the-data">Concatenating the Data</a></li>
@@ -933,6 +934,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#data-summary-and-application">Data Summary and Application</a></li>
 <li><a href="#approach">Approach</a></li>
 <li><a href="#about-the-data">About the Data</a></li>
+<li><a href="#terminology">Terminology</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#reading-the-noaa-data-from-github-repository">Reading the NOAA Data from GitHub Repository</a></li>
 <li><a href="#concatenating-the-data">Concatenating the Data</a></li>
@@ -977,11 +979,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For more information regarding these datasets, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/noaa-gggrn-co2-concentrations">Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory</a> and <a href="https://earth.gov/ghgcenter/data-catalog/noaa-gggrn-ch4-concentrations">Atmospheric Methane Concentrations from the NOAA Global Monitoring Laboratory</a> data overview pages.</p>
 </section>
 </section>
+<section id="terminology" class="level2">
+<h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
+<p>Navigating data via the US Greenhouse Gas Center (GHGC) Application Programming Interface (API), you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<ul>
+<li>collection: A specific dataset, e.g.&nbsp;Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory</li>
+<li>item: One file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;a file containing daily CO₂ concentrations for a specific site</li>
+</ul>
+</section>
 <section id="install-the-required-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
 <p>Required libraries are pre-installed on the US GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-7" class="cell" data-execution_count="1">
+<div id="cell-8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
@@ -993,7 +1003,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reading-the-noaa-data-from-github-repository" class="level2">
 <h2 class="anchored" data-anchor-id="reading-the-noaa-data-from-github-repository">Reading the NOAA Data from GitHub Repository</h2>
 <p>First, we’ll read in the CO₂ and CH₄ concentration data from a Github repository by utilizing the Github Application Programming Interface (API). The provided endpoints refer to a location within the API that execute a request on a data collection nesting on the server.</p>
-<div id="cell-9" class="cell" data-execution_count="2">
+<div id="cell-10" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>github_repo_owner <span class="op">=</span> <span class="st">"NASA-IMPACT"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>github_repo_name <span class="op">=</span> <span class="st">"noaa-viz"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>folder_path_ch4, folder_path_co2 <span class="op">=</span> <span class="st">"flask/ch4"</span>, <span class="st">"flask/co2"</span></span>
@@ -1022,7 +1032,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="concatenating-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="concatenating-the-data">Concatenating the Data</h2>
 <p>In the next two cells, we’ll combine our CH₄ data files into one dataframe, and then do the same with the CO₂ data.</p>
-<div id="cell-11" class="cell" data-execution_count="3">
+<div id="cell-12" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concatenate the CH₄ data into a single dataframe</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_info <span class="kw">in</span> file_list_ch4:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> file_info[<span class="st">"name"</span>].endswith(<span class="st">"txt"</span>):</span>
@@ -1032,7 +1042,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.read_csv(StringIO(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(Lines[index:])), sep<span class="op">=</span><span class="vs">r'</span><span class="dv">\s</span><span class="op">+</span><span class="vs">'</span>)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        combined_df_ch4 <span class="op">=</span> pd.concat([combined_df_ch4, df], ignore_index<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="4">
+<div id="cell-13" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concatenate the CO₂ data into a single dataframe</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_info <span class="kw">in</span> file_list_co2:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> file_info[<span class="st">"name"</span>].endswith(<span class="st">"txt"</span>):</span>
@@ -1047,10 +1057,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
 <p>Now that we have combined our data, we can plot time series analyses for the CO₂ and CH₄ concentration data. Since there are several sites that provide data, we’ll filter to only plot the data for the “ABP” or Arembepe, Bahia, Brazil site.</p>
-<div id="cell-14" class="cell" data-execution_count="5">
+<div id="cell-15" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot CO₂ concentration data </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>site_to_filter <span class="op">=</span> <span class="st">'ABP'</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_co2[combined_df_co2[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_co2[combined_df_co2[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter].copy()</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(filtered_df[<span class="st">'datetime'</span>])</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -1066,52 +1076,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\ekoontz\AppData\Local\Temp\ipykernel_21412\4097024155.py:5: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  filtered_df['datetime'] = pd.to_datetime(filtered_df['datetime'])</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="noaa-insitu_User_Notebook_files/figure-html/cell-6-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="noaa-insitu_User_Notebook_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot CH₄ concentration data </span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>site_to_filter <span class="op">=</span> <span class="st">'ABP'</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_ch4[combined_df_ch4[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(filtered_df[<span class="st">'datetime'</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the "Date" column as the index</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>filtered_df.set_index(<span class="st">'datetime'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a time series plot for 'Data' and 'Value'</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.plot(filtered_df.index, filtered_df[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'Methane (CH₄) Concentrations (ppb)'</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Observation Date/Time"</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Methane CH₄ Concentration (ppb)"</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Observed CH₄ Concentrations for the </span><span class="sc">{</span>site_to_filter<span class="sc">}</span><span class="ss"> Site"</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\ekoontz\AppData\Local\Temp\ipykernel_21412\2757383932.py:4: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  filtered_df['datetime'] = pd.to_datetime(filtered_df['datetime'])</code></pre>
-</div>
+<div id="cell-16" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot CH₄ concentration data </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>site_to_filter <span class="op">=</span> <span class="st">'ABP'</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> combined_df_ch4[combined_df_ch4[<span class="st">'site_code'</span>] <span class="op">==</span> site_to_filter].copy()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">'datetime'</span>] <span class="op">=</span> pd.to_datetime(filtered_df[<span class="st">'datetime'</span>])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the "Date" column as the index</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>filtered_df.set_index(<span class="st">'datetime'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a time series plot for 'Data' and 'Value'</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.plot(filtered_df.index, filtered_df[<span class="st">'value'</span>], label<span class="op">=</span><span class="st">'Methane (CH₄) Concentrations (ppb)'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Observation Date/Time"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Methane CH₄ Concentration (ppb)"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"Observed CH₄ Concentrations for the </span><span class="sc">{</span>site_to_filter<span class="sc">}</span><span class="ss"> Site"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="noaa-insitu_User_Notebook_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="noaa-insitu_User_Notebook_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
