@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-04-10">
 <meta name="description" content="Global, daily 0.1 degree resolution carbon fluxes from net primary production (NPP), heterotrophic respiration (Rh), wildfire emissions (FIRE), fuel wood burning emissions (FUEL), net ecosystem exchange (NEE), and net biosphere exchange (NBE) derived from the MiCASA model, version 1">
 
 <title>MiCASA Land Carbon Flux – U.S. Greenhouse Gas Center Documentation</title>
@@ -79,9 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-c5f720f8b5243e8155c54f0422ae3d5f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-520075157c85874e6934461113ef6254.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4ef7603f2e4f6d6a16851d02d0128618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-3c18f0c414f5159c2386461f75af5440.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-4ef7603f2e4f6d6a16851d02d0128618.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -369,13 +370,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/eccodarwin-co2flux-monthgrid-v5_User_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Air-Sea CO<sub>2</sub> Flux, ECCO-Darwin Model v5</span></a>
+ <span class="menu-text">Air-Sea CO₂ Flux, ECCO-Darwin Model v5</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../user_data_notebooks/noaa-insitu_User_Notebook.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Atmospheric Carbon Dioxide Concentrations from the NOAA Global Monitoring Laboratory</span></a>
+ <span class="menu-text">Atmospheric Carbon Dioxide and Methane Concentrations from the NOAA Global Monitoring Laboratory</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -875,23 +876,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#micasa-land-carbon-flux" id="toc-micasa-land-carbon-flux" class="nav-link" data-scroll-target="#micasa-land-carbon-flux">MiCASA Land Carbon Flux</a></li>
   </ul></li>
   <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
-  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a>
-  <ul class="collapse">
+  <li><a href="#install-the-required-libraries" id="toc-install-the-required-libraries" class="nav-link" data-scroll-target="#install-the-required-libraries">Install the Required Libraries</a></li>
   <li><a href="#query-the-stac-api" id="toc-query-the-stac-api" class="nav-link" data-scroll-target="#query-the-stac-api">Query the STAC API</a>
   <ul class="collapse">
   <li><a href="#stac-api-collection-names" id="toc-stac-api-collection-names" class="nav-link" data-scroll-target="#stac-api-collection-names">STAC API Collection Names</a></li>
-  </ul></li>
   </ul></li>
   <li><a href="#creating-maps-using-folium" id="toc-creating-maps-using-folium" class="nav-link" data-scroll-target="#creating-maps-using-folium">Creating Maps Using Folium</a>
   <ul class="collapse">
   <li><a href="#fetch-imagery-using-raster-api" id="toc-fetch-imagery-using-raster-api" class="nav-link" data-scroll-target="#fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</a></li>
   <li><a href="#generate-map" id="toc-generate-map" class="nav-link" data-scroll-target="#generate-map">Generate Map</a></li>
   </ul></li>
-  <li><a href="#calculate-zonal-statistics" id="toc-calculate-zonal-statistics" class="nav-link" data-scroll-target="#calculate-zonal-statistics">Calculate Zonal Statistics</a>
-  <ul class="collapse">
+  <li><a href="#calculate-zonal-statistics" id="toc-calculate-zonal-statistics" class="nav-link" data-scroll-target="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
   <li><a href="#time-series-analysis" id="toc-time-series-analysis" class="nav-link" data-scroll-target="#time-series-analysis">Time-Series Analysis</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/us-ghg-center/ghgc-docs/blob/main/user_data_notebooks/micasa-carbonflux-daygrid-v1_User_Notebook.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/us-ghg-center/ghgc-docs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -920,6 +917,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 10, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -931,8 +934,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="access-this-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="access-this-notebook">Access this Notebook</h2>
-<p>You can launch this notebook in the US GHG Center JupyterHub by clicking the link below. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
-<p>Access the <a href="https://us-ghg-center.github.io/ghgc-docs/user_data_notebooks/micasa-carbonflux-daygrid-v1_User_Notebook.html"><strong>MiCASA Land Carbon Flux</strong></a> notebook in the US GHG Center JupyterHub.</p>
+<p>You can launch this notebook in the US GHG Center JupyterHub (requires access) by clicking the following link: <a href="https://hub.ghg.center/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2FUS-GHG-Center%2Fghgc-docs&amp;urlpath=lab%2Ftree%2Fghgc-docs%2Fuser_data_notebooks%2Fmicasa-carbonflux-daygrid-v1_User_Notebook.ipynb&amp;branch=main"><strong>MiCASA Land Carbon Flux</strong></a>. If you are a new user, you should first sign up for the hub by filling out this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdai8otCdrVQzJgev8mjDhzKyCg7jcrB3UeTXNHoCiaMKrkaQ/viewform"><strong>request form</strong></a> and providing the required information.</p>
+<p>If you <strong>do not</strong> have a US GHG Center Jupyterhub account, you can access this notebook through MyBinder by clicking the button below.</p>
+<p><a href="https://binder.ghg.2i2c.cloud/v2/gh/US-GHG-Center/ghgc-docs/HEAD?labpath=user_data_notebooks/micasa-carbonflux-daygrid-v1_User_Notebook.ipynb"> <img src="https://binder.openveda.cloud/badge_logo.svg" alt="Binder" title="Binder" width="150"> </a></p>
 </section>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
@@ -940,10 +944,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#data-summary-and-application">Data Summary and Application</a></li>
 <li><a href="#approach">Approach</a></li>
 <li><a href="#about-the-data">About the Data</a></li>
+<li><a href="#terminology">Terminology</a></li>
 <li><a href="#install-the-required-libraries">Install the Required Libraries</a></li>
 <li><a href="#query-the-stac-api">Query the STAC API</a></li>
-<li><a href="#visual-comparison-across-time-periods">Visual Comparison Across Time Periods</a></li>
-<li><a href="#map-out-selected-tiles">Map Out Selected Tiles</a></li>
+<li><a href="#fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</a></li>
+<li><a href="#generate-map">Generate Map</a></li>
 <li><a href="#calculate-zonal-statistics">Calculate Zonal Statistics</a></li>
 <li><a href="#time-series-analysis">Time-Series Analysis</a></li>
 <li><a href="#summary">Summary</a></li>
@@ -956,16 +961,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Spatial resolution</strong>: 0.1° x 0.1°</li>
 <li><strong>Temporal extent</strong>: January 1, 2001 - December 31, 2023</li>
 <li><strong>Temporal resolution</strong>: Daily and Monthly Averages</li>
-<li><strong>Unit</strong>: Grams of Carbon per square meter per day</li>
+<li><strong>Unit</strong>: Grams of Carbon per square meter per day (g Carbon/m²/day)</li>
 <li><strong>Utility</strong>: Climate Research</li>
 </ul>
-<p>For more, visit the <a href="https://earth.gov/ghgcenter/data-catalog/micasa-carbonflux-grid-v1">MiCASA Land Carbon Flux</a> data overview page.</p>
+<p>For more information, visit the <a href="https://earth.gov/ghgcenter/data-catalog/micasa-carbonflux-grid-v1">MiCASA Land Carbon Flux</a> data overview page.</p>
 </section>
 <section id="approach" class="level2">
 <h2 class="anchored" data-anchor-id="approach">Approach</h2>
 <ol type="1">
-<li>Identify available dates and temporal frequency of observations for a given collection using the GHGC API <code>/stac</code> endpoint. The collection processed in this notebook is the Land-Atmosphere Carbon Flux data product</li>
-<li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/tilejson.json</code> endpoint</li>
+<li>Identify available dates and temporal frequency of observations for a given collection using the US Greenhouse Gas Center (GHGC) Application Programming Interface (API) <code>/stac</code> endpoint. The collection processed in this notebook is the MiCASA Land Carbon Flux data product</li>
+<li>Pass the STAC item into the raster API <code>/collections/{collection_id}/items/{item_id}/{tile_matrix_set_id}/tilejson.json</code> endpoint</li>
 <li>Using <code>folium.plugins.DualMap</code>, visualize two tiles (side-by-side), allowing time point comparison</li>
 <li>After the visualization, perform zonal statistics for a given polygon</li>
 </ol>
@@ -974,19 +979,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="about-the-data">About the Data</h2>
 <section id="micasa-land-carbon-flux" class="level3">
 <h3 class="anchored" data-anchor-id="micasa-land-carbon-flux">MiCASA Land Carbon Flux</h3>
-<p>This dataset presents a variety of carbon flux parameters derived from the Más Informada Carnegie-Ames-Stanford-Approach (MiCASA) model. The model’s input data includes air temperature, precipitation, incident solar radiation, a soil classification map, and several satellite derived products. All model calculations are driven by analyzed meteorological data from NASA’s Modern-Era Retrospective analysis for Research and Application, Version 2 (MERRA-2). The resulting product provides global, daily data at 0.1 degree resolution from January 2001 through December 2023. It includes carbon flux variables expressed in units of kilograms of carbon per square meter per day (kg Carbon/m²/day) from net primary production (NPP), heterotrophic respiration (Rh), wildfire emissions (FIRE), fuel wood burning emissions (FUEL), net ecosystem exchange (NEE), and net biosphere exchange (NBE). The latter two are derived from the first four (see Scientific Details below). MiCASA is an extensive revision of the CASA – Global Fire Emissions Database, version 3 (CASA-GFED3) product. CASA-GFED3 and earlier versions of MERRA-driven CASA-GFED carbon fluxes have been used in several atmospheric carbon dioxide (CO₂) transport studies, serve as a community standard for priors of flux inversion systems, and through the support of NASA’s Carbon Monitoring System (CMS), help characterize, quantify, understand and predict the evolution of global carbon sources and sinks.</p>
-<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter">U.S. Greenhouse Gas Center</a>.</p>
+<p>This dataset presents a variety of carbon flux parameters derived from the Más Informada Carnegie-Ames-Stanford-Approach (MiCASA) model. The model’s input data includes air temperature, precipitation, incident solar radiation, a soil classification map, and several satellite-derived products. All model calculations are driven by analyzed meteorological data from NASA’s Modern-Era Retrospective analysis for Research and Application, Version 2 (MERRA-2). The resulting product provides global, daily data at 0.1 degree resolution from January 2001 through December 2023. It includes carbon flux variables expressed in units of kilograms of carbon per square meter per day (kg Carbon/m²/day) from net primary production (NPP), heterotrophic respiration (Rh), wildfire emissions (FIRE), fuel wood burning emissions (FUEL), net ecosystem exchange (NEE), and net biosphere exchange (NBE). The latter two are derived from the first four (see Scientific Details below). MiCASA is an extensive revision of the CASA – Global Fire Emissions Database, version 3 (CASA-GFED3) product. CASA-GFED3 and earlier versions of MERRA-driven CASA-GFED carbon fluxes have been used in several atmospheric carbon dioxide (CO₂) transport studies, serve as a community standard for priors of flux inversion systems, and through the support of NASA’s Carbon Monitoring System (CMS), help characterize, quantify, understand and predict the evolution of global carbon sources and sinks.</p>
+<p>For more information regarding this dataset, please visit the <a href="https://earth.gov/ghgcenter/data-catalog/micasa-carbonflux-grid-v1">MiCASA Land Carbon Flux</a> data overview page.</p>
 </section>
 </section>
 <section id="terminology" class="level2">
 <h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
-<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook. - <code>catalog</code>: All datasets available at the <code>/stac</code> endpoint - <code>collection</code>: A specific dataset, e.g.&nbsp;MiCASA Land Carbon Flux - <code>item</code>: One granule in the dataset, e.g.&nbsp;one daily file of carbon fluxes - <code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange - <code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets - <code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</p>
+<p>Navigating data via the GHGC API, you will encounter terminology that is different from browsing in a typical filesystem. We’ll define some terms here which are used throughout this notebook.</p>
+<ul>
+<li><code>catalog</code>: All datasets available at the <code>/stac</code> endpoint</li>
+<li><code>collection</code>: A specific dataset, e.g.&nbsp;MiCASA Land Carbon Flux</li>
+<li><code>item</code>: One data file (i.e.&nbsp;granule) in the dataset, e.g.&nbsp;one daily file of carbon fluxes</li>
+<li><code>asset</code>: A variable available within the granule, e.g.&nbsp;net primary productivity or net ecosystem exchange</li>
+<li><code>STAC API</code>: <strong>Sp</strong>atio<strong>T</strong>emporal <strong>A</strong>sset <strong>C</strong>atalogs - Endpoint for fetching metadata about available datasets</li>
+<li><code>Raster API</code>: Endpoint for fetching data itself, for imagery and statistics</li>
+</ul>
 </section>
-<section id="install-the-required-libraries" class="level1">
-<h1>Install the Required Libraries</h1>
-<p>Required libraries are pre-installed on the GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
+<section id="install-the-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="install-the-required-libraries">Install the Required Libraries</h2>
+<p>Required libraries are pre-installed on the US GHG Center Hub. If you need to run this notebook elsewhere, please install them with this line in a code cell:</p>
 <p>%pip install requests folium rasterstats pystac_client pandas matplotlib –quiet</p>
-<div id="cell-8" class="cell" data-execution_count="1">
+<div id="cell-8" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the following libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For fetching from the Raster API</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -1005,13 +1018,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom functions for working with GHGC data via the API</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ghgc_utils</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 <section id="query-the-stac-api" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-stac-api">Query the STAC API</h2>
 <section id="stac-api-collection-names" class="level3">
 <h3 class="anchored" data-anchor-id="stac-api-collection-names">STAC API Collection Names</h3>
-<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the MiCASA Land Carbon Flux dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/micasa-carbonflux-monthgrid-v1"><strong>micasa-carbonflux-monthgrid-v1</strong></a>.*</p>
-<p>**You can find the collection name of any dataset on the GHGC data portal by navigating to the dataset landing page within the data catalog. The collection name is the last portion of the dataset landing page’s URL, and is also listed in the pop-up box after clicking “ACCESS DATA.”*</p>
-<div id="cell-10" class="cell" data-execution_count="2">
+<p>Now, you must fetch the dataset from the <a href="https://earth.gov/ghgcenter/api/stac/"><strong>STAC API</strong></a> by defining its associated STAC API collection ID as a variable. The collection ID, also known as the <strong>collection name</strong>, for the MiCASA Land Carbon Flux dataset is <a href="https://earth.gov/ghgcenter/api/stac/collections/micasa-carbonflux-monthgrid-v1"><strong>micasa-carbonflux-monthgrid-v1</strong></a>.</p>
+<div id="cell-10" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide the STAC and RASTER API endpoints</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The endpoint is referring to a location within the API that executes a request on a data collection nesting on the server.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1024,15 +1037,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># The collection name is used to fetch metadata from the STAC API.</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>collection_name <span class="op">=</span> <span class="st">"micasa-carbonflux-monthgrid-v1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="3">
+<div id="cell-11" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the collection from the STAC API using the appropriate endpoint</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library allows a HTTP request possible</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'pystac_client' library makes an HTTP request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(STAC_API_URL)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> catalog.get_collection(collection_name)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the collection to the console</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>collection</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="33">
 
 
 <style>
@@ -1064,8 +1077,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     color: rgb(0, 128, 0);
     font-weight: 700;
 }
+.pystac-wrap {
+  display: block !important;
+}
+.pystac-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
 </style>
-<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output">
+<div>
+<div class="pystac-text-repr-fallback">
+    &lt;CollectionClient id=micasa-carbonflux-monthgrid-v1&gt;
+</div>
+<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output pystac-wrap" style="display:none">
     <div class="container" style="line-height: normal;">
         <ul style="padding: 0px; margin: 0px; list-style: none; display: block;">
             
@@ -1091,7 +1115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -1107,7 +1131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
                     <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 5 items</span></summary>
+        <summary class="pystac-summary"><span class="pystac-k">links</span><span class="pystac-l">[] 7 items</span></summary>
         
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
@@ -1292,6 +1316,99 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li><details>
             <summary class="pystac-summary"><span class="pystac-k">4</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">rel</span>
+            <span class="pystac-v">"items"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">href</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/micasa-carbonflux-monthgrid-v1/items"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">type</span>
+            <span class="pystac-v">"application/geo+json"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">5</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">rel</span>
+            <span class="pystac-v">"http://www.opengis.net/def/rel/ogc/1.0/queryables"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">href</span>
+            <span class="pystac-v">"https://dev.ghg.center/api/stac/collections/micasa-carbonflux-monthgrid-v1/queryables"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">type</span>
+            <span class="pystac-v">"application/schema+json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">title</span>
+            <span class="pystac-v">"Queryables"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">6</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
             
@@ -2065,7 +2182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
         <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">rh</span></summary>
+            <summary class="pystac-summary"><span class="pystac-k">cog_default</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
             
@@ -2114,7 +2231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">title</span>
-            <span class="pystac-v">"Heterotrophic respiration (Rh), MiCASA Model v1"</span>
+            <span class="pystac-v">"Default COG Layer"</span>
         </li>
     
             
@@ -2123,433 +2240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">description</span>
-            <span class="pystac-v">"Heterotrophic respiration (carbon flux from the soil to the atmosphere) in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">nbe</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Net Biosphere Exchange (NBE), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Net Biosphere Exchange (net carbon flux from the ecosystem) in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">nee</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Net Ecosystem Exchange (NEE), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Net Ecosystem Exchange (net carbon flux to the atmosphere) in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">npp</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Net Primary Production (NPP), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Net Primary Production (carbon available from plants) in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">atmc</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Atmospheric Correction (ATMC), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"A correction to account for long-term historical changes in the uptake of CO₂ from the atmosphere to the biosphere in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">fire</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Fire emissions (FIRE), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Fire emissions (flux of carbon to the atmosphere from wildfires) in units of grams of carbon per square meter per day (monthly mean)."</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">fuel</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"image/tiff; application=geotiff; profile=cloud-optimized"</span>
-        </li>
-    
-            
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">roles</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">0</span>
-            <span class="pystac-v">"data"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">1</span>
-            <span class="pystac-v">"layer"</span>
-        </li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Wood fuel emissions (FUEL), MiCASA Model v1"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">description</span>
-            <span class="pystac-v">"Wood fuel emissions (flux of carbon to the atmosphere from wood burned for fuel) in units of grams of carbon per square meter per day (monthly mean)."</span>
+            <span class="pystac-v">"Cloud optimized default layer to display on map"</span>
         </li>
     
             
@@ -2713,7 +2404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2023-12-31T00:00:00Z"</span>
+            <span class="pystac-v">"2024-12-01T00:00:00Z"</span>
         </li>
     
             
@@ -2807,7 +2498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"2023-12-31T00:00:00Z"</span>
+            <span class="pystac-v">"2024-12-01T00:00:00Z"</span>
         </li>
     
             
@@ -2827,19 +2518,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</div>
 <p>Examining the contents of our <code>collection</code> under the <code>temporal</code> variable, we see that the data is available from January 2001 to December 2023. By looking at the <code>dashboard:time density</code>, we observe that the periodic frequency of these observations is monthly.</p>
-<div id="cell-13" class="cell" data-scrolled="true" data-execution_count="5">
+<div id="cell-13" class="cell" data-scrolled="true" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#items = list(collection.get_items())  # Convert the iterator to a list</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(f"Found {len(items)} items")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-14" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2010-01-01T00:00:00Z'</span>,<span class="st">'2010-12-31T00:00:00Z'</span>]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-14" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The search function can be used to find data within a specific time frame</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> catalog.search(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    collections<span class="op">=</span>collection_name,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    datetime<span class="op">=</span>[<span class="st">'2010-01-01T00:00:00Z'</span>,<span class="st">'2010-12-31T00:00:00Z'</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the items we found</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> search.item_collection():</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Item id=micasa-carbonflux-monthgrid-v1-201012&gt;
 &lt;Item id=micasa-carbonflux-monthgrid-v1-201011&gt;
@@ -2855,12 +2548,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 &lt;Item id=micasa-carbonflux-monthgrid-v1-201001&gt;</code></pre>
 </div>
 </div>
-<div id="cell-15" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the collection</span></span>
+<div id="cell-15" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first item in the search results</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep in mind that a list starts from 0, 1, 2... therefore items[0] is referring to the first item in the list/collection</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> search.item_collection()</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>items[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="36">
 
 
 <style>
@@ -2892,8 +2585,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     color: rgb(0, 128, 0);
     font-weight: 700;
 }
+.pystac-wrap {
+  display: block !important;
+}
+.pystac-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
 </style>
-<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output">
+<div>
+<div class="pystac-text-repr-fallback">
+    &lt;Item id=micasa-carbonflux-monthgrid-v1-201012&gt;
+</div>
+<div class="jp-RenderedJSON jp-mod-trusted jp-OutputArea-output pystac-wrap" style="display:none">
     <div class="container" style="line-height: normal;">
         <ul style="padding: 0px; margin: 0px; list-style: none; display: block;">
             
@@ -2910,7 +2614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     
         <li class="pystac-row">
             <span class="pystac-k">stac_version</span>
-            <span class="pystac-v">"1.0.0"</span>
+            <span class="pystac-v">"1.1.0"</span>
         </li>
     
                 
@@ -2938,7 +2642,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">1</span>
-            <span class="pystac-v">"https://stac-extensions.github.io/projection/v1.1.0/schema.json"</span>
+            <span class="pystac-v">"https://stac-extensions.github.io/projection/v2.0.0/schema.json"</span>
         </li>
     
             
@@ -3248,26 +2952,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
         <li class="pystac-row">
-            <span class="pystac-k">end_datetime</span>
-            <span class="pystac-v">"2010-12-31T00:00:00+00:00"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">start_datetime</span>
-            <span class="pystac-v">"2010-12-01T00:00:00+00:00"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
             <span class="pystac-k">datetime</span>
-            <span class="pystac-v">None</span>
+            <span class="pystac-v">"2010-12-01T00:00:00Z"</span>
         </li>
     
             
@@ -3479,7 +3165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://earth.gov/ghgcenter/api/raster/collections/micasa-carbonflux-monthgrid-v1/items/micasa-carbonflux-monthgrid-v1-201012/map?assets=npp&amp;rescale=0%2C8&amp;colormap_name=purd"</span>
+            <span class="pystac-v">"https://earth.gov/ghgcenter/api/raster/collections/micasa-carbonflux-monthgrid-v1/items/micasa-carbonflux-monthgrid-v1-201012/WebMercatorQuad/map?assets=npp&amp;rescale=0%2C8&amp;colormap_name=purd"</span>
         </li>
     
             
@@ -3617,24 +3303,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -4201,269 +3869,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -4585,6 +3990,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -4724,24 +4138,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -5308,269 +4704,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -5692,6 +4825,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -5831,24 +4973,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -6415,269 +5539,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -6799,6 +5660,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -6938,24 +5808,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -7522,269 +6374,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -7906,6 +6495,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -8045,24 +6643,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -8629,269 +7209,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -9013,6 +7330,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -9152,24 +7478,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -9736,269 +8044,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -10120,6 +8165,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -10259,24 +8313,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:epsg</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">proj:wkt2</span>
-            <span class="pystac-v">"GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]"</span>
-        </li>
-    
             
         
             
@@ -10843,269 +8879,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
         
             
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">proj:projjson</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">id</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">code</span>
-            <span class="pystac-v">4326</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">authority</span>
-            <span class="pystac-v">"EPSG"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeographicCRS"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">datum</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"World Geodetic System 1984"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"GeodeticReferenceFrame"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">ellipsoid</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"WGS 84"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">semi_major_axis</span>
-            <span class="pystac-v">6378137</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">inverse_flattening</span>
-            <span class="pystac-v">298.257223563</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">$schema</span>
-            <span class="pystac-v">"https://proj.org/schemas/v0.7/projjson.schema.json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">coordinate_system</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                <li><details>
-        <summary class="pystac-summary"><span class="pystac-k">axis</span><span class="pystac-l">[] 2 items</span></summary>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">0</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic latitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"north"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lat"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">1</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">name</span>
-            <span class="pystac-v">"Geodetic longitude"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">unit</span>
-            <span class="pystac-v">"degree"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">direction</span>
-            <span class="pystac-v">"east"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">abbreviation</span>
-            <span class="pystac-v">"Lon"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-    </details></li>
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">subtype</span>
-            <span class="pystac-v">"ellipsoidal"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-            
                 <li><details>
         <summary class="pystac-summary"><span class="pystac-k">proj:transform</span><span class="pystac-l">[] 9 items</span></summary>
         
@@ -11227,6 +9000,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
         
     </details></li>
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">proj:code</span>
+            <span class="pystac-v">"EPSG:4326"</span>
+        </li>
+    
             
         
             
@@ -11353,41 +9135,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="9">
+</div>
+<div id="cell-16" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restructure our items into a dictionary where keys are the datetime items</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we can query more easily by date/time, e.g. "2020-05"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"start_datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>items_dict <span class="op">=</span> {item.properties[<span class="st">"datetime"</span>][:<span class="dv">7</span>]: item <span class="cf">for</span> item <span class="kw">in</span> items}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-17" class="cell" data-execution_count="10">
+<div id="cell-17" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we go further, let's pick which asset to focus on for the remainder of the notebook.</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll focus on net primary productivity, so our asset of interest is:</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>asset_name <span class="op">=</span> <span class="st">"npp"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-</section>
-<section id="creating-maps-using-folium" class="level1">
-<h1>Creating Maps Using Folium</h1>
+<section id="creating-maps-using-folium" class="level2">
+<h2 class="anchored" data-anchor-id="creating-maps-using-folium">Creating Maps Using Folium</h2>
 <p>You will now explore changes in the land atmosphere Carbon flux <code>Net Primary Productivity</code> at a given location. You will visualize the outputs on a map using <code>folium</code>.</p>
-<section id="fetch-imagery-using-raster-api" class="level2">
-<h2 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h2>
+<section id="fetch-imagery-using-raster-api" class="level3">
+<h3 class="anchored" data-anchor-id="fetch-imagery-using-raster-api">Fetch Imagery Using Raster API</h3>
 <p>Here we get information from the <code>Raster API</code> which we will add to our map in the next section.</p>
-<div id="cell-20" class="cell" data-execution_count="11">
+<div id="cell-20" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify two date/times that you would like to visualize, using the format of items_dict.keys()</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dates <span class="op">=</span> [<span class="st">"2010-01"</span>,<span class="st">"2010-07"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Below, we use some statistics of the raster data to set upper and lower limits for our color bar. These are saved as <code>rescale_values</code>, and will be passed to the Raster API in the following step(s).</p>
-<div id="cell-22" class="cell" data-execution_count="12">
+<div id="cell-22" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract collection name and item ID for the first date</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>observation_date_1 <span class="op">=</span> items_dict[dates[<span class="dv">0</span>]]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> observation_date_1.collection_id</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_1.<span class="bu">id</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Select relevant asset (NPP)</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Print raster bands' information</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>tile_matrix_set_id <span class="op">=</span> <span class="st">"WebMercatorQuad"</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Select relevant asset (NPP)</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">object</span> <span class="op">=</span> observation_date_1.assets[asset_name]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>raster_bands <span class="op">=</span> <span class="bu">object</span>.extra_fields.get(<span class="st">"raster:bands"</span>, [{}])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print raster bands' information</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>raster_bands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
 <pre><code>[{'unit': 'g C m-2 day-1',
   'scale': 1.0,
   'nodata': 'nan',
@@ -11405,7 +9188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    'valid_percent': 100.0}}]</code></pre>
 </div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="13">
+<div id="cell-23" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use raster band statistics to generate an appropriate color bar range.</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rescale_values <span class="op">=</span> {</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max"</span>: raster_bands[<span class="dv">0</span>].get(<span class="st">"histogram"</span>, {}).get(<span class="st">"max"</span>),</span>
@@ -11418,16 +9201,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Now, you will pass the <code>item id</code>, <code>collection name</code>, <code>asset name</code>, and the <code>rescale values</code> to the Raster API endpoint, along with a colormap. This step is done twice, one for each date/time you will visualize, and tells the Raster API which collection, item, and asset you want to view, specifying the colormap and colorbar ranges to use for visualization. The API returns a JSON with information about the requested image. Each image will be referred to as a tile.</p>
-<div id="cell-25" class="cell" data-execution_count="14">
+<div id="cell-25" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose a colormap for displaying the data</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure to capitalize per Matplotlib standard colormap names</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information on Colormaps in Matplotlib, please visit https://matplotlib.org/stable/users/explain/colors/colormaps.html</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> <span class="st">"PuRd"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="15">
+<div id="cell-26" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve information for your first date/time</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile <span class="op">=</span> requests.get(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>tile_matrix_set_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -11435,7 +9218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>observation_date_1_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="43">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -11446,7 +9229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'center': [-2.842170943040401e-14, 0.0, 0]}</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-execution_count="16">
+<div id="cell-27" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat the above for your second date/time</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that we do not calculate new rescale_values for this tile - </span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We want date tiles 1 and 2 to have the same colorbar range for visual comparison.</span></span>
@@ -11456,7 +9239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>item_id <span class="op">=</span> observation_date_2.<span class="bu">id</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a GET request to retrieve tile information</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>observation_date_2_tile <span class="op">=</span> requests.get(</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>RASTER_API_URL<span class="sc">}</span><span class="ss">/collections/</span><span class="sc">{</span>collection_id<span class="sc">}</span><span class="ss">/items/</span><span class="sc">{</span>item_id<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>tile_matrix_set_id<span class="sc">}</span><span class="ss">/tilejson.json?"</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;assets=</span><span class="sc">{</span>asset_name<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;color_formula=gamma+r+1.05&amp;colormap_name=</span><span class="sc">{</span>color_map<span class="sc">.</span>lower()<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"&amp;rescale=</span><span class="sc">{</span>rescale_values[<span class="st">'min'</span>]<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>rescale_values[<span class="st">'max'</span>]<span class="sc">}</span><span class="ss">"</span></span>
@@ -11464,7 +9247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the properties of the retrieved granule to the console</span></span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>observation_date_2_tile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="44">
 <pre><code>{'tilejson': '2.2.0',
  'version': '1.0.0',
  'scheme': 'xyz',
@@ -11476,14 +9259,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="generate-map" class="level2">
-<h2 class="anchored" data-anchor-id="generate-map">Generate Map</h2>
-<p>For this example, we’ll look at NPP over Amazon Rainforest, South America.</p>
+<section id="generate-map" class="level3">
+<h3 class="anchored" data-anchor-id="generate-map">Generate Map</h3>
+<p>For this example, we’ll look at NPP over the Amazon Rainforest, South America.</p>
 <p>First, let’s determine an area of interest (AOI) to visualize via GeoJSON.</p>
-<div id="cell-29" class="cell" data-execution_count="17">
+<div id="cell-29" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a name for the AOI to use in plots later</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Amazon Rainforest"</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to Amazon Rainforest, South America</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to the Amazon Rainforest, South America</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {},</span>
@@ -11492,9 +9275,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            [</span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [longitude, latitude]</span></span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="op">-</span><span class="fl">3.0</span>],   <span class="co"># Southwest Bounding Coordinate</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="fl">5.0</span>],    <span class="co"># Southeast Bounding Coordinate</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="fl">5.0</span>],    <span class="co"># Northwest Bounding Coordinate</span></span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">60.0</span>, <span class="fl">5.0</span>],    <span class="co"># Northeast Bounding Coordinate</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">60.0</span>, <span class="op">-</span><span class="fl">3.0</span>],   <span class="co"># Northwest Bounding Coordinate</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">60.0</span>, <span class="op">-</span><span class="fl">3.0</span>],   <span class="co"># Southeast Bounding Coordinate</span></span>
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="op">-</span><span class="fl">3.0</span>]    <span class="co"># Closing the polygon at the Southwest Bounding Coordinate</span></span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>            ]</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        ],</span>
@@ -11502,7 +9285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="18">
+<div id="cell-30" class="cell" data-execution_count="46">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the map, specifying the center of the map and the starting zoom level.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'folium.plugins' allows mapping side-by-side via 'DualMap'</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Map is centered on the position specified by "location=(lat,lon)"</span></span>
@@ -11513,7 +9296,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The TileLayer library helps in manipulating and displaying raster layers on a map</span></span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>map_layer_observation_date_1 <span class="op">=</span> TileLayer(</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_date_1_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.8</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>dates[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> NPP"</span>, <span class="co"># Title for the layer</span></span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span> <span class="va">True</span>, <span class="co"># The layer can be overlaid on the map</span></span>
@@ -11528,7 +9311,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the second map layer using the tile fetched for the second date</span></span>
 <span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>map_layer_observation_date_2 <span class="op">=</span> TileLayer(</span>
 <span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    tiles<span class="op">=</span>observation_date_2_tile[<span class="st">"tiles"</span>][<span class="dv">0</span>], <span class="co"># Path to retrieve the tile</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"GHG"</span>, <span class="co"># Set the attribution</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    attr<span class="op">=</span><span class="st">"US GHG Center"</span>, <span class="co"># Set the attribution</span></span>
 <span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    opacity<span class="op">=</span><span class="fl">0.8</span>, <span class="co"># Adjust the transparency of the layer</span></span>
 <span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>dates[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> NPP"</span>, <span class="co"># Title for the layer</span></span>
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    overlay<span class="op">=</span> <span class="va">True</span>, <span class="co"># The layer can be overlaid on the map</span></span>
@@ -11556,7 +9339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the Dual Map</span></span>
 <span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>map_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="46">
 <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
 <html>
 <head>
@@ -11584,7 +9367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_cd9729a242ad0918d75081910db37d1c {
+                #map_abbeee8aea1dc948aa88f1a8b134bd4e {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -11598,7 +9381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
             <style>
-                #map_957607e6805ff1432d0631ed17c389aa {
+                #map_38647417702c61e64ec39b374c06152f {
                     position: absolute;
                     width: 50.0%;
                     height: 100.0%;
@@ -11637,17 +9420,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
     
-            <div class=&quot;folium-map&quot; id=&quot;map_cd9729a242ad0918d75081910db37d1c&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_abbeee8aea1dc948aa88f1a8b134bd4e&quot; ></div>
         
     
-            <div class=&quot;folium-map&quot; id=&quot;map_957607e6805ff1432d0631ed17c389aa&quot; ></div>
+            <div class=&quot;folium-map&quot; id=&quot;map_38647417702c61e64ec39b374c06152f&quot; ></div>
         
 </body>
 <script>
     
     
-            var map_cd9729a242ad0918d75081910db37d1c = L.map(
-                &quot;map_cd9729a242ad0918d75081910db37d1c&quot;,
+            var map_abbeee8aea1dc948aa88f1a8b134bd4e = L.map(
+                &quot;map_abbeee8aea1dc948aa88f1a8b134bd4e&quot;,
                 {
                     center: [0.0, -66.0],
                     crs: L.CRS.EPSG3857,
@@ -11661,31 +9444,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_520144153065093348007c9995b324d8 = L.tileLayer(
+            var tile_layer_969970f6fccd79340c36c20688522d39 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_520144153065093348007c9995b324d8.addTo(map_cd9729a242ad0918d75081910db37d1c);
+            tile_layer_969970f6fccd79340c36c20688522d39.addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            var tile_layer_f64c1a81b2bccf0293bdb7e94132ddae = L.tileLayer(
+            var tile_layer_5eaf7f278f19af5b0cd1d1d99db17b13 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/micasa-carbonflux-monthgrid-v1/items/micasa-carbonflux-monthgrid-v1-201001/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=npp\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=-0.3724845349788666%2C5.948176860809326&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {&quot;attribution&quot;: &quot;US GHG Center&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_f64c1a81b2bccf0293bdb7e94132ddae.addTo(map_cd9729a242ad0918d75081910db37d1c);
+            tile_layer_5eaf7f278f19af5b0cd1d1d99db17b13.addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            var marker_2404de0397872110936590aeb4adebaf = L.marker(
+            var marker_c12f8ec4f776a670220299418dfad46a = L.marker(
                 [0.0, -66.0],
                 {}
-            ).addTo(map_cd9729a242ad0918d75081910db37d1c);
+            ).addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            marker_2404de0397872110936590aeb4adebaf.bindTooltip(
+            marker_c12f8ec4f776a670220299418dfad46a.bindTooltip(
                 `<div>
                      Amazon Rainforest
                  </div>`,
@@ -11693,53 +9476,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_efa88fc48544003b5fc21b042401fb02_styler(feature) {
+        function geo_json_257c8cb2364be057262db043a78e9515_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_efa88fc48544003b5fc21b042401fb02_onEachFeature(feature, layer) {
+        function geo_json_257c8cb2364be057262db043a78e9515_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_efa88fc48544003b5fc21b042401fb02 = L.geoJson(null, {
-                onEachFeature: geo_json_efa88fc48544003b5fc21b042401fb02_onEachFeature,
+        var geo_json_257c8cb2364be057262db043a78e9515 = L.geoJson(null, {
+                onEachFeature: geo_json_257c8cb2364be057262db043a78e9515_onEachFeature,
             
-                style: geo_json_efa88fc48544003b5fc21b042401fb02_styler,
+                style: geo_json_257c8cb2364be057262db043a78e9515_styler,
         });
 
-        function geo_json_efa88fc48544003b5fc21b042401fb02_add (data) {
-            geo_json_efa88fc48544003b5fc21b042401fb02
+        function geo_json_257c8cb2364be057262db043a78e9515_add (data) {
+            geo_json_257c8cb2364be057262db043a78e9515
                 .addData(data);
         }
-            geo_json_efa88fc48544003b5fc21b042401fb02_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-74.0, -3.0], [-74.0, 5.0], [-60.0, 5.0], [-60.0, -3.0], [-74.0, -3.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_257c8cb2364be057262db043a78e9515_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-74.0, -3.0], [-74.0, 5.0], [-60.0, 5.0], [-60.0, -3.0], [-74.0, -3.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_efa88fc48544003b5fc21b042401fb02.addTo(map_cd9729a242ad0918d75081910db37d1c);
+            geo_json_257c8cb2364be057262db043a78e9515.addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            var layer_control_15e45c78d4ef7fc148aaaa0e8b4f1d89_layers = {
+            var layer_control_0a85f661505877bb086d6709961ae11e_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_520144153065093348007c9995b324d8,
+                    &quot;openstreetmap&quot; : tile_layer_969970f6fccd79340c36c20688522d39,
                 },
                 overlays :  {
-                    &quot;2010-01 NPP&quot; : tile_layer_f64c1a81b2bccf0293bdb7e94132ddae,
-                    &quot;Amazon Rainforest AOI&quot; : geo_json_efa88fc48544003b5fc21b042401fb02,
+                    &quot;2010-01 NPP&quot; : tile_layer_5eaf7f278f19af5b0cd1d1d99db17b13,
+                    &quot;Amazon Rainforest AOI&quot; : geo_json_257c8cb2364be057262db043a78e9515,
                 },
             };
-            let layer_control_15e45c78d4ef7fc148aaaa0e8b4f1d89 = L.control.layers(
-                layer_control_15e45c78d4ef7fc148aaaa0e8b4f1d89_layers.base_layers,
-                layer_control_15e45c78d4ef7fc148aaaa0e8b4f1d89_layers.overlays,
+            let layer_control_0a85f661505877bb086d6709961ae11e = L.control.layers(
+                layer_control_0a85f661505877bb086d6709961ae11e_layers.base_layers,
+                layer_control_0a85f661505877bb086d6709961ae11e_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_cd9729a242ad0918d75081910db37d1c);
+            ).addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
 
         
     
-            var map_957607e6805ff1432d0631ed17c389aa = L.map(
-                &quot;map_957607e6805ff1432d0631ed17c389aa&quot;,
+            var map_38647417702c61e64ec39b374c06152f = L.map(
+                &quot;map_38647417702c61e64ec39b374c06152f&quot;,
                 {
                     center: [0.0, -66.0],
                     crs: L.CRS.EPSG3857,
@@ -11753,35 +9536,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
         
     
-            var tile_layer_e9b59ee93354184ba7981e1009911e6e = L.tileLayer(
+            var tile_layer_37a319fbc48b6f0b968ab464bc4e4256 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_e9b59ee93354184ba7981e1009911e6e.addTo(map_957607e6805ff1432d0631ed17c389aa);
+            tile_layer_37a319fbc48b6f0b968ab464bc4e4256.addTo(map_38647417702c61e64ec39b374c06152f);
         
     
-            var tile_layer_d64a50659389873de96d66ddb54280d8 = L.tileLayer(
+            var tile_layer_73bf3b58311ed5183482b6ea872f2fa6 = L.tileLayer(
                 &quot;https://earth.gov/ghgcenter/api/raster/collections/micasa-carbonflux-monthgrid-v1/items/micasa-carbonflux-monthgrid-v1-201007/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=npp\u0026color_formula=gamma+r+1.05\u0026colormap_name=purd\u0026rescale=-0.3724845349788666%2C5.948176860809326&quot;,
-                {&quot;attribution&quot;: &quot;GHG&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+                {&quot;attribution&quot;: &quot;US GHG Center&quot;, &quot;detectRetina&quot;: false, &quot;legendEnabled&quot;: true, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 0.8, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
             );
         
     
-            tile_layer_d64a50659389873de96d66ddb54280d8.addTo(map_957607e6805ff1432d0631ed17c389aa);
+            tile_layer_73bf3b58311ed5183482b6ea872f2fa6.addTo(map_38647417702c61e64ec39b374c06152f);
         
     
-            map_cd9729a242ad0918d75081910db37d1c.sync(map_957607e6805ff1432d0631ed17c389aa);
-            map_957607e6805ff1432d0631ed17c389aa.sync(map_cd9729a242ad0918d75081910db37d1c);
+            map_abbeee8aea1dc948aa88f1a8b134bd4e.sync(map_38647417702c61e64ec39b374c06152f);
+            map_38647417702c61e64ec39b374c06152f.sync(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            var marker_097355b6c6954cffbb0d9ef5b0b60665 = L.marker(
+            var marker_5f8b108eca6f4a37bf55ac4ccae48793 = L.marker(
                 [0.0, -66.0],
                 {}
-            ).addTo(map_957607e6805ff1432d0631ed17c389aa);
+            ).addTo(map_38647417702c61e64ec39b374c06152f);
         
     
-            marker_097355b6c6954cffbb0d9ef5b0b60665.bindTooltip(
+            marker_5f8b108eca6f4a37bf55ac4ccae48793.bindTooltip(
                 `<div>
                      Amazon Rainforest
                  </div>`,
@@ -11789,51 +9572,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             );
         
     
-        function geo_json_fec7c838168d463abeb6a5ebb1949299_styler(feature) {
+        function geo_json_bd2a3fb8dce84e20843438ad168ae255_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillColor&quot;: &quot;none&quot;};
             }
         }
 
-        function geo_json_fec7c838168d463abeb6a5ebb1949299_onEachFeature(feature, layer) {
+        function geo_json_bd2a3fb8dce84e20843438ad168ae255_onEachFeature(feature, layer) {
             layer.on({
             });
         };
-        var geo_json_fec7c838168d463abeb6a5ebb1949299 = L.geoJson(null, {
-                onEachFeature: geo_json_fec7c838168d463abeb6a5ebb1949299_onEachFeature,
+        var geo_json_bd2a3fb8dce84e20843438ad168ae255 = L.geoJson(null, {
+                onEachFeature: geo_json_bd2a3fb8dce84e20843438ad168ae255_onEachFeature,
             
-                style: geo_json_fec7c838168d463abeb6a5ebb1949299_styler,
+                style: geo_json_bd2a3fb8dce84e20843438ad168ae255_styler,
         });
 
-        function geo_json_fec7c838168d463abeb6a5ebb1949299_add (data) {
-            geo_json_fec7c838168d463abeb6a5ebb1949299
+        function geo_json_bd2a3fb8dce84e20843438ad168ae255_add (data) {
+            geo_json_bd2a3fb8dce84e20843438ad168ae255
                 .addData(data);
         }
-            geo_json_fec7c838168d463abeb6a5ebb1949299_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-74.0, -3.0], [-74.0, 5.0], [-60.0, 5.0], [-60.0, -3.0], [-74.0, -3.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_bd2a3fb8dce84e20843438ad168ae255_add({&quot;features&quot;: [{&quot;geometry&quot;: {&quot;coordinates&quot;: [[[-74.0, -3.0], [-74.0, 5.0], [-60.0, 5.0], [-60.0, -3.0], [-74.0, -3.0]]], &quot;type&quot;: &quot;Polygon&quot;}, &quot;id&quot;: &quot;0&quot;, &quot;properties&quot;: {}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-            geo_json_efa88fc48544003b5fc21b042401fb02.addTo(map_cd9729a242ad0918d75081910db37d1c);
+            geo_json_257c8cb2364be057262db043a78e9515.addTo(map_abbeee8aea1dc948aa88f1a8b134bd4e);
         
     
-            geo_json_fec7c838168d463abeb6a5ebb1949299.addTo(map_957607e6805ff1432d0631ed17c389aa);
+            geo_json_bd2a3fb8dce84e20843438ad168ae255.addTo(map_38647417702c61e64ec39b374c06152f);
         
     
-            var layer_control_7295456ee6ca4d71b426c55a5b6f4eff_layers = {
+            var layer_control_c172acdb183048879319fa9ed3839e66_layers = {
                 base_layers : {
-                    &quot;openstreetmap&quot; : tile_layer_e9b59ee93354184ba7981e1009911e6e,
+                    &quot;openstreetmap&quot; : tile_layer_37a319fbc48b6f0b968ab464bc4e4256,
                 },
                 overlays :  {
-                    &quot;2010-07 NPP&quot; : tile_layer_d64a50659389873de96d66ddb54280d8,
-                    &quot;Amazon Rainforest AOI&quot; : geo_json_fec7c838168d463abeb6a5ebb1949299,
+                    &quot;2010-07 NPP&quot; : tile_layer_73bf3b58311ed5183482b6ea872f2fa6,
+                    &quot;Amazon Rainforest AOI&quot; : geo_json_bd2a3fb8dce84e20843438ad168ae255,
                 },
             };
-            let layer_control_7295456ee6ca4d71b426c55a5b6f4eff = L.control.layers(
-                layer_control_7295456ee6ca4d71b426c55a5b6f4eff_layers.base_layers,
-                layer_control_7295456ee6ca4d71b426c55a5b6f4eff_layers.overlays,
+            let layer_control_c172acdb183048879319fa9ed3839e66 = L.control.layers(
+                layer_control_c172acdb183048879319fa9ed3839e66_layers.base_layers,
+                layer_control_c172acdb183048879319fa9ed3839e66_layers.overlays,
                 {&quot;autoZIndex&quot;: true, &quot;collapsed&quot;: false, &quot;position&quot;: &quot;topright&quot;}
-            ).addTo(map_957607e6805ff1432d0631ed17c389aa);
+            ).addTo(map_38647417702c61e64ec39b374c06152f);
 
         
 </script>
@@ -11842,47 +9625,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="calculate-zonal-statistics" class="level1">
-<h1>Calculate Zonal Statistics</h1>
-<p>To perform zonal statistics, first we need to create a polygon. In this use case we are creating a polygon in the Amazon Rainforest.</p>
-<div id="cell-32" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a name for the AOI to use in plots later</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>aoi_name <span class="op">=</span> <span class="st">"Amazon Rainforest"</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The Area of Interest (AOI) is set to Amazon Rainforest, South America</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>aoi <span class="op">=</span> {</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"Feature"</span>,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {},</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: {</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"coordinates"</span>: [</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                <span class="co"># [longitude, latitude]</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="op">-</span><span class="fl">3.0</span>],   <span class="co"># Southwest Bounding Coordinate</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="fl">5.0</span>],    <span class="co"># Southeast Bounding Coordinate</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">60.0</span>, <span class="fl">5.0</span>],    <span class="co"># Northeast Bounding Coordinate</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">60.0</span>, <span class="op">-</span><span class="fl">3.0</span>],   <span class="co"># Northwest Bounding Coordinate</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span><span class="fl">74.0</span>, <span class="op">-</span><span class="fl">3.0</span>]    <span class="co"># Closing the polygon at the Southwest Bounding Coordinate</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"Polygon"</span>,</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>We’ll generate statistics for the data in our AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the Raster API.</p>
-<div id="cell-34" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats(items,aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first five rows of statistics from our DataFrame</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="calculate-zonal-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-zonal-statistics">Calculate Zonal Statistics</h2>
+<p>We will perform zonal statistics and create a dataframe using our previously defined AOI for the Amazon Rainforest, the items from our initial catalog search spanning from January 1, 2010 through December 31, 2010, and the “npp” asset.</p>
+<p>We’ll generate statistics for the data in our AOI using a function from the <code>ghgc_utils</code> module, which fetches the data and its statistics from the <code>Raster API</code>.</p>
+<div id="cell-33" class="cell" data-execution_count="47">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %%time = Wall time (execution time) for running the code below</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistics will be returned as a Pandas DataFrame</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ghgc_utils.generate_stats(items,aoi,url<span class="op">=</span>RASTER_API_URL,asset<span class="op">=</span>asset_name)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first five rows of statistics from our DataFrame</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating stats...
 Done!
-CPU times: user 42.9 ms, sys: 3.88 ms, total: 46.8 ms
-Wall time: 4.63 s</code></pre>
+CPU times: total: 2.05 s
+Wall time: 9.25 s</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="47">
 <div>
 
 
@@ -11913,12 +9674,12 @@ Wall time: 4.63 s</code></pre>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
-<td>2010-12-01T00:00:00+00:00</td>
+<td>2010-12-01T00:00:00Z</td>
 <td>0.00000000000000000000</td>
 <td>4.89262914657592773438</td>
-<td>4.21476554870605468750</td>
+<td>4.21476507186889648438</td>
 <td>11200.00000000000000000000</td>
-<td>47205.37500000000000000000</td>
+<td>47205.36718750000000000000</td>
 <td>0.67433501265570172656</td>
 <td>4.46684360504150390625</td>
 <td>0.00000000000000000000</td>
@@ -11934,13 +9695,13 @@ Wall time: 4.63 s</code></pre>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>2010-11-01T00:00:00+00:00</td>
+<td>2010-11-01T00:00:00Z</td>
 <td>0.00000000000000000000</td>
 <td>4.99066686630249023438</td>
 <td>4.32144927978515625000</td>
 <td>11200.00000000000000000000</td>
 <td>48400.23437500000000000000</td>
-<td>0.67623451775757548177</td>
+<td>0.67623456182856067631</td>
 <td>4.56732463836669921875</td>
 <td>0.00000000000000000000</td>
 <td>0.11350738257169723511</td>
@@ -11955,7 +9716,7 @@ Wall time: 4.63 s</code></pre>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
-<td>2010-10-01T00:00:00+00:00</td>
+<td>2010-10-01T00:00:00Z</td>
 <td>0.00000000000000000000</td>
 <td>5.11889410018920898438</td>
 <td>4.37894201278686523438</td>
@@ -11976,13 +9737,13 @@ Wall time: 4.63 s</code></pre>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>2010-09-01T00:00:00+00:00</td>
+<td>2010-09-01T00:00:00Z</td>
 <td>0.00000000000000000000</td>
 <td>5.20381402969360351562</td>
-<td>4.25992536544799804688</td>
+<td>4.25992488861083984375</td>
 <td>11200.00000000000000000000</td>
-<td>47711.16406250000000000000</td>
-<td>0.64925810583296306167</td>
+<td>47711.16015625000000000000</td>
+<td>0.64925805993084317880</td>
 <td>4.48059511184692382812</td>
 <td>0.00000000000000000000</td>
 <td>0.07202455401420593262</td>
@@ -11997,12 +9758,12 @@ Wall time: 4.63 s</code></pre>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
-<td>2010-08-01T00:00:00+00:00</td>
+<td>2010-08-01T00:00:00Z</td>
 <td>0.00000000000000000000</td>
 <td>5.27340316772460937500</td>
-<td>4.15344095230102539062</td>
+<td>4.15344047546386718750</td>
 <td>11200.00000000000000000000</td>
-<td>46518.53906250000000000000</td>
+<td>46518.53515625000000000000</td>
 <td>0.59038417891895100809</td>
 <td>4.29437303543090820312</td>
 <td>0.00000000000000000000</td>
@@ -12022,204 +9783,58 @@ Wall time: 4.63 s</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the generated function on the stats data</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_stats(stats)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the stats for the first 5 granules in the collection in the table</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the value in the parenthesis to show more or a smaller number of rows in the table</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">datetime</th>
-<th data-quarto-table-cell-role="th">min</th>
-<th data-quarto-table-cell-role="th">max</th>
-<th data-quarto-table-cell-role="th">mean</th>
-<th data-quarto-table-cell-role="th">count</th>
-<th data-quarto-table-cell-role="th">sum</th>
-<th data-quarto-table-cell-role="th">std</th>
-<th data-quarto-table-cell-role="th">median</th>
-<th data-quarto-table-cell-role="th">majority</th>
-<th data-quarto-table-cell-role="th">minority</th>
-<th data-quarto-table-cell-role="th">unique</th>
-<th data-quarto-table-cell-role="th">histogram</th>
-<th data-quarto-table-cell-role="th">valid_percent</th>
-<th data-quarto-table-cell-role="th">masked_pixels</th>
-<th data-quarto-table-cell-role="th">valid_pixels</th>
-<th data-quarto-table-cell-role="th">percentile_2</th>
-<th data-quarto-table-cell-role="th">percentile_98</th>
-<th data-quarto-table-cell-role="th">date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>2023-12-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>4.908090</td>
-<td>3.803190</td>
-<td>11200.0</td>
-<td>42595.726562</td>
-<td>1.001672</td>
-<td>4.287086</td>
-<td>0.0</td>
-<td>0.045214</td>
-<td>11176.0</td>
-<td>[[107, 172, 135, 249, 859, 773, 672, 1095, 314...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>11200.0</td>
-<td>0.816055</td>
-<td>4.740242</td>
-<td>2023-12-01 00:00:00+00:00</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>2023-11-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>4.899784</td>
-<td>3.733915</td>
-<td>11200.0</td>
-<td>41819.847656</td>
-<td>1.094903</td>
-<td>4.337245</td>
-<td>0.0</td>
-<td>0.003331</td>
-<td>11173.0</td>
-<td>[[123, 197, 131, 300, 1135, 1008, 936, 635, 17...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>11200.0</td>
-<td>0.684980</td>
-<td>4.778190</td>
-<td>2023-11-01 00:00:00+00:00</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>2023-10-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>5.101230</td>
-<td>4.059607</td>
-<td>11200.0</td>
-<td>45467.593750</td>
-<td>0.929427</td>
-<td>4.477079</td>
-<td>0.0</td>
-<td>0.001313</td>
-<td>11170.0</td>
-<td>[[40, 211, 124, 138, 404, 592, 1006, 1174, 361...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>11200.0</td>
-<td>0.922686</td>
-<td>4.886018</td>
-<td>2023-10-01 00:00:00+00:00</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>2023-09-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>5.206058</td>
-<td>4.265815</td>
-<td>11200.0</td>
-<td>47777.125000</td>
-<td>0.809127</td>
-<td>4.565217</td>
-<td>0.0</td>
-<td>0.148414</td>
-<td>11157.0</td>
-<td>[[21, 132, 132, 140, 174, 455, 581, 890, 5920,...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>11200.0</td>
-<td>1.336924</td>
-<td>4.974802</td>
-<td>2023-09-01 00:00:00+00:00</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>2023-08-01T00:00:00+00:00</td>
-<td>0.0</td>
-<td>5.167744</td>
-<td>4.239621</td>
-<td>11200.0</td>
-<td>47483.757812</td>
-<td>0.637152</td>
-<td>4.432680</td>
-<td>0.0</td>
-<td>0.179792</td>
-<td>11156.0</td>
-<td>[[18, 13, 50, 133, 165, 402, 674, 940, 7165, 1...</td>
-<td>100.0</td>
-<td>0.0</td>
-<td>11200.0</td>
-<td>2.088083</td>
-<td>4.943881</td>
-<td>2023-08-01 00:00:00+00:00</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
+</section>
 <section id="time-series-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="time-series-analysis">Time-Series Analysis</h2>
-<p>You can now explore the net primary production values using this data collection (January 2021 -December 2023) for the Amazon Rainforest, South America region. You can plot the data set using the code below:</p>
-<div id="cell-37" class="cell" data-execution_count="25">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>)) </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change 'which_stat' below if you would rather look at a different statistic, like minimum or mean.</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>which_stat <span class="op">=</span> <span class="st">"mean"</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series analysis of the daily NPP Values for Amazon Rainforest, South America</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>], <span class="co"># X-axis: date</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    df[which_stat], <span class="co"># Y-axis: NPP value</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#BA4066"</span>, <span class="co"># Line color in hex format</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>, <span class="co"># Line width</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span>asset_name.upper(), <span class="co"># Legend label</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"g Carbon/m2/day"</span>)</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>which_stat<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>asset_name<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span>aoi_name<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>].iloc[<span class="op">-</span><span class="dv">1</span>],           <span class="co"># X-coordinate of the text</span></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>    df[which_stat].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Source: </span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">"</span>,                  </span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">8</span>,                             <span class="co"># Font size</span></span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can now explore the net primary production values in 2010 for the Amazon Rainforest in South America. You can plot the data set using the code below:</p>
+<div id="cell-35" class="cell" data-execution_count="48">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the width and height of the plot using the 'matplotlib' library</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure size: 20 representing the width, 10 representing the height</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>)) </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change 'which_stat' below if you would rather look at a different statistic, like minimum or maximum.</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>which_stat <span class="op">=</span> <span class="st">"mean"</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time series analysis of the daily NPP Values for Amazon Rainforest, South America</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>], <span class="co"># X-axis: date</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    df[which_stat], <span class="co"># Y-axis: NPP value</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#BA4066"</span>, <span class="co"># Line color in hex format</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"-"</span>, <span class="co"># Line style</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>, <span class="co"># Line width</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span>asset_name.upper(), <span class="co"># Legend label</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display legend</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the X-axis</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Years"</span>)</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert label for the Y-axis</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"g Carbon/m2/day"</span>)</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert title for the plot</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"</span><span class="sc">{</span>which_stat<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>asset_name<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss"> for the </span><span class="sc">{</span>aoi_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add data citation</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>plt.text(</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>].iloc[<span class="op">-</span><span class="dv">1</span>],           <span class="co"># X-coordinate of the text</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    df[which_stat].<span class="bu">min</span>(),                  <span class="co"># Y-coordinate of the text</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Text to be displayed</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Source: </span><span class="sc">{</span>collection<span class="sc">.</span>title<span class="sc">}</span><span class="ss">"</span>,                  </span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">8</span>,                             <span class="co"># Font size</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    horizontalalignment<span class="op">=</span><span class="st">"left"</span>,              <span class="co"># Horizontal alignment</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    verticalalignment<span class="op">=</span><span class="st">"top"</span>,                 <span class="co"># Vertical alignment</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"blue"</span>,                            <span class="co"># Text color</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="micasa-carbonflux-daygrid-v1_User_Notebook_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="micasa-carbonflux-daygrid-v1_User_Notebook_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -12227,11 +9842,18 @@ Wall time: 4.63 s</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>In this notebook we have successfully completed the following steps for the STAC collection for the MiCASA Land Carbon Flux dataset: 1. Install and import the necessary libraries 2. Fetch the collection from STAC collections using the appropriate endpoints 3. Count the number of existing granules within the collection 4. Map and compare the Net Primary Production (NPP) levels over the Amazon Rainforest, South America area for two distinctive months/years 5. Create a table that displays the minimum, maximum, and sum of the Net Primary Production (NPP) values for a specified region 6. Generate a time-series graph of the Net Primary Production (NPP) values for a specified region</p>
+<p>In this notebook, we have successfully completed the following steps for the MiCASA Land Carbon Flux dataset:</p>
+<ol type="1">
+<li>Install and import the necessary libraries</li>
+<li>Fetch the collection from STAC using the appropriate endpoints</li>
+<li>Count the number of existing granules within the collection</li>
+<li>Map and compare the Net Primary Production (NPP) levels over the Amazon Rainforest, South America area for two distinctive months</li>
+<li>Create a table that displays the minimum, maximum, and sum of the Net Primary Production (NPP) values for a specified region</li>
+<li>Generate a time-series graph of the Net Primary Production (NPP) values for a specified region</li>
+</ol>
 <p>If you have any questions regarding this user notebook, please contact us using the <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVWCrnca08Gt_qoWYjTo6gnj1BEGL4NCUC9VEiQnXA02gzVQ/viewform">feedback form</a>.</p>
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
