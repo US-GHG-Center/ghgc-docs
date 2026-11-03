@@ -10,7 +10,6 @@ def raster_stats(item, geojson,**kwargs):
     """
     Returns Raster API statistics for an item. Inputs: item, geojson, url = Raster API url, asset = asset name within item. Outputs: dictionary containing statistics over the bounding box and item's datetime information.
     """
-
     try:
         url = item["assets"][kwargs["asset"]]["href"]
     except TypeError as err:
@@ -19,6 +18,13 @@ def raster_stats(item, geojson,**kwargs):
         print('KeyError in raster_stats: Make sure you include \'url\' and \'asset\' as keyword arguments!')
         sys.exit()      
     
+    # Build parameters dictionary
+    params = {"url": url}
+    
+    # Add nodata parameter if provided
+    if "nodata" in kwargs:
+        params["nodata"] = kwargs["nodata"]
+    
     # A POST request is made to submit the data associated with the item of interest (specific observation) within the boundaries of the polygon to compute its statistics
     result = requests.post(
 
@@ -26,7 +32,7 @@ def raster_stats(item, geojson,**kwargs):
         f"{kwargs['url']}/cog/statistics",
 
         # Pass the URL to the item, asset name, and raster identifier as parameters
-        params={"url": url},
+        params=params,
 
         # Send the GeoJSON object (polygon) along with the request
         json=geojson,
@@ -34,38 +40,31 @@ def raster_stats(item, geojson,**kwargs):
     # Return the response in JSON format
     ).json()
 
-
     # Print the result
-    ##print(result)
+    # print(result)
 
     # Return a dictionary containing the computed statistics along with the item's datetime information.
     try:
         return {
             **result["properties"],
-            "datetime": item["properties"]["start_datetime"],
+            "datetime": item["properties"].get("start_datetime", item["properties"].get("datetime")),
         }
     except KeyError as err:
         try:
             return {
                 **result["features"][0]["properties"],
-                'datetime': item["properties"]["start_datetime"],
+                'datetime': item["properties"].get("start_datetime", item["properties"].get("datetime")),
             }
         except TypeError as err:
             return {
                 **result["features"][0]["properties"],
-                "datetime": item.properties["start_datetime"]
+                "datetime": item.properties.get("start_datetime", item.properties.get("datetime"))
             }
     except TypeError as err:
-        try:
-            return {
-                **result["properties"],
-                "datetime": item.properties["start_datetime"]
-            }
-        except KeyError:
-            return {
-                **result["properties"],
-                "datetime": item.properties["datetime"]
-            }
+        return {
+            **result["properties"],
+            "datetime": item.properties.get("start_datetime", item.properties.get("datetime"))
+        }
 
 def clean_stats(stats_json) -> pd.DataFrame:
     """
@@ -93,12 +92,9 @@ def generate_stats(items,geojson,**kwargs):
     print('Generating stats...')
     for item in items:
         try:
-            date = item["properties"]["start_datetime"]  # Get the associated date
-        except TypeError:
-            try:
-                date = item.properties["start_datetime"]
-            except KeyError:
-                date = item.properties["datetime"]
+            date = item["properties"].get("start_datetime", item["properties"].get("datetime"))  # Get the associated date
+        except (TypeError, AttributeError):
+            date = item.properties.get("start_datetime", item.properties.get("datetime"))
         year_month = date[:10].replace('-', '')  # Convert datetime to year-month
         stats[year_month] = raster_stats(item, geojson,**kwargs)
     df = clean_stats(stats)
